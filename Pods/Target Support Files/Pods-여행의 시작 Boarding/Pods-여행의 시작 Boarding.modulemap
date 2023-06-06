@@ -1,0 +1,6 @@
+framework module Pods_______________Boarding {
+  umbrella header "Pods-여행의 시작 Boarding-umbrella.h"
+
+  export *
+  module * { export * }
+}
