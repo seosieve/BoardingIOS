@@ -8,5 +8,8 @@ target '여행의 시작 Boarding' do
   # Pods for 여행의 시작 Boarding
   pod 'SnapKit', '~> 5.6.0'
   pod 'Then'
+  pod 'FirebaseAuth'
+  pod 'FirebaseFirestore'
+  pod 'FirebaseStorage'
 
 end

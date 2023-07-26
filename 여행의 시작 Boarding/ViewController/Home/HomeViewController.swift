@@ -295,35 +295,33 @@ extension HomeViewController: UIScrollViewDelegate {
     //    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let level = scrollView.contentOffset.y
-        print(level)
-        if (self.lastContentOffset == scrollView.contentOffset.y) {
-            print("aa")
-            iconView.snp.updateConstraints {make in
-                make.top.equalTo(0)
-            }
-            return
-        }
-        
-        iconView.snp.updateConstraints { make in
-            var value: CGFloat = 0
-            switch level {
-            case ..<0:
-                value = window.safeAreaInsets.top
-            case 0...45:
-                value = window.safeAreaInsets.top - level
-            default:
-                value = 0
-            }
-            make.top.equalTo(value)
-        }
-        searchButton.alpha = 1 - level*0.03
-        alarmButton.alpha = 1 - level*0.03
-        
-        
-        
-        self.lastContentOffset = scrollView.contentOffset.y
-        print(lastContentOffset)
+//        let level = scrollView.contentOffset.y
+//        print(level)
+//        if (self.lastContentOffset == scrollView.contentOffset.y) {
+//            print("aa")
+//            iconView.snp.updateConstraints {make in
+//                make.top.equalTo(0)
+//            }
+//            return
+//        }
+//        
+//        iconView.snp.updateConstraints { make in
+//            var value: CGFloat = 0
+//            switch level {
+//            case ..<0:
+//                value = window.safeAreaInsets.top
+//            case 0...45:
+//                value = window.safeAreaInsets.top - level
+//            default:
+//                value = 0
+//            }
+//            make.top.equalTo(value)
+//        }
+//        searchButton.alpha = 1 - level*0.03
+//        alarmButton.alpha = 1 - level*0.03
+//        
+//        self.lastContentOffset = scrollView.contentOffset.y
+//        print(lastContentOffset)
     }
 }
 

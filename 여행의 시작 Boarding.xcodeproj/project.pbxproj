@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E8B35A52A70D28A00AD2C72 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4E8B35A42A70D28A00AD2C72 /* GoogleService-Info.plist */; };
+		4E8B35A72A70DA1100AD2C72 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8B35A62A70DA1100AD2C72 /* CameraViewController.swift */; };
+		4E8B35A92A70DFCE00AD2C72 /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8B35A82A70DFCE00AD2C72 /* CameraViewModel.swift */; };
 		4EECA6282A29BECF006FB764 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA6272A29BECF006FB764 /* AppDelegate.swift */; };
 		4EECA62A2A29BECF006FB764 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA6292A29BECF006FB764 /* SceneDelegate.swift */; };
 		4EECA62C2A29BECF006FB764 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA62B2A29BECF006FB764 /* HomeViewController.swift */; };
@@ -32,15 +35,18 @@
 		4EECA7DD2A2C820F006FB764 /* PlaceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7DC2A2C820F006FB764 /* PlaceCollectionViewCell.swift */; };
 		4EECA7DF2A2DC352006FB764 /* ScheduleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7DE2A2DC352006FB764 /* ScheduleCollectionViewCell.swift */; };
 		4EECA7E12A2DD179006FB764 /* FullScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7E02A2DD179006FB764 /* FullScreenViewController.swift */; };
-		4EECA7E92A2DE6A7006FB764 /* Eiffel.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 4EECA7E82A2DE6A7006FB764 /* Eiffel.mp4 */; };
 		4EECA7EC2A2F0013006FB764 /* RecordCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7EB2A2F0013006FB764 /* RecordCollectionViewCell.swift */; };
 		4EECA7EE2A2F2148006FB764 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7ED2A2F2148006FB764 /* MenuTableViewCell.swift */; };
 		4EECA7F02A2F2968006FB764 /* MyNFTViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7EF2A2F2968006FB764 /* MyNFTViewController.swift */; };
 		4EECA7F22A2F3213006FB764 /* MyMileageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7F12A2F3213006FB764 /* MyMileageViewController.swift */; };
 		4EECA7F42A2F3235006FB764 /* ExpertLevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */; };
+		4EECA7F62A2F903E006FB764 /* Eiffel.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 4EECA7F52A2F903E006FB764 /* Eiffel.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4E8B35A42A70D28A00AD2C72 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4E8B35A62A70DA1100AD2C72 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		4E8B35A82A70DFCE00AD2C72 /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
 		4EECA6242A29BECF006FB764 /* 여행의 시작 Boarding.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "여행의 시작 Boarding.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EECA6272A29BECF006FB764 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4EECA6292A29BECF006FB764 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -68,12 +74,12 @@
 		4EECA7DC2A2C820F006FB764 /* PlaceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCollectionViewCell.swift; sourceTree = "<group>"; };
 		4EECA7DE2A2DC352006FB764 /* ScheduleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCollectionViewCell.swift; sourceTree = "<group>"; };
 		4EECA7E02A2DD179006FB764 /* FullScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewController.swift; sourceTree = "<group>"; };
-		4EECA7E82A2DE6A7006FB764 /* Eiffel.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Eiffel.mp4; sourceTree = "<group>"; };
 		4EECA7EB2A2F0013006FB764 /* RecordCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollectionViewCell.swift; sourceTree = "<group>"; };
 		4EECA7ED2A2F2148006FB764 /* MenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		4EECA7EF2A2F2968006FB764 /* MyNFTViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNFTViewController.swift; sourceTree = "<group>"; };
 		4EECA7F12A2F3213006FB764 /* MyMileageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMileageViewController.swift; sourceTree = "<group>"; };
 		4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpertLevelViewController.swift; sourceTree = "<group>"; };
+		4EECA7F52A2F903E006FB764 /* Eiffel.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Eiffel.mp4; sourceTree = "<group>"; };
 		6CCBE0B900F4B9AD97D7A19E /* Pods-여행의 시작 Boarding.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-여행의 시작 Boarding.release.xcconfig"; path = "Target Support Files/Pods-여행의 시작 Boarding/Pods-여행의 시작 Boarding.release.xcconfig"; sourceTree = "<group>"; };
 		BCE569622EED6CCEFF797E15 /* Pods-여행의 시작 Boarding.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-여행의 시작 Boarding.debug.xcconfig"; path = "Target Support Files/Pods-여행의 시작 Boarding/Pods-여행의 시작 Boarding.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -119,10 +125,11 @@
 			children = (
 				4EECA6272A29BECF006FB764 /* AppDelegate.swift */,
 				4EECA6292A29BECF006FB764 /* SceneDelegate.swift */,
+				4EECA7F52A2F903E006FB764 /* Eiffel.mp4 */,
 				4EECA6302A29BED0006FB764 /* Assets.xcassets */,
-				4EECA7E82A2DE6A7006FB764 /* Eiffel.mp4 */,
 				4EECA6322A29BED0006FB764 /* LaunchScreen.storyboard */,
 				4EECA6352A29BED0006FB764 /* Info.plist */,
+				4E8B35A42A70D28A00AD2C72 /* GoogleService-Info.plist */,
 				4EECA7BC2A29C80C006FB764 /* Font */,
 				4EECA7D32A2B028D006FB764 /* Model */,
 				4EECA6412A29C21D006FB764 /* ViewController */,
@@ -210,6 +217,8 @@
 		4EECA7E52A2DD1A6006FB764 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
+				4E8B35A62A70DA1100AD2C72 /* CameraViewController.swift */,
+				4E8B35A82A70DFCE00AD2C72 /* CameraViewModel.swift */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -294,13 +303,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4EECA7E92A2DE6A7006FB764 /* Eiffel.mp4 in Resources */,
+				4EECA7F62A2F903E006FB764 /* Eiffel.mp4 in Resources */,
 				4EECA7CA2A29C83C006FB764 /* Pretendard-Medium.otf in Resources */,
 				4EECA7C62A29C83C006FB764 /* Pretendard-SemiBold.otf in Resources */,
 				4EECA7CD2A29C83C006FB764 /* Pretendard-ExtraLight.otf in Resources */,
 				4EECA7CB2A29C83C006FB764 /* Pretendard-ExtraBold.otf in Resources */,
 				4EECA7C82A29C83C006FB764 /* Pretendard-Bold.otf in Resources */,
 				4EECA7C72A29C83C006FB764 /* Pretendard-Regular.otf in Resources */,
+				4E8B35A52A70D28A00AD2C72 /* GoogleService-Info.plist in Resources */,
 				4EECA7CE2A29C83C006FB764 /* Pretendard-Black.otf in Resources */,
 				4EECA7C92A29C83C006FB764 /* Pretendard-Thin.otf in Resources */,
 				4EECA6342A29BED0006FB764 /* LaunchScreen.storyboard in Resources */,
@@ -359,6 +369,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4EECA62C2A29BECF006FB764 /* HomeViewController.swift in Sources */,
+				4E8B35A72A70DA1100AD2C72 /* CameraViewController.swift in Sources */,
 				4EECA6402A29C208006FB764 /* MyPageViewController.swift in Sources */,
 				4EECA7F02A2F2968006FB764 /* MyNFTViewController.swift in Sources */,
 				4EECA7D22A29E31B006FB764 /* CustomTabBar.swift in Sources */,
@@ -368,6 +379,7 @@
 				4EECA7E12A2DD179006FB764 /* FullScreenViewController.swift in Sources */,
 				4EECA7D92A2B3005006FB764 /* ExtensionModel.swift in Sources */,
 				4EECA7D52A2B02A2006FB764 /* FontModel.swift in Sources */,
+				4E8B35A92A70DFCE00AD2C72 /* CameraViewModel.swift in Sources */,
 				4EECA7DF2A2DC352006FB764 /* ScheduleCollectionViewCell.swift in Sources */,
 				4EECA7EE2A2F2148006FB764 /* MenuTableViewCell.swift in Sources */,
 				4EECA7DD2A2C820F006FB764 /* PlaceCollectionViewCell.swift in Sources */,
@@ -521,11 +533,13 @@
 				INFOPLIST_FILE = "여행의 시작 Boarding/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Boarding;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				INFOPLIST_KEY_NSCameraUsageDescription = test;
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = test;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -552,11 +566,13 @@
 				INFOPLIST_FILE = "여행의 시작 Boarding/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Boarding;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				INFOPLIST_KEY_NSCameraUsageDescription = test;
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = test;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
