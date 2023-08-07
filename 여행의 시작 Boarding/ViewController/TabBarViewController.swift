@@ -55,8 +55,9 @@ class TabBarViewController: UITabBarController {
     }
     
     func cameraButtonPressed() {
-        let cameraVC = CameraViewController()
-        cameraVC.modalPresentationStyle = .overFullScreen
+//        let cameraVC = CameraViewController()
+        let cameraVC = TestViewController()
+        cameraVC.modalPresentationStyle = .fullScreen
         cameraVC.modalTransitionStyle = .crossDissolve
         self.present(cameraVC, animated: true)
     }
