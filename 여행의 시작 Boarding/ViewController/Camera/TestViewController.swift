@@ -10,7 +10,7 @@ import AVFoundation
 
 class TestViewController: UIViewController {
     
-    let picker = CustomImagePicker()
+    let picker = UIImagePickerController()
     
     var captureSession: AVCaptureSession?
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
@@ -43,6 +43,7 @@ class TestViewController: UIViewController {
     @objc func albumButtonPressed() {
         picker.sourceType = .photoLibrary
         picker.mediaTypes = ["public.image", "public.movie"]
+        picker.modalPresentationStyle = .fullScreen
         present(picker, animated: true)
     }
     
@@ -94,6 +95,7 @@ class TestViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        picker.delegate = self
         setViews()
         setupCaptureSession()
     }
@@ -190,3 +192,25 @@ extension TestViewController: AVCaptureFileOutputRecordingDelegate {
         }
     }
 }
+
+extension TestViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        var selectedImage = UIImage()
+        
+        let mediaType = info[UIImagePickerController.InfoKey.mediaType] as! NSString
+        if mediaType == "public.movie" {
+            print("movie")
+        } else {
+            print("photo")
+            selectedImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+        }
+        picker.dismiss(animated: true)
+        
+        let vc = CameraCustomViewController()
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        vc.image = selectedImage
+        present(vc, animated: true)
+    }
+}
+

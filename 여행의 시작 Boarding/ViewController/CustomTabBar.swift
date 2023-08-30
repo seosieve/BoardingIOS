@@ -69,14 +69,12 @@ public final class CustomTabBar: UITabBar {
 
         path.move(to: CGPoint(x: 0, y: -10)) // start top left
         path.addLine(to: CGPoint(x: (centerWidth - height * 2), y: -10)) // the beginning of the trough
-
         // first curve down
         path.addCurve(to: CGPoint(x: centerWidth, y: height),
                       controlPoint1: CGPoint(x: (centerWidth - 35), y: -10), controlPoint2: CGPoint(x: centerWidth - 45, y: height))
         // second curve up
         path.addCurve(to: CGPoint(x: (centerWidth + height * 2), y: -10),
                       controlPoint1: CGPoint(x: centerWidth + 45, y: height), controlPoint2: CGPoint(x: (centerWidth + 35), y: -10))
-
         // complete the rect
         path.addLine(to: CGPoint(x: self.frame.width, y: -10))
         path.addLine(to: CGPoint(x: self.frame.width, y: self.frame.height))
