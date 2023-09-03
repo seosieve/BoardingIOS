@@ -1,5 +1,5 @@
 //
-//  TTTViewController.swift
+//  NFTViewController.swift
 //  여행의 시작 Boarding
 //
 //  Created by 서충원 on 2023/08/30.
@@ -9,16 +9,21 @@ import UIKit
 import Then
 import SnapKit
 
-class TTTViewController: UIViewController {
+class NFTViewController: UIViewController {
 
+    var image: UIImage?
     var isFlipped = false
     let NFTTitle = ["위치", "시간", "날씨", "카테고리", "평점"]
     let NFTInfo = ["finns, 덴파사르", "2023.06.05.  12:30PM", "맑음, 30°C", "맛집", "5.0"]
     let QRTitle = ["Contract Address", "Token ID", "Token Standard", "Chain"]
     let QRInfo = ["FINNS", "13DE79TA23", "Standard", "76$A@*YSD"]
     
-    var backgroundFullImageView = UIImageView().then {
-        $0.image = UIImage(named: "France8")
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
+    
+    lazy var backgroundFullImageView = UIImageView().then {
+        $0.image = image
         $0.contentMode = .scaleAspectFill
     }
     
@@ -39,7 +44,18 @@ class TTTViewController: UIViewController {
     }
     
     @objc func completeButtonPressed() {
+        FirebaseStorageManager.uploadImage(image: image!, pathRoot: "aa") { url in
+            if let url = url {
+                UserDefaults.standard.set(url.absoluteString, forKey: "myImageUrl")
+                self.title = "이미지 업로드 완료"
+            }
+        }
         
+        
+        let vc = TabBarViewController()
+        vc.modalPresentationStyle = .fullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: true)
     }
     
     var NFTView = UIView()
@@ -67,8 +83,8 @@ class TTTViewController: UIViewController {
         $0.lineBreakMode = .byCharWrapping
     }
     
-    var NFTImageView = UIImageView().then {
-        $0.image = UIImage(named: "France8")
+    lazy var NFTImageView = UIImageView().then {
+        $0.image = image
         $0.contentMode = .scaleAspectFill
     }
     
@@ -100,8 +116,14 @@ class TTTViewController: UIViewController {
         $0.image = UIImage(named: "QRCode")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.isNavigationBarHidden = true
         view.backgroundColor = Gray.white
         let tap = UITapGestureRecognizer(target: self, action: #selector(flipNFT))
         NFTView.addGestureRecognizer(tap)

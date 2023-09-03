@@ -34,6 +34,11 @@ class MyNFTViewController: UIViewController {
         setViews()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = true
+    }
+    
     func setViews() {
         view.addSubview(countLabel)
         view.addSubview(sortLabel)

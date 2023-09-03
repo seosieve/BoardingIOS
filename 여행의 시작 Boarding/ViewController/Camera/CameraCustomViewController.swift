@@ -11,6 +11,10 @@ class CameraCustomViewController: UIViewController {
 
     var image: UIImage?
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
+    
     var customImageView = UIImageView().then {
         $0.image = UIImage(named: "France8")
         $0.contentMode = .scaleAspectFill
@@ -27,9 +31,28 @@ class CameraCustomViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
+    lazy var completeButton = UIButton().then {
+        $0.setTitle("완료", for: .normal)
+        $0.setTitleColor(Gray.white, for: .normal)
+        $0.titleLabel?.font = Pretendard.regular(16)
+        $0.addTarget(self, action: #selector(completeButtonPressed), for: .touchUpInside)
+    }
+    
+    @objc func completeButtonPressed() {
+        let vc = WrittingViewController()
+        vc.image = image
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        self.navigationController?.navigationBar.isHidden = true
+        view.backgroundColor = Gray.white
         setViews()
     }
     
@@ -46,6 +69,12 @@ class CameraCustomViewController: UIViewController {
             make.left.equalToSuperview()
             make.width.equalTo(60)
             make.height.equalTo(48)
+        }
+        
+        view.addSubview(completeButton)
+        completeButton.snp.makeConstraints { make in
+            make.top.equalTo(window.safeAreaInsets.top)
+            make.right.equalToSuperview().offset(-19)
         }
     }
 }

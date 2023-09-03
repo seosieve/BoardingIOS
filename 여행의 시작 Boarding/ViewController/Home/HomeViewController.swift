@@ -15,7 +15,7 @@ class HomeViewController: UIViewController {
 
     let popularScheduleArr = [(UIImage(named: "France8"), "파리 4박 여행", "파리, 프랑스"), (UIImage(named: "France9"), "유럽 축구 여행", "런던, 바르셀로나"), (UIImage(named: "France10"), "2023 세느강 야경", "파리, 프랑스")]
     
-    let recommendPlaceArr = [(UIImage(named: "France1"), 5.0, "에펠탑"), (UIImage(named: "France2"), 2.9, "바토무슈 크루즈"), (UIImage(named: "France3"), 3.8, "루브르 박물관")]
+    var recommendPlaceArr = [(UIImage(named: "France1"), 5.0, "에펠탑"), (UIImage(named: "France2"), 2.9, "바토무슈 크루즈"), (UIImage(named: "France3"), 3.8, "루브르 박물관")]
     
     let popularPlaceArr = [(UIImage(named: "France4"), 3.9, "개선문"), (UIImage(named: "France5"), 3.7, "몽마르트 언덕"), (UIImage(named: "France6"), 5.0, "퐁피두 센터"), (UIImage(named: "France7"), 4.2, "노트르담 대성당")]
     
@@ -45,6 +45,12 @@ class HomeViewController: UIViewController {
     
     @objc func alarmButtonPressed() {
         print("alarmButton Pressed")
+        guard let urlString = UserDefaults.standard.string(forKey: "myImageUrl") else { return }
+        print(urlString)
+        FirebaseStorageManager.downloadImage(urlString: urlString) { [weak self] image in
+            self?.recommendPlaceArr[0].0 = image
+            self?.recommendPlaceCollectionView.reloadData()
+        }
     }
     
     var homeScrollView = UIScrollView()

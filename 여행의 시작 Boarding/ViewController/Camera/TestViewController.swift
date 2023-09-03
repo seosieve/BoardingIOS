@@ -7,6 +7,7 @@
 
 import UIKit
 import AVFoundation
+import Photos
 
 class TestViewController: UIViewController {
     
@@ -196,21 +197,20 @@ extension TestViewController: AVCaptureFileOutputRecordingDelegate {
 extension TestViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         var selectedImage = UIImage()
-        
-        let mediaType = info[UIImagePickerController.InfoKey.mediaType] as! NSString
+        let mediaType = info[.mediaType] as! NSString
         if mediaType == "public.movie" {
             print("movie")
         } else {
             print("photo")
-            selectedImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+            selectedImage = info[.originalImage] as! UIImage
         }
         picker.dismiss(animated: true)
         
-        let vc = CameraCustomViewController()
-        vc.modalPresentationStyle = .overFullScreen
+        let cameraVC = CameraCustomViewController()
+        cameraVC.image = selectedImage
+        let vc = ChangableNavigationController(rootViewController: cameraVC)
+        vc.modalPresentationStyle = .overCurrentContext
         vc.modalTransitionStyle = .crossDissolve
-        vc.image = selectedImage
         present(vc, animated: true)
     }
 }
-

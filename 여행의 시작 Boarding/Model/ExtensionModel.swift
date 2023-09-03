@@ -7,7 +7,7 @@
 
 import UIKit
 
-//MARK: - safeArea Detect
+//MARK: - SafeArea Detect
 var window: UIWindow {
     let scenes = UIApplication.shared.connectedScenes
     let windowScene = scenes.first as? UIWindowScene
@@ -15,7 +15,7 @@ var window: UIWindow {
     return window
 }
 
-//MARK: - round View
+//MARK: - Round View
 extension UIView {
     enum Axis {
         case horizontal, vertical
@@ -29,6 +29,7 @@ extension UIView {
     }    
 }
 
+//MARK: - Navigation BackButton Custom
 extension UINavigationBar {
     func setNavigationBar() {
         self.isHidden = false
@@ -42,5 +43,35 @@ extension UINavigationBar {
     
     func bottom() -> CGFloat {
         return self.frame.height + window!.safeAreaInsets.top
+    }
+}
+
+//MARK: - StatusBar Style Changable NavigationController
+class ChangableNavigationController: UINavigationController {
+    override var childForStatusBarStyle: UIViewController? { return visibleViewController}
+}
+
+//MARK: - Keyboard Dismiss
+extension UIViewController {
+    func dismissKeyboardWhenTapped() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
+
+//MARK: - BackgroundColorForButtonState
+extension UIButton {
+    func setBackgroundColor(_ color: UIColor, for state: UIControl.State) {
+        UIGraphicsBeginImageContext(CGSize(width: 1.0, height: 1.0))
+        guard let context = UIGraphicsGetCurrentContext() else { return }
+        context.setFillColor(color.cgColor)
+        context.fill(CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0))
+        let backgroundImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        self.setBackgroundImage(backgroundImage, for: state)
     }
 }

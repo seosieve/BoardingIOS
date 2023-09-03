@@ -19,10 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         let mainViewController = TabBarViewController()
         
-        let aa = TTTViewController()
-        
-        //        window?.rootViewController = mainViewController
-        window?.rootViewController = aa
+        window?.rootViewController = mainViewController
         window?.makeKeyAndVisible()
     }
     
