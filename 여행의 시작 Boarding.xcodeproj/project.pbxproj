@@ -11,6 +11,9 @@
 		4E19AA672A83E4F100213589 /* CameraCustomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19AA662A83E4F100213589 /* CameraCustomViewController.swift */; };
 		4E19AA692A9F1A7300213589 /* NFTViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19AA682A9F1A7300213589 /* NFTViewController.swift */; };
 		4E1EB4212AA47F8000620D57 /* WrittingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1EB4202AA47F8000620D57 /* WrittingViewController.swift */; };
+		4E2DDF502AB330E800C7F4B9 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DDF4F2AB330E800C7F4B9 /* SignUpViewController.swift */; };
+		4E4FF3CC2AB3255B0042126A /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4FF3CB2AB3255B0042126A /* LogInViewController.swift */; };
+		4E4FF3CE2AB326CC0042126A /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4FF3CD2AB326CC0042126A /* StartViewController.swift */; };
 		4E8B35A52A70D28A00AD2C72 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4E8B35A42A70D28A00AD2C72 /* GoogleService-Info.plist */; };
 		4E8B35A72A70DA1100AD2C72 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8B35A62A70DA1100AD2C72 /* CameraViewController.swift */; };
 		4E8B35A92A70DFCE00AD2C72 /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8B35A82A70DFCE00AD2C72 /* CameraViewModel.swift */; };
@@ -54,6 +57,9 @@
 		4E19AA662A83E4F100213589 /* CameraCustomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCustomViewController.swift; sourceTree = "<group>"; };
 		4E19AA682A9F1A7300213589 /* NFTViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTViewController.swift; sourceTree = "<group>"; };
 		4E1EB4202AA47F8000620D57 /* WrittingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrittingViewController.swift; sourceTree = "<group>"; };
+		4E2DDF4F2AB330E800C7F4B9 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		4E4FF3CB2AB3255B0042126A /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
+		4E4FF3CD2AB326CC0042126A /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		4E8B35A42A70D28A00AD2C72 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4E8B35A62A70DA1100AD2C72 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		4E8B35A82A70DFCE00AD2C72 /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
@@ -114,6 +120,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4E4FF3CA2AB324AB0042126A /* Start */ = {
+			isa = PBXGroup;
+			children = (
+				4E4FF3CD2AB326CC0042126A /* StartViewController.swift */,
+				4E2DDF4F2AB330E800C7F4B9 /* SignUpViewController.swift */,
+				4E4FF3CB2AB3255B0042126A /* LogInViewController.swift */,
+			);
+			path = Start;
+			sourceTree = "<group>";
+		};
 		4EECA61B2A29BECF006FB764 = {
 			isa = PBXGroup;
 			children = (
@@ -155,6 +171,7 @@
 				4EECA6422A29C2A9006FB764 /* TabBarViewController.swift */,
 				4EECA7D12A29E31B006FB764 /* CustomTabBar.swift */,
 				4EECA7EA2A2EFFB7006FB764 /* Cell */,
+				4E4FF3CA2AB324AB0042126A /* Start */,
 				4EECA7DB2A2C81E4006FB764 /* Home */,
 				4EECA7E22A2DD18F006FB764 /* Plan */,
 				4EECA7E52A2DD1A6006FB764 /* Camera */,
@@ -386,7 +403,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E4FF3CC2AB3255B0042126A /* LogInViewController.swift in Sources */,
 				4EECA62C2A29BECF006FB764 /* HomeViewController.swift in Sources */,
+				4E4FF3CE2AB326CC0042126A /* StartViewController.swift in Sources */,
 				4E8B35A72A70DA1100AD2C72 /* CameraViewController.swift in Sources */,
 				4E19AA612A80FB3A00213589 /* TestViewController.swift in Sources */,
 				4EECA6402A29C208006FB764 /* MyPageViewController.swift in Sources */,
@@ -408,6 +427,7 @@
 				4EECA7DD2A2C820F006FB764 /* PlaceCollectionViewCell.swift in Sources */,
 				4EECA7F42A2F3235006FB764 /* ExpertLevelViewController.swift in Sources */,
 				4EECA6432A29C2A9006FB764 /* TabBarViewController.swift in Sources */,
+				4E2DDF502AB330E800C7F4B9 /* SignUpViewController.swift in Sources */,
 				4EECA6282A29BECF006FB764 /* AppDelegate.swift in Sources */,
 				4EECA62A2A29BECF006FB764 /* SceneDelegate.swift in Sources */,
 				4EECA7D72A2B1120006FB764 /* ColorModel.swift in Sources */,
