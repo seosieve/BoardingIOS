@@ -31,7 +31,7 @@ class TabBarViewController: UITabBarController {
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: Pretendard.regular(12)], for: .normal)
         
         // ViewController Connect
-        let homeVC = UINavigationController(rootViewController: HomeViewController())
+        let homeVC = UINavigationController(rootViewController: NewHomeViewController())
         homeVC.tabBarItem.image = UIImage(named: "Home")
         homeVC.tabBarItem.title = "홈"
         homeVC.tabBarItem.titlePositionAdjustment = UIOffset(horizontal: -5, vertical: 0)

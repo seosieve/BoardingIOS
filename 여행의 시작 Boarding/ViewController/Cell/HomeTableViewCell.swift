@@ -1,0 +1,222 @@
+//
+//  HomeTableViewCell.swift
+//  여행의 시작 Boarding
+//
+//  Created by 서충원 on 2023/09/05.
+//
+
+import UIKit
+
+class HomeTableViewCell: UITableViewCell {
+
+    var userImage = UIImageView().then {
+        $0.image = UIImage(named: "User")
+        $0.layer.cornerRadius = 16
+        $0.layer.masksToBounds = true
+    }
+    
+    var userNameLabel = UILabel().then {
+        $0.text = "JunhoKim"
+        $0.font = Pretendard.regular(17)
+        $0.textColor = Gray.black
+    }
+    
+    var userAchievementStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.distribution = .fillEqually
+        $0.spacing = 7
+    }
+    
+    var mainLabel = UILabel().then {
+        $0.text = "팔레 루아얄 공원 산책"
+        $0.font = Pretendard.semiBold(17)
+        $0.textColor = Gray.black
+    }
+    
+    var subLabel = UILabel().then {
+        $0.text = "팔레 루아얄 정원 산책하기 너무 좋다. 꽃들이 활짝 피어서 아주 예뻤고, 햇볕도 딱 좋다. 귀여운 강아지들도 많아 재미있었다."
+        $0.font = Pretendard.regular(17)
+        $0.textColor = Gray.dark
+        $0.numberOfLines = 3
+        $0.lineBreakMode = .byCharWrapping
+    }
+    
+    var photoView = UIImageView().then {
+        $0.image = UIImage(named: "France8")
+        $0.layer.cornerRadius = 8
+        $0.layer.masksToBounds = true
+    }
+    
+    var scoreView = UIView().then {
+        $0.backgroundColor = Gray.light.withAlphaComponent(0.3)
+        $0.layer.cornerRadius = 12
+    }
+    
+    var scoreImage = UIImageView().then {
+        $0.image = UIImage(named: "Star")?.withRenderingMode(.alwaysTemplate)
+        $0.tintColor = Gray.dark
+    }
+    
+    var scoreLabel = UILabel().then {
+        $0.text = "4.5"
+        $0.font = Pretendard.regular(13)
+        $0.textColor = Gray.dark
+    }
+    
+    var locationView = UIView().then {
+        $0.backgroundColor = Gray.light.withAlphaComponent(0.3)
+        $0.layer.cornerRadius = 12
+    }
+    
+    var locationImage = UIImageView().then {
+        $0.image = UIImage(named: "Location")
+        $0.tintColor = Gray.dark
+    }
+    
+    var locationLabel = UILabel().then {
+        $0.text = "루레알공원, 파리, 프랑스"
+        $0.font = Pretendard.regular(13)
+        $0.textColor = Gray.dark
+    }
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setViews()
+        putUserAchievement()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+    }
+    
+    func setViews() {
+        contentView.addSubview(userImage)
+        userImage.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(36)
+            make.left.equalToSuperview().offset(16)
+            make.height.width.equalTo(32)
+        }
+        
+        contentView.addSubview(userNameLabel)
+        userNameLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(userImage)
+            make.left.equalTo(userImage.snp.right).offset(4)
+        }
+        
+        contentView.addSubview(userAchievementStackView)
+        userAchievementStackView.snp.makeConstraints { make in
+            make.centerY.equalTo(userImage)
+            make.left.equalTo(userNameLabel.snp.right).offset(8)
+            make.width.equalTo(170)
+            make.height.equalTo(24)
+        }
+        
+        contentView.addSubview(mainLabel)
+        mainLabel.snp.makeConstraints { make in
+            make.top.equalTo(userImage.snp.bottom).offset(20)
+            make.centerX.equalToSuperview()
+            make.left.equalToSuperview().offset(16)
+        }
+        
+        contentView.addSubview(subLabel)
+        subLabel.snp.makeConstraints { make in
+            make.top.equalTo(mainLabel.snp.bottom).offset(6)
+            make.centerX.equalToSuperview()
+            make.left.equalToSuperview().offset(16)
+        }
+        
+        contentView.addSubview(photoView)
+        photoView.snp.makeConstraints { make in
+            make.top.equalTo(subLabel.snp.bottom).offset(20)
+            make.left.equalToSuperview().offset(16)
+            make.right.equalToSuperview().inset(77)
+            make.height.equalTo(450)
+        }
+        
+        contentView.addSubview(scoreView)
+        scoreView.snp.makeConstraints { make in
+            make.top.equalTo(photoView.snp.bottom).offset(12)
+            make.left.equalToSuperview().offset(16)
+            make.height.equalTo(24)
+        }
+        scoreView.addSubview(scoreImage)
+        scoreImage.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(5)
+            make.centerY.equalToSuperview()
+            make.left.equalToSuperview().offset(8)
+            make.width.equalTo(15)
+        }
+        scoreView.addSubview(scoreLabel)
+        scoreLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.left.equalTo(scoreImage.snp.right).offset(4)
+            make.right.equalToSuperview().inset(8)
+        }
+        
+        contentView.addSubview(locationView)
+        locationView.snp.makeConstraints { make in
+            make.centerY.equalTo(scoreView)
+            make.left.equalTo(scoreView.snp.right).offset(8)
+            make.height.equalTo(24)
+        }
+        locationView.addSubview(locationImage)
+        locationImage.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.left.equalToSuperview().offset(8)
+            make.width.height.equalTo(15)
+        }
+        locationView.addSubview(locationLabel)
+        locationLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.left.equalTo(locationImage.snp.right).offset(4)
+            make.right.equalToSuperview().inset(8)
+        }
+    }
+    
+    func putUserAchievement() {
+        let userAchieveItem1 = UILabel().then {
+            $0.frame = CGRect(x: 0, y: 0, width: 54, height: 24)
+            $0.text = "🇰🇷 Lv.5"
+            $0.font = Pretendard.regular(12)
+            $0.textAlignment = .center
+            $0.textColor = Gray.dark
+            $0.layer.borderWidth = 0.5
+            $0.layer.borderColor = Gray.light.cgColor
+            $0.layer.cornerRadius = 4
+        }
+        
+        let userAchieveItem2 = UILabel().then {
+            $0.frame = CGRect(x: 0, y: 0, width: 54, height: 24)
+            $0.text = "📷 Lv.7"
+            $0.font = Pretendard.regular(12)
+            $0.textAlignment = .center
+            $0.textColor = Gray.dark
+            $0.layer.borderWidth = 0.5
+            $0.layer.borderColor = Gray.light.cgColor
+            $0.layer.cornerRadius = 4
+        }
+        
+        let userAchieveItem3 = UILabel().then {
+            $0.frame = CGRect(x: 0, y: 0, width: 54, height: 24)
+            $0.text = "🏄‍♂️ Lv.5"
+            $0.font = Pretendard.regular(12)
+            $0.textAlignment = .center
+            $0.textColor = Gray.dark
+            $0.layer.borderWidth = 0.5
+            $0.layer.borderColor = Gray.light.cgColor
+            $0.layer.cornerRadius = 4
+        }
+        
+        userAchievementStackView.addArrangedSubview(userAchieveItem1)
+        userAchievementStackView.addArrangedSubview(userAchieveItem2)
+        userAchievementStackView.addArrangedSubview(userAchieveItem3)
+    }
+}

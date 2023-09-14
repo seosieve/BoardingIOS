@@ -14,6 +14,8 @@
 		4E8B35A52A70D28A00AD2C72 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4E8B35A42A70D28A00AD2C72 /* GoogleService-Info.plist */; };
 		4E8B35A72A70DA1100AD2C72 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8B35A62A70DA1100AD2C72 /* CameraViewController.swift */; };
 		4E8B35A92A70DFCE00AD2C72 /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8B35A82A70DFCE00AD2C72 /* CameraViewModel.swift */; };
+		4EA7AFC22AA6C86D0055F4C7 /* NewHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA7AFC12AA6C86D0055F4C7 /* NewHomeViewController.swift */; };
+		4EA7AFC42AA6D0E40055F4C7 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA7AFC32AA6D0E40055F4C7 /* HomeTableViewCell.swift */; };
 		4EECA6282A29BECF006FB764 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA6272A29BECF006FB764 /* AppDelegate.swift */; };
 		4EECA62A2A29BECF006FB764 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA6292A29BECF006FB764 /* SceneDelegate.swift */; };
 		4EECA62C2A29BECF006FB764 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA62B2A29BECF006FB764 /* HomeViewController.swift */; };
@@ -55,6 +57,8 @@
 		4E8B35A42A70D28A00AD2C72 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4E8B35A62A70DA1100AD2C72 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		4E8B35A82A70DFCE00AD2C72 /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
+		4EA7AFC12AA6C86D0055F4C7 /* NewHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHomeViewController.swift; sourceTree = "<group>"; };
+		4EA7AFC32AA6D0E40055F4C7 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		4EECA6242A29BECF006FB764 /* 여행의 시작 Boarding.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "여행의 시작 Boarding.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EECA6272A29BECF006FB764 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4EECA6292A29BECF006FB764 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -190,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				4EECA62B2A29BECF006FB764 /* HomeViewController.swift */,
+				4EA7AFC12AA6C86D0055F4C7 /* NewHomeViewController.swift */,
 				4EECA7E02A2DD179006FB764 /* FullScreenViewController.swift */,
 			);
 			path = Home;
@@ -238,6 +243,7 @@
 		4EECA7EA2A2EFFB7006FB764 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				4EA7AFC32AA6D0E40055F4C7 /* HomeTableViewCell.swift */,
 				4EECA7DE2A2DC352006FB764 /* ScheduleCollectionViewCell.swift */,
 				4EECA7DC2A2C820F006FB764 /* PlaceCollectionViewCell.swift */,
 				4EECA7EB2A2F0013006FB764 /* RecordCollectionViewCell.swift */,
@@ -395,6 +401,7 @@
 				4EECA7D92A2B3005006FB764 /* ExtensionModel.swift in Sources */,
 				4EECA7D52A2B02A2006FB764 /* FontModel.swift in Sources */,
 				4E19AA672A83E4F100213589 /* CameraCustomViewController.swift in Sources */,
+				4EA7AFC42AA6D0E40055F4C7 /* HomeTableViewCell.swift in Sources */,
 				4E8B35A92A70DFCE00AD2C72 /* CameraViewModel.swift in Sources */,
 				4EECA7DF2A2DC352006FB764 /* ScheduleCollectionViewCell.swift in Sources */,
 				4EECA7EE2A2F2148006FB764 /* MenuTableViewCell.swift in Sources */,
@@ -404,6 +411,7 @@
 				4EECA6282A29BECF006FB764 /* AppDelegate.swift in Sources */,
 				4EECA62A2A29BECF006FB764 /* SceneDelegate.swift in Sources */,
 				4EECA7D72A2B1120006FB764 /* ColorModel.swift in Sources */,
+				4EA7AFC22AA6C86D0055F4C7 /* NewHomeViewController.swift in Sources */,
 				4EECA7F22A2F3213006FB764 /* MyMileageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
