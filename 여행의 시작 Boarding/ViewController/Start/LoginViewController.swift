@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import KakaoSDKAuth
+import KakaoSDKUser
 
 class LogInViewController: UIViewController {
 
@@ -32,6 +34,51 @@ class LogInViewController: UIViewController {
         $0.image = UIImage(named: "Apple")
     }
     
+    lazy var kakaoLogInButton = UIButton().then {
+        $0.setTitle("Kakao 로그인", for: .normal)
+        $0.setTitleColor(Gray.dark, for: .normal)
+        $0.titleLabel?.font = Pretendard.regular(19)
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = Gray.light.cgColor
+        $0.layer.cornerRadius = 12
+        $0.addTarget(self, action: #selector(kakaoLogInButtonPressed), for: .touchUpInside)
+    }
+    
+    @objc func kakaoLogInButtonPressed() {
+//        UserApi.shared.unlink {(error) in
+//            if let error = error {
+//                print(error)
+//            }
+//            else {
+//                print("unlink() success.")
+//            }
+//        }
+        
+        if (UserApi.isKakaoTalkLoginAvailable()) {
+            UserApi.shared.loginWithKakaoTalk { (OAuthToken, error) in
+                if let error = error {
+                    print(error)
+                } else {
+                    print("카카오톡으로 로그인 성공")
+                    _ = OAuthToken
+                }
+            }
+        } else {
+            UserApi.shared.loginWithKakaoAccount { (OAuthToken, error) in
+                if let error = error {
+                    print(error)
+                } else {
+                    print("카카오 계정으로 로그인 성공")
+                    _ = OAuthToken
+                }
+            }
+        }
+    }
+    
+    var kakaoImageView = UIImageView().then {
+        $0.image = UIImage(named: "Kakao")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Gray.white
@@ -52,9 +99,23 @@ class LogInViewController: UIViewController {
             make.top.equalTo(titleImageView.snp.bottom).offset(3)
         }
         
+        view.addSubview(kakaoLogInButton)
+        kakaoLogInButton.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().inset(65)
+            make.centerX.equalToSuperview()
+            make.left.equalToSuperview().offset(16)
+            make.height.equalTo(48)
+        }
+        
+        kakaoLogInButton.addSubview(kakaoImageView)
+        kakaoImageView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.centerY.equalToSuperview()
+        }
+        
         view.addSubview(appleLogInButton)
         appleLogInButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(65)
+            make.bottom.equalTo(kakaoLogInButton.snp.top).offset(-14)
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(16)
             make.height.equalTo(48)

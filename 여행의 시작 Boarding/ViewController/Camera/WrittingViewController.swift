@@ -235,7 +235,7 @@ class WrittingViewController: UIViewController {
             make.height.equalTo(photoView)
             make.right.equalToSuperview().inset(24)
         }
-        for index in 0...2 {
+        for _ in 0...2 {
             let subview = UIView().then {
                 $0.backgroundColor = Gray.white
             }
