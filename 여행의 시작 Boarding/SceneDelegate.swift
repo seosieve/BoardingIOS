@@ -6,32 +6,63 @@
 //
 
 import UIKit
+import RxSwift
+import KakaoSDKCommon
+import RxKakaoSDKCommon
 import KakaoSDKAuth
+import RxKakaoSDKAuth
+import KakaoSDKUser
+import RxKakaoSDKUser
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
-    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        if let url = URLContexts.first?.url {
-            if (AuthApi.isKakaoTalkLoginUrl(url)) {
-                _ = AuthController.handleOpenUrl(url: url)
-            }
-        }
+    
+    func setWindow(_ target: UIViewController) {
+        window?.rootViewController = target
     }
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-//        let mainViewController = TabBarViewController()
+        let homeVC = TabBarViewController()
+        let startVC = UINavigationController(rootViewController: StartViewController())
         
-        let mainViewController = UINavigationController(rootViewController: StartViewController())
+        let disposeBag = DisposeBag()
         
-        window?.rootViewController = mainViewController
+        window?.rootViewController = homeVC
         window?.makeKeyAndVisible()
+        
+//        if AuthApi.hasToken() {
+//            UserApi.shared.rx.accessTokenInfo()
+//                .subscribe(onSuccess:{ _ in
+//                    //토큰도 있고, 토큰에 에러도 없는 상태 - 홈화면으로 이동
+////                    self.setWindow(homeVC)
+//                    print("aa")
+//                }, onFailure: { error in
+//                    if let sdkError = error as? SdkError, sdkError.isInvalidTokenError() == true {
+//                        //토큰이 있지만, 토큰에 유효성 에러가 있는 상태 - 로그인으로 이동
+//                        self.setWindow(startVC)
+//                    } else {
+//                        //토큰이 있지만, 토큰에 다른 에러가 있는 상태 - 로그인으로 이동
+//                        self.setWindow(startVC)
+//                        print("Error: \(error)")
+//                    }
+//                })
+//                .disposed(by: disposeBag)
+//        } else {
+//            //토큰이 없는 상태 - 로그인으로 이동
+//            self.setWindow(startVC)
+//        }
+        
+    }
+    
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                _ = AuthController.rx.handleOpenUrl(url: url)
+            }
+        }
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {

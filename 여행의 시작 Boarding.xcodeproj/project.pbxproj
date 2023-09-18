@@ -13,6 +13,8 @@
 		4E1EB4212AA47F8000620D57 /* WrittingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1EB4202AA47F8000620D57 /* WrittingViewController.swift */; };
 		4E2DDF502AB330E800C7F4B9 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DDF4F2AB330E800C7F4B9 /* SignUpViewController.swift */; };
 		4E2DDF522AB40ED300C7F4B9 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DDF512AB40ED300C7F4B9 /* SignUpViewModel.swift */; };
+		4E2DDF542AB8050600C7F4B9 /* PreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DDF532AB8050600C7F4B9 /* PreferenceViewController.swift */; };
+		4E2DDF562AB80A5200C7F4B9 /* PreferenceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DDF552AB80A5200C7F4B9 /* PreferenceViewModel.swift */; };
 		4E4FF3CC2AB3255B0042126A /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4FF3CB2AB3255B0042126A /* LogInViewController.swift */; };
 		4E4FF3CE2AB326CC0042126A /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4FF3CD2AB326CC0042126A /* StartViewController.swift */; };
 		4E8B35A52A70D28A00AD2C72 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4E8B35A42A70D28A00AD2C72 /* GoogleService-Info.plist */; };
@@ -60,6 +62,8 @@
 		4E1EB4202AA47F8000620D57 /* WrittingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrittingViewController.swift; sourceTree = "<group>"; };
 		4E2DDF4F2AB330E800C7F4B9 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		4E2DDF512AB40ED300C7F4B9 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		4E2DDF532AB8050600C7F4B9 /* PreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceViewController.swift; sourceTree = "<group>"; };
+		4E2DDF552AB80A5200C7F4B9 /* PreferenceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceViewModel.swift; sourceTree = "<group>"; };
 		4E4FF3CB2AB3255B0042126A /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		4E4FF3CD2AB326CC0042126A /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		4E8B35A42A70D28A00AD2C72 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -243,6 +247,8 @@
 				4EECA7EF2A2F2968006FB764 /* MyNFTViewController.swift */,
 				4EECA7F12A2F3213006FB764 /* MyMileageViewController.swift */,
 				4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */,
+				4E2DDF532AB8050600C7F4B9 /* PreferenceViewController.swift */,
+				4E2DDF552AB80A5200C7F4B9 /* PreferenceViewModel.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -414,6 +420,7 @@
 				4EECA6402A29C208006FB764 /* MyPageViewController.swift in Sources */,
 				4EECA7F02A2F2968006FB764 /* MyNFTViewController.swift in Sources */,
 				4E19AA692A9F1A7300213589 /* NFTViewController.swift in Sources */,
+				4E2DDF562AB80A5200C7F4B9 /* PreferenceViewModel.swift in Sources */,
 				4E2DDF522AB40ED300C7F4B9 /* SignUpViewModel.swift in Sources */,
 				4EECA7D22A29E31B006FB764 /* CustomTabBar.swift in Sources */,
 				4EECA63C2A29C1DF006FB764 /* PlanViewController.swift in Sources */,
@@ -429,6 +436,7 @@
 				4EECA7DF2A2DC352006FB764 /* ScheduleCollectionViewCell.swift in Sources */,
 				4EECA7EE2A2F2148006FB764 /* MenuTableViewCell.swift in Sources */,
 				4EECA7DD2A2C820F006FB764 /* PlaceCollectionViewCell.swift in Sources */,
+				4E2DDF542AB8050600C7F4B9 /* PreferenceViewController.swift in Sources */,
 				4EECA7F42A2F3235006FB764 /* ExpertLevelViewController.swift in Sources */,
 				4EECA6432A29C2A9006FB764 /* TabBarViewController.swift in Sources */,
 				4E2DDF502AB330E800C7F4B9 /* SignUpViewController.swift in Sources */,

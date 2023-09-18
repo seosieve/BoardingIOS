@@ -45,31 +45,28 @@ class LogInViewController: UIViewController {
     }
     
     @objc func kakaoLogInButtonPressed() {
-//        UserApi.shared.unlink {(error) in
-//            if let error = error {
-//                print(error)
-//            }
-//            else {
-//                print("unlink() success.")
-//            }
-//        }
-        
-        if (UserApi.isKakaoTalkLoginAvailable()) {
-            UserApi.shared.loginWithKakaoTalk { (OAuthToken, error) in
+        if UserApi.isKakaoTalkLoginAvailable() {
+            UserApi.shared.loginWithKakaoTalk { (oauthToken, error) in
                 if let error = error {
                     print(error)
                 } else {
                     print("카카오톡으로 로그인 성공")
-                    _ = OAuthToken
+                    _ = oauthToken
+                    
+                    
+                    let homeVC = TabBarViewController()
+                    homeVC.modalPresentationStyle = .fullScreen
+                    homeVC.modalTransitionStyle = .crossDissolve
+                    self.present(homeVC, animated: true, completion: nil)
                 }
             }
         } else {
-            UserApi.shared.loginWithKakaoAccount { (OAuthToken, error) in
+            UserApi.shared.loginWithKakaoAccount { (oauthToken, error) in
                 if let error = error {
                     print(error)
                 } else {
                     print("카카오 계정으로 로그인 성공")
-                    _ = OAuthToken
+                    _ = oauthToken
                 }
             }
         }

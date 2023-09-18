@@ -231,8 +231,8 @@ extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
             vc = ExpertLevelViewController()
             vc.navigationItem.title = "전문가 레벨"
         default:
-            vc = ExpertLevelViewController()
-            vc.navigationItem.title = "전문가 레벨"
+            vc = PreferenceViewController()
+            vc.navigationItem.title = "환경설정"
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }

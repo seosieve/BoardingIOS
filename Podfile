@@ -12,7 +12,10 @@ target '여행의 시작 Boarding' do
   pod 'FirebaseFirestore'
   pod 'FirebaseStorage'
   pod 'KakaoSDKCommon'
+  pod 'RxKakaoSDKCommon'
   pod 'KakaoSDKAuth'
+  pod 'RxKakaoSDKAuth'
   pod 'KakaoSDKUser'
+  pod 'RxKakaoSDKUser'
 
 end
