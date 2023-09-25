@@ -52,11 +52,10 @@ class PreferenceViewController: UIViewController {
         super.viewDidLoad()
         self.navigationController?.navigationBar.setNavigationBar()
         self.view.backgroundColor = Gray.white
-        preferenceTableView.delegate = self
-        preferenceTableView.dataSource = self
         preferenceTableView.register(MenuTableViewCell.self, forCellReuseIdentifier: "menuTableViewCell")
         setViews()
         test()
+        setRx()
     }
     
     func test() {
@@ -64,32 +63,13 @@ class PreferenceViewController: UIViewController {
             .bind(to: testLabel1.rx.text)
             .disposed(by: disposeBag)
         
-//        viewModel.user
-//            .compactMap{$0}
-//            .bind
-//            .subscribe(onNext: { user in
-//                self.testLabel1.text = String(user.id!)
-//                self.testLabel2.text = user.kakaoAccount?.email
-//                self.testLabel3.text = user.kakaoAccount?.profile?.nickname
-//            })
-//            .disposed(by: disposeBag)
-//        UserApi.shared.rx.me { (user, error) in
-//            if let error = error {
-//                print(error)
-//            } else {
-//                guard let id = user?.id ,let email = user?.kakaoAccount?.email, let name = user?.kakaoAccount?.profile?.nickname else {
-//                    print("Error: email/name is empty")
-//                    return
-//                }
-//
-//                print(id)
-//                print(email)
-//                print(name)
-//            }
-//        }
+        viewModel.email
+            .bind(to: testLabel2.rx.text)
+            .disposed(by: disposeBag)
         
-        
-        
+        viewModel.nickname
+            .bind(to: testLabel3.rx.text)
+            .disposed(by: disposeBag)
     }
     
     func setViews() {
@@ -116,21 +96,54 @@ class PreferenceViewController: UIViewController {
         view.addSubview(testLabel2)
         testLabel2.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(280)
-            make.left.equalToSuperview().offset(100)
+            make.left.equalTo(testLabel1.snp.right).offset(10)
         }
         
         view.addSubview(testLabel3)
         testLabel3.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(280)
-            make.left.equalToSuperview().offset(200)
+            make.left.equalTo(testLabel2.snp.right).offset(10)
         }
+    }
+    
+    func setRx() {
+        viewModel.items
+            .bind(to: preferenceTableView.rx.items) { (tableView, row, element) in
+                let cell = tableView.dequeueReusableCell(withIdentifier: "menuTableViewCell", for: IndexPath(row: row, section: 0)) as! MenuTableViewCell
+                cell.menuLabel.text = element
+                cell.detailButton.isHidden = true
+                return cell
+            }
+            .disposed(by: disposeBag)
+        
+        preferenceTableView.rx.itemSelected
+            .map{$0.row}
+            .subscribe(onNext: { [weak self] index in
+                switch index {
+                case 3:
+                    self?.logoutAlert()
+                default:
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.KakaoLogOutCompleted
+            .subscribe(onNext:{ [weak self] LogInCompleted in
+                if LogInCompleted {
+                    self?.presentVC(UINavigationController(rootViewController: StartViewController()))
+                } else {
+                    self?.errorAlert()
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     func logoutAlert() {
         let alert = UIAlertController(title: "정말 로그아웃 하시겠어요?", message: "로그아웃 후 Boarding를 이용하시려면 다시 로그인을 해 주세요!", preferredStyle: .alert)
         let cancel = UIAlertAction(title: "취소", style: .cancel)
         let logout = UIAlertAction(title: "로그아웃", style: .default) { action in
-            self.viewModel.kakaoLogout()
+            self.viewModel.kakaoLogOut()
         }
         alert.addAction(cancel)
         alert.addAction(logout)
@@ -138,35 +151,14 @@ class PreferenceViewController: UIViewController {
         alert.view.tintColor = Gray.dark
         present(alert, animated: true, completion: nil)
     }
-}
-
-//MARK: - UITableView
-extension PreferenceViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
-    }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "menuTableViewCell", for: indexPath) as! MenuTableViewCell
-        cell.menuLabel.text = menuArr[indexPath.row]
-        cell.detailButton.isHidden = true
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        switch indexPath.row {
-        case 0:
-            print(indexPath.row)
-        case 1:
-            print(indexPath.row)
-        case 2:
-            print(indexPath.row)
-        case 3:
-            logoutAlert()
-        default:
-            print(indexPath.row)
-        }
+    func errorAlert() {
+        let alert = UIAlertController(title: "예상치 못한 에러가 발생했어요", message: "앱을 종료 후 다시 한 번 시도해주세요", preferredStyle: .alert)
+        let logout = UIAlertAction(title: "확인", style: .default, handler: nil)
+        alert.addAction(logout)
+        logout.setValue(Boarding.blue, forKey: "titleTextColor")
+        alert.view.tintColor = Gray.dark
+        present(alert, animated: true, completion: nil)
     }
 }
 

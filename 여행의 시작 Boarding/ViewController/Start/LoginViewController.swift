@@ -6,11 +6,16 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 import KakaoSDKAuth
 import KakaoSDKUser
 
 class LogInViewController: UIViewController {
 
+    let viewModel = LogInViewModel()
+    let disposeBag = DisposeBag()
+    
     var titleImageView = UIImageView().then {
         $0.image = UIImage(named: "TitleGradient")
     }
@@ -41,35 +46,6 @@ class LogInViewController: UIViewController {
         $0.layer.borderWidth = 1
         $0.layer.borderColor = Gray.light.cgColor
         $0.layer.cornerRadius = 12
-        $0.addTarget(self, action: #selector(kakaoLogInButtonPressed), for: .touchUpInside)
-    }
-    
-    @objc func kakaoLogInButtonPressed() {
-        if UserApi.isKakaoTalkLoginAvailable() {
-            UserApi.shared.loginWithKakaoTalk { (oauthToken, error) in
-                if let error = error {
-                    print(error)
-                } else {
-                    print("카카오톡으로 로그인 성공")
-                    _ = oauthToken
-                    
-                    
-                    let homeVC = TabBarViewController()
-                    homeVC.modalPresentationStyle = .fullScreen
-                    homeVC.modalTransitionStyle = .crossDissolve
-                    self.present(homeVC, animated: true, completion: nil)
-                }
-            }
-        } else {
-            UserApi.shared.loginWithKakaoAccount { (oauthToken, error) in
-                if let error = error {
-                    print(error)
-                } else {
-                    print("카카오 계정으로 로그인 성공")
-                    _ = oauthToken
-                }
-            }
-        }
     }
     
     var kakaoImageView = UIImageView().then {
@@ -81,6 +57,7 @@ class LogInViewController: UIViewController {
         view.backgroundColor = Gray.white
         self.navigationController?.navigationBar.setNavigationBar()
         setViews()
+        setRx()
     }
     
     func setViews() {
@@ -123,5 +100,33 @@ class LogInViewController: UIViewController {
             make.left.equalToSuperview().offset(20)
             make.centerY.equalToSuperview()
         }
+    }
+    
+    func setRx() {
+        kakaoLogInButton.rx.tap
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .subscribe(onNext:{ [weak self] in
+                self?.viewModel.kakaoLogIn()
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.kakaoLogInCompleted
+            .subscribe(onNext:{ [weak self] LogInCompleted in
+                if LogInCompleted {
+                    self?.presentVC(TabBarViewController())
+                } else {
+                    self?.errorAlert()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func errorAlert() {
+        let alert = UIAlertController(title: "예상치 못한 에러가 발생했어요", message: "앱을 종료 후 다시 한 번 시도해주세요", preferredStyle: .alert)
+        let logout = UIAlertAction(title: "확인", style: .default, handler: nil)
+        alert.addAction(logout)
+        logout.setValue(Boarding.blue, forKey: "titleTextColor")
+        alert.view.tintColor = Gray.dark
+        present(alert, animated: true, completion: nil)
     }
 }

@@ -26,7 +26,7 @@ extension UIView {
         let value = axis == .horizontal ? self.frame.height/2 : self.frame.width/2
         self.layer.cornerRadius = value
         self.layer.masksToBounds = true
-    }    
+    }
 }
 
 //MARK: - Navigation BackButton Custom
@@ -60,6 +60,13 @@ extension UIViewController {
     
     @objc private func dismissKeyboard() {
         view.endEditing(true)
+    }
+    
+    func presentVC(_ vc: UIViewController) {
+        let viewController = vc
+        viewController.modalPresentationStyle = .fullScreen
+        viewController.modalTransitionStyle = .crossDissolve
+        present(viewController, animated: true, completion: nil)
     }
 }
 
