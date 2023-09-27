@@ -34,6 +34,11 @@ class MenuTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.3, delay: 0) {
+                self.isSelected = false
+            }
+        }
     }
     
     func setViews() {

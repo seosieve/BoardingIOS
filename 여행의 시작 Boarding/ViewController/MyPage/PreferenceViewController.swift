@@ -116,21 +116,25 @@ class PreferenceViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        let message = viewModel.messageArr.value
+        
         preferenceTableView.rx.itemSelected
             .map{$0.row}
-            .subscribe(onNext: { [weak self] index in
+            .subscribe(onNext:{ [weak self] index in
                 switch index {
                 case 3:
-                    self?.logoutAlert()
+                    self?.popUpAlert(message[0], index)
+                case 4:
+                    self?.popUpAlert(message[1], index)
                 default:
                     break
                 }
             })
             .disposed(by: disposeBag)
         
-        viewModel.KakaoLogOutCompleted
-            .subscribe(onNext:{ [weak self] LogInCompleted in
-                if LogInCompleted {
+        viewModel.processCompleted
+            .subscribe(onNext:{ [weak self] completed in
+                if completed {
                     self?.presentVC(UINavigationController(rootViewController: StartViewController()))
                 } else {
                     self?.errorAlert()
@@ -139,15 +143,19 @@ class PreferenceViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    func logoutAlert() {
-        let alert = UIAlertController(title: "정말 로그아웃 하시겠어요?", message: "로그아웃 후 Boarding를 이용하시려면 다시 로그인을 해 주세요!", preferredStyle: .alert)
+    func popUpAlert(_ message: (String, String, String), _ index: Int) {
+        let alert = UIAlertController(title: message.0, message: message.1, preferredStyle: .alert)
         let cancel = UIAlertAction(title: "취소", style: .cancel)
-        let logout = UIAlertAction(title: "로그아웃", style: .default) { action in
-            self.viewModel.kakaoLogOut()
+        let action = UIAlertAction(title: message.2, style: .default) { action in
+            if index == 3 {
+                self.viewModel.kakaoLogOut()
+            } else {
+                self.viewModel.kakaoUnLink()
+            }
         }
         alert.addAction(cancel)
-        alert.addAction(logout)
-        logout.setValue(Boarding.blue, forKey: "titleTextColor")
+        alert.addAction(action)
+        action.setValue(Boarding.blue, forKey: "titleTextColor")
         alert.view.tintColor = Gray.dark
         present(alert, animated: true, completion: nil)
     }
