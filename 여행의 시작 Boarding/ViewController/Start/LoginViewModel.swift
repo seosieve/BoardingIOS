@@ -12,6 +12,7 @@ import RxKakaoSDKAuth
 import KakaoSDKAuth
 import RxKakaoSDKUser
 import KakaoSDKUser
+import FirebaseAuth
 
 class LogInViewModel {
     
@@ -37,6 +38,17 @@ class LogInViewModel {
                     print("카카오계정(WEB) 로그인 에러: \(error)")
                 })
                 .disposed(by: disposeBag)
+        }
+    }
+    
+    func createUser(email: String, password: String, createUserHandler: @escaping (String?) -> ()) {
+        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+            if let error = error {
+                let errorString = error.localizedDescription
+                createUserHandler(errorString)
+            } else {
+                createUserHandler(nil)
+            }
         }
     }
 }

@@ -159,14 +159,5 @@ class PreferenceViewController: UIViewController {
         alert.view.tintColor = Gray.dark
         present(alert, animated: true, completion: nil)
     }
-    
-    func errorAlert() {
-        let alert = UIAlertController(title: "예상치 못한 에러가 발생했어요", message: "앱을 종료 후 다시 한 번 시도해주세요", preferredStyle: .alert)
-        let logout = UIAlertAction(title: "확인", style: .default, handler: nil)
-        alert.addAction(logout)
-        logout.setValue(Boarding.blue, forKey: "titleTextColor")
-        alert.view.tintColor = Gray.dark
-        present(alert, animated: true, completion: nil)
-    }
 }
 

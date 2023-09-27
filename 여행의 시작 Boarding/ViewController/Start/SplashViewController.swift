@@ -57,18 +57,13 @@ class SplashViewController: UIViewController {
     func setRx() {
         viewModel.isUserLoggedIn
             .subscribe(onNext:{ [weak self] loggedIn in
-                self?.transfer(loggedIn)
+                let homeVC = TabBarViewController()
+                let startVC = ChangableNavigationController(rootViewController: StartViewController())
+                let vc = loggedIn ? homeVC : startVC
+                self?.presentVC(vc)
             })
             .disposed(by: disposeBag)
         
         viewModel.checkTokenExist()
-    }
- 
-    func transfer(_ loggedIn: Bool) {
-        let a = StartViewController()
-        let vc = loggedIn ? TabBarViewController() : UINavigationController(rootViewController: a)
-        vc.modalPresentationStyle = .fullScreen
-        vc.modalTransitionStyle = .crossDissolve
-        self.present(vc, animated: true, completion: nil)
     }
 }

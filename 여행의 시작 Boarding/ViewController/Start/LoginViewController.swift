@@ -32,20 +32,18 @@ class LogInViewController: UIViewController {
         $0.titleLabel?.font = Pretendard.regular(19)
         $0.layer.borderWidth = 1
         $0.layer.borderColor = Gray.light.cgColor
-        $0.layer.cornerRadius = 12
     }
     
     var appleImageView = UIImageView().then {
         $0.image = UIImage(named: "Apple")
     }
     
-    lazy var kakaoLogInButton = UIButton().then {
+    var kakaoLogInButton = UIButton().then {
         $0.setTitle("Kakao 로그인", for: .normal)
         $0.setTitleColor(Gray.dark, for: .normal)
         $0.titleLabel?.font = Pretendard.regular(19)
         $0.layer.borderWidth = 1
         $0.layer.borderColor = Gray.light.cgColor
-        $0.layer.cornerRadius = 12
     }
     
     var kakaoImageView = UIImageView().then {
@@ -80,6 +78,7 @@ class LogInViewController: UIViewController {
             make.left.equalToSuperview().offset(16)
             make.height.equalTo(48)
         }
+        kakaoLogInButton.rounded(axis: .horizontal)
         
         kakaoLogInButton.addSubview(kakaoImageView)
         kakaoImageView.snp.makeConstraints { make in
@@ -94,6 +93,7 @@ class LogInViewController: UIViewController {
             make.left.equalToSuperview().offset(16)
             make.height.equalTo(48)
         }
+        appleLogInButton.rounded(axis: .horizontal)
         
         appleLogInButton.addSubview(appleImageView)
         appleImageView.snp.makeConstraints { make in
@@ -119,14 +119,5 @@ class LogInViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
-    }
-    
-    func errorAlert() {
-        let alert = UIAlertController(title: "예상치 못한 에러가 발생했어요", message: "앱을 종료 후 다시 한 번 시도해주세요", preferredStyle: .alert)
-        let logout = UIAlertAction(title: "확인", style: .default, handler: nil)
-        alert.addAction(logout)
-        logout.setValue(Boarding.blue, forKey: "titleTextColor")
-        alert.view.tintColor = Gray.dark
-        present(alert, animated: true, completion: nil)
     }
 }

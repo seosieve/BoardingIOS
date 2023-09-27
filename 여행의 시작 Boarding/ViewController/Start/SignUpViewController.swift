@@ -6,99 +6,125 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+import KakaoSDKAuth
+import KakaoSDKUser
 
 class SignUpViewController: UIViewController {
 
     let viewModel = SignUpViewModel()
+    let disposeBag = DisposeBag()
     
-    var emailTextField = UITextField().then {
-        $0.placeholder = "이메일을 입력해주세요."
-        $0.font = Pretendard.regular(16)
-        $0.backgroundColor = Gray.light.withAlphaComponent(0.3)
-        $0.textColor = Gray.dark
-        $0.tintColor = Gray.dark
+    var titleImageView = UIImageView().then {
+        $0.image = UIImage(named: "TitleGradient")
+    }
+    
+    var subLabel = UILabel().then {
+        $0.text = "여행의 시작"
+        $0.textColor = Gray.light
+        $0.font = Pretendard.medium(14)
+    }
+    
+    var appleSignUpButton = UIButton().then {
+        $0.setTitle("Apple로 시작하기", for: .normal)
+        $0.setTitleColor(Gray.dark, for: .normal)
+        $0.titleLabel?.font = Pretendard.regular(19)
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = Gray.light.cgColor
         $0.layer.cornerRadius = 12
     }
     
-    var passwordTextField = UITextField().then {
-        $0.placeholder = "비밀번호를 입력해주세요."
-        $0.font = Pretendard.regular(16)
-        $0.backgroundColor = Gray.light.withAlphaComponent(0.3)
-        $0.textColor = Gray.dark
-        $0.tintColor = Gray.dark
-        $0.layer.cornerRadius = 12
+    var appleImageView = UIImageView().then {
+        $0.image = UIImage(named: "Apple")
     }
     
-    var errorLabel = UILabel().then {
-        $0.textColor = .red
+    lazy var kakaoSignUpButton = UIButton().then {
+        $0.setTitle("Kakao로 시작하기", for: .normal)
+        $0.setTitleColor(Gray.dark, for: .normal)
+        $0.titleLabel?.font = Pretendard.regular(19)
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = Gray.light.cgColor
     }
     
-    lazy var completeButton = UIButton().then {
-        $0.setTitle("완료", for: .normal)
-        $0.setTitleColor(Gray.white, for: .normal)
-        $0.titleLabel?.font = Pretendard.semiBold(16)
-        $0.backgroundColor = Boarding.blue
-        $0.layer.cornerRadius = 12
-        $0.addTarget(self, action: #selector(completeButtonPressed), for: .touchUpInside)
-    }
-    
-    @objc func completeButtonPressed() {
-        viewModel.createUser(email: emailTextField.text!, password: passwordTextField.text!) { error in
-            if let error = error {
-                self.errorLabel.text = error
-            } else {
-                print("complete")
-            }
-        }
+    var kakaoImageView = UIImageView().then {
+        $0.image = UIImage(named: "Kakao")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Gray.white
         self.navigationController?.navigationBar.setNavigationBar()
-        dismissKeyboardWhenTapped()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         setViews()
-    }
-    
-    @objc func keyboardWillShow(_ sender: Notification) {
-        self.view.frame.origin.y = -150
-    }
-    
-    @objc func keyboardWillHide(_ sender: Notification) {
-        self.view.frame.origin.y = 0
+        setRx()
     }
     
     func setViews() {
-        view.addSubview(emailTextField)
-        emailTextField.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(400)
+        view.addSubview(titleImageView)
+        titleImageView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview().offset(18)
+            make.centerY.equalToSuperview().multipliedBy(4.0/5.0)
+        }
+        
+        view.addSubview(subLabel)
+        subLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(titleImageView.snp.bottom).offset(3)
+        }
+        
+        view.addSubview(kakaoSignUpButton)
+        kakaoSignUpButton.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().inset(65)
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(16)
-            make.height.equalTo(40)
+            make.height.equalTo(48)
+        }
+        kakaoSignUpButton.rounded(axis: .horizontal)
+        
+        kakaoSignUpButton.addSubview(kakaoImageView)
+        kakaoImageView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.centerY.equalToSuperview()
         }
         
-        view.addSubview(passwordTextField)
-        passwordTextField.snp.makeConstraints { make in
-            make.top.equalTo(emailTextField.snp.bottom).offset(30)
+        view.addSubview(appleSignUpButton)
+        appleSignUpButton.snp.makeConstraints { make in
+            make.bottom.equalTo(kakaoSignUpButton.snp.top).offset(-14)
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(16)
-            make.height.equalTo(40)
+            make.height.equalTo(48)
         }
+        appleSignUpButton.rounded(axis: .horizontal)
         
-        view.addSubview(errorLabel)
-        errorLabel.snp.makeConstraints { make in
-            make.top.equalTo(passwordTextField.snp.bottom).offset(20)
-            make.centerX.equalToSuperview()
+        appleSignUpButton.addSubview(appleImageView)
+        appleImageView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.centerY.equalToSuperview()
         }
+    }
+    
+    func setRx() {
+        kakaoSignUpButton.rx.tap
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .subscribe(onNext:{ [weak self] in
+                self?.viewModel.kakaoLogIn()
+            })
+            .disposed(by: disposeBag)
         
-        view.addSubview(completeButton)
-        completeButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-70)
-            make.right.equalToSuperview().inset(16)
-            make.width.equalTo(100)
-            make.height.equalTo(45)
-        }
+        viewModel.errorCatch
+            .subscribe(onNext:{ [weak self] error in
+                if error {
+                    self?.errorAlert()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.signUpResult
+            .subscribe(onNext:{ [weak self] result in
+                if result {
+                    self?.presentVC(TabBarViewController())
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }

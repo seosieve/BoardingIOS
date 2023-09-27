@@ -44,7 +44,7 @@
                         <constraints>
                             <constraint firstItem="mBG-ji-Zvu" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="042-Ns-ANv"/>
                             <constraint firstItem="mBG-ji-Zvu" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="Eb0-kP-aC1"/>
-                            <constraint firstItem="mBG-ji-Zvu" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="topMargin" constant="-47" id="m7e-gN-Ib4"/>
+                            <constraint firstItem="mBG-ji-Zvu" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="firstBaseline" id="m7e-gN-Ib4"/>
                             <constraint firstItem="mBG-ji-Zvu" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="xnX-fJ-vZx"/>
                         </constraints>
                     </view>

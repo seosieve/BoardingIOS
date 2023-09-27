@@ -9,9 +9,9 @@ import UIKit
 
 class StartViewController: UIViewController {
     
-//    override var preferredStatusBarStyle: UIStatusBarStyle {
-//        .lightContent
-//    }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
     
     var titleImageView = UIImageView().then {
         $0.image = UIImage(named: "TitleWhite")
@@ -28,8 +28,6 @@ class StartViewController: UIViewController {
         $0.setTitle("회원가입", for: .normal)
         $0.setTitleColor(Boarding.lightBlue, for: .normal)
         $0.titleLabel?.font = Pretendard.medium(19)
-        $0.layer.cornerRadius = 12
-        $0.layer.masksToBounds = true
         $0.adjustsImageWhenHighlighted = false
         $0.addTarget(self, action: #selector(signUpButtonPressed), for: .touchUpInside)
     }
@@ -43,7 +41,6 @@ class StartViewController: UIViewController {
         $0.setTitle("로그인", for: .normal)
         $0.setTitleColor(Gray.white, for: .normal)
         $0.titleLabel?.font = Pretendard.medium(19)
-        $0.layer.cornerRadius = 12
         $0.layer.borderWidth = 1
         $0.layer.borderColor = Gray.white.cgColor
         $0.addTarget(self, action: #selector(logInButtonPressed), for: .touchUpInside)
@@ -79,6 +76,7 @@ class StartViewController: UIViewController {
             make.left.equalToSuperview().offset(16)
             make.height.equalTo(48)
         }
+        logInButton.rounded(axis: .horizontal)
         
         view.addSubview(signUpButton)
         signUpButton.snp.makeConstraints { make in
@@ -87,5 +85,6 @@ class StartViewController: UIViewController {
             make.left.equalToSuperview().offset(16)
             make.height.equalTo(48)
         }
+        signUpButton.rounded(axis: .horizontal)
     }
 }
