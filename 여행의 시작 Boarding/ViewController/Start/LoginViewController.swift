@@ -50,6 +50,11 @@ class LogInViewController: UIViewController {
         $0.image = UIImage(named: "Kakao")
     }
     
+    var indicator = UIActivityIndicatorView().then {
+        $0.style = .medium
+        $0.color = Gray.light
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Gray.white
@@ -100,6 +105,11 @@ class LogInViewController: UIViewController {
             make.left.equalToSuperview().offset(20)
             make.centerY.equalToSuperview()
         }
+        
+        view.addSubview(indicator)
+        indicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
     }
     
     func setRx() {
@@ -107,17 +117,44 @@ class LogInViewController: UIViewController {
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(onNext:{ [weak self] in
                 self?.viewModel.kakaoLogIn()
+                self?.indicator.startAnimating()
             })
             .disposed(by: disposeBag)
         
-        viewModel.kakaoLogInCompleted
-            .subscribe(onNext:{ [weak self] LogInCompleted in
-                if LogInCompleted {
-                    self?.presentVC(TabBarViewController())
-                } else {
+        viewModel.errorCatch
+            .subscribe(onNext:{ [weak self] error in
+                if error {
+                    self?.indicator.stopAnimating()
                     self?.errorAlert()
                 }
             })
             .disposed(by: disposeBag)
+        
+        viewModel.userNotExist
+            .subscribe(onNext:{ [weak self] userNotExist in
+                if userNotExist {
+                    self?.indicator.stopAnimating()
+                    self?.userNotExistAlert()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.logInResult
+            .subscribe(onNext:{ [weak self] result in
+                if result {
+                    self?.indicator.stopAnimating()
+                    self?.presentVC(TabBarViewController())
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func userNotExistAlert() {
+        let alert = UIAlertController(title: "존재하지 않는 유저 정보에요", message: "회원가입으로 돌아가서 회원가입 먼저 진행해주세요", preferredStyle: .alert)
+        let confirm = UIAlertAction(title: "확인", style: .default)
+        alert.addAction(confirm)
+        confirm.setValue(Boarding.blue, forKey: "titleTextColor")
+        alert.view.tintColor = Gray.dark
+        present(alert, animated: true, completion: nil)
     }
 }

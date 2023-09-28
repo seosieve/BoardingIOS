@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class NewHomeViewController: UIViewController {
     
@@ -53,6 +54,18 @@ class NewHomeViewController: UIViewController {
         homeTableView.dataSource = self
         homeTableView.register(HomeTableViewCell.self, forCellReuseIdentifier: "homeTableViewCell")
         setViews()
+        
+        
+        if let user = Auth.auth().currentUser {
+            let uid = user.uid
+            let email = user.email
+            let photoURL = user.photoURL
+            print(uid)
+            print(email)
+            print(photoURL)
+        } else {
+            print("aaaaa")
+        }
     }
     
     func setViews() {

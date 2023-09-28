@@ -16,38 +16,63 @@ import FirebaseAuth
 
 class LogInViewModel {
     
-    let kakaoLogInCompleted = PublishRelay<Bool>()
+    let errorCatch = PublishRelay<Bool>()
+    let userNotExist = PublishRelay<Bool>()
+    let logInResult = PublishRelay<Bool>()
+    
     let disposeBag = DisposeBag()
     
     func kakaoLogIn() {
         if UserApi.isKakaoTalkLoginAvailable() {
             UserApi.shared.rx.loginWithKakaoTalk()
                 .subscribe(onNext:{ [weak self] _ in
-                    self?.kakaoLogInCompleted.accept(true)
+                    self?.kakaoUserInfo()
                 }, onError: { [weak self] error in
-                    self?.kakaoLogInCompleted.accept(false)
+                    self?.errorCatch.accept(true)
                     print("카카오톡(APP) 로그인 에러: \(error)")
                 })
                 .disposed(by: disposeBag)
         } else {
             UserApi.shared.rx.loginWithKakaoAccount()
                 .subscribe(onNext: { [weak self] _ in
-                    self?.kakaoLogInCompleted.accept(true)
+                    self?.kakaoUserInfo()
                 }, onError: { [weak self] error in
-                    self?.kakaoLogInCompleted.accept(false)
+                    self?.errorCatch.accept(true)
                     print("카카오계정(WEB) 로그인 에러: \(error)")
                 })
                 .disposed(by: disposeBag)
         }
     }
     
-    func createUser(email: String, password: String, createUserHandler: @escaping (String?) -> ()) {
-        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+    func kakaoUserInfo() {
+        UserApi.shared.rx.me()
+            .subscribe(onSuccess:{ [weak self] user in
+                if let email = user.kakaoAccount?.email, let password = user.id {
+                    self?.signInUser(email: email, password: String(password))
+                } else {
+                    self?.errorCatch.accept(true)
+                }
+            }, onFailure: { [weak self] error in
+                self?.errorCatch.accept(true)
+                print("카카오 유저 정보 불러오기 오류: \(error)")
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func signInUser(email: String, password: String) {
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] (authResult, error) in
             if let error = error {
-                let errorString = error.localizedDescription
-                createUserHandler(errorString)
-            } else {
-                createUserHandler(nil)
+                let code = (error as NSError).code
+                switch code {
+//                case 17007:
+//                    // FIRAuthErrorCodeUserNotFound으로 다시 에러처리하기!!
+//                    self?.userAlreadyExist.accept(true)
+                default:
+                    self?.errorCatch.accept(true)
+                }
+            } else if let authResult = authResult {
+                self?.logInResult.accept(true)
+                print("유저 로그인 성공: \(authResult)")
             }
         }
     }

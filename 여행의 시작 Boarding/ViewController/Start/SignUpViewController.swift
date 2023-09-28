@@ -51,6 +51,11 @@ class SignUpViewController: UIViewController {
         $0.image = UIImage(named: "Kakao")
     }
     
+    var indicator = UIActivityIndicatorView().then {
+        $0.style = .medium
+        $0.color = Gray.light
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Gray.white
@@ -101,6 +106,11 @@ class SignUpViewController: UIViewController {
             make.left.equalToSuperview().offset(20)
             make.centerY.equalToSuperview()
         }
+        
+        view.addSubview(indicator)
+        indicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
     }
     
     func setRx() {
@@ -108,13 +118,24 @@ class SignUpViewController: UIViewController {
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(onNext:{ [weak self] in
                 self?.viewModel.kakaoLogIn()
+                self?.indicator.startAnimating()
             })
             .disposed(by: disposeBag)
         
         viewModel.errorCatch
             .subscribe(onNext:{ [weak self] error in
                 if error {
+                    self?.indicator.stopAnimating()
                     self?.errorAlert()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.userAlreadyExist
+            .subscribe(onNext:{ [weak self] userAlreadyExist in
+                if userAlreadyExist {
+                    self?.indicator.stopAnimating()
+                    self?.userAlreadyExistAlert()
                 }
             })
             .disposed(by: disposeBag)
@@ -122,9 +143,19 @@ class SignUpViewController: UIViewController {
         viewModel.signUpResult
             .subscribe(onNext:{ [weak self] result in
                 if result {
+                    self?.indicator.stopAnimating()
                     self?.presentVC(TabBarViewController())
                 }
             })
             .disposed(by: disposeBag)
+    }
+    
+    func userAlreadyExistAlert() {
+        let alert = UIAlertController(title: "같은 이메일로 가입된 계정이 있어요", message: "로그인하기로 돌아가서 로그인해주세요", preferredStyle: .alert)
+        let confirm = UIAlertAction(title: "확인", style: .default)
+        alert.addAction(confirm)
+        confirm.setValue(Boarding.blue, forKey: "titleTextColor")
+        alert.view.tintColor = Gray.dark
+        present(alert, animated: true, completion: nil)
     }
 }

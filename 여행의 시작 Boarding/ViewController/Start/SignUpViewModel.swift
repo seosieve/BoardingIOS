@@ -17,6 +17,7 @@ import FirebaseAuth
 class SignUpViewModel {
     
     let errorCatch = PublishRelay<Bool>()
+    let userAlreadyExist = PublishRelay<Bool>()
     let signUpResult = PublishRelay<Bool>()
     
     let disposeBag = DisposeBag()
@@ -64,30 +65,18 @@ class SignUpViewModel {
     
     func createUser(email: String, password: String) {
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] (authResult, error) in
-            if let error = error as? AuthErrorCode.Code {
-//                switch error {
-//                case .emailAlreadyInUse:
-//                    // 이미 가입된 유저가 있을 때
-//                    print("릴레이 하나 더 만들어서 에러처리해라")
-//                default:
-//                    print("파이어베이스 유저 생성 오류: \(error)")
-//                }
-                //에러 핸들링 다르게하기: 이미 가입된 유저가 있습니다.
-                self?.errorCatch.accept(true)
+            if let error = error {
+                let code = (error as NSError).code
+                switch code {
+                case 17007:
+                    // 이미 가입된 유저가 있을 때
+                    self?.userAlreadyExist.accept(true)
+                default:
+                    self?.errorCatch.accept(true)
+                }
             } else if let authResult = authResult {
                 self?.signUpResult.accept(true)
                 print("유저 생성 성공: \(authResult)")
-            }
-        }
-    }
-    
-    func createUser2(email: String, password: String, createUserHandler: @escaping (String?) -> ()) {
-        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-            if let error = error {
-                let errorString = error.localizedDescription
-                createUserHandler(errorString)
-            } else {
-                createUserHandler(nil)
             }
         }
     }

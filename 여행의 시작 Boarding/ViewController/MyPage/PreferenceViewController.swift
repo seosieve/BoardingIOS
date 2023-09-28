@@ -132,12 +132,18 @@ class PreferenceViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        viewModel.errorCatch
+            .subscribe(onNext:{ [weak self] error in
+                if error {
+                    self?.errorAlert()
+                }
+            })
+            .disposed(by: disposeBag)
+        
         viewModel.processCompleted
             .subscribe(onNext:{ [weak self] completed in
                 if completed {
                     self?.presentVC(UINavigationController(rootViewController: StartViewController()))
-                } else {
-                    self?.errorAlert()
                 }
             })
             .disposed(by: disposeBag)
