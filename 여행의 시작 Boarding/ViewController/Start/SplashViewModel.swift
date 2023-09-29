@@ -14,6 +14,7 @@ import KakaoSDKAuth
 import RxKakaoSDKAuth
 import KakaoSDKUser
 import RxKakaoSDKUser
+import FirebaseAuth
 
 class SplashViewModel {
     
@@ -21,6 +22,17 @@ class SplashViewModel {
     
     let disposeBag = DisposeBag()
     
+    func checkCurrentUser() {
+        let user = Auth.auth().currentUser
+        if let user = user {
+            isUserLoggedIn.accept(true)
+            print("현재 로그인된 유저는 \(user)")
+        } else {
+            isUserLoggedIn.accept(false)
+        }
+    }
+    
+    // 카카오 로그인 유무 확인 - 현재는 사용 안하고 Firebase Auth로 로그인 판별중
     func checkTokenExist() {
         if AuthApi.hasToken() {
             checkTokenInfo()

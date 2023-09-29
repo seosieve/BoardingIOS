@@ -47,15 +47,11 @@ class SignUpViewModel {
     func kakaoUserInfo() {
         UserApi.shared.rx.me()
             .subscribe(onSuccess:{ [weak self] user in
-                if let email = user.kakaoAccount?.email, let password = user.id {
-                    self?.createUser(email: email, password: String(password))
+                if let email = user.kakaoAccount?.email, let password = user.id, let nickname = user.kakaoAccount?.profile?.nickname, let thumbnail = user.kakaoAccount?.profile?.profileImageUrl {
+                    self?.createUser(email: email, password: String(password), nickname: nickname, thumbnail: thumbnail)
                 } else {
                     self?.errorCatch.accept(true)
                 }
-                
-                //추후에 닉네임, 사진 받아서 firebase에 넣기
-                let nickname = user.kakaoAccount?.profile?.nickname
-                
             }, onFailure: { [weak self] error in
                 self?.errorCatch.accept(true)
                 print("카카오 유저 정보 불러오기 오류: \(error)")
@@ -63,7 +59,7 @@ class SignUpViewModel {
             .disposed(by: disposeBag)
     }
     
-    func createUser(email: String, password: String) {
+    func createUser(email: String, password: String, nickname: String, thumbnail: URL) {
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] (authResult, error) in
             if let error = error {
                 let code = (error as NSError).code
@@ -73,10 +69,27 @@ class SignUpViewModel {
                     self?.userAlreadyExist.accept(true)
                 default:
                     self?.errorCatch.accept(true)
+                    print("파이어베이스 유저 생성 오류: \(error)")
                 }
             } else if let authResult = authResult {
-                self?.signUpResult.accept(true)
+                self?.makeProfile(nickname: nickname, thumbnail: thumbnail)
                 print("유저 생성 성공: \(authResult)")
+            }
+        }
+    }
+    
+    func makeProfile(nickname: String, thumbnail: URL) {
+//        print(thumbnail)
+        let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+        changeRequest?.displayName = nickname
+        changeRequest?.photoURL = thumbnail
+        changeRequest?.commitChanges { [weak self] error in
+            if let error = error {
+                self?.errorCatch.accept(true)
+                print("파이어베이스 프로필 생성 오류: \(error)")
+            } else {
+                self?.signUpResult.accept(true)
+                print("파이어베이스 프로필 생성 성공")
             }
         }
     }

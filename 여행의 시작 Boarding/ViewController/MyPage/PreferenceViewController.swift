@@ -30,6 +30,11 @@ class PreferenceViewController: UIViewController {
         $0.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
+    var indicator = UIActivityIndicatorView().then {
+        $0.style = .medium
+        $0.color = Gray.light
+    }
+    
     var testLabel1 = UILabel().then {
         $0.text = "토큰"
         $0.textColor = .white
@@ -56,6 +61,11 @@ class PreferenceViewController: UIViewController {
         setViews()
         test()
         setRx()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = true
     }
     
     func test() {
@@ -85,6 +95,11 @@ class PreferenceViewController: UIViewController {
             make.top.equalTo(divider.snp.bottom)
             make.centerX.left.equalToSuperview()
             make.height.equalTo(300)
+        }
+        
+        view.addSubview(indicator)
+        indicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
         
         view.addSubview(testLabel1)
@@ -135,6 +150,7 @@ class PreferenceViewController: UIViewController {
         viewModel.errorCatch
             .subscribe(onNext:{ [weak self] error in
                 if error {
+                    self?.indicator.stopAnimating()
                     self?.errorAlert()
                 }
             })
@@ -143,6 +159,7 @@ class PreferenceViewController: UIViewController {
         viewModel.processCompleted
             .subscribe(onNext:{ [weak self] completed in
                 if completed {
+                    self?.indicator.stopAnimating()
                     self?.presentVC(UINavigationController(rootViewController: StartViewController()))
                 }
             })
@@ -153,6 +170,7 @@ class PreferenceViewController: UIViewController {
         let alert = UIAlertController(title: message.0, message: message.1, preferredStyle: .alert)
         let cancel = UIAlertAction(title: "취소", style: .cancel)
         let action = UIAlertAction(title: message.2, style: .default) { action in
+            self.indicator.startAnimating()
             if index == 3 {
                 self.viewModel.kakaoLogOut()
             } else {

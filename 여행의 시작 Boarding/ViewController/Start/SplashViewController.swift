@@ -64,6 +64,6 @@ class SplashViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        viewModel.checkTokenExist()
+        viewModel.checkCurrentUser()
     }
 }

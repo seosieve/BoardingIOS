@@ -20,6 +20,7 @@
 		4E4FF3CE2AB326CC0042126A /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4FF3CD2AB326CC0042126A /* StartViewController.swift */; };
 		4E7D52E62AC41AF200054800 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E52AC41AF200054800 /* SplashViewController.swift */; };
 		4E7D52E82AC41B0100054800 /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E72AC41B0100054800 /* SplashViewModel.swift */; };
+		4E7D52EA2AC6FD0000054800 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E92AC6FD0000054800 /* MyPageViewModel.swift */; };
 		4E8B35A52A70D28A00AD2C72 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4E8B35A42A70D28A00AD2C72 /* GoogleService-Info.plist */; };
 		4E8B35A72A70DA1100AD2C72 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8B35A62A70DA1100AD2C72 /* CameraViewController.swift */; };
 		4E8B35A92A70DFCE00AD2C72 /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8B35A82A70DFCE00AD2C72 /* CameraViewModel.swift */; };
@@ -72,6 +73,7 @@
 		4E4FF3CD2AB326CC0042126A /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		4E7D52E52AC41AF200054800 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		4E7D52E72AC41B0100054800 /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
+		4E7D52E92AC6FD0000054800 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		4E8B35A42A70D28A00AD2C72 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4E8B35A62A70DA1100AD2C72 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		4E8B35A82A70DFCE00AD2C72 /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 			isa = PBXGroup;
 			children = (
 				4EECA63F2A29C208006FB764 /* MyPageViewController.swift */,
+				4E7D52E92AC6FD0000054800 /* MyPageViewModel.swift */,
 				4EECA7EF2A2F2968006FB764 /* MyNFTViewController.swift */,
 				4EECA7F12A2F3213006FB764 /* MyMileageViewController.swift */,
 				4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */,
@@ -427,6 +430,7 @@
 				4E7D52E82AC41B0100054800 /* SplashViewModel.swift in Sources */,
 				4E8B35A72A70DA1100AD2C72 /* CameraViewController.swift in Sources */,
 				4E19AA612A80FB3A00213589 /* TestViewController.swift in Sources */,
+				4E7D52EA2AC6FD0000054800 /* MyPageViewModel.swift in Sources */,
 				4EECA6402A29C208006FB764 /* MyPageViewController.swift in Sources */,
 				4EECA7F02A2F2968006FB764 /* MyNFTViewController.swift in Sources */,
 				4E19AA692A9F1A7300213589 /* NFTViewController.swift in Sources */,

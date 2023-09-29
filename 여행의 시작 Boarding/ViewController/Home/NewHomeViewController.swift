@@ -60,9 +60,11 @@ class NewHomeViewController: UIViewController {
             let uid = user.uid
             let email = user.email
             let photoURL = user.photoURL
+            let nickname = user.displayName
             print(uid)
             print(email)
             print(photoURL)
+            print(nickname)
         } else {
             print("aaaaa")
         }

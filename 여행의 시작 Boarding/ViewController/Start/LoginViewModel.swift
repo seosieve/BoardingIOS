@@ -63,10 +63,11 @@ class LogInViewModel {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] (authResult, error) in
             if let error = error {
                 let code = (error as NSError).code
+                print(code, error)
                 switch code {
-//                case 17007:
-//                    // FIRAuthErrorCodeUserNotFound으로 다시 에러처리하기!!
-//                    self?.userAlreadyExist.accept(true)
+                case 17011:
+                    // 유저가 존재하지 않을때
+                    self?.userNotExist.accept(true)
                 default:
                     self?.errorCatch.accept(true)
                 }

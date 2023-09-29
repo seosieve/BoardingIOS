@@ -16,6 +16,7 @@ struct Gray {
     static let black = UIColor("#222222")
     static let dark = UIColor("#777777")
     static let light = UIColor("#BCBCBC")
+    static let bright = UIColor("#EEEEEE")
     static let white = UIColor("#FFFFFF")
 }
 

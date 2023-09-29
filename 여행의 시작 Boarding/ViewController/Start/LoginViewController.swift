@@ -32,6 +32,7 @@ class LogInViewController: UIViewController {
         $0.titleLabel?.font = Pretendard.regular(19)
         $0.layer.borderWidth = 1
         $0.layer.borderColor = Gray.light.cgColor
+        $0.isUserInteractionEnabled
     }
     
     var appleImageView = UIImageView().then {
@@ -116,8 +117,8 @@ class LogInViewController: UIViewController {
         kakaoLogInButton.rx.tap
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(onNext:{ [weak self] in
-                self?.viewModel.kakaoLogIn()
                 self?.indicator.startAnimating()
+                self?.viewModel.kakaoLogIn()
             })
             .disposed(by: disposeBag)
         

@@ -33,7 +33,8 @@ class StartViewController: UIViewController {
     }
     
     @objc func signUpButtonPressed() {
-        self.navigationController?.pushViewController(SignUpViewController(), animated: true)
+        let vc = SignUpViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     lazy var logInButton = UIButton().then {
@@ -47,7 +48,8 @@ class StartViewController: UIViewController {
     }
     
     @objc func logInButtonPressed() {
-        self.navigationController?.pushViewController(LogInViewController(), animated: true)
+        let vc = LogInViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     override func viewDidLoad() {

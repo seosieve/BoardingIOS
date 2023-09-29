@@ -58,6 +58,7 @@ class PreferenceViewModel {
             processCompleted.accept(true)
             print("로그아웃 성공")
         } catch let error as NSError {
+            errorCatch.accept(true)
             print("로그아웃 에러: \(error.localizedDescription)")
         }
     }
@@ -77,11 +78,12 @@ class PreferenceViewModel {
     func deleteUser() {
         let user = Auth.auth().currentUser
         user?.delete { [weak self] error in
-          if let error = error {
-              print("유저 계정 삭제 에러 : \(error)")
-          } else {
-              self?.processCompleted.accept(true)
-          }
+            if let error = error {
+                print("유저 계정 삭제 에러 : \(error)")
+            } else {
+                self?.processCompleted.accept(true)
+                print("계정 삭제 성공")
+            }
         }
     }
 }

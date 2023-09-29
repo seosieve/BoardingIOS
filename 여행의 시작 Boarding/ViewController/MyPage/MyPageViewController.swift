@@ -8,59 +8,36 @@
 import UIKit
 import Then
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class MyPageViewController: UIViewController {
-
-    let menuArr = ["내 NFT", "내 마일리지", "전문가 레벨", "환경설정"]
+    
+    let viewModel = MyPageViewModel()
+    let disposeBag = DisposeBag()
     
     var statusBarView = UIView().then {
-        $0.backgroundColor = Gray.white
+        $0.backgroundColor = Gray.bright
     }
     
-    var iconView = UIView().then {
-        $0.backgroundColor = Gray.white
+    lazy var settingButton = UIButton().then {
+        $0.setImage(UIImage(named: "Setting"), for: .normal)
+        $0.addTarget(self, action: #selector(settingButtonPressed), for: .touchUpInside)
     }
     
-    lazy var searchButton = UIButton().then {
-        $0.setImage(UIImage(named: "Search"), for: .normal)
-        $0.tintColor = Gray.dark
-        $0.addTarget(self, action:#selector(searchButtonPressed), for: .touchUpInside)
+    @objc func settingButtonPressed() {
+        let vc = PreferenceViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc func searchButtonPressed() {
-        print("searchButton Pressed")
-    }
-    
-    lazy var alarmButton = UIButton().then {
-        $0.setImage(UIImage(named: "Alarm"), for: .normal)
-        $0.tintColor = Gray.dark
-        $0.addTarget(self, action: #selector(alarmButtonPressed), for: .touchUpInside)
-    }
-    
-    @objc func alarmButtonPressed() {
-        print("alarmButton Pressed")
-    }
-    
-    lazy var divider = UIView().then {
-        $0.backgroundColor = myPageTableView.separatorColor
-    }
-    
-    var userImageView = UIImageView().then {
+    var userThumbnailView = UIImageView().then {
         $0.image = UIImage(named: "User")
     }
     
     var userNameLabel = UILabel().then {
         $0.text = "박정현"
-        $0.font = Pretendard.semiBold(24)
+        $0.font = Pretendard.semiBold(25)
         $0.textColor = Gray.black
-    }
-    
-    var userCommentLabel = UILabel().then {
-        $0.text = "세상의 모든 아름다움을 담아가는 여행자입니다."
-        $0.font = Pretendard.regular(14)
-        $0.textColor = Gray.dark
-        $0.numberOfLines = 0
-        $0.lineBreakMode = .byWordWrapping
     }
     
     var userAchievementStackView = UIStackView().then {
@@ -69,25 +46,21 @@ class MyPageViewController: UIViewController {
         $0.spacing = 7
     }
     
-    lazy var tableViewTopDivider = UIView().then {
-        $0.backgroundColor = myPageTableView.separatorColor
-    }
-    
-    var myPageTableView = UITableView().then {
-        $0.isScrollEnabled = false
-        $0.rowHeight = 60
-        $0.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    var userCommentLabel = UILabel().then {
+        $0.text = "세상의 모든 아름다움을 담아가는 여행자입니다."
+        $0.font = Pretendard.regular(14)
+        $0.textColor = Gray.black
+        $0.numberOfLines = 0
+        $0.lineBreakMode = .byWordWrapping
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
-        self.view.backgroundColor = Gray.white
-        myPageTableView.delegate = self
-        myPageTableView.dataSource = self
-        myPageTableView.register(MenuTableViewCell.self, forCellReuseIdentifier: "menuTableViewCell")
+        self.view.backgroundColor = Gray.bright
         setViews()
         putUserAchievement()
+        setRx()
     }
     
     func setViews() {
@@ -97,71 +70,38 @@ class MyPageViewController: UIViewController {
             make.height.equalTo(window.safeAreaInsets.top)
         }
         
-        view.addSubview(iconView)
-        iconView.snp.makeConstraints { make in
-            make.top.equalTo(window.safeAreaInsets.top)
-            make.centerX.width.equalToSuperview()
-            make.height.equalTo(45)
+        view.addSubview(settingButton)
+        settingButton.snp.makeConstraints { make in
+            make.top.equalTo(statusBarView.snp.bottom).offset(12)
+            make.right.equalToSuperview().inset(16)
         }
         
-        iconView.addSubview(searchButton)
-        iconView.addSubview(alarmButton)
-        searchButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.right.equalTo(alarmButton.snp.left).offset(-12)
-            make.top.equalToSuperview().offset(14)
+        view.addSubview(userThumbnailView)
+        userThumbnailView.snp.makeConstraints { make in
+            make.top.equalTo(statusBarView.snp.bottom).offset(12)
+            make.centerX.equalToSuperview()
+            make.width.height.equalTo(112)
         }
-        alarmButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.right.equalToSuperview().offset(-24)
-            make.top.equalToSuperview().offset(14)
-        }
+        userThumbnailView.rounded(axis: .horizontal)
         
-        view.addSubview(divider)
-        divider.snp.makeConstraints { make in
-            make.top.equalTo(iconView.snp.bottom)
-            make.centerX.left.equalToSuperview()
-            make.height.equalTo(0.3)
-        }
-        
-        view.addSubview(userImageView)
         view.addSubview(userNameLabel)
-        view.addSubview(userCommentLabel)
-        view.addSubview(userAchievementStackView)
-        userImageView.snp.makeConstraints { make in
-            make.top.equalTo(divider).offset(28)
-            make.left.equalToSuperview().offset(24)
-            make.width.height.equalTo(110)
-        }
-        userImageView.rounded(axis: .horizontal)
         userNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(divider).offset(28)
-            make.left.equalTo(userImageView.snp.right).offset(32)
+            make.top.equalTo(userThumbnailView.snp.bottom).offset(13)
+            make.centerX.equalToSuperview()
         }
-        userCommentLabel.snp.makeConstraints { make in
-            make.top.equalTo(userNameLabel.snp.bottom).offset(9)
-            make.left.equalTo(userImageView.snp.right).offset(32)
-            make.width.equalTo(200)
-        }
+        
+        view.addSubview(userAchievementStackView)
         userAchievementStackView.snp.makeConstraints { make in
-            make.top.equalTo(userCommentLabel.snp.bottom).offset(9)
-            make.left.equalTo(userImageView.snp.right).offset(32)
+            make.top.equalTo(userNameLabel.snp.bottom).offset(8)
+            make.centerX.equalToSuperview()
             make.width.equalTo(170)
             make.height.equalTo(24)
         }
         
-        view.addSubview(tableViewTopDivider)
-        tableViewTopDivider.snp.makeConstraints { make in
-            make.top.equalTo(userAchievementStackView.snp.bottom).offset(44)
-            make.centerX.left.equalToSuperview()
-            make.height.equalTo(0.3)
-        }
-        
-        view.addSubview(myPageTableView)
-        myPageTableView.snp.makeConstraints { make in
-            make.top.equalTo(tableViewTopDivider.snp.bottom)
-            make.centerX.left.equalToSuperview()
-            make.height.equalTo(300)
+        view.addSubview(userCommentLabel)
+        userCommentLabel.snp.makeConstraints { make in
+            make.top.equalTo(userAchievementStackView.snp.bottom).offset(8)
+            make.centerX.equalToSuperview()
         }
     }
     
@@ -203,37 +143,21 @@ class MyPageViewController: UIViewController {
         userAchievementStackView.addArrangedSubview(userAchieveItem2)
         userAchievementStackView.addArrangedSubview(userAchieveItem3)
     }
-}
-
-//MARK: - UITableView
-extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
-    }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "menuTableViewCell", for: indexPath) as! MenuTableViewCell
-        cell.menuLabel.text = menuArr[indexPath.row]
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        var vc = UIViewController()
-        switch indexPath.row {
-        case 0:
-            vc = MyNFTViewController()
-            vc.navigationItem.title = "내 NFT"
-        case 1:
-            vc = MyMileageViewController()
-            vc.navigationItem.title = "내 마일리지"
-        case 2:
-            vc = ExpertLevelViewController()
-            vc.navigationItem.title = "전문가 레벨"
-        default:
-            vc = PreferenceViewController()
-            vc.navigationItem.title = "환경설정"
-        }
-        self.navigationController?.pushViewController(vc, animated: true)
+    func setRx() {
+        viewModel.thumbnail
+            .flatMapLatest { URL in
+                URLSession.shared.rx.data(request: URLRequest(url: URL))
+                    .compactMap {UIImage(data: $0)}
+                    .catchAndReturn(nil)
+            }
+            .bind(to: userThumbnailView.rx.image)
+            .disposed(by: disposeBag)
+        
+        viewModel.username
+            .bind(to: userNameLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.aa()
     }
 }

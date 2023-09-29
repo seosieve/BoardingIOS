@@ -117,8 +117,8 @@ class SignUpViewController: UIViewController {
         kakaoSignUpButton.rx.tap
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(onNext:{ [weak self] in
-                self?.viewModel.kakaoLogIn()
                 self?.indicator.startAnimating()
+                self?.viewModel.kakaoLogIn()
             })
             .disposed(by: disposeBag)
         
