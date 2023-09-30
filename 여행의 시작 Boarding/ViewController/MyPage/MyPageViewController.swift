@@ -31,11 +31,13 @@ class MyPageViewController: UIViewController {
     }
     
     var userThumbnailView = UIImageView().then {
-        $0.image = UIImage(named: "User")
+        $0.image = UIImage()
+        $0.contentMode = .scaleAspectFit
+        $0.backgroundColor = Gray.light
     }
     
     var userNameLabel = UILabel().then {
-        $0.text = "박정현"
+        $0.text = "User Name"
         $0.font = Pretendard.semiBold(25)
         $0.textColor = Gray.black
     }
@@ -52,6 +54,82 @@ class MyPageViewController: UIViewController {
         $0.textColor = Gray.black
         $0.numberOfLines = 0
         $0.lineBreakMode = .byWordWrapping
+    }
+    
+    lazy var modalView = UIView().then {
+        $0.backgroundColor = Gray.white
+        $0.layer.cornerRadius = 24
+        $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        $0.layer.shadowOffset = CGSize(width:0, height:-3)
+        $0.layer.shadowRadius = 10
+        $0.layer.shadowColor = Gray.black.cgColor
+        $0.layer.shadowOpacity = 0.1
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(addModalMotion))
+        $0.addGestureRecognizer(pan)
+    }
+    
+    @objc func addModalMotion(_ recognizer: UIPanGestureRecognizer) {
+        let minY = window.safeAreaInsets.top
+        let maxY = minY + 246
+        
+        switch recognizer.state {
+        case .began, .changed:
+            let translation = recognizer.translation(in: modalView)
+            let y = min(maxY, max(minY, modalView.frame.minY + translation.y))
+            modalView.snp.updateConstraints { make in
+                make.top.equalToSuperview().offset(y)
+            }
+            recognizer.setTranslation(CGPoint.zero, in: self.view)
+            
+        case .ended:
+            let velocity = recognizer.velocity(in: modalView).y
+            let shouldClose = velocity > 0
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+                self.modalView.snp.updateConstraints { make in
+                    make.top.equalToSuperview().offset(shouldClose ? maxY : minY)
+                }
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+            
+        default:
+            break
+        }
+    }
+    
+    var myPageButtonStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.alignment = .fill
+        $0.distribution = .fillEqually
+        $0.spacing = 0
+    }
+    
+    var NFTButton = UIButton().then {
+        $0.setTitle("NFT", for: .normal)
+        $0.setTitleColor(Boarding.blue, for: .normal)
+        $0.titleLabel?.font = Pretendard.semiBold(17)
+        $0.contentHorizontalAlignment = .center
+    }
+    
+    var MILEButton = UIButton().then {
+        $0.setTitle("MILE", for: .normal)
+        $0.setTitleColor(Gray.light, for: .normal)
+        $0.titleLabel?.font = Pretendard.regular(17)
+        $0.contentHorizontalAlignment = .center
+    }
+    
+    var ExpertButton = UIButton().then {
+        $0.setTitle("전문가", for: .normal)
+        $0.setTitleColor(Gray.light, for: .normal)
+        $0.titleLabel?.font = Pretendard.regular(17)
+        $0.contentHorizontalAlignment = .center
+    }
+    
+    var divider = UIView().then {
+        $0.backgroundColor = Gray.bright
+    }
+    
+    var selectedDivider = UIView().then {
+        $0.backgroundColor = Boarding.blue
     }
     
     override func viewDidLoad() {
@@ -100,43 +178,81 @@ class MyPageViewController: UIViewController {
         
         view.addSubview(userCommentLabel)
         userCommentLabel.snp.makeConstraints { make in
-            make.top.equalTo(userAchievementStackView.snp.bottom).offset(8)
+            make.top.equalTo(userAchievementStackView.snp.bottom).offset(10)
             make.centerX.equalToSuperview()
+        }
+        
+        view.addSubview(modalView)
+        modalView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(window.safeAreaInsets.top + 246)
+            make.centerX.left.equalToSuperview()
+            make.height.equalTo(700)
+        }
+        
+        modalView.addSubview(myPageButtonStackView)
+        myPageButtonStackView.snp.makeConstraints { make in
+            make.top.centerX.equalToSuperview()
+            make.left.equalToSuperview().offset(20)
+            make.height.equalTo(55)
+        }
+        myPageButtonStackView.addArrangedSubview(NFTButton)
+        myPageButtonStackView.addArrangedSubview(MILEButton)
+        myPageButtonStackView.addArrangedSubview(ExpertButton)
+        
+        modalView.addSubview(divider)
+        divider.snp.makeConstraints { make in
+            make.top.equalTo(myPageButtonStackView.snp.bottom)
+            make.centerX.left.equalToSuperview()
+            make.height.equalTo(2)
+        }
+        
+        modalView.addSubview(selectedDivider)
+        selectedDivider.snp.makeConstraints { make in
+            make.top.equalTo(myPageButtonStackView.snp.bottom)
+            make.left.equalToSuperview()
+            make.right.equalTo(MILEButton.snp.left)
+            make.height.equalTo(2)
         }
     }
     
     func putUserAchievement() {
         let userAchieveItem1 = UILabel().then {
+            $0.backgroundColor = Gray.white
             $0.frame = CGRect(x: 0, y: 0, width: 54, height: 24)
-            $0.text = "🇰🇷 Lv.5"
+            $0.text = "🇰🇷 Lv.1"
             $0.font = Pretendard.regular(12)
             $0.textAlignment = .center
             $0.textColor = Gray.dark
             $0.layer.borderWidth = 0.5
             $0.layer.borderColor = Gray.light.cgColor
             $0.layer.cornerRadius = 4
+            $0.clipsToBounds = true
         }
         
         let userAchieveItem2 = UILabel().then {
+            $0.backgroundColor = Gray.white
             $0.frame = CGRect(x: 0, y: 0, width: 54, height: 24)
-            $0.text = "📷 Lv.7"
+            $0.text = "📷 Lv.1"
             $0.font = Pretendard.regular(12)
             $0.textAlignment = .center
             $0.textColor = Gray.dark
             $0.layer.borderWidth = 0.5
             $0.layer.borderColor = Gray.light.cgColor
             $0.layer.cornerRadius = 4
+            $0.clipsToBounds = true
         }
         
         let userAchieveItem3 = UILabel().then {
+            $0.backgroundColor = Gray.white
             $0.frame = CGRect(x: 0, y: 0, width: 54, height: 24)
-            $0.text = "🏄‍♂️ Lv.5"
+            $0.text = "🏄‍♂️ Lv.1"
             $0.font = Pretendard.regular(12)
             $0.textAlignment = .center
             $0.textColor = Gray.dark
             $0.layer.borderWidth = 0.5
             $0.layer.borderColor = Gray.light.cgColor
             $0.layer.cornerRadius = 4
+            $0.clipsToBounds = true
         }
         
         userAchievementStackView.addArrangedSubview(userAchieveItem1)
@@ -146,6 +262,7 @@ class MyPageViewController: UIViewController {
     
     func setRx() {
         viewModel.thumbnail
+            .compactMap {$0}
             .flatMapLatest { URL in
                 URLSession.shared.rx.data(request: URLRequest(url: URL))
                     .compactMap {UIImage(data: $0)}
@@ -157,7 +274,5 @@ class MyPageViewController: UIViewController {
         viewModel.username
             .bind(to: userNameLabel.rx.text)
             .disposed(by: disposeBag)
-        
-        viewModel.aa()
     }
 }

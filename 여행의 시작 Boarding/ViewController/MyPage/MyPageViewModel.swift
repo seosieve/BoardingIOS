@@ -11,10 +11,10 @@ import RxCocoa
 import FirebaseAuth
 
 class MyPageViewModel {
-    let thumbnail = PublishRelay<URL>()
-    let username = PublishRelay<String>()
+    let thumbnail = BehaviorRelay<URL?>(value: nil)
+    let username = BehaviorRelay<String?>(value: nil)
     
-    func aa() {
+    init() {
         if let user = Auth.auth().currentUser {
             if let photoURL = user.photoURL, let nickname = user.displayName {
                 thumbnail.accept(photoURL)
