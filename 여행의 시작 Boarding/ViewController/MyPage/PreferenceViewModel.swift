@@ -42,14 +42,18 @@ class PreferenceViewModel {
     
     //MARK: - LogOut
     func kakaoLogOut() {
-        UserApi.shared.rx.logout()
-            .subscribe(onCompleted: { [weak self] in
-                self?.signOutUser()
-            }, onError: { [weak self] error in
-                self?.errorCatch.accept(true)
-                print("카카오 로그아웃 에러: \(error)")
-            })
-            .disposed(by: disposeBag)
+        if AuthApi.hasToken() {
+            UserApi.shared.rx.logout()
+                .subscribe(onCompleted: { [weak self] in
+                    self?.signOutUser()
+                }, onError: { [weak self] error in
+                    self?.errorCatch.accept(true)
+                    print("카카오 로그아웃 에러: \(error)")
+                })
+                .disposed(by: disposeBag)
+        } else {
+            self.signOutUser()
+        }
     }
     
     func signOutUser() {
@@ -65,14 +69,18 @@ class PreferenceViewModel {
     
     //MARK: - DeleteUser
     func kakaoUnLink() {
-        UserApi.shared.rx.unlink()
-            .subscribe(onCompleted: { [weak self] in
-                self?.deleteUser()
-            }, onError: { [weak self] error in
-                self?.errorCatch.accept(true)
-                print("카카오 연결끊기 에러: \(error)")
-            })
-            .disposed(by: disposeBag)
+        if AuthApi.hasToken() {
+            UserApi.shared.rx.unlink()
+                .subscribe(onCompleted: { [weak self] in
+                    self?.deleteUser()
+                }, onError: { [weak self] error in
+                    self?.errorCatch.accept(true)
+                    print("카카오 연결끊기 에러: \(error)")
+                })
+                .disposed(by: disposeBag)
+        } else {
+            self.deleteUser()
+        }
     }
     
     func deleteUser() {

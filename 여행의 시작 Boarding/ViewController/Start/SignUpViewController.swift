@@ -10,8 +10,6 @@ import RxSwift
 import RxCocoa
 import KakaoSDKAuth
 import KakaoSDKUser
-import AuthenticationServices
-import FirebaseAuth
 
 class SignUpViewController: UIViewController {
 
@@ -116,20 +114,12 @@ class SignUpViewController: UIViewController {
     }
     
     func setRx() {
+        //Kakao
         kakaoSignUpButton.rx.tap
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(onNext:{ [weak self] in
                 self?.indicator.startAnimating()
                 self?.viewModel.kakaoLogIn()
-            })
-            .disposed(by: disposeBag)
-        
-        viewModel.errorCatch
-            .subscribe(onNext:{ [weak self] error in
-                if error {
-                    self?.indicator.stopAnimating()
-                    self?.errorAlert()
-                }
             })
             .disposed(by: disposeBag)
         
@@ -142,26 +132,33 @@ class SignUpViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        //Apple
+        appleSignUpButton.rx.tap
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .subscribe(onNext:{ [weak self] in
+                self?.indicator.startAnimating()
+                self?.viewModel.appleLogIn()
+            })
+            .disposed(by: disposeBag)
+        
+        //공통
+        viewModel.errorCatch
+            .subscribe(onNext:{ [weak self] error in
+                if error {
+                    self?.indicator.stopAnimating()
+                    self?.errorAlert()
+                }
+            })
+            .disposed(by: disposeBag)
+        
         viewModel.signUpResult
             .subscribe(onNext:{ [weak self] result in
                 if result {
                     self?.indicator.stopAnimating()
                     self?.presentVC(TabBarViewController())
+                } else {
+                    self?.indicator.stopAnimating()
                 }
-            })
-            .disposed(by: disposeBag)
-        
-        appleSignUpButton.rx.tap
-            .subscribe(onNext: { [weak self] in
-                let provider = ASAuthorizationAppleIDProvider()
-                let request = provider.createRequest()
-
-                request.requestedScopes = [.fullName, .email]
-
-                let controller = ASAuthorizationController(authorizationRequests: [request])
-                controller.delegate = self
-                controller.presentationContextProvider = self
-                controller.performRequests()
             })
             .disposed(by: disposeBag)
     }
@@ -173,37 +170,5 @@ class SignUpViewController: UIViewController {
         confirm.setValue(Boarding.blue, forKey: "titleTextColor")
         alert.view.tintColor = Gray.dark
         present(alert, animated: true, completion: nil)
-    }
-}
-
-extension SignUpViewController: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
-    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        return self.view.window!
-    }
-
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-            guard let tokenData = appleIDCredential.identityToken, let token = String(data: tokenData, encoding: .utf8) else {
-                print("Unable to serialize token string from data.")
-                return
-            }
-
-            let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: token, rawNonce: nil)
-            
-            // Firebase에 Apple로 로그인
-            Auth.auth().signIn(with: credential) { (authResult, error) in
-                if let error = error {
-                    print("Firebase authentication failed with error: \(error.localizedDescription)")
-                } else {
-                    print("Successfully signed in with Apple ID.")
-                    self.presentVC(TabBarViewController())
-                    // 여기에서 로그인 성공 후의 작업을 수행할 수 있습니다.
-                }
-            }
-        }
-    }
-
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        print("Apple Sign In failed with error: \(error.localizedDescription)")
     }
 }

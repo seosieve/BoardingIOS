@@ -114,20 +114,12 @@ class LogInViewController: UIViewController {
     }
     
     func setRx() {
+        //Kakao
         kakaoLogInButton.rx.tap
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(onNext:{ [weak self] in
                 self?.indicator.startAnimating()
                 self?.viewModel.kakaoLogIn()
-            })
-            .disposed(by: disposeBag)
-        
-        viewModel.errorCatch
-            .subscribe(onNext:{ [weak self] error in
-                if error {
-                    self?.indicator.stopAnimating()
-                    self?.errorAlert()
-                }
             })
             .disposed(by: disposeBag)
         
@@ -140,11 +132,32 @@ class LogInViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        //Apple
+        appleLogInButton.rx.tap
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .subscribe(onNext:{ [weak self] in
+                self?.indicator.startAnimating()
+                self?.viewModel.appleLogIn()
+            })
+            .disposed(by: disposeBag)
+        
+        //공통
+        viewModel.errorCatch
+            .subscribe(onNext:{ [weak self] error in
+                if error {
+                    self?.indicator.stopAnimating()
+                    self?.errorAlert()
+                }
+            })
+            .disposed(by: disposeBag)
+        
         viewModel.logInResult
             .subscribe(onNext:{ [weak self] result in
                 if result {
                     self?.indicator.stopAnimating()
                     self?.presentVC(TabBarViewController())
+                } else {
+                    self?.indicator.stopAnimating()
                 }
             })
             .disposed(by: disposeBag)
