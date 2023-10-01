@@ -68,6 +68,18 @@ class NewHomeViewController: UIViewController {
         } else {
             print("aaaaa")
         }
+        
+//
+//        do {
+//            try Auth.auth().signOut()
+//
+//            print("로그아웃 성공")
+//        } catch let error as NSError {
+//
+//            print("로그아웃 에러: \(error.localizedDescription)")
+//        }
+        
+        
     }
     
     func setViews() {
