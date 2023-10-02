@@ -18,7 +18,7 @@ class ExpertLevelViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.setNavigationBar()
-        self.view.backgroundColor = Gray.white
+        self.view.backgroundColor = .yellow
         setViews()
     }
     

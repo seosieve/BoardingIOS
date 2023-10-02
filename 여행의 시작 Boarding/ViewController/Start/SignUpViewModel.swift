@@ -13,7 +13,6 @@ import KakaoSDKAuth
 import RxKakaoSDKUser
 import KakaoSDKUser
 import FirebaseAuth
-import CryptoKit
 import AuthenticationServices
 
 class SignUpViewModel: NSObject {
@@ -27,30 +26,7 @@ class SignUpViewModel: NSObject {
 }
 
 //MARK: - Apple SignUp
-extension SignUpViewModel {
-    private func randomNonceString(length: Int = 32) -> String {
-        precondition(length > 0)
-        var randomBytes = [UInt8](repeating: 0, count: length)
-        let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
-        if errorCode != errSecSuccess {
-            fatalError("Nonce 생성 오류: \(errorCode)")
-        }
-        let charset: [Character] = Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
-        let nonce = randomBytes.map { byte in
-            charset[Int(byte) % charset.count]
-        }
-        return String(nonce)
-    }
-    
-    private func sha256(_ input: String) -> String {
-        let inputData = Data(input.utf8)
-        let hashedData = SHA256.hash(data: inputData)
-        let hashString = hashedData.compactMap {
-            String(format: "%02x", $0)
-        }.joined()
-        return hashString
-    }
-    
+extension SignUpViewModel {    
     func appleLogIn() {
         let nonce = randomNonceString()
         currentNonce = nonce
@@ -82,12 +58,17 @@ extension SignUpViewModel: ASAuthorizationControllerDelegate, ASAuthorizationCon
                 if let error = error {
                     print(error)
                     self?.errorCatch.accept(true)
-                } else if let authResult = authResult {
-                    if let fullName = appleIDCredential.fullName {
-                        let displayName = [fullName.givenName, fullName.familyName].compactMap{$0}.joined()
+                } else {
+                    let fullName = appleIDCredential.fullName!
+                    let displayName = [fullName.givenName, fullName.familyName].compactMap{$0}.joined()
+                    if displayName == "" {
+                        //로그아웃 후 애플로그인 할 때
+                        self?.signUpResult.accept(true)
+                    } else {
+                        //처음 애플로그인 할 때
                         self?.makeProfile(nickname: displayName, thumbnail: URL(string: "https://t3.ftcdn.net/jpg/00/64/67/52/360_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg")!)
-                        print("유저 로그인 성공: \(authResult)")
                     }
+                    print("유저 로그인 성공")
                 }
             }
         }
@@ -108,7 +89,7 @@ extension SignUpViewModel {
                 .subscribe(onNext:{ [weak self] _ in
                     self?.kakaoUserInfo()
                 }, onError: { [weak self] error in
-                    self?.errorCatch.accept(true)
+                    self?.errorCatch.accept(false)
                     print("카카오톡(APP) 로그인 에러: \(error)")
                 })
                 .disposed(by: disposeBag)
@@ -117,7 +98,7 @@ extension SignUpViewModel {
                 .subscribe(onNext: { [weak self] _ in
                     self?.kakaoUserInfo()
                 }, onError: { [weak self] error in
-                    self?.errorCatch.accept(true)
+                    self?.errorCatch.accept(false)
                     print("카카오계정(WEB) 로그인 에러: \(error)")
                 })
                 .disposed(by: disposeBag)

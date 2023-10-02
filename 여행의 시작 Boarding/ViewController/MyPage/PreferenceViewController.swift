@@ -15,14 +15,10 @@ import RxKakaoSDKUser
 
 class PreferenceViewController: UIViewController {
 
-    let menuArr = ["이용약관", "개인정보 보호 정책", "버전정보", "로그아웃", "회원탈퇴"]
+    let menuArr = ["프로필 편집", "내정보", "이용약관", "개인정보 보호 정책", "버전정보", "로그아웃", "회원탈퇴"]
     
     let viewModel = PreferenceViewModel()
     let disposeBag = DisposeBag()
-    
-    var divider = UIView().then {
-        $0.backgroundColor = UITableView().separatorColor
-    }
     
     var preferenceTableView = UITableView().then {
         $0.isScrollEnabled = false
@@ -83,16 +79,9 @@ class PreferenceViewController: UIViewController {
     }
     
     func setViews() {
-        view.addSubview(divider)
-        divider.snp.makeConstraints { make in
-            make.top.equalTo(self.navigationController!.navigationBar.bottom())
-            make.centerX.left.equalToSuperview()
-            make.height.equalTo(0.3)
-        }
-        
         view.addSubview(preferenceTableView)
         preferenceTableView.snp.makeConstraints { make in
-            make.top.equalTo(divider.snp.bottom)
+            make.top.equalTo(self.navigationController!.navigationBar.bottom())
             make.centerX.left.equalToSuperview()
             make.height.equalTo(300)
         }
@@ -126,7 +115,9 @@ class PreferenceViewController: UIViewController {
             .bind(to: preferenceTableView.rx.items) { (tableView, row, element) in
                 let cell = tableView.dequeueReusableCell(withIdentifier: "menuTableViewCell", for: IndexPath(row: row, section: 0)) as! MenuTableViewCell
                 cell.menuLabel.text = element
-                cell.detailButton.isHidden = true
+                if row == 3 || row == 4 {
+                    cell.detailButton.isHidden = true
+                }
                 return cell
             }
             .disposed(by: disposeBag)

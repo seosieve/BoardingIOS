@@ -69,7 +69,7 @@ class NewHomeViewController: UIViewController {
             print("aaaaa")
         }
         
-//
+
 //        do {
 //            try Auth.auth().signOut()
 //

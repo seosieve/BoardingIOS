@@ -123,7 +123,7 @@ class WrittingViewController: UIViewController {
     }
     
     @objc func completeButtonPressed() {
-        let vc = NFTViewController()
+        let vc = NFTTicketViewController()
         vc.image = image
         self.navigationController?.pushViewController(vc, animated: true)
     }

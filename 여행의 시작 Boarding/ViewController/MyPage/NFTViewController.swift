@@ -1,5 +1,5 @@
 //
-//  MyNFTViewController.swift
+//  NFTViewController.swift
 //  여행의 시작 Boarding
 //
 //  Created by 서충원 on 2023/06/06.
@@ -9,7 +9,7 @@ import UIKit
 import Then
 import SnapKit
 
-class MyNFTViewController: UIViewController {
+class NFTViewController: UIViewController {
 
     var countLabel = UILabel().then {
         $0.text = "총 72개"
@@ -30,7 +30,7 @@ class MyNFTViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.setNavigationBar()
-        self.view.backgroundColor = Gray.white
+        self.view.backgroundColor = .blue
         setViews()
     }
     

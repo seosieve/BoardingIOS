@@ -147,6 +147,8 @@ class LogInViewController: UIViewController {
                 if error {
                     self?.indicator.stopAnimating()
                     self?.errorAlert()
+                } else {
+                    self?.indicator.stopAnimating()
                 }
             })
             .disposed(by: disposeBag)

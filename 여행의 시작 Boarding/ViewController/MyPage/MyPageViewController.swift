@@ -13,6 +13,8 @@ import RxCocoa
 
 class MyPageViewController: UIViewController {
     
+    lazy var buttonWidth = (self.view.frame.width - 40) / 3
+    
     let viewModel = MyPageViewModel()
     let disposeBag = DisposeBag()
     
@@ -103,27 +105,41 @@ class MyPageViewController: UIViewController {
         $0.spacing = 0
     }
     
-    var NFTButton = UIButton().then {
+    lazy var NFTButton = UIButton().then {
+        $0.tag = 0
         $0.setTitle("NFT", for: .normal)
-        $0.setTitleColor(Boarding.blue, for: .normal)
+        $0.setTitleColor(Gray.light, for: .normal)
+        $0.setTitleColor(Boarding.blue, for: .selected)
         $0.titleLabel?.font = Pretendard.semiBold(17)
         $0.contentHorizontalAlignment = .center
+        $0.addTarget(self, action: #selector(myPageButtonPressed), for: .touchUpInside)
+        $0.isSelected = true
     }
     
-    var MILEButton = UIButton().then {
+    lazy var MILEButton = UIButton().then {
+        $0.tag = 1
         $0.setTitle("MILE", for: .normal)
         $0.setTitleColor(Gray.light, for: .normal)
+        $0.setTitleColor(Boarding.blue, for: .selected)
         $0.titleLabel?.font = Pretendard.regular(17)
         $0.contentHorizontalAlignment = .center
+        $0.addTarget(self, action: #selector(myPageButtonPressed), for: .touchUpInside)
     }
     
-    var ExpertButton = UIButton().then {
+    lazy var ExpertButton = UIButton().then {
+        $0.tag = 2
         $0.setTitle("전문가", for: .normal)
         $0.setTitleColor(Gray.light, for: .normal)
+        $0.setTitleColor(Boarding.blue, for: .selected)
         $0.titleLabel?.font = Pretendard.regular(17)
         $0.contentHorizontalAlignment = .center
+        $0.addTarget(self, action: #selector(myPageButtonPressed), for: .touchUpInside)
     }
     
+    @objc func myPageButtonPressed(sender: UIButton!) {
+        buttonSelectEffect(sender)
+    }
+
     var divider = UIView().then {
         $0.backgroundColor = Gray.bright
     }
@@ -131,6 +147,8 @@ class MyPageViewController: UIViewController {
     var selectedDivider = UIView().then {
         $0.backgroundColor = Boarding.blue
     }
+    
+    var modalPageViewController = ModalPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -186,7 +204,7 @@ class MyPageViewController: UIViewController {
         modalView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(window.safeAreaInsets.top + 246)
             make.centerX.left.equalToSuperview()
-            make.height.equalTo(700)
+            make.height.equalTo(view.frame.height - window.safeAreaInsets.top)
         }
         
         modalView.addSubview(myPageButtonStackView)
@@ -210,9 +228,18 @@ class MyPageViewController: UIViewController {
         selectedDivider.snp.makeConstraints { make in
             make.top.equalTo(myPageButtonStackView.snp.bottom)
             make.left.equalToSuperview()
-            make.right.equalTo(MILEButton.snp.left)
+            make.width.equalTo(buttonWidth + 20)
             make.height.equalTo(2)
         }
+        
+        addChild(modalPageViewController)
+        modalView.addSubview(modalPageViewController.view)
+        modalPageViewController.view.snp.makeConstraints { make in
+            make.top.equalTo(selectedDivider.snp.bottom).offset(20)
+            make.centerX.left.equalToSuperview()
+            make.bottom.equalToSuperview().offset(150)
+        }
+        modalPageViewController.didMove(toParent: self)
     }
     
     func putUserAchievement() {
@@ -258,6 +285,39 @@ class MyPageViewController: UIViewController {
         userAchievementStackView.addArrangedSubview(userAchieveItem1)
         userAchievementStackView.addArrangedSubview(userAchieveItem2)
         userAchievementStackView.addArrangedSubview(userAchieveItem3)
+    }
+    
+    func buttonSelectEffect(_ sender: UIButton!) {
+        var constraint: (CGFloat, CGFloat)
+        
+        [NFTButton, MILEButton, ExpertButton].forEach { button in
+            if button == sender {
+                button.isSelected = true
+                button.titleLabel?.font = Pretendard.semiBold(17)
+            } else {
+                button.isSelected = false
+                button.titleLabel?.font = Pretendard.regular(17)
+            }
+        }
+        
+        switch sender {
+        case NFTButton:
+            constraint = (0, buttonWidth + 20)
+        case MILEButton:
+            constraint = (buttonWidth + 20, buttonWidth)
+        default:
+            constraint = (buttonWidth * 2 + 20, buttonWidth + 20)
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.selectedDivider.snp.updateConstraints { make in
+                make.left.equalToSuperview().offset(constraint.0)
+                make.width.equalTo(constraint.1)
+            }
+            self.view.layoutIfNeeded()
+        }
+        
+        modalPageViewController.moveFromIndex(index: sender.tag)
     }
     
     func setRx() {

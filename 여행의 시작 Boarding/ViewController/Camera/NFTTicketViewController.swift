@@ -1,5 +1,5 @@
 //
-//  NFTViewController.swift
+//  NFTTicketViewController.swift
 //  여행의 시작 Boarding
 //
 //  Created by 서충원 on 2023/08/30.
@@ -9,7 +9,7 @@ import UIKit
 import Then
 import SnapKit
 
-class NFTViewController: UIViewController {
+class NFTTicketViewController: UIViewController {
 
     var image: UIImage?
     var isFlipped = false
