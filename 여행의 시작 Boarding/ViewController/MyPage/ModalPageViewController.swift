@@ -8,11 +8,6 @@
 import UIKit
 
 class ModalPageViewController: UIPageViewController {
-
-//    init() {
-//        self.transitionStyle = .scroll
-//        self.navigationOrientation = .horizontal
-//    }
     
     lazy var pageList: [UIViewController] = {
         let firstPageVC = NFTViewController()
@@ -43,6 +38,7 @@ extension ModalPageViewController: UIPageViewControllerDelegate, UIPageViewContr
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let vcIndex = pageList.firstIndex(of: viewController) else { return nil }
         let prevIndex = vcIndex-1
+        
         guard prevIndex >= 0 else {
             return nil
         }
@@ -52,11 +48,28 @@ extension ModalPageViewController: UIPageViewControllerDelegate, UIPageViewContr
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let vcIndex = pageList.firstIndex(of: viewController) else { return nil }
-            let nextIndex = vcIndex + 1
-            guard nextIndex < pageList.count else {
-                return nil
+        let nextIndex = vcIndex + 1
+        
+        guard nextIndex < pageList.count else {
+            return nil
+        }
+        guard pageList.count > nextIndex else { return nil }
+        return pageList[nextIndex]
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        let parentVC = self.parent as? MyPageViewController
+        var tag: Int
+        if completed {
+            switch viewControllers?.first {
+            case is NFTViewController :
+                tag = 0
+            case is MILEViewController:
+                tag = 1
+            default:
+                tag = 2
             }
-            guard pageList.count > nextIndex else { return nil }
-            return pageList[nextIndex]
+            parentVC?.buttonMotion(tag: tag)
+        }
     }
 }

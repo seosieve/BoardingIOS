@@ -8,79 +8,58 @@
 import UIKit
 import Then
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class MILEViewController: UIViewController {
 
-    var divider = UIView().then {
-        $0.backgroundColor = UITableView().separatorColor
-    }
+    let tag = 1
+    let modalClosed = BehaviorRelay<Bool>(value: true)
+    let disposeBag = DisposeBag()
     
-    var linkView = UIView()
+    var MILEScrollView = UIScrollView()
     
-    var linkMainLabel = UILabel().then {
-        $0.text = "암호화폐 지갑을 연동해주세요"
-        $0.font = Pretendard.medium(24)
-        $0.textColor = Gray.dark
-    }
-    
-    var linkSubLabel = UILabel().then {
-        $0.text = "다른 유저들이 회원님의 NFT를\n사용하면 Mile 토큰을 받을 수 있습니다.\n리워드를 모아 새로운 여행을 떠나보세요!"
-        $0.font = Pretendard.regular(18)
-        $0.textColor = Gray.dark
-        $0.textAlignment = .center
-        $0.numberOfLines = 0
-    }
-    
-    lazy var linkButton = UIButton().then {
-        $0.setTitle("연동하기", for: .normal)
-        $0.setTitleColor(Gray.white, for: .normal)
-        $0.backgroundColor = Boarding.blue
-        $0.layer.cornerRadius = 8
-        $0.addTarget(self, action: #selector(linkButtonPressed), for: .touchUpInside)
-    }
-    
-    @objc func linkButtonPressed() {
-        print("linkButton Pressed")
-    }
+    var MILEContentView = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.setNavigationBar()
-        self.view.backgroundColor = .red
+        self.view.backgroundColor = Gray.bright
+        MILEScrollView.delegate = self
         setViews()
+        setRx()
     }
     
     func setViews() {
-        view.addSubview(divider)
-        divider.snp.makeConstraints { make in
-            make.top.equalTo(self.navigationController!.navigationBar.bottom())
-            make.centerX.left.equalToSuperview()
-            make.height.equalTo(0.3)
+        view.addSubview(MILEScrollView)
+        MILEScrollView.addSubview(MILEContentView)
+        MILEScrollView.snp.makeConstraints { make in
+            make.left.right.bottom.equalToSuperview()
+            make.top.equalToSuperview()
         }
-        
-        view.addSubview(linkView)
-        linkView.snp.makeConstraints { make in
-            make.centerX.centerY.left.equalToSuperview()
-            make.height.equalTo(280)
+        MILEContentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalToSuperview()
+            make.height.equalTo(450)
         }
-        
-        linkView.addSubview(linkMainLabel)
-        linkView.addSubview(linkSubLabel)
-        linkView.addSubview(linkButton)
-        linkMainLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(10)
-            make.centerX.equalToSuperview()
-        }
-        linkSubLabel.snp.makeConstraints { make in
-            make.top.equalTo(linkMainLabel.snp.bottom).offset(50)
-            make.centerX.equalToSuperview()
-            make.left.equalToSuperview().offset(50)
-        }
-        linkButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.left.equalToSuperview().offset(24)
-            make.bottom.equalToSuperview().inset(10)
-            make.height.equalTo(50)
+    }
+    
+    func setRx() {
+        modalClosed.subscribe(onNext: { isClosed in
+            if isClosed {
+                self.MILEScrollView.isScrollEnabled = false
+            } else {
+                self.MILEScrollView.isScrollEnabled = true
+            }
+        })
+        .disposed(by: disposeBag)
+    }
+}
+
+//MARK: - UIScrollView
+extension MILEViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y <= 0 {
+            scrollView.isScrollEnabled = false
         }
     }
 }

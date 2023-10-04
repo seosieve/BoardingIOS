@@ -92,7 +92,23 @@ class MyPageViewController: UIViewController {
                 }
                 self.view.layoutIfNeeded()
             }, completion: nil)
-            
+            //ScrollView, PageView 스크롤 꼬임방지 Relay 설정
+            modalPageViewController.pageList.forEach { vc in
+                switch vc {
+                case is NFTViewController:
+                    if let vc = vc as? NFTViewController {
+                        vc.modalClosed.accept(shouldClose)
+                    }
+                case is MILEViewController:
+                    if let vc = vc as? MILEViewController {
+                        vc.modalClosed.accept(shouldClose)
+                    }
+                default:
+                    if let vc = vc as? ExpertLevelViewController {
+                        vc.modalClosed.accept(shouldClose)
+                    }
+                }
+            }
         default:
             break
         }
@@ -137,7 +153,8 @@ class MyPageViewController: UIViewController {
     }
     
     @objc func myPageButtonPressed(sender: UIButton!) {
-        buttonSelectEffect(sender)
+        buttonMotion(tag: sender.tag)
+        pageViewMotion(tag: sender.tag)
     }
 
     var divider = UIView().then {
@@ -235,7 +252,7 @@ class MyPageViewController: UIViewController {
         addChild(modalPageViewController)
         modalView.addSubview(modalPageViewController.view)
         modalPageViewController.view.snp.makeConstraints { make in
-            make.top.equalTo(selectedDivider.snp.bottom).offset(20)
+            make.top.equalTo(selectedDivider.snp.bottom)
             make.centerX.left.equalToSuperview()
             make.bottom.equalToSuperview().offset(150)
         }
@@ -287,26 +304,25 @@ class MyPageViewController: UIViewController {
         userAchievementStackView.addArrangedSubview(userAchieveItem3)
     }
     
-    func buttonSelectEffect(_ sender: UIButton!) {
+    func buttonMotion(tag: Int) {
         var constraint: (CGFloat, CGFloat)
+        switch tag {
+        case 0:
+            constraint = (0, buttonWidth + 20)
+        case 1:
+            constraint = (buttonWidth + 20, buttonWidth)
+        default:
+            constraint = (buttonWidth * 2 + 20, buttonWidth + 20)
+        }
         
         [NFTButton, MILEButton, ExpertButton].forEach { button in
-            if button == sender {
+            if button.tag == tag {
                 button.isSelected = true
                 button.titleLabel?.font = Pretendard.semiBold(17)
             } else {
                 button.isSelected = false
                 button.titleLabel?.font = Pretendard.regular(17)
             }
-        }
-        
-        switch sender {
-        case NFTButton:
-            constraint = (0, buttonWidth + 20)
-        case MILEButton:
-            constraint = (buttonWidth + 20, buttonWidth)
-        default:
-            constraint = (buttonWidth * 2 + 20, buttonWidth + 20)
         }
         
         UIView.animate(withDuration: 0.3) {
@@ -316,8 +332,20 @@ class MyPageViewController: UIViewController {
             }
             self.view.layoutIfNeeded()
         }
+    }
+    
+    func pageViewMotion(tag: Int) {
+        var forward: Bool
+        switch tag {
+        case 0:
+            forward = false
+        case 1:
+            forward = (NFTButton.titleLabel?.textColor == Boarding.blue) ? true : false
+        default:
+            forward = true
+        }
         
-        modalPageViewController.moveFromIndex(index: sender.tag)
+        modalPageViewController.moveFromIndex(index: tag, forward: forward)
     }
     
     func setRx() {

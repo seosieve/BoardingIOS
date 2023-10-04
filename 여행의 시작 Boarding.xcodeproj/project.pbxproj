@@ -17,6 +17,7 @@
 		4E2DDF562AB80A5200C7F4B9 /* PreferenceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DDF552AB80A5200C7F4B9 /* PreferenceViewModel.swift */; };
 		4E2DDF582AB92C2400C7F4B9 /* LogInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DDF572AB92C2400C7F4B9 /* LogInViewModel.swift */; };
 		4E44FB952ACAAA320021FAB9 /* ModalPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FB942ACAAA320021FAB9 /* ModalPageViewController.swift */; };
+		4E44FB972ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FB962ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift */; };
 		4E4FF3CC2AB3255B0042126A /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4FF3CB2AB3255B0042126A /* LogInViewController.swift */; };
 		4E4FF3CE2AB326CC0042126A /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4FF3CD2AB326CC0042126A /* StartViewController.swift */; };
 		4E7D52E62AC41AF200054800 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E52AC41AF200054800 /* SplashViewController.swift */; };
@@ -71,6 +72,7 @@
 		4E2DDF552AB80A5200C7F4B9 /* PreferenceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceViewModel.swift; sourceTree = "<group>"; };
 		4E2DDF572AB92C2400C7F4B9 /* LogInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewModel.swift; sourceTree = "<group>"; };
 		4E44FB942ACAAA320021FAB9 /* ModalPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalPageViewController.swift; sourceTree = "<group>"; };
+		4E44FB962ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCollectionViewCell.swift; sourceTree = "<group>"; };
 		4E4FF3CB2AB3255B0042126A /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		4E4FF3CD2AB326CC0042126A /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		4E7D52E52AC41AF200054800 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 				4EECA7DC2A2C820F006FB764 /* PlaceCollectionViewCell.swift */,
 				4EECA7EB2A2F0013006FB764 /* RecordCollectionViewCell.swift */,
 				4EECA7ED2A2F2148006FB764 /* MenuTableViewCell.swift */,
+				4E44FB962ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -430,6 +433,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E4FF3CC2AB3255B0042126A /* LogInViewController.swift in Sources */,
+				4E44FB972ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift in Sources */,
 				4EECA62C2A29BECF006FB764 /* HomeViewController.swift in Sources */,
 				4E4FF3CE2AB326CC0042126A /* StartViewController.swift in Sources */,
 				4E7D52E82AC41B0100054800 /* SplashViewModel.swift in Sources */,
