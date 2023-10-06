@@ -1,22 +1,22 @@
 //
-//  NFTTicketViewController.swift
+//  NFTDetailViewController.swift
 //  여행의 시작 Boarding
 //
-//  Created by 서충원 on 2023/08/30.
+//  Created by 서충원 on 2023/10/06.
 //
 
 import UIKit
-import Then
-import SnapKit
 
-class NFTTicketViewController: UIViewController {
-
-    var image: UIImage?
+class NFTDetailViewController: UIViewController {
+    
+    var image = UIImage(named: "France3")
     var isFlipped = false
     let NFTTitle = ["위치", "시간", "날씨", "카테고리", "평점"]
     let NFTInfo = ["finns, 덴파사르", "2023.06.05.  12:30PM", "맑음, 30°C", "맛집", "5.0"]
     let QRTitle = ["Contract Address", "Token ID", "Token Standard", "Chain"]
     let QRInfo = ["FINNS", "13DE79TA23", "Standard", "76$A@*YSD"]
+    
+    var rotate = false
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
@@ -29,32 +29,8 @@ class NFTTicketViewController: UIViewController {
     
     var backgroundVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
     
-    var mainLabel = UILabel().then {
-        $0.text = "NFT 등록이 완료되었습니다!"
-        $0.font = Pretendard.extraBold(24)
-        $0.textColor = Gray.white
-    }
-    
-    lazy var completeButton = UIButton().then {
-        $0.setTitle("완료", for: .normal)
-        $0.setTitleColor(Gray.white, for: .normal)
-        $0.titleLabel?.font = Pretendard.semiBold(18)
-        $0.backgroundColor = Boarding.blue
-        $0.addTarget(self, action: #selector(completeButtonPressed), for: .touchUpInside)
-    }
-    
-    @objc func completeButtonPressed() {
-        FirebaseStorageManager.uploadImage(image: image!, pathRoot: "aa") { url in
-            if let url = url {
-                UserDefaults.standard.set(url.absoluteString, forKey: "myImageUrl")
-                self.title = "이미지 업로드 완료"
-            }
-        }
-        
-        let vc = TabBarViewController()
-        vc.modalPresentationStyle = .fullScreen
-        vc.modalTransitionStyle = .crossDissolve
-        present(vc, animated: true)
+    var NFTStatusView = UIView().then {
+        $0.backgroundColor = Gray.white
     }
     
     var NFTView = UIView()
@@ -122,11 +98,18 @@ class NFTTicketViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.isNavigationBarHidden = true
-        view.backgroundColor = Gray.white
+        self.navigationController?.navigationBar.setNavigationBar()
+        self.navigationController?.navigationBar.tintColor = Gray.white
+        view.backgroundColor = .white
         let tap = UITapGestureRecognizer(target: self, action: #selector(flipNFT))
         NFTView.addGestureRecognizer(tap)
         setViews()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        backgroundFullImageView.alpha = 0
+        self.navigationController?.navigationBar.isHidden = true
     }
     
     func setViews() {
@@ -139,32 +122,21 @@ class NFTTicketViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         
-        view.addSubview(mainLabel)
-        mainLabel.snp.makeConstraints { make in
+        view.addSubview(NFTStatusView)
+        NFTStatusView.snp.makeConstraints { make in
+            make.left.equalToSuperview()
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(99)
+            make.height.equalTo(160)
+            make.bottom.equalToSuperview()
         }
-        
-        view.addSubview(completeButton)
-        completeButton.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(24)
-            make.centerX.equalToSuperview()
-            make.height.equalTo(50)
-            make.bottom.equalToSuperview().inset(30)
-        }
-        completeButton.rounded(axis: .horizontal)
         
         view.addSubview(NFTView)
         NFTView.snp.makeConstraints { make in
-            make.top.equalTo(mainLabel.snp.bottom).offset(32)
-            make.bottom.equalTo(completeButton.snp.top).offset(-61)
+            make.top.equalTo(self.navigationController!.navigationBar.bottom()+20)
+            make.bottom.equalTo(NFTStatusView.snp.top).offset(-32)
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(24)
         }
-        NFTView.layer.shadowOffset = CGSize(width:2, height:2)
-        NFTView.layer.shadowRadius = 6
-        NFTView.layer.shadowColor = UIColor.black.cgColor
-        NFTView.layer.shadowOpacity = 0.3
         
         //NFTTitleView
         NFTView.addSubview(NFTTitleView)

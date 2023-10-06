@@ -52,7 +52,7 @@ class CameraCustomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
-        view.backgroundColor = Gray.white
+        view.backgroundColor = Gray.black
         setViews()
     }
     

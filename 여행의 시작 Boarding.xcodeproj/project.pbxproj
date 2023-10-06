@@ -18,6 +18,8 @@
 		4E2DDF582AB92C2400C7F4B9 /* LogInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DDF572AB92C2400C7F4B9 /* LogInViewModel.swift */; };
 		4E44FB952ACAAA320021FAB9 /* ModalPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FB942ACAAA320021FAB9 /* ModalPageViewController.swift */; };
 		4E44FB972ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FB962ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift */; };
+		4E44FB992ACFD9D80021FAB9 /* NFTDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FB982ACFD9D80021FAB9 /* NFTDetailViewController.swift */; };
+		4E44FB9B2AD050F60021FAB9 /* WrittingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FB9A2AD050F60021FAB9 /* WrittingViewModel.swift */; };
 		4E4FF3CC2AB3255B0042126A /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4FF3CB2AB3255B0042126A /* LogInViewController.swift */; };
 		4E4FF3CE2AB326CC0042126A /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4FF3CD2AB326CC0042126A /* StartViewController.swift */; };
 		4E7D52E62AC41AF200054800 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E52AC41AF200054800 /* SplashViewController.swift */; };
@@ -73,6 +75,8 @@
 		4E2DDF572AB92C2400C7F4B9 /* LogInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewModel.swift; sourceTree = "<group>"; };
 		4E44FB942ACAAA320021FAB9 /* ModalPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalPageViewController.swift; sourceTree = "<group>"; };
 		4E44FB962ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCollectionViewCell.swift; sourceTree = "<group>"; };
+		4E44FB982ACFD9D80021FAB9 /* NFTDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTDetailViewController.swift; sourceTree = "<group>"; };
+		4E44FB9A2AD050F60021FAB9 /* WrittingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrittingViewModel.swift; sourceTree = "<group>"; };
 		4E4FF3CB2AB3255B0042126A /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		4E4FF3CD2AB326CC0042126A /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		4E7D52E52AC41AF200054800 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
@@ -264,6 +268,7 @@
 				4E7D52E92AC6FD0000054800 /* MyPageViewModel.swift */,
 				4E44FB942ACAAA320021FAB9 /* ModalPageViewController.swift */,
 				4EECA7EF2A2F2968006FB764 /* NFTViewController.swift */,
+				4E44FB982ACFD9D80021FAB9 /* NFTDetailViewController.swift */,
 				4EECA7F12A2F3213006FB764 /* MILEViewController.swift */,
 				4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */,
 				4E2DDF532AB8050600C7F4B9 /* PreferenceViewController.swift */,
@@ -280,6 +285,7 @@
 				4E19AA602A80FB3A00213589 /* TestViewController.swift */,
 				4E19AA662A83E4F100213589 /* CameraCustomViewController.swift */,
 				4E1EB4202AA47F8000620D57 /* WrittingViewController.swift */,
+				4E44FB9A2AD050F60021FAB9 /* WrittingViewModel.swift */,
 				4E19AA682A9F1A7300213589 /* NFTTicketViewController.swift */,
 			);
 			path = Camera;
@@ -450,6 +456,7 @@
 				4EECA63C2A29C1DF006FB764 /* PlanViewController.swift in Sources */,
 				4EECA63E2A29C1F6006FB764 /* RecordViewController.swift in Sources */,
 				4EECA7EC2A2F0013006FB764 /* RecordCollectionViewCell.swift in Sources */,
+				4E44FB992ACFD9D80021FAB9 /* NFTDetailViewController.swift in Sources */,
 				4E1EB4212AA47F8000620D57 /* WrittingViewController.swift in Sources */,
 				4EECA7E12A2DD179006FB764 /* FullScreenViewController.swift in Sources */,
 				4E44FB952ACAAA320021FAB9 /* ModalPageViewController.swift in Sources */,
@@ -458,6 +465,7 @@
 				4E7D52E62AC41AF200054800 /* SplashViewController.swift in Sources */,
 				4E19AA672A83E4F100213589 /* CameraCustomViewController.swift in Sources */,
 				4EA7AFC42AA6D0E40055F4C7 /* HomeTableViewCell.swift in Sources */,
+				4E44FB9B2AD050F60021FAB9 /* WrittingViewModel.swift in Sources */,
 				4E8B35A92A70DFCE00AD2C72 /* CameraViewModel.swift in Sources */,
 				4EECA7DF2A2DC352006FB764 /* ScheduleCollectionViewCell.swift in Sources */,
 				4EECA7EE2A2F2148006FB764 /* MenuTableViewCell.swift in Sources */,

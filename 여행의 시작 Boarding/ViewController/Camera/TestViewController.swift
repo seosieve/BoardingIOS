@@ -54,7 +54,11 @@ class TestViewController: UIViewController {
     }
     
     @objc func cameraButtonPressed() {
-        
+        let cameraVC = CameraCustomViewController()
+        let vc = ChangableNavigationController(rootViewController: cameraVC)
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: true)
     }
     
     lazy var switchButton = UIButton().then {

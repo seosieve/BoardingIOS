@@ -14,7 +14,7 @@ import RxCocoa
 class NFTViewController: UIViewController {
 
     let tag = 0
-    let cellCount = 15
+    let cellCount = 25
     let modalClosed = BehaviorRelay<Bool>(value: true)
     let disposeBag = DisposeBag()
     
@@ -22,8 +22,8 @@ class NFTViewController: UIViewController {
     
     var NFTContentView = UIView()
     
-    var NFTnumberLabel = UILabel().then {
-        $0.text = "총 36개"
+    lazy var NFTnumberLabel = UILabel().then {
+        $0.text = "총 \(cellCount)개"
         $0.textColor = Gray.dark
         $0.font = Pretendard.regular(17)
     }
@@ -33,10 +33,24 @@ class NFTViewController: UIViewController {
         $0.setTitle("등록순", for: .normal)
         $0.setTitleColor(Gray.dark, for: .normal)
         $0.titleLabel?.font = Pretendard.regular(16)
+        $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 5)
+        $0.semanticContentAttribute = .forceRightToLeft
+        let registrationOrder = UIAction(title: "등록순", state: .on, handler: { _ in
+            print("등록순")
+        })
+        let popularityOrder = UIAction(title: "인기순", handler: { _ in
+            print("인기순")
+        })
+        let recommendationOrder = UIAction(title: "추천순", handler: { _ in
+            print("추천순") })
+        $0.menu = UIMenu(options: .displayInline, children: [registrationOrder, popularityOrder, recommendationOrder])
+        $0.showsMenuAsPrimaryAction = true
+        $0.changesSelectionAsPrimaryAction = true
     }
     
     var NFTCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
-        $0.backgroundColor = .red
+        $0.backgroundColor = .clear
         var layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 10
         $0.collectionViewLayout = layout
@@ -52,8 +66,7 @@ class NFTViewController: UIViewController {
         NFTCollectionView.register(NFTCollectionViewCell.self, forCellWithReuseIdentifier: "NFTCollectionViewCell")
         setViews()
         setRx()
-        updateCollectionViewHeight()
-        updateScrollViewHeight()
+        updateViewHeight()
     }
     
     func setViews() {
@@ -66,7 +79,7 @@ class NFTViewController: UIViewController {
         NFTContentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalToSuperview()
-            make.height.equalTo(3000)
+            make.height.equalTo(1)
         }
         
         NFTContentView.addSubview(NFTnumberLabel)
@@ -77,13 +90,14 @@ class NFTViewController: UIViewController {
         
         NFTContentView.addSubview(sortButton)
         sortButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(14)
+            make.top.equalToSuperview().offset(0)
             make.right.equalToSuperview().offset(-20)
+            make.height.equalTo(50)
         }
         
         NFTContentView.addSubview(NFTCollectionView)
         NFTCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(NFTnumberLabel.snp.bottom).offset(14)
+            make.top.equalToSuperview().offset(50)
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(20)
             make.height.equalTo(1)
@@ -101,19 +115,18 @@ class NFTViewController: UIViewController {
         .disposed(by: disposeBag)
     }
     
-    func updateCollectionViewHeight() {
-        let width = (view.bounds.width - 50)/2
+    func updateViewHeight() {
+        // UICollectionView, ScrollContentView의 높이를 업데이트
+        let width = (view.bounds.width - 54)/2
         let height = width*4/3 + 10
         let numberOfCells = ceil(Double(cellCount)/Double(2))
-        print(numberOfCells)
+        let totalHeight = height * numberOfCells
         NFTCollectionView.snp.updateConstraints { make in
-            make.height.equalTo(height*numberOfCells)
+            make.height.equalTo(totalHeight)
         }
-    }
-    
-    func updateScrollViewHeight() {
-        // UIScrollView의 높이를 업데이트
-        
+        NFTContentView.snp.updateConstraints { make in
+            make.height.equalTo(totalHeight + 250)
+        }
     }
 }
 
@@ -139,8 +152,15 @@ extension NFTViewController: UICollectionViewDelegate, UICollectionViewDelegateF
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (view.bounds.width - 50)/2
+        let width = (view.bounds.width - 54)/2
         let height = width*4/3
         return CGSize(width: width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let presentingVC = self.parent?.parent as? MyPageViewController
+        let vc = NFTDetailViewController()
+        vc.hidesBottomBarWhenPushed = true
+        presentingVC?.navigationController?.pushViewController(vc, animated: true)
     }
 }

@@ -354,7 +354,7 @@ class WrittingViewController: UIViewController {
         categoryScrollView.snp.makeConstraints { make in
             make.top.equalTo(categoryLabel.snp.bottom).offset(12)
             make.left.centerX.equalToSuperview()
-            make.height.equalTo(24)
+            make.height.equalTo(32)
         }
         
         categoryScrollView.addSubview(categoryStackView)
@@ -366,18 +366,18 @@ class WrittingViewController: UIViewController {
             lazy var button = UIButton().then {
                 $0.setBackgroundColor(Gray.white, for: .normal)
                 $0.setBackgroundColor(Boarding.blue, for: .selected)
-                $0.setTitleColor(Boarding.blue, for: .normal)
+                $0.setTitleColor(Gray.medium, for: .normal)
                 $0.setTitleColor(Gray.white, for: .selected)
                 $0.setTitle(categoryArr[index], for: .normal)
                 $0.titleLabel?.font = Pretendard.regular(14)
                 $0.layer.masksToBounds = true
-                $0.layer.cornerRadius = 4
+                $0.layer.cornerRadius = 16
                 $0.layer.borderWidth = 1
-                $0.layer.borderColor = Boarding.blue.cgColor
+                $0.layer.borderColor = Gray.bright.cgColor
                 $0.addTarget(self, action: #selector(categorySelected), for: .touchUpInside)
             }
             button.snp.makeConstraints { make in
-                make.width.equalTo((button.intrinsicContentSize.width + 20))
+                make.width.equalTo((button.intrinsicContentSize.width + 24))
             }
             categoryStackView.addArrangedSubview(button)
         }

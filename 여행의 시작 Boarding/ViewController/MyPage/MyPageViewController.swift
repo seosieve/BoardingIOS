@@ -153,8 +153,8 @@ class MyPageViewController: UIViewController {
     }
     
     @objc func myPageButtonPressed(sender: UIButton!) {
-        buttonMotion(tag: sender.tag)
         pageViewMotion(tag: sender.tag)
+        buttonMotion(tag: sender.tag)
     }
 
     var divider = UIView().then {
@@ -304,6 +304,21 @@ class MyPageViewController: UIViewController {
         userAchievementStackView.addArrangedSubview(userAchieveItem3)
     }
     
+    func pageViewMotion(tag: Int) {
+        var forward: Bool
+        switch tag {
+        case 0:
+            forward = false
+        case 1:
+            forward = (NFTButton.isSelected) ? true : false
+        default:
+            forward = true
+        }
+        
+        modalPageViewController.moveFromIndex(index: tag, forward: forward)
+    }
+
+    
     func buttonMotion(tag: Int) {
         var constraint: (CGFloat, CGFloat)
         switch tag {
@@ -332,20 +347,6 @@ class MyPageViewController: UIViewController {
             }
             self.view.layoutIfNeeded()
         }
-    }
-    
-    func pageViewMotion(tag: Int) {
-        var forward: Bool
-        switch tag {
-        case 0:
-            forward = false
-        case 1:
-            forward = (NFTButton.titleLabel?.textColor == Boarding.blue) ? true : false
-        default:
-            forward = true
-        }
-        
-        modalPageViewController.moveFromIndex(index: tag, forward: forward)
     }
     
     func setRx() {
