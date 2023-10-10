@@ -55,7 +55,6 @@ class NewHomeViewController: UIViewController {
         homeTableView.register(HomeTableViewCell.self, forCellReuseIdentifier: "homeTableViewCell")
         setViews()
         
-        
         if let user = Auth.auth().currentUser {
             let uid = user.uid
             let email = user.email

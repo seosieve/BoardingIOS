@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class TabBarViewController: UITabBarController {
     
@@ -46,7 +47,7 @@ class TabBarViewController: UITabBarController {
         recordVC.tabBarItem.title = "기록"
         recordVC.tabBarItem.titlePositionAdjustment = UIOffset(horizontal: 30, vertical: 0)
         
-        let myPageVC = UINavigationController(rootViewController: MyPageViewController())
+        let myPageVC = ChangableNavigationController(rootViewController: MyPageViewController())
         myPageVC.tabBarItem.image = UIImage(named: "MyPage")
         myPageVC.tabBarItem.title = "마이페이지"
         myPageVC.tabBarItem.titlePositionAdjustment = UIOffset(horizontal: 5, vertical: 0)
@@ -55,11 +56,41 @@ class TabBarViewController: UITabBarController {
     }
     
     func cameraButtonPressed() {
-//        let cameraVC = CameraViewController()
-        
-        let cameraVC = TestViewController()
-        cameraVC.modalPresentationStyle = .overCurrentContext
-        cameraVC.modalTransitionStyle = .coverVertical
-        self.present(cameraVC, animated: true)
+        #if targetEnvironment(simulator)
+        fatalError()
+        #endif
+        // 카메라 권한 취소되어있을 때 Alert
+        AVCaptureDevice.requestAccess(for: .video) { [weak self] isAuthorized in
+            if isAuthorized {
+                self?.openCamera()
+            } else {
+                self?.goSetting()
+            }
+        }
+    }
+    
+    func goSetting() {
+        let alert = UIAlertController(title: "현재 카메라 사용에 대한 접근 권한이 없습니다.", message: "설정 > Boarding탭에서 접근을 활성화 할 수 있습니다.", preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "취소", style: .cancel) { _ in
+            alert.dismiss(animated: true, completion: nil)
+        }
+        let confirm = UIAlertAction(title: "설정으로 이동하기", style: .default) { _ in
+            guard let settingURL = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(settingURL) else { return }
+            UIApplication.shared.open(settingURL, options: [:])
+        }
+        alert.addAction(cancel)
+        alert.addAction(confirm)
+        DispatchQueue.main.async {
+            self.present(alert, animated: true)
+        }
+    }
+    
+    func openCamera() {
+        DispatchQueue.main.async {
+            let cameraVC = TestViewController()
+            cameraVC.modalPresentationStyle = .overCurrentContext
+            cameraVC.modalTransitionStyle = .coverVertical
+            self.present(cameraVC, animated: true)
+        }
     }
 }

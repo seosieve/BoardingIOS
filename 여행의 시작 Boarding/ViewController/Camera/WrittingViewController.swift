@@ -6,17 +6,23 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class WrittingViewController: UIViewController {
     
     var feedbackGenerator: UIImpactFeedbackGenerator?
     
     var image: UIImage?
+    var dummyText = ["팔레 루아얄, 파리", "2023.09.01.  12:32", "맑음, 25°C"]
     let reviewPlaceHolder = "장소에 대한 경험을 이야기해주세요. (타인에 대한 비방, 잘못된 정보의 경우에는 협의 후 삭제조치될 수 있습니다)"
     var scoreArr = [false, false, false, false, false]
-    var currentScore = 0
+    var currentScore = BehaviorRelay<Int>(value: 0)
     var categoryArr = ["관광", "휴양", "액티비티", "맛집", "숙소", "페스티벌"]
     var selectedCategoryArr = [String]()
+    
+    let viewModel = WrittingViewModel()
+    let disposeBag = DisposeBag()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .darkContent
@@ -149,6 +155,7 @@ class WrittingViewController: UIViewController {
         let pan = UIPanGestureRecognizer(target: self, action: #selector(detectScore))
         scoreStackView.addGestureRecognizer(pan)
         setViews()
+        setRx()
     }
     
     @objc func keyboardWillShow(_ sender: Notification) {
@@ -169,10 +176,9 @@ class WrittingViewController: UIViewController {
         let starScore = Int(round(score))
         
         //Vibrate Feedback
-        if currentScore != starScore {
+        if currentScore.value != starScore {
             feedbackGenerator?.impactOccurred()
-            currentScore = starScore
-            print(currentScore)
+            currentScore.accept(starScore)
         }
         
         //Draw Star
@@ -235,7 +241,7 @@ class WrittingViewController: UIViewController {
             make.height.equalTo(photoView)
             make.right.equalToSuperview().inset(24)
         }
-        for _ in 0...2 {
+        for index in 0...2 {
             let subview = UIView().then {
                 $0.backgroundColor = Gray.white
             }
@@ -245,7 +251,7 @@ class WrittingViewController: UIViewController {
                 $0.font = Pretendard.semiBold(16)
             }
             let subLabel = UILabel().then {
-                $0.text = "어쩌고정원, 파리"
+                $0.text = dummyText[index]
                 $0.textColor = Gray.dark
                 $0.font = Pretendard.regular(14)
             }
@@ -396,6 +402,34 @@ class WrittingViewController: UIViewController {
         return UIView().then {
             $0.backgroundColor = Gray.light.withAlphaComponent(0.4)
         }
+    }
+    
+    func setRx() {
+        titleTextField.rx.text.orEmpty
+            .bind(to: viewModel.title)
+            .disposed(by: disposeBag)
+        
+        reviewTextView.rx.text.orEmpty
+            .bind(to: viewModel.mainText)
+            .disposed(by: disposeBag)
+        
+        currentScore
+            .bind(to: viewModel.starPoint)
+            .disposed(by: disposeBag)
+        
+        viewModel.dataValid
+            .subscribe(onNext: { bool in
+                print(bool)
+            })
+            .disposed(by: disposeBag)
+        
+        
+        
+        completeButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.NFTWrite()
+            })
+            .disposed(by: disposeBag)
     }
 }
 

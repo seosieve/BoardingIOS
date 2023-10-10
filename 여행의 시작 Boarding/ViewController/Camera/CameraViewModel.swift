@@ -2,71 +2,81 @@
 //  CameraViewModel.swift
 //  여행의 시작 Boarding
 //
-//  Created by 서충원 on 2023/07/26.
+//  Created by 서충원 on 2023/10/10.
 //
 
-import UIKit
-import FirebaseStorage
+import Foundation
+import Photos
+import CoreLocation
+import RxSwift
+import RxCocoa
 
-class FirebaseStorageManager {
-    static func uploadImage(image: UIImage, pathRoot: String, completion: @escaping (URL?) -> Void) {
-        guard let imageData = image.jpegData(compressionQuality: 0.4) else { return }
-        let metaData = StorageMetadata()
-        metaData.contentType = "image/jpeg"
-        
-        let imageName = UUID().uuidString + String(Date().timeIntervalSince1970)
-        
-        let firebaseReference = Storage.storage().reference().child("\(imageName)")
-        firebaseReference.putData(imageData, metadata: metaData) { metaData, error in
-            firebaseReference.downloadURL { url, _ in
-                completion(url)
-            }
-        }
-    }
+class CameraViewModel {
+    let selectImage = BehaviorRelay<UIImage?>(value: nil)
     
-    static func uploadVideo(url: URL, pathRoot: String, completion: @escaping (URL?) -> Void) {
-        do {
-            let videoData = try Data(contentsOf: url)
-            let metaData = StorageMetadata()
-            metaData.contentType = "video/mp4"
-            let imageName = "\(String(Date().timeIntervalSince1970)).mp4"
-            let firebaseReference = Storage.storage().reference().child("\(imageName)")
-            firebaseReference.putData(videoData, metadata: metaData) { metaData, error in
-                firebaseReference.downloadURL { url, _ in
-                    completion(url)
-                }
-            }
-        } catch let error {
-            print(error.localizedDescription)
-        }
-
-    }
-    
-    static func downloadImage(urlString: String, completion: @escaping (UIImage?) -> Void) {
-        let storageReference = Storage.storage().reference(forURL: urlString)
-        let megaByte = Int64(1*1024*1024)
-        
-        storageReference.getData(maxSize: megaByte) { data, error in
-            guard let imageData = data else {
-                completion(nil)
-                return
-            }
-            completion(UIImage(data: imageData))
-        }
-    }
-    
-    static func downloadVideo(urlString: String, completion: @escaping (UIImage?) -> Void) {
-        let storageReference = Storage.storage().reference(forURL: urlString)
-        let megaByte = Int64(1*1024*1024)
-        
-        storageReference.getData(maxSize: megaByte) { data, error in
-            guard let imageData = data else {
-                completion(nil)
-                return
-            }
-            completion(UIImage(data: imageData))
+    func pickImage(_ viewController: UIViewController) {
+        ImagePickerManager.shared.pickImage(from: viewController) { [weak self] image in
+            self?.selectImage.accept(image)
         }
     }
 }
 
-
+class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    static let shared = ImagePickerManager()
+    var imagePicker = UIImagePickerController()
+    var imagePickerSubject = PublishSubject<UIImage?>()
+    var locationSubject = PublishSubject<St?>()
+    
+    let disposeBag = DisposeBag()
+    
+    func pickImage(from viewController: UIViewController, completion: @escaping (UIImage?) -> Void) {
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.mediaTypes = ["public.image", "public.movie"]
+        imagePicker.modalPresentationStyle = .fullScreen
+        viewController.present(imagePicker, animated: true)
+        
+        imagePickerSubject
+            .take(1)
+            .subscribe(onNext: { image in
+                completion(image)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let mediaType = info[.mediaType] as! NSString
+        if mediaType == "public.movie" {
+            print("movie")
+        } else {
+            let pickedImage = info[.originalImage] as! UIImage
+            imagePickerSubject.onNext(pickedImage)
+            
+        }
+        picker.dismiss(animated: true)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        imagePickerSubject.onNext(nil)
+        picker.dismiss(animated: true)
+    }
+    
+    func fetchImage(info: [UIImagePickerController.InfoKey : Any]) {
+        if let asset = info[.phAsset] as? PHAsset {
+            if let location = asset.location {
+                print(String(location.coordinate.latitude))
+                print(String(location.coordinate.longitude))
+                
+//                getPlacemarkFromCoordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude) { aa in
+//                    print(aa)
+//                }
+            }
+            if let unFormattedDate = asset.creationDate {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
+                let a = dateFormatter.string(from: unFormattedDate)
+                print(a)
+            }
+        }
+    }
+}

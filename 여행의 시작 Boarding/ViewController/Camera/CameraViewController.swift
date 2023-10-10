@@ -1,23 +1,42 @@
 //
-//  CameraViewController.swift
+//  TestViewController.swift
 //  여행의 시작 Boarding
 //
-//  Created by 서충원 on 2023/07/26.
+//  Created by 서충원 on 2023/08/07.
 //
 
 import UIKit
-import AVKit
+import AVFoundation
+import RxSwift
+import RxCocoa
 
-class CameraViewController: UIViewController {
-
+class TestViewController: UIViewController {
+    
     let picker = UIImagePickerController()
-    var player: AVPlayer?
-    var videoURL: URL?
+    
+    var captureSession: AVCaptureSession?
+    var videoPreviewLayer: AVCaptureVideoPreviewLayer?
+    var captureOutput: AVCaptureMovieFileOutput?
+    
+    var location: String = ""
+    var time: String = ""
+    var weather: String = ""
+    
+    let viewModel = CameraViewModel()
+    let disposeBag = DisposeBag()
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
+    
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return .fade
+    }
     
     lazy var backButton = UIButton().then {
         let image = UIImage(named: "Back")?.withRenderingMode(.alwaysTemplate)
         $0.setImage(image, for: .normal)
-        $0.tintColor = .systemPink
+        $0.tintColor = Gray.white
         $0.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
     }
     
@@ -25,61 +44,65 @@ class CameraViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
-    lazy var pickerButton = UIButton().then {
-        $0.setTitle("이미지 업로드", for: .normal)
-        $0.setTitleColor(.systemBlue, for: .normal)
-        $0.setTitleColor(.blue, for: .highlighted)
-        $0.addTarget(self, action: #selector(pickerButtonPressed), for: .touchUpInside)
+    var albumButton = UIButton().then {
+        $0.setImage(UIImage(named: "Album"), for: .normal)
     }
     
-    @objc func pickerButtonPressed() {
-        picker.sourceType = .photoLibrary
-        picker.mediaTypes = ["public.image", "public.movie"]
-        present(picker, animated: true)
+    lazy var cameraButton = UIButton().then {
+        $0.setImage(UIImage(named: "Camera"), for: .normal)
+        $0.addTarget(self, action:#selector(cameraButtonPressed), for: .touchUpInside)
     }
     
-    var infoLabel = UILabel().then {
-        $0.text = "aaaaa"
-        $0.textAlignment = .center
+    @objc func cameraButtonPressed() {
+        let cameraCustomVC = CameraCustomViewController()
+        let vc = ChangableNavigationController(rootViewController: cameraCustomVC)
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: true)
     }
     
-    lazy var loadImageButton = UIButton().then {
-        $0.setTitle("이미지 로드", for: .normal)
-        $0.setTitleColor(.systemBlue, for: .normal)
-        $0.setTitleColor(.blue, for: .highlighted)
-        $0.addTarget(self, action: #selector(loadImageButtonPressed), for: .touchUpInside)
+    lazy var switchButton = UIButton().then {
+        $0.setImage(UIImage(named: "Switch"), for: .normal)
+        $0.addTarget(self, action:#selector(switchButtonPressed), for: .touchUpInside)
     }
     
-    @objc func loadImageButtonPressed() {
-//        guard let urlString = UserDefaults.standard.string(forKey: "myImageUrl") else { return }
-//        print(urlString)
-//        FirebaseStorageManager.downloadImage(urlString: urlString) { [weak self] image in
-//            self?.downloadImageView.image = image
-//        }
-        guard let urlString = UserDefaults.standard.string(forKey: "myVideoUrl") else { return }
-        videoURL = URL(string: urlString)
-        loadVideoView()
+    @objc func switchButtonPressed() {
+        // 현재 사용중인 카메라의 position을 확인하여 다른 카메라로 전환
+        guard let captureSession = captureSession else { return }
+        guard let currentCameraInput = captureSession.inputs.first as? AVCaptureDeviceInput else { return }
+        
+        var newCamera: AVCaptureDevice?
+        if currentCameraInput.device.position == .back {
+            newCamera = getCamera(with: .front)
+        } else {
+            newCamera = getCamera(with: .back)
+        }
+        
+        guard let newCameraInput = try? AVCaptureDeviceInput(device: newCamera!) else { return }
+        
+        captureSession.beginConfiguration()
+        captureSession.removeInput(currentCameraInput)
+        captureSession.addInput(newCameraInput)
+        captureSession.commitConfiguration()
     }
     
-    var downloadImageView = UIImageView().then {
-        $0.backgroundColor = .red
+    func getCamera(with position: AVCaptureDevice.Position) -> AVCaptureDevice? {
+        let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera], mediaType: AVMediaType.video, position: position)
+        return discoverySession.devices.first
     }
     
-    var videoView = UIView().then {
-        $0.backgroundColor = .green
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        UIView.animate(withDuration: 0.3) {
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = Gray.white
-        picker.delegate = self
         setViews()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        guard let player = player else { return }
-        player.pause()
+        setRx()
+        setupCaptureSession()
     }
     
     func setViews() {
@@ -91,85 +114,165 @@ class CameraViewController: UIViewController {
             make.height.equalTo(48)
         }
         
-        view.addSubview(pickerButton)
-        pickerButton.snp.makeConstraints { make in
-            make.top.equalTo(window.safeAreaInsets.top).offset(50)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(200)
-            make.height.equalTo(48)
+        view.addSubview(albumButton)
+        view.addSubview(cameraButton)
+        view.addSubview(switchButton)
+        albumButton.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(34)
+            make.bottom.equalToSuperview().inset(58)
+            make.width.equalTo(36)
+            make.height.equalTo(36)
         }
-        
-        view.addSubview(loadImageButton)
-        loadImageButton.snp.makeConstraints { make in
-            make.bottom.equalTo(window.safeAreaInsets.bottom).offset(-50)
+        cameraButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.width.equalTo(200)
-            make.height.equalTo(48)
+            make.bottom.equalToSuperview().inset(41)
+            make.width.equalTo(70)
+            make.height.equalTo(70)
         }
-        
-        view.addSubview(infoLabel)
-        infoLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(loadImageButton.snp.top).offset(20)
-            make.centerX.equalToSuperview()
-            make.left.equalToSuperview()
-            make.height.equalTo(48)
-        }
-        
-//        view.addSubview(downloadImageView)
-//        downloadImageView.snp.makeConstraints { make in
-//            make.top.equalTo(pickerButton.snp.bottom).offset(50)
-//            make.centerX.equalToSuperview()
-//            make.left.equalToSuperview().offset(40)
-//            make.height.equalTo(400)
-//        }
-        
-        view.addSubview(videoView)
-        videoView.snp.makeConstraints { make in
-            make.top.equalTo(pickerButton.snp.bottom).offset(50)
-            make.centerX.equalToSuperview()
-            make.left.equalToSuperview().offset(40)
-            make.height.equalTo(400)
+        switchButton.snp.makeConstraints { make in
+            make.right.equalToSuperview().offset(-34)
+            make.bottom.equalToSuperview().inset(58)
+            make.width.equalTo(36)
+            make.height.equalTo(36)
         }
     }
     
-    func loadVideoView() {
-        guard let path = Bundle.main.path(forResource: "Eiffel", ofType: "mp4") else { return }
-        player = AVPlayer.init(url: videoURL ?? URL(filePath: path))
-        let playerLayer = AVPlayerLayer(player: player)
-        playerLayer.frame = self.videoView.frame
-        playerLayer.videoGravity = .resizeAspectFill
-        self.view.layer.addSublayer(playerLayer)
-        player!.play()
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil, queue: nil) { notification in
-            self.player!.seek(to: .zero)
-            self.player!.play()
-          }
+    func setRx() {
+        albumButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.pickImage(self!)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.selectImage
+            .subscribe(onNext: { image in
+                print(image)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func setupCaptureSession() {
+        captureSession = AVCaptureSession()
+        guard let captureSession = captureSession else { return }
+        
+        //카메라 전면 또는 후면 설정
+        var defaultVideoDevice: AVCaptureDevice?
+        if let dualCameraDevice = AVCaptureDevice.default(.builtInDualCamera, for: AVMediaType.video, position: .back) {
+            defaultVideoDevice = dualCameraDevice
+        } else if let backCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: AVMediaType.video, position: .back) {
+            defaultVideoDevice = backCameraDevice
+        } else if let frontCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: AVMediaType.video, position: .front) {
+            defaultVideoDevice = frontCameraDevice
+        }
+        
+        do {
+            let input = try AVCaptureDeviceInput(device: defaultVideoDevice!)
+            captureSession.addInput(input)
+            
+            captureOutput = AVCaptureMovieFileOutput()
+            captureSession.addOutput(captureOutput!)
+            
+            videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+            videoPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
+            videoPreviewLayer?.frame = view.layer.bounds
+            view.layer.insertSublayer(videoPreviewLayer!, at: 0)
+            DispatchQueue.global().async {
+                captureSession.startRunning()
+            }
+        } catch {
+            print("Error setting up capture session: \(error)")
+        }
+    }
+    
+    func startRecording() {
+        guard let captureOutput = captureOutput else { return }
+        
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let fileUrl = paths[0].appendingPathComponent("story_video.mp4")
+        
+        captureOutput.startRecording(to: fileUrl, recordingDelegate: self)
+    }
+    
+    func stopRecording() {
+        captureOutput?.stopRecording()
     }
 }
 
-extension CameraViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
-        let mediaType = info[UIImagePickerController.InfoKey.mediaType] as! NSString
-        if mediaType == "public.movie" {
-            guard let selectedVideoURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL else { return }
-            FirebaseStorageManager.uploadVideo(url: selectedVideoURL, pathRoot: "aa") { url in
-                if let url = url {
-                    UserDefaults.standard.set(url.absoluteString, forKey: "myVideoUrl")
-                }
-            }
+extension TestViewController: AVCaptureFileOutputRecordingDelegate {
+    func fileOutput(_ output: AVCaptureFileOutput,
+                    didFinishRecordingTo outputFileURL: URL,
+                    from connections: [AVCaptureConnection],
+                    error: Error?) {
+        if let error = error {
+            print("Recording error: \(error.localizedDescription)")
         } else {
-            print("bb")
+            // 스토리 촬영이 끝난 후 수행할 동작
+            // 예를 들어, 촬영한 동영상을 인스타그램 스토리에 업로드하는 등의 동작을 수행할 수 있습니다.
         }
-        
-        picker.dismiss(animated: true)
-//        guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
-//        FirebaseStorageManager.uploadImage(image: selectedImage, pathRoot: "aa") { url in
-//            if let url = url {
-//                UserDefaults.standard.set(url.absoluteString, forKey: "myImageUrl")
-//                self.title = "이미지 업로드 완료"
-//            }
-//        }
-//        picker.dismiss(animated: true)
     }
 }
+//
+//extension TestViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+//        var selectedImage = UIImage()
+//        let mediaType = info[.mediaType] as! NSString
+//        if mediaType == "public.movie" {
+//            print("movie")
+//        } else {
+//            print("photo")
+//            selectedImage = info[.originalImage] as! UIImage
+//            fetchImage(info: info)
+//
+//        }
+//        picker.dismiss(animated: true)
+//
+//        //        let cameraCustomVC = CameraCustomViewController()
+//        //        cameraCustomVC.image = selectedImage
+//        //        let vc = ChangableNavigationController(rootViewController: cameraCustomVC)
+//        //        vc.modalPresentationStyle = .overCurrentContext
+//        //        vc.modalTransitionStyle = .crossDissolve
+//        //        present(vc, animated: true)
+//    }
+//
+//    func fetchImage(info: [UIImagePickerController.InfoKey : Any]) {
+//        if let asset = info[.phAsset] as? PHAsset {
+//            if let location = asset.location {
+//                print(String(location.coordinate.latitude))
+//                print(String(location.coordinate.longitude))
+//
+//                getPlacemarkFromCoordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude) { aa in
+//                    print(aa)
+//                }
+//            }
+//            if let unFormattedDate = asset.creationDate {
+//                let dateFormatter = DateFormatter()
+//                dateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
+//                let a = dateFormatter.string(from: unFormattedDate)
+//                print(a)
+//            }
+//        }
+//    }
+//
+//    func getPlacemarkFromCoordinates(latitude: CLLocationDegrees, longitude: CLLocationDegrees, completion: @escaping (String?) -> Void) {
+//        let location = CLLocation(latitude: latitude, longitude: longitude)
+//        let geocoder = CLGeocoder()
+//
+//        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+//            if let error = error {
+//                print("Reverse geocoding error: \(error.localizedDescription)")
+//                completion(nil)
+//                return
+//            }
+//
+//            if let placemark = placemarks?.first {
+//                if let name = placemark.name {
+//                    completion(name)
+//                } else {
+//                    completion(nil)
+//                }
+//            } else {
+//                completion(nil)
+//            }
+//        }
+//    }
+//}
