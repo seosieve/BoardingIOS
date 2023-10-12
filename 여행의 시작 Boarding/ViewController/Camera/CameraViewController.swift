@@ -1,5 +1,5 @@
 //
-//  TestViewController.swift
+//  CameraViewController.swift
 //  여행의 시작 Boarding
 //
 //  Created by 서충원 on 2023/08/07.
@@ -10,17 +10,10 @@ import AVFoundation
 import RxSwift
 import RxCocoa
 
-class TestViewController: UIViewController {
+class CameraViewController: UIViewController {
     
-    let picker = UIImagePickerController()
-    
-    var captureSession: AVCaptureSession?
-    var videoPreviewLayer: AVCaptureVideoPreviewLayer?
-    var captureOutput: AVCaptureMovieFileOutput?
-    
-    var location: String = ""
-    var time: String = ""
-    var weather: String = ""
+    var captureSession: AVCaptureSession!
+    var videoOutput: AVCaptureMovieFileOutput!
     
     let viewModel = CameraViewModel()
     let disposeBag = DisposeBag()
@@ -48,17 +41,8 @@ class TestViewController: UIViewController {
         $0.setImage(UIImage(named: "Album"), for: .normal)
     }
     
-    lazy var cameraButton = UIButton().then {
+    var cameraButton = UIButton().then {
         $0.setImage(UIImage(named: "Camera"), for: .normal)
-        $0.addTarget(self, action:#selector(cameraButtonPressed), for: .touchUpInside)
-    }
-    
-    @objc func cameraButtonPressed() {
-        let cameraCustomVC = CameraCustomViewController()
-        let vc = ChangableNavigationController(rootViewController: cameraCustomVC)
-        vc.modalPresentationStyle = .overCurrentContext
-        vc.modalTransitionStyle = .crossDissolve
-        present(vc, animated: true)
     }
     
     lazy var switchButton = UIButton().then {
@@ -68,7 +52,6 @@ class TestViewController: UIViewController {
     
     @objc func switchButtonPressed() {
         // 현재 사용중인 카메라의 position을 확인하여 다른 카메라로 전환
-        guard let captureSession = captureSession else { return }
         guard let currentCameraInput = captureSession.inputs.first as? AVCaptureDeviceInput else { return }
         
         var newCamera: AVCaptureDevice?
@@ -87,7 +70,7 @@ class TestViewController: UIViewController {
     }
     
     func getCamera(with position: AVCaptureDevice.Position) -> AVCaptureDevice? {
-        let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera], mediaType: AVMediaType.video, position: position)
+        let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera], mediaType: .video, position: position)
         return discoverySession.devices.first
     }
     
@@ -100,9 +83,28 @@ class TestViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = Gray.bright
         setViews()
         setRx()
-        setupCaptureSession()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Observable.combineLatest(viewModel.selectImage, viewModel.selectLocation, viewModel.selectTime)
+            .take(3)
+            .subscribe(onNext: { [weak self] image, location, time in
+                guard let image = image, let location = location, let time = time else { return }
+                let cameraCustomVC = CameraCustomViewController()
+                cameraCustomVC.image = image
+                cameraCustomVC.location = location
+                cameraCustomVC.time = time
+                let vc = ChangableNavigationController(rootViewController: cameraCustomVC)
+                vc.modalPresentationStyle = .fullScreen
+                self?.present(vc, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.resetRelay()
     }
     
     func setViews() {
@@ -138,54 +140,24 @@ class TestViewController: UIViewController {
     }
     
     func setRx() {
+        viewModel.setupPreviewLayer(view)
+        
+        cameraButton.rx.tap
+            .throttle(.seconds(2), latest: false, scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.takeImageByCamera()
+            })
+            .disposed(by: disposeBag)
+        
         albumButton.rx.tap
             .subscribe(onNext: { [weak self] in
-                self?.viewModel.pickImage(self!)
+                self?.viewModel.pickImageByAlbum(self!)
             })
             .disposed(by: disposeBag)
-        
-        viewModel.selectImage
-            .subscribe(onNext: { image in
-                print(image)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    func setupCaptureSession() {
-        captureSession = AVCaptureSession()
-        guard let captureSession = captureSession else { return }
-        
-        //카메라 전면 또는 후면 설정
-        var defaultVideoDevice: AVCaptureDevice?
-        if let dualCameraDevice = AVCaptureDevice.default(.builtInDualCamera, for: AVMediaType.video, position: .back) {
-            defaultVideoDevice = dualCameraDevice
-        } else if let backCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: AVMediaType.video, position: .back) {
-            defaultVideoDevice = backCameraDevice
-        } else if let frontCameraDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: AVMediaType.video, position: .front) {
-            defaultVideoDevice = frontCameraDevice
-        }
-        
-        do {
-            let input = try AVCaptureDeviceInput(device: defaultVideoDevice!)
-            captureSession.addInput(input)
-            
-            captureOutput = AVCaptureMovieFileOutput()
-            captureSession.addOutput(captureOutput!)
-            
-            videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-            videoPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-            videoPreviewLayer?.frame = view.layer.bounds
-            view.layer.insertSublayer(videoPreviewLayer!, at: 0)
-            DispatchQueue.global().async {
-                captureSession.startRunning()
-            }
-        } catch {
-            print("Error setting up capture session: \(error)")
-        }
     }
     
     func startRecording() {
-        guard let captureOutput = captureOutput else { return }
+        guard let captureOutput = videoOutput else { return }
         
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let fileUrl = paths[0].appendingPathComponent("story_video.mp4")
@@ -194,11 +166,12 @@ class TestViewController: UIViewController {
     }
     
     func stopRecording() {
-        captureOutput?.stopRecording()
+        videoOutput?.stopRecording()
     }
 }
 
-extension TestViewController: AVCaptureFileOutputRecordingDelegate {
+//MARK: - AVCaptureFileOutputRecordingDelegate
+extension CameraViewController: AVCaptureFileOutputRecordingDelegate {
     func fileOutput(_ output: AVCaptureFileOutput,
                     didFinishRecordingTo outputFileURL: URL,
                     from connections: [AVCaptureConnection],
@@ -211,68 +184,4 @@ extension TestViewController: AVCaptureFileOutputRecordingDelegate {
         }
     }
 }
-//
-//extension TestViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//        var selectedImage = UIImage()
-//        let mediaType = info[.mediaType] as! NSString
-//        if mediaType == "public.movie" {
-//            print("movie")
-//        } else {
-//            print("photo")
-//            selectedImage = info[.originalImage] as! UIImage
-//            fetchImage(info: info)
-//
-//        }
-//        picker.dismiss(animated: true)
-//
-//        //        let cameraCustomVC = CameraCustomViewController()
-//        //        cameraCustomVC.image = selectedImage
-//        //        let vc = ChangableNavigationController(rootViewController: cameraCustomVC)
-//        //        vc.modalPresentationStyle = .overCurrentContext
-//        //        vc.modalTransitionStyle = .crossDissolve
-//        //        present(vc, animated: true)
-//    }
-//
-//    func fetchImage(info: [UIImagePickerController.InfoKey : Any]) {
-//        if let asset = info[.phAsset] as? PHAsset {
-//            if let location = asset.location {
-//                print(String(location.coordinate.latitude))
-//                print(String(location.coordinate.longitude))
-//
-//                getPlacemarkFromCoordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude) { aa in
-//                    print(aa)
-//                }
-//            }
-//            if let unFormattedDate = asset.creationDate {
-//                let dateFormatter = DateFormatter()
-//                dateFormatter.dateFormat = "yyyy.MM.dd hh:mm"
-//                let a = dateFormatter.string(from: unFormattedDate)
-//                print(a)
-//            }
-//        }
-//    }
-//
-//    func getPlacemarkFromCoordinates(latitude: CLLocationDegrees, longitude: CLLocationDegrees, completion: @escaping (String?) -> Void) {
-//        let location = CLLocation(latitude: latitude, longitude: longitude)
-//        let geocoder = CLGeocoder()
-//
-//        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
-//            if let error = error {
-//                print("Reverse geocoding error: \(error.localizedDescription)")
-//                completion(nil)
-//                return
-//            }
-//
-//            if let placemark = placemarks?.first {
-//                if let name = placemark.name {
-//                    completion(name)
-//                } else {
-//                    completion(nil)
-//                }
-//            } else {
-//                completion(nil)
-//            }
-//        }
-//    }
-//}
+

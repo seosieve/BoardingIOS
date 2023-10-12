@@ -133,7 +133,7 @@ extension UINavigationBar {
 
 //MARK: - StatusBar Style Changable NavigationController
 class ChangableNavigationController: UINavigationController {
-    override var childForStatusBarStyle: UIViewController? { return visibleViewController}
+    override var childForStatusBarStyle: UIViewController? { return visibleViewController }
 }
 
 //MARK: - Keyboard Dismiss

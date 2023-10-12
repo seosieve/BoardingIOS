@@ -14,7 +14,8 @@ class WrittingViewController: UIViewController {
     var feedbackGenerator: UIImpactFeedbackGenerator?
     
     var image: UIImage?
-    var dummyText = ["팔레 루아얄, 파리", "2023.09.01.  12:32", "맑음, 25°C"]
+    var infoTitle = ["위치", "시간", "날씨"]
+    var infoDetail = ["팔레 루아얄, 파리", "2023.09.01.  12:32", "맑음, 25°C"]
     let reviewPlaceHolder = "장소에 대한 경험을 이야기해주세요. (타인에 대한 비방, 잘못된 정보의 경우에는 협의 후 삭제조치될 수 있습니다)"
     var scoreArr = [false, false, false, false, false]
     var currentScore = BehaviorRelay<Int>(value: 0)
@@ -246,12 +247,12 @@ class WrittingViewController: UIViewController {
                 $0.backgroundColor = Gray.white
             }
             let mainLabel = UILabel().then {
-                $0.text = "위치"
+                $0.text = infoTitle[index]
                 $0.textColor = Gray.black
                 $0.font = Pretendard.semiBold(16)
             }
             let subLabel = UILabel().then {
-                $0.text = dummyText[index]
+                $0.text = infoDetail[index]
                 $0.textColor = Gray.dark
                 $0.font = Pretendard.regular(14)
             }
