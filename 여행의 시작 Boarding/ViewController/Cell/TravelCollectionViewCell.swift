@@ -1,5 +1,5 @@
 //
-//  ScheduleCollectionViewCell.swift
+//  TravelCollectionViewCell.swift
 //  여행의 시작 Boarding
 //
 //  Created by 서충원 on 2023/06/05.
@@ -7,27 +7,27 @@
 
 import UIKit
 
-class ScheduleCollectionViewCell: UICollectionViewCell {
+class TravelCollectionViewCell: UICollectionViewCell {
     
     var borderView = UIView().then {
         $0.backgroundColor = .clear
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = Gray.light.cgColor
+        $0.layer.borderColor = Gray.light.withAlphaComponent(0.6).cgColor
     }
     
-    var scheduleImageView = UIImageView().then {
+    var travelImageView = UIImageView().then {
         $0.image = UIImage(named: "France8")
     }
     
-    var scheduleTitleLabel = UILabel().then {
+    var travelTitleLabel = UILabel().then {
         $0.text = "파리 4박 여행"
-        $0.font = Pretendard.medium(16)
-        $0.textColor = Gray.dark
+        $0.font = Pretendard.semiBold(17)
+        $0.textColor = Gray.black
     }
     
-    var scheduleSubLabel = UILabel().then {
+    var travelSubLabel = UILabel().then {
         $0.text = "파리, 프랑스"
-        $0.font = Pretendard.regular(10)
+        $0.font = Pretendard.regular(13)
         $0.textColor = Gray.light
     }
     
@@ -48,26 +48,26 @@ class ScheduleCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(borderView)
         borderView.snp.makeConstraints { make in
             make.centerX.left.top.equalToSuperview()
-            make.height.equalTo(215)
+            make.height.equalTo(210)
         }
         borderView.rounded(axis: .vertical)
         
-        borderView.addSubview(scheduleImageView)
-        scheduleImageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(7.5)
+        borderView.addSubview(travelImageView)
+        travelImageView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(5)
         }
-        scheduleImageView.rounded(axis: .vertical)
+        travelImageView.rounded(axis: .vertical)
         
-        contentView.addSubview(scheduleTitleLabel)
-        scheduleTitleLabel.snp.makeConstraints { make in
+        contentView.addSubview(travelTitleLabel)
+        travelTitleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(borderView.snp.bottom).offset(6)
+            make.top.equalTo(borderView.snp.bottom).offset(10)
         }
         
-        contentView.addSubview(scheduleSubLabel)
-        scheduleSubLabel.snp.makeConstraints { make in
+        contentView.addSubview(travelSubLabel)
+        travelSubLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(scheduleTitleLabel.snp.bottom).offset(4)
+            make.top.equalTo(travelTitleLabel.snp.bottom).offset(6)
         }
     }
 }

@@ -72,29 +72,13 @@ class PlanViewController: UIViewController {
         $0.showsHorizontalScrollIndicator = false
     }
     
-    var scrapLabel = UILabel().then {
-        $0.text = "스크랩"
-        $0.font = Pretendard.bold(20)
-        $0.textColor = Gray.black
-    }
-    
-    var scrapCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
-        var layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
-        layout.minimumInteritemSpacing = 0
-        $0.collectionViewLayout = layout
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
         self.view.backgroundColor = Gray.white
         planCollectionView.delegate = self
         planCollectionView.dataSource = self
-        planCollectionView.register(ScheduleCollectionViewCell.self, forCellWithReuseIdentifier: "scheduleCollectionViewCell")
-        scrapCollectionView.delegate = self
-        scrapCollectionView.dataSource = self
-        scrapCollectionView.register(RecordCollectionViewCell.self, forCellWithReuseIdentifier: "recordCollectionViewCell")
+        planCollectionView.register(TravelCollectionViewCell.self, forCellWithReuseIdentifier: "travelCollectionViewCell")
         setViews()
     }
     
@@ -155,55 +139,24 @@ class PlanViewController: UIViewController {
             make.centerX.right.equalToSuperview()
             make.height.equalTo(260)
         }
-        
-        planContentView.addSubview(scrapLabel)
-        planContentView.addSubview(scrapCollectionView)
-        scrapLabel.snp.makeConstraints { make in
-            make.top.equalTo(planCollectionView.snp.bottom).offset(30)
-            make.left.equalToSuperview().inset(16)
-        }
-        scrapCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(scrapLabel.snp.bottom).offset(10)
-            make.centerX.right.equalToSuperview()
-            make.height.equalTo(2000)
-        }
     }
 }
 
 //MARK: - UICollectionView
 extension PlanViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch collectionView {
-        case planCollectionView:
-            return 3
-        default:
-            return 9
-        }
+        return 3
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == planCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "scheduleCollectionViewCell", for: indexPath) as! ScheduleCollectionViewCell
-            cell.scheduleImageView.image = planArr[indexPath.row].0
-            cell.scheduleTitleLabel.text = planArr[indexPath.row].1
-            cell.scheduleSubLabel.text = planArr[indexPath.row].2
-            return cell
-        } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recordCollectionViewCell", for: indexPath) as! RecordCollectionViewCell
-            cell.recordImageView.image = scrapArr[indexPath.row].0
-            cell.recordLabel.text = scrapArr[indexPath.row].1
-            return cell
-        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "travelCollectionViewCell", for: indexPath) as! TravelCollectionViewCell
+        cell.travelImageView.image = planArr[indexPath.row].0
+        cell.travelTitleLabel.text = planArr[indexPath.row].1
+        cell.travelSubLabel.text = planArr[indexPath.row].2
+        return cell
     }
-        
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        switch collectionView {
-        case planCollectionView:
-            return CGSize(width: 165, height: 260)
-        default:
-            let width = (view.bounds.width - 32)/3
-            let height = width*4/3
-            return CGSize(width: width, height: height)
-        }
+        return CGSize(width: 165, height: 260)
     }
 }

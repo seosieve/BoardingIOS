@@ -105,7 +105,7 @@ class HomeViewController: UIViewController {
         self.view.backgroundColor = Gray.white
         popularScheduleCollectionView.delegate = self
         popularScheduleCollectionView.dataSource = self
-        popularScheduleCollectionView.register(ScheduleCollectionViewCell.self, forCellWithReuseIdentifier: "scheduleCollectionViewCell")
+        popularScheduleCollectionView.register(TravelCollectionViewCell.self, forCellWithReuseIdentifier: "travelCollectionViewCell")
         recommendPlaceCollectionView.delegate = self
         recommendPlaceCollectionView.dataSource = self
         recommendPlaceCollectionView.register(PlaceCollectionViewCell.self, forCellWithReuseIdentifier: "placeCollectionViewCell")
@@ -218,10 +218,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) ->
     UICollectionViewCell {
         if collectionView == popularScheduleCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "scheduleCollectionViewCell", for: indexPath) as! ScheduleCollectionViewCell
-            cell.scheduleImageView.image = popularScheduleArr[indexPath.row].0
-            cell.scheduleTitleLabel.text = popularScheduleArr[indexPath.row].1
-            cell.scheduleSubLabel.text = popularScheduleArr[indexPath.row].2
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "travelCollectionViewCell", for: indexPath) as! TravelCollectionViewCell
+            cell.travelImageView.image = popularScheduleArr[indexPath.row].0
+            cell.travelTitleLabel.text = popularScheduleArr[indexPath.row].1
+            cell.travelSubLabel.text = popularScheduleArr[indexPath.row].2
             return cell
         } else if collectionView == recommendPlaceCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "placeCollectionViewCell", for: indexPath) as! PlaceCollectionViewCell

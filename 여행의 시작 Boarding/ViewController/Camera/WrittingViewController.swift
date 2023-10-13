@@ -391,7 +391,7 @@ class WrittingViewController: UIViewController {
         
         view.addSubview(completeButton)
         completeButton.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(24)
+            make.left.equalToSuperview().inset(20)
             make.centerX.equalToSuperview()
             make.height.equalTo(50)
             make.bottom.equalToSuperview().inset(30)

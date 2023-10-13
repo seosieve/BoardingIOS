@@ -22,6 +22,7 @@
 		4E44FB9B2AD050F60021FAB9 /* WrittingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FB9A2AD050F60021FAB9 /* WrittingViewModel.swift */; };
 		4E44FB9D2AD0ED430021FAB9 /* NFTModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FB9C2AD0ED430021FAB9 /* NFTModel.swift */; };
 		4E44FB9F2AD50DC20021FAB9 /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FB9E2AD50DC20021FAB9 /* CameraViewModel.swift */; };
+		4E44FBA12AD978520021FAB9 /* MakePastTravelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FBA02AD978520021FAB9 /* MakePastTravelViewController.swift */; };
 		4E4FF3CC2AB3255B0042126A /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4FF3CB2AB3255B0042126A /* LogInViewController.swift */; };
 		4E4FF3CE2AB326CC0042126A /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4FF3CD2AB326CC0042126A /* StartViewController.swift */; };
 		4E7D52E62AC41AF200054800 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E52AC41AF200054800 /* SplashViewController.swift */; };
@@ -55,7 +56,7 @@
 		4EECA7D72A2B1120006FB764 /* ColorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7D62A2B1120006FB764 /* ColorModel.swift */; };
 		4EECA7D92A2B3005006FB764 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7D82A2B3005006FB764 /* Extension.swift */; };
 		4EECA7DD2A2C820F006FB764 /* PlaceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7DC2A2C820F006FB764 /* PlaceCollectionViewCell.swift */; };
-		4EECA7DF2A2DC352006FB764 /* ScheduleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7DE2A2DC352006FB764 /* ScheduleCollectionViewCell.swift */; };
+		4EECA7DF2A2DC352006FB764 /* TravelCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7DE2A2DC352006FB764 /* TravelCollectionViewCell.swift */; };
 		4EECA7E12A2DD179006FB764 /* FullScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7E02A2DD179006FB764 /* FullScreenViewController.swift */; };
 		4EECA7EC2A2F0013006FB764 /* RecordCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7EB2A2F0013006FB764 /* RecordCollectionViewCell.swift */; };
 		4EECA7EE2A2F2148006FB764 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7ED2A2F2148006FB764 /* MenuTableViewCell.swift */; };
@@ -81,6 +82,7 @@
 		4E44FB9A2AD050F60021FAB9 /* WrittingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrittingViewModel.swift; sourceTree = "<group>"; };
 		4E44FB9C2AD0ED430021FAB9 /* NFTModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTModel.swift; sourceTree = "<group>"; };
 		4E44FB9E2AD50DC20021FAB9 /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
+		4E44FBA02AD978520021FAB9 /* MakePastTravelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakePastTravelViewController.swift; sourceTree = "<group>"; };
 		4E4FF3CB2AB3255B0042126A /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		4E4FF3CD2AB326CC0042126A /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		4E7D52E52AC41AF200054800 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
@@ -117,7 +119,7 @@
 		4EECA7D62A2B1120006FB764 /* ColorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorModel.swift; sourceTree = "<group>"; };
 		4EECA7D82A2B3005006FB764 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		4EECA7DC2A2C820F006FB764 /* PlaceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCollectionViewCell.swift; sourceTree = "<group>"; };
-		4EECA7DE2A2DC352006FB764 /* ScheduleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCollectionViewCell.swift; sourceTree = "<group>"; };
+		4EECA7DE2A2DC352006FB764 /* TravelCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelCollectionViewCell.swift; sourceTree = "<group>"; };
 		4EECA7E02A2DD179006FB764 /* FullScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewController.swift; sourceTree = "<group>"; };
 		4EECA7EB2A2F0013006FB764 /* RecordCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollectionViewCell.swift; sourceTree = "<group>"; };
 		4EECA7ED2A2F2148006FB764 /* MenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
@@ -262,6 +264,7 @@
 			isa = PBXGroup;
 			children = (
 				4EECA63D2A29C1F6006FB764 /* RecordViewController.swift */,
+				4E44FBA02AD978520021FAB9 /* MakePastTravelViewController.swift */,
 			);
 			path = Record;
 			sourceTree = "<group>";
@@ -301,7 +304,7 @@
 			isa = PBXGroup;
 			children = (
 				4EA7AFC32AA6D0E40055F4C7 /* HomeTableViewCell.swift */,
-				4EECA7DE2A2DC352006FB764 /* ScheduleCollectionViewCell.swift */,
+				4EECA7DE2A2DC352006FB764 /* TravelCollectionViewCell.swift */,
 				4EECA7DC2A2C820F006FB764 /* PlaceCollectionViewCell.swift */,
 				4EECA7EB2A2F0013006FB764 /* RecordCollectionViewCell.swift */,
 				4EECA7ED2A2F2148006FB764 /* MenuTableViewCell.swift */,
@@ -460,6 +463,7 @@
 				4E2DDF522AB40ED300C7F4B9 /* SignUpViewModel.swift in Sources */,
 				4E2DDF582AB92C2400C7F4B9 /* LogInViewModel.swift in Sources */,
 				4EECA7D22A29E31B006FB764 /* CustomTabBar.swift in Sources */,
+				4E44FBA12AD978520021FAB9 /* MakePastTravelViewController.swift in Sources */,
 				4EECA63C2A29C1DF006FB764 /* PlanViewController.swift in Sources */,
 				4EECA63E2A29C1F6006FB764 /* RecordViewController.swift in Sources */,
 				4EECA7EC2A2F0013006FB764 /* RecordCollectionViewCell.swift in Sources */,
@@ -475,7 +479,7 @@
 				4EA7AFC42AA6D0E40055F4C7 /* HomeTableViewCell.swift in Sources */,
 				4E44FB9B2AD050F60021FAB9 /* WrittingViewModel.swift in Sources */,
 				4E8B35A92A70DFCE00AD2C72 /* aaModel.swift in Sources */,
-				4EECA7DF2A2DC352006FB764 /* ScheduleCollectionViewCell.swift in Sources */,
+				4EECA7DF2A2DC352006FB764 /* TravelCollectionViewCell.swift in Sources */,
 				4EECA7EE2A2F2148006FB764 /* MenuTableViewCell.swift in Sources */,
 				4EECA7DD2A2C820F006FB764 /* PlaceCollectionViewCell.swift in Sources */,
 				4E2DDF542AB8050600C7F4B9 /* PreferenceViewController.swift in Sources */,

@@ -24,7 +24,7 @@ class TabBarViewController: UITabBarController {
             self.cameraButtonPressed()
         }
         customTabBar.tabbarColor = Gray.white
-        customTabBar.tabBarItemColor = Boarding.blue
+        customTabBar.tabBarItemColor = Gray.black
         customTabBar.unselectedItemColor = Gray.light
         customTabBar.buttonImage = UIImage(named: "Plus")
         setValue(customTabBar, forKey: "tabBar")
@@ -34,22 +34,22 @@ class TabBarViewController: UITabBarController {
         // ViewController Connect
         let homeVC = UINavigationController(rootViewController: NewHomeViewController())
         homeVC.tabBarItem.image = UIImage(named: "Home")
-        homeVC.tabBarItem.title = "홈"
+        homeVC.tabBarItem.title = ""
         homeVC.tabBarItem.titlePositionAdjustment = UIOffset(horizontal: -5, vertical: 0)
         
         let planVC = UINavigationController(rootViewController: PlanViewController())
         planVC.tabBarItem.image = UIImage(named: "Plan")
-        planVC.tabBarItem.title = "플랜"
+        planVC.tabBarItem.title = ""
         planVC.tabBarItem.titlePositionAdjustment = UIOffset(horizontal: -30, vertical: 0)
         
         let recordVC = UINavigationController(rootViewController: RecordViewController())
         recordVC.tabBarItem.image = UIImage(named: "Record")
-        recordVC.tabBarItem.title = "기록"
+        recordVC.tabBarItem.title = ""
         recordVC.tabBarItem.titlePositionAdjustment = UIOffset(horizontal: 30, vertical: 0)
         
         let myPageVC = ChangableNavigationController(rootViewController: MyPageViewController())
         myPageVC.tabBarItem.image = UIImage(named: "MyPage")
-        myPageVC.tabBarItem.title = "마이페이지"
+        myPageVC.tabBarItem.title = ""
         myPageVC.tabBarItem.titlePositionAdjustment = UIOffset(horizontal: 5, vertical: 0)
         
         setViewControllers([homeVC, planVC, recordVC, myPageVC], animated: true)
