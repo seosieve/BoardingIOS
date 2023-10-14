@@ -122,11 +122,14 @@ class WrittingViewController: UIViewController {
     }
     
     lazy var completeButton = UIButton().then {
+        $0.setBackgroundColor(Boarding.blue, for: .normal)
+        $0.setBackgroundColor(Gray.light.withAlphaComponent(0.7), for: .disabled)
         $0.setTitle("완료", for: .normal)
         $0.setTitleColor(Gray.white, for: .normal)
-        $0.titleLabel?.font = Pretendard.semiBold(18)
-        $0.backgroundColor = Boarding.blue
+        $0.setTitleColor(Gray.dark, for: .disabled)
+        $0.titleLabel?.font = Pretendard.medium(19)
         $0.addTarget(self, action: #selector(completeButtonPressed), for: .touchUpInside)
+        $0.isEnabled = false
     }
     
     @objc func completeButtonPressed() {
@@ -391,7 +394,7 @@ class WrittingViewController: UIViewController {
         
         view.addSubview(completeButton)
         completeButton.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(20)
+            make.left.equalToSuperview().inset(24)
             make.centerX.equalToSuperview()
             make.height.equalTo(50)
             make.bottom.equalToSuperview().inset(30)
@@ -423,8 +426,6 @@ class WrittingViewController: UIViewController {
                 print(bool)
             })
             .disposed(by: disposeBag)
-        
-        
         
         completeButton.rx.tap
             .subscribe(onNext: { [weak self] in

@@ -1,5 +1,5 @@
 //
-//  MakePastTravelViewController.swift
+//  PastTravelViewController.swift
 //  여행의 시작 Boarding
 //
 //  Created by 서충원 on 2023/10/13.
@@ -9,8 +9,10 @@ import UIKit
 import Then
 import SnapKit
 
-class MakePastTravelViewController: UIViewController {
+class PastTravelViewController: UIViewController {
 
+    var dismiss = true
+    
     var pastTravelLabel = UILabel().then {
         $0.text = "지난 여행 만들기"
         $0.font = Pretendard.semiBold(25)
@@ -21,10 +23,6 @@ class MakePastTravelViewController: UIViewController {
         $0.text = "여행제목"
         $0.font = Pretendard.regular(21)
         $0.textColor = Gray.light
-    }
-    
-    @objc func labelTapped() {
-        print("aa")
     }
     
     var locationLabel = UILabel().then {
@@ -39,8 +37,17 @@ class MakePastTravelViewController: UIViewController {
         $0.textColor = Gray.light
     }
     
-    var tapRecognizerView = UIView().then {
-        $0.backgroundColor = .red
+    lazy var tapRecognizerView = UIView().then {
+        $0.backgroundColor = .clear
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapRecognized))
+        $0.addGestureRecognizer(tap)
+    }
+    
+    @objc func tapRecognized() {
+        dismiss = false
+        let vc = PastTravelTitleViewController()
+        vc.navigationController?.navigationBar.isHidden = false
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     lazy var completeButton = UIButton().then {
@@ -60,14 +67,15 @@ class MakePastTravelViewController: UIViewController {
         self.navigationController?.navigationBar.setNavigationBar()
         self.navigationController?.navigationBar.tintColor = Gray.medium
         view.backgroundColor = Gray.white
-        let tap = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
-        titleLabel.addGestureRecognizer(tap)
         setViews()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.navigationController?.navigationBar.isHidden = true
+        if dismiss {
+            self.navigationController?.navigationBar.isHidden = true
+        }
+        dismiss.toggle()
     }
     
     func setViews() {
@@ -124,7 +132,9 @@ class MakePastTravelViewController: UIViewController {
         
         view.addSubview(tapRecognizerView)
         tapRecognizerView.snp.makeConstraints { make in
-            <#code#>
+            make.top.equalTo(pastTravelLabel.snp.bottom).offset(35)
+            make.left.centerX.equalToSuperview()
+            make.bottom.equalTo(durationDivider.snp.bottom)
         }
         
         view.addSubview(completeButton)

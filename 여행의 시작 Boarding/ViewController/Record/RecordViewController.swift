@@ -23,6 +23,12 @@ class RecordViewController: UIViewController {
     
     var recordContentView = UIView()
     
+    var pastTravelLabel = UILabel().then {
+        $0.text = "지난 여행"
+        $0.font = Pretendard.semiBold(25)
+        $0.textColor = Gray.black
+    }
+    
     lazy var addPastTravelButton = UIButton().then {
         $0.setImage(UIImage(named: "BluePlus"), for: .normal)
         $0.tintColor = Boarding.blue
@@ -30,15 +36,9 @@ class RecordViewController: UIViewController {
     }
     
     @objc func addPastTravelButtonPressed() {
-        let vc = MakePastTravelViewController()
+        let vc = PastTravelViewController()
         vc.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    var pastTravelLabel = UILabel().then {
-        $0.text = "지난 여행"
-        $0.font = Pretendard.semiBold(25)
-        $0.textColor = Gray.black
     }
     
     var pastTravelCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
@@ -95,6 +95,12 @@ class RecordViewController: UIViewController {
             make.height.equalTo(1000)
         }
         
+        recordContentView.addSubview(pastTravelLabel)
+        pastTravelLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(15)
+            make.left.equalToSuperview().inset(20)
+        }
+        
         recordContentView.addSubview(addPastTravelButton)
         addPastTravelButton.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(15)
@@ -102,12 +108,7 @@ class RecordViewController: UIViewController {
             make.width.height.equalTo(20)
         }
         
-        recordContentView.addSubview(pastTravelLabel)
         recordContentView.addSubview(pastTravelCollectionView)
-        pastTravelLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(15)
-            make.left.equalToSuperview().inset(20)
-        }
         pastTravelCollectionView.snp.makeConstraints { make in
             make.top.equalTo(pastTravelLabel.snp.bottom).offset(20)
             make.centerX.right.equalToSuperview()
@@ -115,11 +116,12 @@ class RecordViewController: UIViewController {
         }
         
         recordContentView.addSubview(recordLabel)
-        recordContentView.addSubview(recordCollectionView)
         recordLabel.snp.makeConstraints { make in
             make.top.equalTo(pastTravelCollectionView.snp.bottom).offset(30)
             make.left.equalToSuperview().inset(20)
         }
+        
+        recordContentView.addSubview(recordCollectionView)
         recordCollectionView.snp.makeConstraints { make in
             make.top.equalTo(recordLabel.snp.bottom).offset(10)
             make.centerX.right.equalToSuperview()
