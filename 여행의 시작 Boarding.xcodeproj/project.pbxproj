@@ -24,6 +24,9 @@
 		4E44FB9F2AD50DC20021FAB9 /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FB9E2AD50DC20021FAB9 /* CameraViewModel.swift */; };
 		4E44FBA12AD978520021FAB9 /* PastTravelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FBA02AD978520021FAB9 /* PastTravelViewController.swift */; };
 		4E44FBA32ADA323A0021FAB9 /* PastTravelTitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FBA22ADA323A0021FAB9 /* PastTravelTitleViewController.swift */; };
+		4E44FBA52ADCF0C10021FAB9 /* PlanCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FBA42ADCF0C10021FAB9 /* PlanCollectionViewCell.swift */; };
+		4E44FBA72ADCF9160021FAB9 /* NewPlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FBA62ADCF9160021FAB9 /* NewPlanViewController.swift */; };
+		4E44FBA92ADCFC4E0021FAB9 /* NewPlanTitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FBA82ADCFC4E0021FAB9 /* NewPlanTitleViewController.swift */; };
 		4E4FF3CC2AB3255B0042126A /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4FF3CB2AB3255B0042126A /* LogInViewController.swift */; };
 		4E4FF3CE2AB326CC0042126A /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4FF3CD2AB326CC0042126A /* StartViewController.swift */; };
 		4E7D52E62AC41AF200054800 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E52AC41AF200054800 /* SplashViewController.swift */; };
@@ -85,6 +88,9 @@
 		4E44FB9E2AD50DC20021FAB9 /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
 		4E44FBA02AD978520021FAB9 /* PastTravelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastTravelViewController.swift; sourceTree = "<group>"; };
 		4E44FBA22ADA323A0021FAB9 /* PastTravelTitleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastTravelTitleViewController.swift; sourceTree = "<group>"; };
+		4E44FBA42ADCF0C10021FAB9 /* PlanCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanCollectionViewCell.swift; sourceTree = "<group>"; };
+		4E44FBA62ADCF9160021FAB9 /* NewPlanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlanViewController.swift; sourceTree = "<group>"; };
+		4E44FBA82ADCFC4E0021FAB9 /* NewPlanTitleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlanTitleViewController.swift; sourceTree = "<group>"; };
 		4E4FF3CB2AB3255B0042126A /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		4E4FF3CD2AB326CC0042126A /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		4E7D52E52AC41AF200054800 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
@@ -258,6 +264,8 @@
 			isa = PBXGroup;
 			children = (
 				4EECA63B2A29C1DF006FB764 /* PlanViewController.swift */,
+				4E44FBA62ADCF9160021FAB9 /* NewPlanViewController.swift */,
+				4E44FBA82ADCFC4E0021FAB9 /* NewPlanTitleViewController.swift */,
 			);
 			path = Plan;
 			sourceTree = "<group>";
@@ -308,6 +316,7 @@
 			children = (
 				4EA7AFC32AA6D0E40055F4C7 /* HomeTableViewCell.swift */,
 				4EECA7DE2A2DC352006FB764 /* TravelCollectionViewCell.swift */,
+				4E44FBA42ADCF0C10021FAB9 /* PlanCollectionViewCell.swift */,
 				4EECA7DC2A2C820F006FB764 /* PlaceCollectionViewCell.swift */,
 				4EECA7EB2A2F0013006FB764 /* RecordCollectionViewCell.swift */,
 				4EECA7ED2A2F2148006FB764 /* MenuTableViewCell.swift */,
@@ -469,6 +478,7 @@
 				4E44FBA12AD978520021FAB9 /* PastTravelViewController.swift in Sources */,
 				4EECA63C2A29C1DF006FB764 /* PlanViewController.swift in Sources */,
 				4EECA63E2A29C1F6006FB764 /* RecordViewController.swift in Sources */,
+				4E44FBA72ADCF9160021FAB9 /* NewPlanViewController.swift in Sources */,
 				4EECA7EC2A2F0013006FB764 /* RecordCollectionViewCell.swift in Sources */,
 				4E44FB992ACFD9D80021FAB9 /* NFTDetailViewController.swift in Sources */,
 				4E44FBA32ADA323A0021FAB9 /* PastTravelTitleViewController.swift in Sources */,
@@ -483,6 +493,7 @@
 				4EA7AFC42AA6D0E40055F4C7 /* HomeTableViewCell.swift in Sources */,
 				4E44FB9B2AD050F60021FAB9 /* WrittingViewModel.swift in Sources */,
 				4E8B35A92A70DFCE00AD2C72 /* aaModel.swift in Sources */,
+				4E44FBA92ADCFC4E0021FAB9 /* NewPlanTitleViewController.swift in Sources */,
 				4EECA7DF2A2DC352006FB764 /* TravelCollectionViewCell.swift in Sources */,
 				4EECA7EE2A2F2148006FB764 /* MenuTableViewCell.swift in Sources */,
 				4EECA7DD2A2C820F006FB764 /* PlaceCollectionViewCell.swift in Sources */,
@@ -493,6 +504,7 @@
 				4EECA6282A29BECF006FB764 /* AppDelegate.swift in Sources */,
 				4EECA62A2A29BECF006FB764 /* SceneDelegate.swift in Sources */,
 				4EECA7D72A2B1120006FB764 /* ColorModel.swift in Sources */,
+				4E44FBA52ADCF0C10021FAB9 /* PlanCollectionViewCell.swift in Sources */,
 				4EA7AFC22AA6C86D0055F4C7 /* NewHomeViewController.swift in Sources */,
 				4EECA7F22A2F3213006FB764 /* MILEViewController.swift in Sources */,
 			);

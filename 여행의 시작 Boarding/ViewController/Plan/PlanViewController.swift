@@ -11,7 +11,7 @@ import SnapKit
 
 class PlanViewController: UIViewController {
 
-    let planArr = [(UIImage(named: "France11"), "2024 뉴욕 여행", "미정"), (UIImage(named: "France10"), "여름방학 프랑스 여행", "23.07.10 ~ 23.07.25"), (UIImage(named: "France9"), "유럽 축구 여행", "파리, 프랑스")]
+    let planArr = [(UIImage(named: "France11"), "2024 뉴욕 여행", "23.07.10 ~ 23.07.25"), (UIImage(named: "France10"), "여름방학 프랑스 여행", "23.07.10 ~ 23.07.25"), (UIImage(named: "France9"), "유럽 축구 여행", "파리, 프랑스")]
     
     var statusBarView = UIView().then {
         $0.backgroundColor = Gray.white
@@ -34,10 +34,13 @@ class PlanViewController: UIViewController {
     }
     
     @objc func addPlanButtonPressed() {
-        print("aa")
+        let vc = NewPlanViewController()
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     var planCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
+        $0.backgroundColor = .clear
         var layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         layout.scrollDirection = .horizontal
@@ -51,7 +54,7 @@ class PlanViewController: UIViewController {
         self.view.backgroundColor = Gray.bright
         planCollectionView.delegate = self
         planCollectionView.dataSource = self
-        planCollectionView.register(TravelCollectionViewCell.self, forCellWithReuseIdentifier: "travelCollectionViewCell")
+        planCollectionView.register(PlanCollectionViewCell.self, forCellWithReuseIdentifier: "planCollectionViewCell")
         setViews()
     }
     
@@ -84,9 +87,9 @@ class PlanViewController: UIViewController {
         
         view.addSubview(planCollectionView)
         planCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(planView.snp.bottom).offset(60)
+            make.top.equalTo(planView.snp.bottom).offset(50)
             make.centerX.right.equalToSuperview()
-            make.height.equalTo(260)
+            make.height.equalTo(550)
         }
     }
 }
@@ -98,14 +101,14 @@ extension PlanViewController: UICollectionViewDelegate, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "travelCollectionViewCell", for: indexPath) as! TravelCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "planCollectionViewCell", for: indexPath) as! PlanCollectionViewCell
         cell.travelImageView.image = planArr[indexPath.row].0
-        cell.travelTitleLabel.text = planArr[indexPath.row].1
+        cell.mainLabel.text = planArr[indexPath.row].1
         cell.travelSubLabel.text = planArr[indexPath.row].2
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 165, height: 260)
+        return CGSize(width: 340, height: 550)
     }
 }
