@@ -67,24 +67,33 @@ class WrittingViewController: UIViewController {
         $0.font = Pretendard.semiBold(16)
     }
     
-    var titleTextField = UITextField().then {
-        $0.placeholder = "제목을 입력해주세요."
-        $0.font = Pretendard.regular(16)
-        $0.textColor = Gray.dark
-        $0.tintColor = Gray.dark
+    var titleTextLabel = UILabel().then {
+        $0.text = "제목을 입력해주세요."
+        $0.font = Pretendard.regular(17)
+        $0.textColor = Gray.light
     }
     
-    var reviewLabel = UILabel().then {
-        $0.text = "리뷰"
+    var contentLabel = UILabel().then {
+        $0.text = "내용"
         $0.textColor = Gray.black
         $0.font = Pretendard.semiBold(16)
     }
     
-    lazy var reviewTextView = UITextView().then {
-        $0.text = reviewPlaceHolder
-        $0.font = Pretendard.regular(16)
+    var contentTextLabel = UILabel().then {
+        $0.text = "내용을 입력해주세요."
+        $0.font = Pretendard.regular(17)
         $0.textColor = Gray.light
-        $0.tintColor = Gray.dark
+    }
+    
+    lazy var tapRecognizerView = UIView().then {
+        $0.backgroundColor = .clear
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapRecognized))
+        $0.addGestureRecognizer(tap)
+    }
+    
+    @objc func tapRecognized() {
+        let vc = WrittingTitleViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     var scoreLabel = UILabel().then {
@@ -129,7 +138,7 @@ class WrittingViewController: UIViewController {
         $0.setTitleColor(Gray.dark, for: .disabled)
         $0.titleLabel?.font = Pretendard.medium(19)
         $0.addTarget(self, action: #selector(completeButtonPressed), for: .touchUpInside)
-        $0.isEnabled = false
+        $0.isEnabled = true
     }
     
     @objc func completeButtonPressed() {
@@ -150,24 +159,11 @@ class WrittingViewController: UIViewController {
         }
         self.navigationController?.isNavigationBarHidden = true
         view.backgroundColor = Gray.white
-        titleTextField.delegate = self
-        reviewTextView.delegate = self
-        dismissKeyboardWhenTapped()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
         let pan = UIPanGestureRecognizer(target: self, action: #selector(detectScore))
         scoreStackView.addGestureRecognizer(pan)
         setViews()
         setRx()
-    }
-    
-    @objc func keyboardWillShow(_ sender: Notification) {
-        self.view.frame.origin.y = -150
-    }
-    
-    @objc func keyboardWillHide(_ sender: Notification) {
-        self.view.frame.origin.y = 0
     }
     
     @objc func detectScore(_ recognizer: UIPanGestureRecognizer) {
@@ -286,8 +282,8 @@ class WrittingViewController: UIViewController {
             make.left.equalToSuperview().offset(24)
         }
         
-        view.addSubview(titleTextField)
-        titleTextField.snp.makeConstraints { make in
+        view.addSubview(titleTextLabel)
+        titleTextLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(6)
             make.left.equalToSuperview().offset(24)
         }
@@ -295,36 +291,41 @@ class WrittingViewController: UIViewController {
         let titleDivider = divider()
         view.addSubview(titleDivider)
         titleDivider.snp.makeConstraints { make in
-            make.top.equalTo(titleTextField.snp.bottom).offset(16)
+            make.top.equalTo(titleTextLabel.snp.bottom).offset(16)
             make.centerX.left.equalToSuperview()
             make.height.equalTo(1)
         }
         
-        view.addSubview(reviewLabel)
-        reviewLabel.snp.makeConstraints { make in
+        view.addSubview(contentLabel)
+        contentLabel.snp.makeConstraints { make in
             make.top.equalTo(titleDivider).offset(12)
             make.left.equalToSuperview().offset(24)
         }
         
-        view.addSubview(reviewTextView)
-        reviewTextView.snp.makeConstraints { make in
-            make.top.equalTo(reviewLabel.snp.bottom).offset(8)
+        view.addSubview(contentTextLabel)
+        contentTextLabel.snp.makeConstraints { make in
+            make.top.equalTo(contentLabel.snp.bottom).offset(8)
             make.left.equalToSuperview().offset(24)
-            make.centerX.equalToSuperview()
-            make.height.equalTo(100)
         }
         
-        let reviewDivider = divider()
-        view.addSubview(reviewDivider)
-        reviewDivider.snp.makeConstraints { make in
-            make.top.equalTo(reviewTextView.snp.bottom).offset(16)
+        let contentDivider = divider()
+        view.addSubview(contentDivider)
+        contentDivider.snp.makeConstraints { make in
+            make.top.equalTo(contentTextLabel.snp.bottom).offset(16)
             make.centerX.left.equalToSuperview()
             make.height.equalTo(1)
         }
         
+        view.addSubview(tapRecognizerView)
+        tapRecognizerView.snp.makeConstraints { make in
+            make.top.equalTo(photoDivider)
+            make.centerX.left.equalToSuperview()
+            make.bottom.equalTo(contentDivider.snp.bottom)
+        }
+        
         view.addSubview(scoreLabel)
         scoreLabel.snp.makeConstraints { make in
-            make.top.equalTo(reviewDivider).offset(20)
+            make.top.equalTo(contentDivider).offset(20)
             make.left.equalToSuperview().offset(24)
         }
         
@@ -409,13 +410,13 @@ class WrittingViewController: UIViewController {
     }
     
     func setRx() {
-        titleTextField.rx.text.orEmpty
-            .bind(to: viewModel.title)
-            .disposed(by: disposeBag)
-        
-        reviewTextView.rx.text.orEmpty
-            .bind(to: viewModel.mainText)
-            .disposed(by: disposeBag)
+//        titleTextField.rx.text.orEmpty
+//            .bind(to: viewModel.title)
+//            .disposed(by: disposeBag)
+//
+//        reviewTextView.rx.text.orEmpty
+//            .bind(to: viewModel.mainText)
+//            .disposed(by: disposeBag)
         
         currentScore
             .bind(to: viewModel.starPoint)
@@ -432,30 +433,5 @@ class WrittingViewController: UIViewController {
                 self?.viewModel.NFTWrite()
             })
             .disposed(by: disposeBag)
-    }
-}
-
-//MARK: - UITextFieldDelegate
-extension WrittingViewController: UITextFieldDelegate {
-    
-}
-
-//MARK: - UITextViewDelegate
-extension WrittingViewController: UITextViewDelegate {
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            reviewTextView.textColor = Gray.light
-            reviewTextView.text = reviewPlaceHolder
-        } else if textView.text == reviewPlaceHolder {
-            reviewTextView.textColor = Gray.dark
-            reviewTextView.text = nil
-        }
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || textView.text == reviewPlaceHolder {
-            reviewTextView.textColor = Gray.light
-            reviewTextView.text = reviewPlaceHolder
-        }
     }
 }

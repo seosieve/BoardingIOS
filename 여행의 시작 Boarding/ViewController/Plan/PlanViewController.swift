@@ -69,7 +69,7 @@ class PlanViewController: UIViewController {
         planView.snp.makeConstraints { make in
             make.top.equalTo(window.safeAreaInsets.top)
             make.centerX.width.equalToSuperview()
-            make.height.equalTo(65)
+            make.height.equalTo(60)
         }
         
         planView.addSubview(planLabel)
