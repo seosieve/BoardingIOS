@@ -42,9 +42,7 @@ class NFTViewController: UIViewController {
         let popularityOrder = UIAction(title: "인기순", handler: { _ in
             print("인기순")
         })
-        let recommendationOrder = UIAction(title: "추천순", handler: { _ in
-            print("추천순") })
-        $0.menu = UIMenu(options: .displayInline, children: [registrationOrder, popularityOrder, recommendationOrder])
+        $0.menu = UIMenu(options: .displayInline, children: [registrationOrder, popularityOrder])
         $0.showsMenuAsPrimaryAction = true
         $0.changesSelectionAsPrimaryAction = true
     }

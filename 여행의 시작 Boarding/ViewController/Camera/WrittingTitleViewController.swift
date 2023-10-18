@@ -64,7 +64,7 @@ class WrittingTitleViewController: UIViewController {
     @objc func nextButtonPressed() {
         titleTextField.resignFirstResponder()
         let vc = WrittingContentViewController()
-        vc.titleString = titleTextField.text!
+        vc.titleResult = titleTextField.text!
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

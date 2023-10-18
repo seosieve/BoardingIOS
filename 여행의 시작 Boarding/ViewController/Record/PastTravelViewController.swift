@@ -152,5 +152,4 @@ class PastTravelViewController: UIViewController {
             $0.backgroundColor = Gray.light.withAlphaComponent(0.4)
         }
     }
-
 }

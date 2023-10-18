@@ -9,18 +9,17 @@ import Foundation
 
 struct NFT {
     let NFTID: String
-    let auther: String
-    let autherEmail: String
+    let autherUid: String
+    let writtenDate: Double
     let type: String
     let url: String
     let location: String
     let time: String
     let weather: String
-    let temperature: String
     let title: String
-    let mainText: String
+    let content: String
     let starPoint: Int
-    let category: String
+    let category: [String]
     let comments: Int
     let likes: Int
     let saves: Int
@@ -29,16 +28,15 @@ struct NFT {
     // [String:Any] 타입으로 변환
     var dicType: [String: Any] {
         return ["NFTID": NFTID,
-                "auther": auther,
-                "autherEmail": autherEmail,
+                "autherUid": autherUid,
+                "writtenDate": writtenDate,
                 "type": type,
                 "url": url,
                 "location": location,
                 "time": time,
                 "weather": weather,
-                "temperature": temperature,
                 "title": title,
-                "mainText": mainText,
+                "content": content,
                 "starPoint": starPoint,
                 "category": category,
                 "comments": comments,

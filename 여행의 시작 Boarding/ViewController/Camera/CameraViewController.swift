@@ -45,33 +45,8 @@ class CameraViewController: UIViewController {
         $0.setImage(UIImage(named: "Camera"), for: .normal)
     }
     
-    lazy var switchButton = UIButton().then {
+    var switchButton = UIButton().then {
         $0.setImage(UIImage(named: "Switch"), for: .normal)
-        $0.addTarget(self, action:#selector(switchButtonPressed), for: .touchUpInside)
-    }
-    
-    @objc func switchButtonPressed() {
-        // 현재 사용중인 카메라의 position을 확인하여 다른 카메라로 전환
-        guard let currentCameraInput = captureSession.inputs.first as? AVCaptureDeviceInput else { return }
-        
-        var newCamera: AVCaptureDevice?
-        if currentCameraInput.device.position == .back {
-            newCamera = getCamera(with: .front)
-        } else {
-            newCamera = getCamera(with: .back)
-        }
-        
-        guard let newCameraInput = try? AVCaptureDeviceInput(device: newCamera!) else { return }
-        
-        captureSession.beginConfiguration()
-        captureSession.removeInput(currentCameraInput)
-        captureSession.addInput(newCameraInput)
-        captureSession.commitConfiguration()
-    }
-    
-    func getCamera(with position: AVCaptureDevice.Position) -> AVCaptureDevice? {
-        let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera], mediaType: .video, position: position)
-        return discoverySession.devices.first
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -141,6 +116,13 @@ class CameraViewController: UIViewController {
     
     func setRx() {
         viewModel.setupPreviewLayer(view)
+        
+        switchButton.rx.tap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                self?.viewModel.switchCamera()
+            })
+            .disposed(by: disposeBag)
         
         cameraButton.rx.tap
             .throttle(.seconds(2), latest: false, scheduler: MainScheduler.instance)

@@ -15,12 +15,16 @@ class WrittingViewController: UIViewController {
     
     var image: UIImage?
     var infoTitle = ["위치", "시간", "날씨"]
-    var infoDetail = ["팔레 루아얄, 파리", "2023.09.01.  12:32", "맑음, 25°C"]
-    let reviewPlaceHolder = "장소에 대한 경험을 이야기해주세요. (타인에 대한 비방, 잘못된 정보의 경우에는 협의 후 삭제조치될 수 있습니다)"
+    var infoDetail = ["", "", "맑음, 25°C"]
     var scoreArr = [false, false, false, false, false]
-    var currentScore = BehaviorRelay<Int>(value: 0)
     var categoryArr = ["관광", "휴양", "액티비티", "맛집", "숙소", "페스티벌"]
     var selectedCategoryArr = [String]()
+    
+    var titleResult = BehaviorRelay<String>(value: "제목을 입력해주세요.")
+    var contentResult = BehaviorRelay<String>(value: "내용을 입력해주세요.")
+    var starPointResult = BehaviorRelay<Int>(value: 0)
+    var categoryResult = BehaviorRelay<[String]>(value: [])
+    var NFTResult: NFT?
     
     let viewModel = WrittingViewModel()
     let disposeBag = DisposeBag()
@@ -83,6 +87,7 @@ class WrittingViewController: UIViewController {
         $0.text = "내용을 입력해주세요."
         $0.font = Pretendard.regular(17)
         $0.textColor = Gray.light
+        $0.numberOfLines = 0
     }
     
     lazy var tapRecognizerView = UIView().then {
@@ -130,21 +135,26 @@ class WrittingViewController: UIViewController {
         $0.spacing = 8
     }
     
-    lazy var completeButton = UIButton().then {
+    var completeButton = UIButton().then {
         $0.setBackgroundColor(Boarding.blue, for: .normal)
         $0.setBackgroundColor(Gray.light.withAlphaComponent(0.7), for: .disabled)
         $0.setTitle("완료", for: .normal)
         $0.setTitleColor(Gray.white, for: .normal)
         $0.setTitleColor(Gray.dark, for: .disabled)
         $0.titleLabel?.font = Pretendard.medium(19)
-        $0.addTarget(self, action: #selector(completeButtonPressed), for: .touchUpInside)
-        $0.isEnabled = true
+        $0.isEnabled = false
     }
     
-    @objc func completeButtonPressed() {
-        let vc = NFTTicketViewController()
-        vc.image = image
-        self.navigationController?.pushViewController(vc, animated: true)
+    var indicator = UIActivityIndicatorView().then {
+        $0.style = .medium
+        $0.color = Gray.light
+    }
+    
+    var uploadProgressView = UIProgressView().then {
+        $0.trackTintColor = Gray.light
+        $0.progressTintColor = Boarding.blue
+        $0.progress = 0
+        $0.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -176,9 +186,9 @@ class WrittingViewController: UIViewController {
         let starScore = Int(round(score))
         
         //Vibrate Feedback
-        if currentScore.value != starScore {
+        if starPointResult.value != starScore {
             feedbackGenerator?.impactOccurred()
-            currentScore.accept(starScore)
+            starPointResult.accept(starScore)
         }
         
         //Draw Star
@@ -193,14 +203,16 @@ class WrittingViewController: UIViewController {
     @objc func categorySelected(_ sender: UIButton) {
         let index = Int(categoryStackView.arrangedSubviews.firstIndex(of: sender)!)
         if sender.isSelected {
+            sender.layer.borderWidth = 1
             let rm = selectedCategoryArr.firstIndex(of: categoryArr[index])!
             selectedCategoryArr.remove(at: rm)
         } else {
+            sender.layer.borderWidth = 0
             selectedCategoryArr.append(categoryArr[index])
         }
         sender.isSelected.toggle()
         feedbackGenerator?.impactOccurred()
-        print(selectedCategoryArr)
+        categoryResult.accept(selectedCategoryArr)
     }
     
     func setViews() {
@@ -305,6 +317,7 @@ class WrittingViewController: UIViewController {
         view.addSubview(contentTextLabel)
         contentTextLabel.snp.makeConstraints { make in
             make.top.equalTo(contentLabel.snp.bottom).offset(8)
+            make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(24)
         }
         
@@ -380,7 +393,7 @@ class WrittingViewController: UIViewController {
                 $0.setTitleColor(Gray.medium, for: .normal)
                 $0.setTitleColor(Gray.white, for: .selected)
                 $0.setTitle(categoryArr[index], for: .normal)
-                $0.titleLabel?.font = Pretendard.regular(14)
+                $0.titleLabel?.font = Pretendard.medium(15)
                 $0.layer.masksToBounds = true
                 $0.layer.cornerRadius = 16
                 $0.layer.borderWidth = 1
@@ -395,12 +408,24 @@ class WrittingViewController: UIViewController {
         
         view.addSubview(completeButton)
         completeButton.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(24)
+            make.left.equalToSuperview().offset(24)
             make.centerX.equalToSuperview()
             make.height.equalTo(50)
             make.bottom.equalToSuperview().inset(30)
         }
         completeButton.rounded(axis: .horizontal)
+        
+        view.addSubview(indicator)
+        indicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+        
+        view.addSubview(uploadProgressView)
+        uploadProgressView.snp.makeConstraints { make in
+            make.top.equalTo(completeButton.snp.top).offset(-20)
+            make.centerX.equalToSuperview()
+            make.left.equalToSuperview().offset(40)
+        }
     }
     
     func divider() -> UIView {
@@ -410,28 +435,89 @@ class WrittingViewController: UIViewController {
     }
     
     func setRx() {
-//        titleTextField.rx.text.orEmpty
-//            .bind(to: viewModel.title)
-//            .disposed(by: disposeBag)
-//
-//        reviewTextView.rx.text.orEmpty
-//            .bind(to: viewModel.mainText)
-//            .disposed(by: disposeBag)
+        Observable.combineLatest(viewModel.location, viewModel.time, viewModel.weather, viewModel.title, viewModel.content, viewModel.starPoint, viewModel.category)
+            .subscribe(onNext: { a,b,c,d,e,f,g in
+                print(a,b,c,d,e,f,g)
+            })
+            .disposed(by: disposeBag)
         
-        currentScore
+        viewModel.location.accept(infoDetail[0])
+        viewModel.time.accept(infoDetail[1])
+        viewModel.weather.accept(infoDetail[2])
+        
+        titleResult
+            .bind(to: titleTextLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        titleResult
+            .bind(to: viewModel.title)
+            .disposed(by: disposeBag)
+        
+        contentResult
+            .bind(to: contentTextLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        contentResult
+            .bind(to: viewModel.content)
+            .disposed(by: disposeBag)
+        
+        starPointResult
             .bind(to: viewModel.starPoint)
             .disposed(by: disposeBag)
         
+        categoryResult
+            .bind(to: viewModel.category)
+            .disposed(by: disposeBag)
+        
         viewModel.dataValid
-            .subscribe(onNext: { bool in
-                print(bool)
-            })
+            .bind(to: completeButton.rx.isEnabled)
+            .disposed(by: disposeBag)
+        
+        viewModel.uploadProgress
+            .bind(to: uploadProgressView.rx.progress)
             .disposed(by: disposeBag)
         
         completeButton.rx.tap
+            .throttle(.seconds(2), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
-                self?.viewModel.NFTWrite()
+                self?.completeButton.isEnabled = false
+                self?.uploadProgressView.isHidden = false
+                self?.indicator.startAnimating()
+                self?.viewModel.NFTWrite(image: self?.image)
             })
             .disposed(by: disposeBag)
+        
+        viewModel.NFTResult
+            .subscribe(onNext: { [weak self] NFT in
+                self?.NFTResult = NFT
+            })
+            .disposed(by: disposeBag)
+        
+        
+        viewModel.writtingResult
+            .subscribe(onNext:{ [weak self] result in
+                if result {
+                    self?.indicator.stopAnimating()
+                    self?.uploadProgressView.isHidden = true
+                    let vc = NFTTicketViewController()
+                    vc.image = self?.image
+                    vc.NFTResult = self?.NFTResult
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                } else {
+                    self?.indicator.stopAnimating()
+                    self?.uploadProgressView.isHidden = true
+                    self?.writtingErrorAlert()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func writtingErrorAlert() {
+        let alert = UIAlertController(title: "글 저장 중 에러가 발생했어요.", message: "다시 시도해주세요", preferredStyle: .alert)
+        let confirm = UIAlertAction(title: "확인", style: .default)
+        alert.addAction(confirm)
+        confirm.setValue(Boarding.blue, forKey: "titleTextColor")
+        alert.view.tintColor = Gray.dark
+        present(alert, animated: true, completion: nil)
     }
 }

@@ -57,9 +57,6 @@ class CameraCustomViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
         view.backgroundColor = Gray.black
         setViews()
-        print(image)
-        print(location)
-        print(time)
     }
     
     func setViews() {

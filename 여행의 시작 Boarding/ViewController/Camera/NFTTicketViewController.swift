@@ -12,9 +12,9 @@ import SnapKit
 class NFTTicketViewController: UIViewController {
 
     var image: UIImage?
+    var NFTResult: NFT?
     var isFlipped = false
     let NFTTitle = ["위치", "시간", "날씨", "카테고리", "평점"]
-    let NFTInfo = ["finns, 덴파사르", "2023.06.05.  12:30PM", "맑음, 30°C", "맛집", "5.0"]
     let QRTitle = ["Contract Address", "Token ID", "Token Standard", "Chain"]
     let QRInfo = ["FINNS", "13DE79TA23", "Standard", "76$A@*YSD"]
     
@@ -44,13 +44,6 @@ class NFTTicketViewController: UIViewController {
     }
     
     @objc func completeButtonPressed() {
-        FirebaseStorageManager.uploadImage(image: image!, pathRoot: "aa") { url in
-            if let url = url {
-                UserDefaults.standard.set(url.absoluteString, forKey: "myImageUrl")
-                self.title = "이미지 업로드 완료"
-            }
-        }
-        
         let vc = TabBarViewController()
         vc.modalPresentationStyle = .fullScreen
         vc.modalTransitionStyle = .crossDissolve
@@ -68,14 +61,14 @@ class NFTTicketViewController: UIViewController {
         $0.backgroundColor = Gray.white
     }
     
-    var NFTMainTitleLabel = UILabel().then {
-        $0.text = "혁명 기념일 불꽃놀이"
+    lazy var NFTMainTitleLabel = UILabel().then {
+        $0.text = self.NFTResult?.title
         $0.font = Pretendard.semiBold(16)
         $0.textColor = Gray.black
     }
     
-    var NFTSubTitleLabel = UILabel().then {
-        $0.text = "프랑스 혁명 기념일에 매년 전통 불꽃 놀이가 프랑스 수도에서 가장 상징적인 건축물, 에펠탑을 중심으로 독특한 볼거리를 연출한다."
+    lazy var NFTSubTitleLabel = UILabel().then {
+        $0.text = self.NFTResult?.content
         $0.font = Pretendard.regular(14)
         $0.textColor = UIColor("#8C8C8C")
         $0.numberOfLines = 0
@@ -161,10 +154,6 @@ class NFTTicketViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(24)
         }
-        NFTView.layer.shadowOffset = CGSize(width:2, height:2)
-        NFTView.layer.shadowRadius = 6
-        NFTView.layer.shadowColor = UIColor.black.cgColor
-        NFTView.layer.shadowOpacity = 0.3
         
         //NFTTitleView
         NFTView.addSubview(NFTTitleView)
@@ -250,6 +239,7 @@ class NFTTicketViewController: UIViewController {
             make.left.equalToSuperview().inset(24)
             make.height.equalTo(360)
         }
+        let NFTInfo = [NFTResult!.location, NFTResult!.time, NFTResult!.weather, "맛집", String(Double(NFTResult!.starPoint))]
         for index in 0...4 {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear

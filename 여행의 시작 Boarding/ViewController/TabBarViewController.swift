@@ -87,7 +87,7 @@ class TabBarViewController: UITabBarController {
     
     func openCamera() {
         DispatchQueue.main.async {
-            let cameraVC = WrittingContentViewController()
+            let cameraVC = CameraViewController()
             cameraVC.modalPresentationStyle = .overCurrentContext
             cameraVC.modalTransitionStyle = .coverVertical
             self.present(cameraVC, animated: true)

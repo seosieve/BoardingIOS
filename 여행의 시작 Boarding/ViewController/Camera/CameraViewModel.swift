@@ -68,6 +68,30 @@ class CameraViewModel: NSObject {
         selectTime.accept(nil)
     }
     
+    func switchCamera() {
+        // 현재 사용중인 카메라의 position을 확인하여 다른 카메라로 전환
+        guard let currentCameraInput = captureSession.inputs.first as? AVCaptureDeviceInput else { return }
+        
+        var newCamera: AVCaptureDevice?
+        if currentCameraInput.device.position == .back {
+            newCamera = getCamera(with: .front)
+        } else {
+            newCamera = getCamera(with: .back)
+        }
+        
+        guard let newCameraInput = try? AVCaptureDeviceInput(device: newCamera!) else { return }
+        
+        captureSession.beginConfiguration()
+        captureSession.removeInput(currentCameraInput)
+        captureSession.addInput(newCameraInput)
+        captureSession.commitConfiguration()
+    }
+    
+    func getCamera(with position: AVCaptureDevice.Position) -> AVCaptureDevice? {
+        let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera], mediaType: .video, position: position)
+        return discoverySession.devices.first
+    }
+    
     func takeImageByCamera() {
         let settings = AVCapturePhotoSettings()
         self.photoOutput.capturePhoto(with: settings, delegate: self)

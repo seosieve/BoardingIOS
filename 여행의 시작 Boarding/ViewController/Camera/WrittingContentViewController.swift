@@ -11,7 +11,8 @@ import SnapKit
 
 class WrittingContentViewController: UIViewController {
 
-    var titleString = ""
+    var placeHolder = "내용을 작성해주세요."
+    var titleResult = ""
     
     lazy var backButton = UIButton().then {
         let image = UIImage(named: "Back")?.withRenderingMode(.alwaysTemplate)
@@ -31,10 +32,11 @@ class WrittingContentViewController: UIViewController {
     }
     
     lazy var contentTextView = UITextView().then {
-        $0.text = "내용을 작성해주세요."
+        $0.text = placeHolder
         $0.font = Pretendard.regular(21)
-        $0.textColor = Gray.black
+        $0.textColor = Gray.light
         $0.tintColor = Boarding.blue
+        $0.isScrollEnabled = false
     }
     
     var contentUnderLine = UIView().then {
@@ -54,9 +56,9 @@ class WrittingContentViewController: UIViewController {
     
     @objc func nextButtonPressed() {
         let vc = self.navigationController!.viewControllers[1] as! WrittingViewController
-        vc.titleTextLabel.text = self.titleString
+        vc.titleResult.accept(titleResult)
+        vc.contentResult.accept(contentTextView.text)
         vc.titleTextLabel.textColor = Gray.dark
-        vc.contentTextLabel.text = self.contentTextView.text
         vc.contentTextLabel.textColor = Gray.dark
         self.navigationController?.popToViewController(vc, animated: true)
     }
@@ -107,15 +109,16 @@ class WrittingContentViewController: UIViewController {
         
         view.addSubview(contentTextView)
         contentTextView.snp.makeConstraints { make in
-            make.top.equalTo(contentLabel.snp.bottom).offset(25)
+            make.top.equalTo(contentLabel.snp.bottom).offset(16)
             make.centerX.equalToSuperview()
-            make.left.equalToSuperview().offset(24)
-            make.height.equalTo(100)
+            make.left.equalToSuperview().offset(20)
+            make.height.equalTo(50)
         }
+        textViewDidChange(contentTextView)
         
         view.addSubview(contentUnderLine)
         contentUnderLine.snp.makeConstraints { make in
-            make.top.equalTo(contentTextView.snp.bottom).offset(10)
+            make.top.equalTo(contentTextView.snp.bottom).offset(5)
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(20)
             make.height.equalTo(2)
@@ -135,29 +138,36 @@ class WrittingContentViewController: UIViewController {
 //MARK: - UITextViewDelegate
 extension WrittingContentViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
-        if textView.text == "" {
+        if textView.text == "" || textView.text == "내용을 작성해주세요." {
             contentUnderLine.backgroundColor = Gray.medium
             nextButton.isEnabled = false
         } else {
             contentUnderLine.backgroundColor = Boarding.blue
             nextButton.isEnabled = true
         }
+        
+        //글자수에 따라 TextView height 조정
+        let size = CGSize(width: textView.frame.width, height: .infinity)
+        let estimateSize = textView.sizeThatFits(size)
+        textView.snp.updateConstraints { make in
+            make.height.equalTo(estimateSize.height)
+        }
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             contentTextView.textColor = Gray.light
-            contentTextView.text = "내용을 작성해주세요."
-        } else if textView.text == "내용을 작성해주세요." {
-            contentTextView.textColor = Gray.dark
+            contentTextView.text = placeHolder
+        } else if textView.text == placeHolder {
+            contentTextView.textColor = Gray.black
             contentTextView.text = nil
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || textView.text == "내용을 작성해주세요." {
+        if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || textView.text == placeHolder {
             contentTextView.textColor = Gray.light
-            contentTextView.text = "내용을 작성해주세요."
+            contentTextView.text = placeHolder
         }
     }
     

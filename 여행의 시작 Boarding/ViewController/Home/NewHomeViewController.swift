@@ -67,8 +67,6 @@ class NewHomeViewController: UIViewController {
         } else {
             print("aaaaa")
         }
-        
-
 //        do {
 //            try Auth.auth().signOut()
 //
@@ -107,18 +105,6 @@ class NewHomeViewController: UIViewController {
             make.right.equalToSuperview().offset(-24)
             make.centerY.equalToSuperview()
         }
-        
-//        view.insertSubview(homeScrollView, belowSubview: iconView)
-//        homeScrollView.addSubview(homeContentView)
-//        homeScrollView.snp.makeConstraints { make in
-//            make.left.right.bottom.equalToSuperview()
-//            make.top.equalTo(statusBarView.snp.bottom)
-//        }
-//        homeContentView.snp.makeConstraints { make in
-//            make.edges.equalToSuperview()
-//            make.width.equalToSuperview()
-//            make.height.equalTo(950)
-//        }
         
         view.insertSubview(homeTableView, belowSubview: iconView)
         homeTableView.snp.makeConstraints { make in
