@@ -15,8 +15,7 @@ class NFTTicketViewController: UIViewController {
     var NFTResult: NFT?
     var isFlipped = false
     let NFTTitle = ["위치", "시간", "날씨", "카테고리", "평점"]
-    let QRTitle = ["Contract Address", "Token ID", "Token Standard", "Chain"]
-    let QRInfo = ["FINNS", "13DE79TA23", "Standard", "76$A@*YSD"]
+    let QRTitle = ["Contract Ad.", "Token ID", "Standard", "Chain"]
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
@@ -173,51 +172,55 @@ class NFTTicketViewController: UIViewController {
             make.left.equalToSuperview().offset(21)
             make.top.equalTo(NFTMainTitleLabel.snp.bottom).offset(6)
         }
+        
         NFTTitleView.addSubview(QRDetailView)
         QRDetailView.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
-            make.left.equalToSuperview().inset(21)
-            make.height.equalTo(97)
+            make.left.equalToSuperview().inset(20)
+            make.height.equalTo(88)
         }
+        
+        QRDetailView.addSubview(QRImageView)
+        QRImageView.snp.makeConstraints { make in
+            make.left.equalToSuperview()
+            make.centerY.top.equalToSuperview()
+            make.width.equalTo(68)
+        }
+        
         QRDetailView.addSubview(QRDetailStackView)
         QRDetailStackView.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(10)
+            make.left.equalTo(QRImageView.snp.right).offset(26)
+            make.right.equalToSuperview()
             make.centerY.top.equalToSuperview()
-            make.width.equalTo(180)
         }
+        let QRInfo = [String(NFTResult!.writtenDate), NFTResult!.NFTID, "Standard", NFTResult!.autherUid]
         for index in 0...3 {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear
             }
             let mainLabel = UILabel().then {
                 $0.text = QRTitle[index]
-                $0.font = Pretendard.regular(14)
-                $0.textColor = Gray.dark
+                $0.font = Pretendard.semiBold(13)
+                $0.textColor = Gray.black
             }
             let subLabel = UILabel().then {
                 $0.text = QRInfo[index]
-                $0.font = Pretendard.light(14)
-                $0.textColor = Gray.dark
+                $0.font = Pretendard.regular(13)
+                $0.textColor = Gray.medium
             }
             subview.addSubview(mainLabel)
             subview.addSubview(subLabel)
             mainLabel.snp.makeConstraints { make in
-                make.centerY.equalToSuperview()
-                make.left.equalToSuperview()
+                make.centerY.left.equalToSuperview()
+                make.width.equalTo(93)
             }
             subLabel.snp.makeConstraints { make in
-                make.centerY.equalToSuperview()
-                make.right.equalToSuperview()
+                make.centerY.right.equalToSuperview()
+                make.left.equalTo(mainLabel.snp.right)
             }
             QRDetailStackView.addArrangedSubview(subview)
         }
         
-        QRDetailView.addSubview(QRImageView)
-        QRImageView.snp.makeConstraints { make in
-            make.right.equalToSuperview()
-            make.centerY.top.equalToSuperview()
-            make.width.equalTo(93)
-        }
         NFTTitleView.roundCorners(bottomLeft: 20, bottomRight: 20)
         
         //NFTImageView
@@ -239,7 +242,7 @@ class NFTTicketViewController: UIViewController {
             make.left.equalToSuperview().inset(24)
             make.height.equalTo(360)
         }
-        let NFTInfo = [NFTResult!.location, NFTResult!.time, NFTResult!.weather, "맛집", String(Double(NFTResult!.starPoint))]
+        let NFTInfo = [NFTResult!.location, NFTResult!.time, NFTResult!.weather, NFTResult!.category.map{String($0)}.joined(separator: ", "), String(Double(NFTResult!.starPoint))]
         for index in 0...4 {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear
@@ -263,9 +266,12 @@ class NFTTicketViewController: UIViewController {
                 $0.spacing = 2
                 $0.alpha = 0
             }
-            for _ in 0...4 {
-                let star = UIImageView().then {
-                    $0.image = UIImage(named: "Star")
+            for index in 0...4 {
+                let star = UIImageView()
+                if index < NFTResult!.starPoint {
+                    star.image = UIImage(named: "Star")
+                } else {
+                    star.image = UIImage(named: "EmptyStar")
                 }
                 starStackView.addArrangedSubview(star)
             }
