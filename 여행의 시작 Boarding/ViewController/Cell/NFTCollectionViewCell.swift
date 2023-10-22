@@ -10,7 +10,8 @@ import UIKit
 class NFTCollectionViewCell: UICollectionViewCell {
     
     var NFTImageView = UIImageView().then {
-        $0.image = UIImage(named: "France1")
+        $0.backgroundColor = Gray.bright
+        $0.image = UIImage()
     }
     
     override init(frame: CGRect) {
@@ -33,5 +34,8 @@ class NFTCollectionViewCell: UICollectionViewCell {
         NFTImageView.snp.makeConstraints { make in
             make.edges.equalTo(safeAreaLayoutGuide)
         }
+        UIView.animate(withDuration: 0.5, delay: 0, options: [.repeat, .autoreverse], animations: {
+            self.NFTImageView.backgroundColor = Gray.white
+        })
     }
 }

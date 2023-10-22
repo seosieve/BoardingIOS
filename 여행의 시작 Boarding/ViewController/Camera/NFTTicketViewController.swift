@@ -239,7 +239,7 @@ class NFTTicketViewController: UIViewController {
         NFTImageView.addSubview(NFTDetailStackView)
         NFTDetailStackView.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
-            make.left.equalToSuperview().inset(24)
+            make.left.equalToSuperview().inset(20)
             make.height.equalTo(360)
         }
         let NFTInfo = [NFTResult!.location, NFTResult!.time, NFTResult!.weather, NFTResult!.category.map{String($0)}.joined(separator: ", "), String(Double(NFTResult!.starPoint))]
@@ -249,12 +249,12 @@ class NFTTicketViewController: UIViewController {
             }
             let mainLabel = UILabel().then {
                 $0.text = NFTTitle[index]
-                $0.font = Pretendard.semiBold(16)
+                $0.font = Pretendard.semiBold(15)
                 $0.textColor = Gray.white
             }
             let subLabel = UILabel().then {
                 $0.text = NFTInfo[index]
-                $0.font = Pretendard.light(16)
+                $0.font = Pretendard.regular(17)
                 $0.textColor = Gray.white
             }
             let divider = UIView().then {
@@ -277,7 +277,7 @@ class NFTTicketViewController: UIViewController {
             }
             let starValue = UILabel().then {
                 $0.text = NFTInfo.last
-                $0.font = Pretendard.regular(14)
+                $0.font = Pretendard.regular(17)
                 $0.textColor = Gray.white
                 $0.alpha = 0
             }

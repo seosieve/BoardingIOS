@@ -7,6 +7,7 @@
 
 import UIKit
 import CryptoKit
+import FirebaseFirestore
 
 //MARK: - SafeArea Detect
 var window: UIWindow {
@@ -205,6 +206,46 @@ extension NSObject {
             String(format: "%02x", $0)
         }.joined()
         return hashString
+    }
+}
+
+//MARK: - make NFT from document
+extension QueryDocumentSnapshot {
+    func makeNFT() -> NFT {
+        let NFTID = self.get("NFTID") as! String
+        let autherUid = self.get("autherUid") as! String
+        let writtenDate = self.get("writtenDate") as! Double
+        let type = self.get("type") as! String
+        let url = self.get("url") as! String
+        let location = self.get("location") as! String
+        let time = self.get("time") as! String
+        let weather = self.get("weather") as! String
+        let title = self.get("title") as! String
+        let content = self.get("content") as! String
+        let starPoint = self.get("starPoint") as! Int
+        let category = self.get("category") as! [String]
+        let comments = self.get("comments") as! Int
+        let likes = self.get("likes") as! Int
+        let saves = self.get("saves") as! Int
+        let reports = self.get("reports") as! Int
+        
+        let NFT = NFT(NFTID: NFTID,
+                   autherUid: autherUid,
+                   writtenDate: writtenDate,
+                   type: type,
+                   url: url,
+                   location: location,
+                   time: time,
+                   weather: weather,
+                   title: title,
+                   content: content,
+                   starPoint: starPoint,
+                   category: category,
+                   comments: comments,
+                   likes: likes,
+                   saves: saves,
+                   reports: reports)
+        return NFT
     }
 }
 

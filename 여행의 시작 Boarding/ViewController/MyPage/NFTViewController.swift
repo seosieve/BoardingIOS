@@ -13,9 +13,10 @@ import RxCocoa
 
 class NFTViewController: UIViewController {
 
-    let tag = 0
-    let cellCount = 25
+    var cellCount = 10
     let modalClosed = BehaviorRelay<Bool>(value: true)
+    
+    let viewModel = NFTViewModel()
     let disposeBag = DisposeBag()
     
     var NFTScrollView = UIScrollView()
@@ -23,7 +24,6 @@ class NFTViewController: UIViewController {
     var NFTContentView = UIView()
     
     lazy var NFTnumberLabel = UILabel().then {
-        $0.text = "총 \(cellCount)개"
         $0.textColor = Gray.dark
         $0.font = Pretendard.regular(17)
     }
@@ -47,10 +47,15 @@ class NFTViewController: UIViewController {
         $0.changesSelectionAsPrimaryAction = true
     }
     
-    var NFTCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
+    lazy var NFTCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
         $0.backgroundColor = .clear
         var layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 10
+        layout.itemSize = {
+            let width = (self.view.bounds.width - 54)/2
+            let height = width*4/3
+            return CGSize(width: width, height: height)
+        }()
         $0.collectionViewLayout = layout
         $0.showsHorizontalScrollIndicator = false
     }
@@ -59,8 +64,8 @@ class NFTViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = Gray.bright
         NFTScrollView.delegate = self
-        NFTCollectionView.delegate = self
-        NFTCollectionView.dataSource = self
+//        NFTCollectionView.delegate = self
+//        NFTCollectionView.dataSource = self
         NFTCollectionView.register(NFTCollectionViewCell.self, forCellWithReuseIdentifier: "NFTCollectionViewCell")
         setViews()
         setRx()
@@ -111,6 +116,36 @@ class NFTViewController: UIViewController {
             }
         })
         .disposed(by: disposeBag)
+        
+//        viewModel.images
+//            .subscribe(onNext: { image in
+//                print(image.count)
+//            })
+//            .disposed(by: disposeBag)
+        
+        viewModel.items
+            .bind(to: NFTCollectionView.rx.items(cellIdentifier: "NFTCollectionViewCell", cellType: NFTCollectionViewCell.self)) { (row, element, cell) in
+                if element.NFTID != "" {
+                    self.viewModel.downloadImage(urlString: element.url) { image in
+                        cell.NFTImageView.image = image
+                    }
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        NFTCollectionView.rx.modelSelected(NFT.self)
+            .subscribe(onNext:{ [weak self] NFT in
+                print(NFT)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.itemCount
+            .subscribe(onNext: { [weak self] count in
+                self?.cellCount = count
+                self?.NFTnumberLabel.text = "총 \(count)개"
+                self?.updateViewHeight()
+            })
+            .disposed(by: disposeBag)
     }
     
     func updateViewHeight() {
@@ -138,27 +173,27 @@ extension NFTViewController: UIScrollViewDelegate {
 }
 
 //MARK: - UICollectionView
-extension NFTViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return cellCount
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NFTCollectionViewCell", for: indexPath) as! NFTCollectionViewCell
-        cell.NFTImageView.image = UIImage(named: "France1")
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (view.bounds.width - 54)/2
-        let height = width*4/3
-        return CGSize(width: width, height: height)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let presentingVC = self.parent?.parent as? MyPageViewController
-        let vc = NFTDetailViewController()
-        vc.hidesBottomBarWhenPushed = true
-        presentingVC?.navigationController?.pushViewController(vc, animated: true)
-    }
-}
+//extension NFTViewController: UICollectionViewDelegateFlowLayout {
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return cellCount
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NFTCollectionViewCell", for: indexPath) as! NFTCollectionViewCell
+//        cell.NFTImageView.image = UIImage(named: "France1")
+//        return cell
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        let width = (view.bounds.width - 54)/2
+//        let height = width*4/3
+//        return CGSize(width: width, height: height)
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        let presentingVC = self.parent?.parent as? MyPageViewController
+//        let vc = NFTDetailViewController()
+//        vc.hidesBottomBarWhenPushed = true
+//        presentingVC?.navigationController?.pushViewController(vc, animated: true)
+//    }
+//}

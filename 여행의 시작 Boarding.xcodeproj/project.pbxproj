@@ -29,6 +29,7 @@
 		4E44FBA92ADCFC4E0021FAB9 /* NewPlanTitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FBA82ADCFC4E0021FAB9 /* NewPlanTitleViewController.swift */; };
 		4E44FBAB2ADD14A20021FAB9 /* WrittingTitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FBAA2ADD14A20021FAB9 /* WrittingTitleViewController.swift */; };
 		4E44FBAD2ADD1A4B0021FAB9 /* WrittingContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FBAC2ADD1A4B0021FAB9 /* WrittingContentViewController.swift */; };
+		4E4C143D2AE4D9B500E504D4 /* NFTViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4C143C2AE4D9B500E504D4 /* NFTViewModel.swift */; };
 		4E4FF3CC2AB3255B0042126A /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4FF3CB2AB3255B0042126A /* LogInViewController.swift */; };
 		4E4FF3CE2AB326CC0042126A /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4FF3CD2AB326CC0042126A /* StartViewController.swift */; };
 		4E7D52E62AC41AF200054800 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E52AC41AF200054800 /* SplashViewController.swift */; };
@@ -95,6 +96,7 @@
 		4E44FBA82ADCFC4E0021FAB9 /* NewPlanTitleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlanTitleViewController.swift; sourceTree = "<group>"; };
 		4E44FBAA2ADD14A20021FAB9 /* WrittingTitleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrittingTitleViewController.swift; sourceTree = "<group>"; };
 		4E44FBAC2ADD1A4B0021FAB9 /* WrittingContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrittingContentViewController.swift; sourceTree = "<group>"; };
+		4E4C143C2AE4D9B500E504D4 /* NFTViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTViewModel.swift; sourceTree = "<group>"; };
 		4E4FF3CB2AB3255B0042126A /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		4E4FF3CD2AB326CC0042126A /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		4E7D52E52AC41AF200054800 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 				4E7D52E92AC6FD0000054800 /* MyPageViewModel.swift */,
 				4E44FB942ACAAA320021FAB9 /* ModalPageViewController.swift */,
 				4EECA7EF2A2F2968006FB764 /* NFTViewController.swift */,
+				4E4C143C2AE4D9B500E504D4 /* NFTViewModel.swift */,
 				4E44FB982ACFD9D80021FAB9 /* NFTDetailViewController.swift */,
 				4EECA7F12A2F3213006FB764 /* MILEViewController.swift */,
 				4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */,
@@ -491,6 +494,7 @@
 				4E44FBA32ADA323A0021FAB9 /* PastTravelTitleViewController.swift in Sources */,
 				4E1EB4212AA47F8000620D57 /* WrittingViewController.swift in Sources */,
 				4E44FBAB2ADD14A20021FAB9 /* WrittingTitleViewController.swift in Sources */,
+				4E4C143D2AE4D9B500E504D4 /* NFTViewModel.swift in Sources */,
 				4EECA7E12A2DD179006FB764 /* FullScreenViewController.swift in Sources */,
 				4E44FB952ACAAA320021FAB9 /* ModalPageViewController.swift in Sources */,
 				4EECA7D92A2B3005006FB764 /* Extension.swift in Sources */,

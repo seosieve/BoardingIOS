@@ -45,4 +45,25 @@ struct NFT {
                 "reports": reports
         ]
     }
+    
+    // Loading 전 등에 사용될 dummy NFT
+    static var dummyType: NFT {
+        return NFT(NFTID: "",
+                   autherUid: "",
+                   writtenDate: 0.0,
+                   type: "",
+                   url: "",
+                   location: "",
+                   time: "",
+                   weather: "",
+                   title: "",
+                   content: "",
+                   starPoint: 0,
+                   category: [String](),
+                   comments: 0,
+                   likes: 0,
+                   saves: 0,
+                   reports: 0
+        )
+    }
 }
