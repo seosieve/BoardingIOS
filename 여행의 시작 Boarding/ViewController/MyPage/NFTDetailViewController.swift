@@ -6,24 +6,45 @@
 //
 
 import UIKit
+import FirebaseStorage
+import FirebaseStorageUI
 
 class NFTDetailViewController: UIViewController {
     
-    var image = UIImage(named: "France3")
+    var NFTResult = NFT.dummyType
     var isFlipped = false
+    let statusImage = [UIImage(named: "Like"), UIImage(named: "Comment"), UIImage(named: "Report"), UIImage(named: "Save")]
     let NFTTitle = ["위치", "시간", "날씨", "카테고리", "평점"]
-    let NFTInfo = ["finns, 덴파사르", "2023.06.05.  12:30PM", "맑음, 30°C", "맛집", "5.0"]
-    let QRTitle = ["Contract Address", "Token ID", "Token Standard", "Chain"]
-    let QRInfo = ["FINNS", "13DE79TA23", "Standard", "76$A@*YSD"]
-    
-    var rotate = false
+    let QRTitle = ["Contract Ad.", "Token ID", "Standard", "Chain"]
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
     
+    lazy var viewMoreButton = UIBarButtonItem().then {
+        $0.image = UIImage(named: "ViewMore")
+        $0.style = .plain
+        let popularityOrder = UIAction(title: "삭제하기", handler: { _ in
+            self.popUpAlert(("정말로 삭제하시겠어요?", "한 번 삭제한 NFT는 되돌릴 수 없어요", "삭제"))
+        })
+        $0.menu = UIMenu(options: .displayInline, children: [popularityOrder])
+    }
+    
+    func popUpAlert(_ message: (String, String, String)) {
+        let alert = UIAlertController(title: message.0, message: message.1, preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        let action = UIAlertAction(title: message.2, style: .default) { action in
+            print("aa")
+        }
+        alert.addAction(cancel)
+        alert.addAction(action)
+        action.setValue(UIColor.red, forKey: "titleTextColor")
+        alert.view.tintColor = Gray.dark
+        present(alert, animated: true, completion: nil)
+    }
+    
     lazy var backgroundFullImageView = UIImageView().then {
-        $0.image = image
+        $0.sd_setImage(with: URL(string: NFTResult.url))
         $0.contentMode = .scaleAspectFill
     }
     
@@ -31,6 +52,29 @@ class NFTDetailViewController: UIViewController {
     
     var NFTStatusView = UIView().then {
         $0.backgroundColor = Gray.white
+    }
+    
+    var rewardLabel = UILabel().then {
+        $0.text = "획득한 리워드"
+        $0.font = Pretendard.semiBold(20)
+        $0.textColor = Gray.medium
+    }
+    
+    var MILELabel = UILabel().then {
+        $0.text = "0 MILE"
+        $0.font = Pretendard.regular(16)
+        $0.textColor = Gray.medium
+        let attributedString = NSMutableAttributedString(string: $0.text!)
+        attributedString.addAttribute(.font, value: Pretendard.semiBold(16), range: ($0.text! as NSString).range(of: "0"))
+        $0.attributedText = attributedString
+    }
+    
+    var NFTStatusStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.alignment = .fill
+        $0.distribution = .fillEqually
+        $0.spacing = 0
+        $0.backgroundColor = .clear
     }
     
     var NFTView = UIView()
@@ -44,14 +88,14 @@ class NFTDetailViewController: UIViewController {
         $0.backgroundColor = Gray.white
     }
     
-    var NFTMainTitleLabel = UILabel().then {
-        $0.text = "혁명 기념일 불꽃놀이"
+    lazy var NFTMainTitleLabel = UILabel().then {
+        $0.text = self.NFTResult.title
         $0.font = Pretendard.semiBold(16)
         $0.textColor = Gray.black
     }
     
-    var NFTSubTitleLabel = UILabel().then {
-        $0.text = "프랑스 혁명 기념일에 매년 전통 불꽃 놀이가 프랑스 수도에서 가장 상징적인 건축물, 에펠탑을 중심으로 독특한 볼거리를 연출한다."
+    lazy var NFTSubTitleLabel = UILabel().then {
+        $0.text = self.NFTResult.content
         $0.font = Pretendard.regular(14)
         $0.textColor = UIColor("#8C8C8C")
         $0.numberOfLines = 0
@@ -59,7 +103,7 @@ class NFTDetailViewController: UIViewController {
     }
     
     lazy var NFTImageView = UIImageView().then {
-        $0.image = image
+        $0.sd_setImage(with: URL(string: NFTResult.url))
         $0.contentMode = .scaleAspectFill
     }
     
@@ -99,8 +143,9 @@ class NFTDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.setNavigationBar()
+        self.navigationItem.rightBarButtonItem = viewMoreButton
         self.navigationController?.navigationBar.tintColor = Gray.white
-        view.backgroundColor = .white
+        view.backgroundColor = Gray.white
         let tap = UITapGestureRecognizer(target: self, action: #selector(flipNFT))
         NFTView.addGestureRecognizer(tap)
         setViews()
@@ -130,6 +175,69 @@ class NFTDetailViewController: UIViewController {
             make.bottom.equalToSuperview()
         }
         
+        NFTStatusView.addSubview(rewardLabel)
+        NFTStatusView.addSubview(MILELabel)
+        rewardLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(22)
+            make.left.equalToSuperview().offset(26)
+        }
+        MILELabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(22)
+            make.right.equalToSuperview().offset(-26)
+        }
+        
+        let rewardDivider = divider()
+        NFTStatusView.addSubview(rewardDivider)
+        rewardDivider.snp.makeConstraints { make in
+            make.top.equalTo(rewardLabel.snp.bottom).offset(14)
+            make.centerX.equalToSuperview()
+            make.left.equalToSuperview().offset(26)
+            make.height.equalTo(1)
+        }
+        
+        NFTStatusView.addSubview(NFTStatusStackView)
+        NFTStatusStackView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(75)
+            make.centerX.equalToSuperview()
+            make.left.equalToSuperview().inset(20)
+            make.height.equalTo(60)
+        }
+        for index in 0...3 {
+            let subview = UIView().then {
+                $0.backgroundColor = UIColor.clear
+            }
+            let statusImageView = UIImageView().then {
+                $0.image = statusImage[index]
+            }
+            let statusLabel = UILabel().then {
+                $0.text = "0"
+                $0.font = Pretendard.regular(16)
+                $0.textColor = Gray.medium
+            }
+            let divider = UIView().then {
+                $0.backgroundColor = Gray.bright
+            }
+            if index == 3 {
+                divider.alpha = 0
+            }
+            subview.addSubview(statusImageView)
+            subview.addSubview(statusLabel)
+            subview.addSubview(divider)
+            statusImageView.snp.makeConstraints { make in
+                make.top.equalToSuperview().inset(5)
+                make.centerX.equalToSuperview()
+            }
+            statusLabel.snp.makeConstraints { make in
+                make.top.equalTo(statusImageView.snp.bottom).offset(2)
+                make.centerX.equalToSuperview()
+            }
+            divider.snp.makeConstraints { make in
+                make.top.right.centerY.equalToSuperview()
+                make.width.equalTo(1)
+            }
+            NFTStatusStackView.addArrangedSubview(subview)
+        }
+        
         view.addSubview(NFTView)
         NFTView.snp.makeConstraints { make in
             make.top.equalTo(self.navigationController!.navigationBar.bottom()+20)
@@ -156,51 +264,55 @@ class NFTDetailViewController: UIViewController {
             make.left.equalToSuperview().offset(21)
             make.top.equalTo(NFTMainTitleLabel.snp.bottom).offset(6)
         }
+        
         NFTTitleView.addSubview(QRDetailView)
         QRDetailView.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
-            make.left.equalToSuperview().inset(21)
-            make.height.equalTo(97)
+            make.left.equalToSuperview().inset(20)
+            make.height.equalTo(88)
         }
+        
+        QRDetailView.addSubview(QRImageView)
+        QRImageView.snp.makeConstraints { make in
+            make.left.equalToSuperview()
+            make.centerY.top.equalToSuperview()
+            make.width.equalTo(68)
+        }
+        
         QRDetailView.addSubview(QRDetailStackView)
         QRDetailStackView.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(10)
+            make.left.equalTo(QRImageView.snp.right).offset(26)
+            make.right.equalToSuperview()
             make.centerY.top.equalToSuperview()
-            make.width.equalTo(180)
         }
+        let QRInfo = [String(NFTResult.writtenDate), NFTResult.NFTID, "Standard", NFTResult.autherUid]
         for index in 0...3 {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear
             }
             let mainLabel = UILabel().then {
                 $0.text = QRTitle[index]
-                $0.font = Pretendard.regular(14)
-                $0.textColor = Gray.dark
+                $0.font = Pretendard.semiBold(13)
+                $0.textColor = Gray.black
             }
             let subLabel = UILabel().then {
                 $0.text = QRInfo[index]
-                $0.font = Pretendard.light(14)
-                $0.textColor = Gray.dark
+                $0.font = Pretendard.regular(13)
+                $0.textColor = Gray.medium
             }
             subview.addSubview(mainLabel)
             subview.addSubview(subLabel)
             mainLabel.snp.makeConstraints { make in
-                make.centerY.equalToSuperview()
-                make.left.equalToSuperview()
+                make.centerY.left.equalToSuperview()
+                make.width.equalTo(93)
             }
             subLabel.snp.makeConstraints { make in
-                make.centerY.equalToSuperview()
-                make.right.equalToSuperview()
+                make.centerY.right.equalToSuperview()
+                make.left.equalTo(mainLabel.snp.right)
             }
             QRDetailStackView.addArrangedSubview(subview)
         }
         
-        QRDetailView.addSubview(QRImageView)
-        QRImageView.snp.makeConstraints { make in
-            make.right.equalToSuperview()
-            make.centerY.top.equalToSuperview()
-            make.width.equalTo(93)
-        }
         NFTTitleView.roundCorners(bottomLeft: 20, bottomRight: 20)
         
         //NFTImageView
@@ -219,21 +331,22 @@ class NFTDetailViewController: UIViewController {
         NFTImageView.addSubview(NFTDetailStackView)
         NFTDetailStackView.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
-            make.left.equalToSuperview().inset(24)
+            make.left.equalToSuperview().inset(20)
             make.height.equalTo(360)
         }
+        let NFTInfo = [NFTResult.location, NFTResult.time, NFTResult.weather, NFTResult.category.map{String($0)}.joined(separator: ", "), String(Double(NFTResult.starPoint))]
         for index in 0...4 {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear
             }
             let mainLabel = UILabel().then {
                 $0.text = NFTTitle[index]
-                $0.font = Pretendard.semiBold(16)
+                $0.font = Pretendard.semiBold(15)
                 $0.textColor = Gray.white
             }
             let subLabel = UILabel().then {
                 $0.text = NFTInfo[index]
-                $0.font = Pretendard.light(16)
+                $0.font = Pretendard.regular(17)
                 $0.textColor = Gray.white
             }
             let divider = UIView().then {
@@ -245,15 +358,18 @@ class NFTDetailViewController: UIViewController {
                 $0.spacing = 2
                 $0.alpha = 0
             }
-            for _ in 0...4 {
-                let star = UIImageView().then {
-                    $0.image = UIImage(named: "Star")
+            for index in 0...4 {
+                let star = UIImageView()
+                if index < NFTResult.starPoint {
+                    star.image = UIImage(named: "Star")
+                } else {
+                    star.image = UIImage(named: "EmptyStar")
                 }
                 starStackView.addArrangedSubview(star)
             }
             let starValue = UILabel().then {
                 $0.text = NFTInfo.last
-                $0.font = Pretendard.regular(14)
+                $0.font = Pretendard.regular(17)
                 $0.textColor = Gray.white
                 $0.alpha = 0
             }
@@ -293,6 +409,12 @@ class NFTDetailViewController: UIViewController {
             NFTDetailStackView.addArrangedSubview(subview)
         }
         NFTImageView.roundCorners(topLeft: 20, topRight: 20)
+    }
+    
+    func divider() -> UIView {
+        return UIView().then {
+            $0.backgroundColor = Gray.light.withAlphaComponent(0.4)
+        }
     }
     
     func changeContents() {

@@ -670,6 +670,9 @@ PODS:
     - FirebaseCore (~> 10.0)
     - FirebaseCoreExtension (~> 10.0)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
+  - FirebaseStorageUI (13.1.0):
+    - FirebaseStorage (< 11.0, >= 8.0)
+    - SDWebImage (~> 5.6)
   - GoogleUtilities/AppDelegateSwizzler (7.11.1):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -793,6 +796,9 @@ PODS:
   - RxRelay (6.5.0):
     - RxSwift (= 6.5.0)
   - RxSwift (6.5.0)
+  - SDWebImage (5.18.3):
+    - SDWebImage/Core (= 5.18.3)
+  - SDWebImage/Core (5.18.3)
   - SnapKit (5.6.0)
   - Then (3.0.0)
 
@@ -800,6 +806,7 @@ DEPENDENCIES:
   - FirebaseAuth
   - FirebaseFirestore
   - FirebaseStorage
+  - FirebaseStorageUI
   - KakaoSDKAuth
   - KakaoSDKCommon
   - KakaoSDKUser
@@ -822,6 +829,7 @@ SPEC REPOS:
     - FirebaseCoreInternal
     - FirebaseFirestore
     - FirebaseStorage
+    - FirebaseStorageUI
     - GoogleUtilities
     - "gRPC-C++"
     - gRPC-Core
@@ -839,6 +847,7 @@ SPEC REPOS:
     - RxKakaoSDKUser
     - RxRelay
     - RxSwift
+    - SDWebImage
     - SnapKit
     - Then
 
@@ -854,6 +863,7 @@ SPEC CHECKSUMS:
   FirebaseCoreInternal: 950500ad8a08963657f6d8c67b579740c06d6aa1
   FirebaseFirestore: b3bb12a497c9d13e80ec3158dbb75ded03592e8d
   FirebaseStorage: a12297f786e81e653864d87723ec30381eb90220
+  FirebaseStorageUI: 5db14fc4c251fdbe3b706eb1a9dddc55bc51b414
   GoogleUtilities: 9aa0ad5a7bc171f8bae016300bfcfa3fb8425749
   "gRPC-C++": 0968bace703459fd3e5dcb0b2bed4c573dbff046
   gRPC-Core: 17108291d84332196d3c8466b48f016fc17d816d
@@ -871,9 +881,10 @@ SPEC CHECKSUMS:
   RxKakaoSDKUser: 326eab08cbbc78d8afe7250b4f342f23cf1596b1
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
+  SDWebImage: 96e0c18ef14010b7485210e92fac888587ebb958
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   Then: 844265ae87834bbe1147d91d5d41a404da2ec27d
 
-PODFILE CHECKSUM: 3785a150ee1d5a2410ee576d9697a44f598eb9dd
+PODFILE CHECKSUM: bf8bd48c3356745d96dfba6ff0c20f8a7410ad16
 
 COCOAPODS: 1.11.3

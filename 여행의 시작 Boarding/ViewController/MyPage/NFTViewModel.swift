@@ -42,17 +42,4 @@ class NFTViewModel {
             }
         }
     }
-    
-    func downloadImage(urlString: String, completion: @escaping (UIImage?) -> Void) {
-        let storageReference = Storage.storage().reference(forURL: urlString)
-        let megaByte = Int64(1*2048*2048)
-        
-        storageReference.getData(maxSize: megaByte) { data, error in
-            guard let imageData = data else {
-                completion(nil)
-                return
-            }
-            completion(UIImage(data: imageData))
-        }
-    }
 }

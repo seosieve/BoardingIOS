@@ -10,6 +10,8 @@ import Then
 import SnapKit
 import RxSwift
 import RxCocoa
+import FirebaseStorage
+import FirebaseStorageUI
 
 class NFTViewController: UIViewController {
 
@@ -36,15 +38,6 @@ class NFTViewController: UIViewController {
         $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 5)
         $0.semanticContentAttribute = .forceRightToLeft
-        let registrationOrder = UIAction(title: "등록순", state: .on, handler: { _ in
-            print("등록순")
-        })
-        let popularityOrder = UIAction(title: "인기순", handler: { _ in
-            print("인기순")
-        })
-        $0.menu = UIMenu(options: .displayInline, children: [registrationOrder, popularityOrder])
-        $0.showsMenuAsPrimaryAction = true
-        $0.changesSelectionAsPrimaryAction = true
     }
     
     lazy var NFTCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
@@ -126,16 +119,22 @@ class NFTViewController: UIViewController {
         viewModel.items
             .bind(to: NFTCollectionView.rx.items(cellIdentifier: "NFTCollectionViewCell", cellType: NFTCollectionViewCell.self)) { (row, element, cell) in
                 if element.NFTID != "" {
-                    self.viewModel.downloadImage(urlString: element.url) { image in
-                        cell.NFTImageView.image = image
-                    }
+                    cell.NFTImageView.sd_setImage(with: URL(string: element.url), placeholderImage: nil, options: .scaleDownLargeImages)
+                    cell.isUserInteractionEnabled = true
+                } else {
+                    cell.isUserInteractionEnabled = false
                 }
             }
             .disposed(by: disposeBag)
         
+        
         NFTCollectionView.rx.modelSelected(NFT.self)
             .subscribe(onNext:{ [weak self] NFT in
-                print(NFT)
+                let presentingVC = self?.parent?.parent as? MyPageViewController
+                let vc = NFTDetailViewController()
+                vc.NFTResult = NFT
+                vc.hidesBottomBarWhenPushed = true
+                presentingVC?.navigationController?.pushViewController(vc, animated: true)
             })
             .disposed(by: disposeBag)
         
@@ -144,6 +143,12 @@ class NFTViewController: UIViewController {
                 self?.cellCount = count
                 self?.NFTnumberLabel.text = "총 \(count)개"
                 self?.updateViewHeight()
+            })
+            .disposed(by: disposeBag)
+        
+        sortButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                self?.showMenu()
             })
             .disposed(by: disposeBag)
     }
@@ -160,6 +165,18 @@ class NFTViewController: UIViewController {
         NFTContentView.snp.updateConstraints { make in
             make.height.equalTo(totalHeight + 250)
         }
+    }
+    
+    func showMenu() {
+        let registrationOrder = UIAction(title: "등록순", state: .on, handler: { _ in
+            print("등록순")
+        })
+        let popularityOrder = UIAction(title: "인기순", handler: { _ in
+            self.NFTCollectionView.reloadData()
+        })
+        sortButton.menu = UIMenu(options: .displayInline, children: [registrationOrder, popularityOrder])
+        sortButton.showsMenuAsPrimaryAction = true
+        sortButton.changesSelectionAsPrimaryAction = true
     }
 }
 

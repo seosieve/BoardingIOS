@@ -12,7 +12,7 @@ import SnapKit
 class NFTTicketViewController: UIViewController {
 
     var image: UIImage?
-    var NFTResult: NFT?
+    var NFTResult = NFT.dummyType
     var isFlipped = false
     let NFTTitle = ["위치", "시간", "날씨", "카테고리", "평점"]
     let QRTitle = ["Contract Ad.", "Token ID", "Standard", "Chain"]
@@ -61,13 +61,13 @@ class NFTTicketViewController: UIViewController {
     }
     
     lazy var NFTMainTitleLabel = UILabel().then {
-        $0.text = self.NFTResult?.title
+        $0.text = self.NFTResult.title
         $0.font = Pretendard.semiBold(16)
         $0.textColor = Gray.black
     }
     
     lazy var NFTSubTitleLabel = UILabel().then {
-        $0.text = self.NFTResult?.content
+        $0.text = self.NFTResult.content
         $0.font = Pretendard.regular(14)
         $0.textColor = UIColor("#8C8C8C")
         $0.numberOfLines = 0
@@ -193,7 +193,7 @@ class NFTTicketViewController: UIViewController {
             make.right.equalToSuperview()
             make.centerY.top.equalToSuperview()
         }
-        let QRInfo = [String(NFTResult!.writtenDate), NFTResult!.NFTID, "Standard", NFTResult!.autherUid]
+        let QRInfo = [String(NFTResult.writtenDate), NFTResult.NFTID, "Standard", NFTResult.autherUid]
         for index in 0...3 {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear
@@ -242,7 +242,7 @@ class NFTTicketViewController: UIViewController {
             make.left.equalToSuperview().inset(20)
             make.height.equalTo(360)
         }
-        let NFTInfo = [NFTResult!.location, NFTResult!.time, NFTResult!.weather, NFTResult!.category.map{String($0)}.joined(separator: ", "), String(Double(NFTResult!.starPoint))]
+        let NFTInfo = [NFTResult.location, NFTResult.time, NFTResult.weather, NFTResult.category.map{String($0)}.joined(separator: ", "), String(Double(NFTResult.starPoint))]
         for index in 0...4 {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear
@@ -268,7 +268,7 @@ class NFTTicketViewController: UIViewController {
             }
             for index in 0...4 {
                 let star = UIImageView()
-                if index < NFTResult!.starPoint {
+                if index < NFTResult.starPoint {
                     star.image = UIImage(named: "Star")
                 } else {
                     star.image = UIImage(named: "EmptyStar")

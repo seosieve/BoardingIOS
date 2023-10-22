@@ -24,7 +24,7 @@ class WrittingViewController: UIViewController {
     var contentResult = BehaviorRelay<String>(value: "내용을 입력해주세요.")
     var starPointResult = BehaviorRelay<Int>(value: 0)
     var categoryResult = BehaviorRelay<[String]>(value: [])
-    var NFTResult: NFT?
+    var NFTResult = NFT.dummyType
     
     let viewModel = WrittingViewModel()
     let disposeBag = DisposeBag()
@@ -501,7 +501,7 @@ class WrittingViewController: UIViewController {
                     self?.uploadProgressView.isHidden = true
                     let vc = NFTTicketViewController()
                     vc.image = self?.image
-                    vc.NFTResult = self?.NFTResult
+                    vc.NFTResult = self!.NFTResult
                     self?.navigationController?.pushViewController(vc, animated: true)
                 } else {
                     self?.indicator.stopAnimating()

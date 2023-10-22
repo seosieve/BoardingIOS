@@ -11,6 +11,7 @@ target '여행의 시작 Boarding' do
   pod 'FirebaseAuth'
   pod 'FirebaseFirestore'
   pod 'FirebaseStorage'
+  pod 'FirebaseStorageUI'
   pod 'KakaoSDKCommon'
   pod 'RxKakaoSDKCommon'
   pod 'KakaoSDKAuth'
