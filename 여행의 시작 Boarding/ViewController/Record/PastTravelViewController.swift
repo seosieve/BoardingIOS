@@ -146,10 +146,4 @@ class PastTravelViewController: UIViewController {
         }
         completeButton.rounded(axis: .horizontal)
     }
-    
-    func divider() -> UIView {
-        return UIView().then {
-            $0.backgroundColor = Gray.light.withAlphaComponent(0.4)
-        }
-    }
 }

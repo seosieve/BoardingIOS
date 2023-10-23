@@ -188,29 +188,3 @@ extension NFTViewController: UIScrollViewDelegate {
         }
     }
 }
-
-//MARK: - UICollectionView
-//extension NFTViewController: UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return cellCount
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NFTCollectionViewCell", for: indexPath) as! NFTCollectionViewCell
-//        cell.NFTImageView.image = UIImage(named: "France1")
-//        return cell
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let width = (view.bounds.width - 54)/2
-//        let height = width*4/3
-//        return CGSize(width: width, height: height)
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let presentingVC = self.parent?.parent as? MyPageViewController
-//        let vc = NFTDetailViewController()
-//        vc.hidesBottomBarWhenPushed = true
-//        presentingVC?.navigationController?.pushViewController(vc, animated: true)
-//    }
-//}

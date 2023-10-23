@@ -226,6 +226,7 @@ class NFTDetailViewController: UIViewController {
             statusImageView.snp.makeConstraints { make in
                 make.top.equalToSuperview().inset(5)
                 make.centerX.equalToSuperview()
+                make.width.height.equalTo(26)
             }
             statusLabel.snp.makeConstraints { make in
                 make.top.equalTo(statusImageView.snp.bottom).offset(2)
@@ -409,12 +410,6 @@ class NFTDetailViewController: UIViewController {
             NFTDetailStackView.addArrangedSubview(subview)
         }
         NFTImageView.roundCorners(topLeft: 20, topRight: 20)
-    }
-    
-    func divider() -> UIView {
-        return UIView().then {
-            $0.backgroundColor = Gray.light.withAlphaComponent(0.4)
-        }
     }
     
     func changeContents() {

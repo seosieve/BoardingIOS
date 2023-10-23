@@ -9,8 +9,11 @@ import UIKit
 
 class HomeTableViewCell: UITableViewCell {
 
+    let iconArr = [UIImage(named: "Report"), UIImage(named: "Comment"), UIImage(named: "Like"), UIImage(named: "Save")]
+    
     var userImage = UIImageView().then {
-        $0.image = UIImage(named: "User")
+        $0.image = UIImage(named: "DefaultUser")?.withRenderingMode(.alwaysTemplate)
+        $0.tintColor = Boarding.blue
         $0.layer.cornerRadius = 16
         $0.layer.masksToBounds = true
     }
@@ -38,45 +41,54 @@ class HomeTableViewCell: UITableViewCell {
         $0.font = Pretendard.regular(17)
         $0.textColor = Gray.dark
         $0.numberOfLines = 3
+        $0.textAlignment = .left
         $0.lineBreakMode = .byCharWrapping
     }
     
     var photoView = UIImageView().then {
         $0.image = UIImage(named: "France8")
-        $0.layer.cornerRadius = 8
+        $0.layer.cornerRadius = 12
         $0.layer.masksToBounds = true
     }
     
+    var interactionStackView = UIStackView().then {
+        $0.backgroundColor = Gray.white
+        $0.axis = .vertical
+        $0.alignment = .fill
+        $0.distribution = .equalSpacing
+        $0.spacing = 15
+    }
+    
     var scoreView = UIView().then {
-        $0.backgroundColor = Gray.light.withAlphaComponent(0.3)
+        $0.backgroundColor = Gray.bright
         $0.layer.cornerRadius = 12
     }
     
     var scoreImage = UIImageView().then {
         $0.image = UIImage(named: "Star")?.withRenderingMode(.alwaysTemplate)
-        $0.tintColor = Gray.dark
+        $0.tintColor = Gray.medium
     }
     
     var scoreLabel = UILabel().then {
         $0.text = "4.5"
         $0.font = Pretendard.regular(13)
-        $0.textColor = Gray.dark
+        $0.textColor = Gray.medium
     }
     
     var locationView = UIView().then {
-        $0.backgroundColor = Gray.light.withAlphaComponent(0.3)
+        $0.backgroundColor = Gray.bright
         $0.layer.cornerRadius = 12
     }
     
     var locationImage = UIImageView().then {
-        $0.image = UIImage(named: "Location")
-        $0.tintColor = Gray.dark
+        $0.image = UIImage(named: "Location")?.withRenderingMode(.alwaysTemplate)
+        $0.tintColor = Gray.medium
     }
     
     var locationLabel = UILabel().then {
         $0.text = "루레알공원, 파리, 프랑스"
         $0.font = Pretendard.regular(13)
-        $0.textColor = Gray.dark
+        $0.textColor = Gray.medium
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -100,8 +112,8 @@ class HomeTableViewCell: UITableViewCell {
     func setViews() {
         contentView.addSubview(userImage)
         userImage.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(36)
-            make.left.equalToSuperview().offset(16)
+            make.top.equalToSuperview().offset(30)
+            make.left.equalToSuperview().offset(20)
             make.height.width.equalTo(32)
         }
         
@@ -123,28 +135,65 @@ class HomeTableViewCell: UITableViewCell {
         mainLabel.snp.makeConstraints { make in
             make.top.equalTo(userImage.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
-            make.left.equalToSuperview().offset(16)
+            make.left.equalToSuperview().offset(20)
         }
         
         contentView.addSubview(subLabel)
         subLabel.snp.makeConstraints { make in
             make.top.equalTo(mainLabel.snp.bottom).offset(6)
             make.centerX.equalToSuperview()
-            make.left.equalToSuperview().offset(16)
+            make.left.equalToSuperview().offset(20)
         }
         
         contentView.addSubview(photoView)
         photoView.snp.makeConstraints { make in
             make.top.equalTo(subLabel.snp.bottom).offset(20)
-            make.left.equalToSuperview().offset(16)
+            make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().inset(77)
             make.height.equalTo(450)
+        }
+        
+        contentView.addSubview(interactionStackView)
+        interactionStackView.snp.makeConstraints { make in
+            make.left.equalTo(photoView.snp.right).offset(28)
+            make.bottom.equalTo(photoView)
+            make.width.equalTo(33)
+            make.height.equalTo(262)
+        }
+        for index in 0...3 {
+            let subview = UIView().then {
+                $0.backgroundColor = Gray.white
+            }
+            
+            let iconImageView = UIImageView().then {
+                $0.image = iconArr[index]
+            }
+            
+            let numberLabel = UILabel().then {
+                $0.text = "0"
+                $0.font = Pretendard.regular(13)
+                $0.textColor = Gray.dark
+                $0.textAlignment = .center
+            }
+            
+            subview.addSubview(iconImageView)
+            iconImageView.snp.makeConstraints { make in
+                make.top.left.centerX.equalToSuperview()
+                make.width.height.equalTo(32)
+            }
+            subview.addSubview(numberLabel)
+            numberLabel.snp.makeConstraints { make in
+                make.top.equalTo(iconImageView.snp.bottom)
+                make.left.centerX.equalToSuperview()
+                make.bottom.equalToSuperview()
+            }
+            interactionStackView.addArrangedSubview(subview)
         }
         
         contentView.addSubview(scoreView)
         scoreView.snp.makeConstraints { make in
             make.top.equalTo(photoView.snp.bottom).offset(12)
-            make.left.equalToSuperview().offset(16)
+            make.left.equalToSuperview().offset(20)
             make.height.equalTo(24)
         }
         scoreView.addSubview(scoreImage)
@@ -171,7 +220,8 @@ class HomeTableViewCell: UITableViewCell {
         locationImage.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().offset(8)
-            make.width.height.equalTo(15)
+            make.width.equalTo(11)
+            make.height.equalTo(15)
         }
         locationView.addSubview(locationLabel)
         locationLabel.snp.makeConstraints { make in

@@ -17,7 +17,6 @@ class WrittingViewController: UIViewController {
     var infoTitle = ["위치", "시간", "날씨"]
     var infoDetail = ["", "", "맑음, 25°C"]
     var scoreArr = [false, false, false, false, false]
-    var categoryArr = ["관광", "휴양", "액티비티", "맛집", "숙소", "페스티벌"]
     var selectedCategoryArr = [String]()
     
     var titleResult = BehaviorRelay<String>(value: "제목을 입력해주세요.")
@@ -204,11 +203,11 @@ class WrittingViewController: UIViewController {
         let index = Int(categoryStackView.arrangedSubviews.firstIndex(of: sender)!)
         if sender.isSelected {
             sender.layer.borderWidth = 1
-            let rm = selectedCategoryArr.firstIndex(of: categoryArr[index])!
+            let rm = selectedCategoryArr.firstIndex(of: Category.name[index])!
             selectedCategoryArr.remove(at: rm)
         } else {
             sender.layer.borderWidth = 0
-            selectedCategoryArr.append(categoryArr[index])
+            selectedCategoryArr.append(Category.name[index])
         }
         sender.isSelected.toggle()
         feedbackGenerator?.impactOccurred()
@@ -386,13 +385,13 @@ class WrittingViewController: UIViewController {
             make.edges.equalToSuperview()
             make.height.equalToSuperview()
         }
-        for index in 0...5 {
+        for index in 0..<Category.count {
             lazy var button = UIButton().then {
                 $0.setBackgroundColor(Gray.white, for: .normal)
                 $0.setBackgroundColor(Boarding.blue, for: .selected)
                 $0.setTitleColor(Gray.medium, for: .normal)
                 $0.setTitleColor(Gray.white, for: .selected)
-                $0.setTitle(categoryArr[index], for: .normal)
+                $0.setTitle(Category.name[index], for: .normal)
                 $0.titleLabel?.font = Pretendard.medium(15)
                 $0.layer.masksToBounds = true
                 $0.layer.cornerRadius = 16
@@ -425,12 +424,6 @@ class WrittingViewController: UIViewController {
             make.top.equalTo(completeButton.snp.top).offset(-20)
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(40)
-        }
-    }
-    
-    func divider() -> UIView {
-        return UIView().then {
-            $0.backgroundColor = Gray.light.withAlphaComponent(0.4)
         }
     }
     

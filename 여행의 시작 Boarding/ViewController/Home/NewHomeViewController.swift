@@ -6,9 +6,15 @@
 //
 
 import UIKit
+import Then
+import SnapKit
+import RxSwift
+import RxCocoa
 import FirebaseAuth
 
 class NewHomeViewController: UIViewController {
+    
+    let disposeBag = DisposeBag()
     
     var statusBarView = UIView().then {
         $0.backgroundColor = Gray.white
@@ -21,6 +27,20 @@ class NewHomeViewController: UIViewController {
         $0.layer.shadowColor = Gray.black.cgColor
         $0.layer.shadowOpacity = 0.1
         $0.layer.shadowOpacity = 0
+    }
+    
+    var locationImageView = UIImageView().then {
+        $0.image = UIImage(named: "Location")
+    }
+    
+    var locationButton = UIButton().then {
+        $0.setTitle("전세계", for: .normal)
+        $0.setImage(UIImage(named: "Triangle2"), for: .normal)
+        $0.titleLabel?.font = Pretendard.semiBold(27)
+        $0.setTitleColor(Gray.black, for: .normal)
+        $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 5)
+        $0.semanticContentAttribute = .forceRightToLeft
     }
     
     lazy var searchButton = UIButton().then {
@@ -43,40 +63,39 @@ class NewHomeViewController: UIViewController {
         print("alarmButton Pressed")
     }
     
+    var alarmPointView = UIView().then {
+        $0.backgroundColor = Boarding.red
+    }
+    
     var homeTableView = UITableView().then {
-        $0.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        $0.contentInset = UIEdgeInsets(top: 120, left: 0, bottom: 0, right: 0)
+        $0.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+    
+    var categoryScrollView = UIScrollView().then {
+        $0.backgroundColor = Gray.white
+        $0.showsHorizontalScrollIndicator = false
+        $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        $0.contentOffset = CGPoint(x: -20, y: 0)
+    }
+    
+    var categoryStackView = UIStackView().then {
+        $0.backgroundColor = Gray.white
+        $0.axis = .horizontal
+        $0.alignment = .fill
+        $0.distribution = .equalSpacing
+        $0.spacing = 8
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .yellow
+        view.backgroundColor = Gray.white
+        self.navigationController?.navigationBar.isHidden = true
         homeTableView.delegate = self
         homeTableView.dataSource = self
         homeTableView.register(HomeTableViewCell.self, forCellReuseIdentifier: "homeTableViewCell")
         setViews()
-        
-        if let user = Auth.auth().currentUser {
-            let uid = user.uid
-            let email = user.email
-            let photoURL = user.photoURL
-            let nickname = user.displayName
-            print(uid)
-            print(email)
-            print(photoURL)
-            print(nickname)
-        } else {
-            print("aaaaa")
-        }
-//        do {
-//            try Auth.auth().signOut()
-//
-//            print("로그아웃 성공")
-//        } catch let error as NSError {
-//
-//            print("로그아웃 에러: \(error.localizedDescription)")
-//        }
-        
-        
+        setRx()
     }
     
     func setViews() {
@@ -92,9 +111,21 @@ class NewHomeViewController: UIViewController {
             make.centerX.width.equalToSuperview()
             make.height.equalTo(45)
         }
+        iconView.addSubview(locationImageView)
+        iconView.addSubview(locationButton)
+        locationImageView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(25)
+            make.centerY.equalToSuperview()
+            make.height.equalTo(26)
+        }
+        locationButton.snp.makeConstraints { make in
+            make.left.equalTo(locationImageView.snp.right).offset(8)
+            make.centerY.equalToSuperview()
+        }
         
         iconView.addSubview(searchButton)
         iconView.addSubview(alarmButton)
+        iconView.addSubview(alarmPointView)
         searchButton.snp.makeConstraints { make in
             make.width.height.equalTo(24)
             make.right.equalTo(alarmButton.snp.left).offset(-12)
@@ -105,13 +136,84 @@ class NewHomeViewController: UIViewController {
             make.right.equalToSuperview().offset(-24)
             make.centerY.equalToSuperview()
         }
+        alarmPointView.snp.makeConstraints { make in
+            make.width.height.equalTo(7)
+            make.right.equalToSuperview().offset(-27.5)
+            make.top.equalToSuperview().offset(12)
+        }
+        alarmPointView.rounded(axis: .horizontal)
         
         view.insertSubview(homeTableView, belowSubview: iconView)
         homeTableView.snp.makeConstraints { make in
-            make.top.equalTo(statusBarView.snp.bottom)
+            make.top.equalTo(iconView.snp.bottom)
             make.centerX.left.equalToSuperview()
             make.bottom.equalToSuperview()
         }
+        
+        homeTableView.addSubview(categoryScrollView)
+        categoryScrollView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(-120)
+            make.left.centerX.equalToSuperview()
+            make.height.equalTo(120)
+        }
+        
+        categoryScrollView.addSubview(categoryStackView)
+        categoryStackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.height.equalToSuperview()
+        }
+        for index in 0..<Category.count {
+            let subview = UIView().then {
+                $0.backgroundColor = Gray.white
+            }
+            
+            let emojiLabel = UILabel().then {
+                $0.backgroundColor = Gray.bright
+                $0.text = Category.imoji[index]
+                $0.font = Pretendard.regular(30)
+                $0.textAlignment = .center
+            }
+            
+            let nameLabel = UILabel().then {
+                $0.text = Category.name[index]
+                $0.font = Pretendard.regular(13)
+                $0.textColor = Gray.medium
+            }
+            
+            subview.addSubview(emojiLabel)
+            emojiLabel.snp.makeConstraints { make in
+                make.top.equalToSuperview().offset(20)
+                make.left.centerX.equalToSuperview()
+                make.width.height.equalTo(64)
+            }
+            emojiLabel.rounded(axis: .horizontal)
+            
+            subview.addSubview(nameLabel)
+            nameLabel.snp.makeConstraints { make in
+                make.top.equalTo(emojiLabel.snp.bottom).offset(4)
+                make.centerX.equalToSuperview()
+            }
+            categoryStackView.addArrangedSubview(subview)
+        }
+        
+        let categoryDivider = divider()
+        homeTableView.addSubview(categoryDivider)
+        categoryDivider.snp.makeConstraints { make in
+            make.top.equalTo(categoryStackView.snp.bottom)
+            make.centerX.left.equalToSuperview()
+            make.height.equalTo(1)
+        }
+    }
+    
+    func setRx() {
+        locationButton.rx.tap
+            .subscribe(onNext: {
+                let vc = SetLocationViewController()
+                vc.modalPresentationStyle = .automatic
+                vc.modalTransitionStyle = .coverVertical
+                self.present(vc, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -130,6 +232,13 @@ extension NewHomeViewController: UITableViewDelegate, UITableViewDataSource {
         cell.selectionStyle = .none
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath.row)
+        let vc = FullScreenViewController()
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 //MARK: - UIScrollView
@@ -139,5 +248,6 @@ extension NewHomeViewController: UIScrollViewDelegate {
         level = max(0, level)
         level = min(100, level)
         iconView.layer.shadowOpacity = Float(level/2000)
+        print(level)
     }
 }

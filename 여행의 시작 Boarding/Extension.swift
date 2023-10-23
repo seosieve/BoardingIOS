@@ -51,6 +51,12 @@ extension UIView {
         layer.addSublayer(border)
     }
     
+    func makeModalCircular() {
+        self.clipsToBounds = false
+        self.layer.cornerRadius = 28
+        self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    }
+    
     func makeShadow(radius: CGFloat = 0, width: Int = 0, height: Int = 0, opacity: Float = 0.5, shadowRadius: Int = 2) {
         self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOpacity = opacity
@@ -167,6 +173,12 @@ extension UIViewController {
         confirm.setValue(Boarding.blue, forKey: "titleTextColor")
         alert.view.tintColor = Gray.dark
         present(alert, animated: true, completion: nil)
+    }
+    
+    func divider() -> UIView {
+        return UIView().then {
+            $0.backgroundColor = Gray.light.withAlphaComponent(0.4)
+        }
     }
 }
 
