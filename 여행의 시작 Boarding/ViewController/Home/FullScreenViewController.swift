@@ -12,7 +12,16 @@ import SnapKit
 
 class FullScreenViewController: UIViewController {
     
+    var url: URL?
+    var NFT: NFT?
+    var User: User?
+    
     let iconArr = [UIImage(named: "Comment"), UIImage(named: "Like"), UIImage(named: "Save")]
+    
+    var fullScreenImageView = UIImageView().then {
+        $0.image = UIImage(named: "France1")
+        $0.contentMode = .scaleAspectFill
+    }
     
     lazy var backButton = UIButton().then {
         $0.setImage(UIImage(named: "Back"), for: .normal)
@@ -26,16 +35,28 @@ class FullScreenViewController: UIViewController {
     lazy var fullScreenTextView = UIView().then {
         $0.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 198)
         $0.gradient([Gray.black.withAlphaComponent(0), .black], axis: .vertical)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapRecognized))
+        $0.addGestureRecognizer(tap)
     }
     
-    var titleLabel = UILabel().then {
-        $0.text = "니스 해변 패러세일링 후기"
+    @objc func tapRecognized() {
+        let vc = HomeInfoViewController()
+        vc.image = fullScreenImageView.image
+        vc.infoDetail[0] = NFT!.location
+        vc.infoDetail[1] = NFT!.time
+        vc.titleLabel.text = NFT!.title
+        vc.contentLabel.text = NFT!.content
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    lazy var titleLabel = UILabel().then {
+        $0.text = NFT?.title
         $0.font = Pretendard.medium(19)
         $0.textColor = Gray.white
     }
     
-    var contentLabel = UILabel().then {
-        $0.text = "프랑스 혁명 기념일에 매년 전통 불꽃 놀이가 프랑스 수도에서 가장 상징적인 건축물, 에펠탑을 중심으로 독특한 볼거리를 연출한다."
+    lazy var contentLabel = UILabel().then {
+        $0.text = NFT?.content
         $0.font = Pretendard.regular(15)
         $0.textColor = Gray.white
         $0.numberOfLines = 0
@@ -52,8 +73,8 @@ class FullScreenViewController: UIViewController {
         $0.tintColor = Gray.white
     }
     
-    var locationLabel = UILabel().then {
-        $0.text = "루레알공원, 파리, 프랑스"
+    lazy var locationLabel = UILabel().then {
+        $0.text = NFT?.location
         $0.font = Pretendard.regular(13)
         $0.textColor = Gray.white
     }
@@ -85,11 +106,17 @@ class FullScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .systemGreen
-        loadVideoView()
+//        loadVideoView()
+        loadImageView()
         setViews()
     }
     
     func setViews() {
+        view.addSubview(fullScreenImageView)
+        fullScreenImageView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
         view.addSubview(backButton)
         backButton.snp.makeConstraints { make in
             make.top.equalTo(window.safeAreaInsets.top)
@@ -204,5 +231,9 @@ class FullScreenViewController: UIViewController {
         playerLayer.videoGravity = .resizeAspectFill
         self.view.layer.addSublayer(playerLayer)
         player.play()
+    }
+    
+    func loadImageView() {
+        fullScreenImageView.sd_setImage(with: url, placeholderImage: nil, options: .scaleDownLargeImages)
     }
 }

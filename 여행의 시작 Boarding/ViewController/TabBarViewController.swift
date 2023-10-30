@@ -7,6 +7,8 @@
 
 import UIKit
 import AVFoundation
+import CoreLocation
+import Photos
 
 class TabBarViewController: UITabBarController {
     
@@ -18,7 +20,7 @@ class TabBarViewController: UITabBarController {
     }
     
     func setUpTabBar() {
-        // Set CustomTabBar
+        //Set CustomTabBar
         let customTabBar = CustomTabBar()
         customTabBar.centerButtonActionHandler = {
             self.cameraButtonPressed()
@@ -32,7 +34,7 @@ class TabBarViewController: UITabBarController {
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: Pretendard.regular(12)], for: .normal)
         
         // ViewController Connect
-        let homeVC = UINavigationController(rootViewController: NewHomeViewController())
+        let homeVC = UINavigationController(rootViewController: HomeViewController())
         homeVC.tabBarItem.image = UIImage(named: "Home")
         homeVC.tabBarItem.title = ""
         homeVC.tabBarItem.titlePositionAdjustment = UIOffset(horizontal: -5, vertical: 0)
@@ -59,7 +61,7 @@ class TabBarViewController: UITabBarController {
         #if targetEnvironment(simulator)
         fatalError()
         #endif
-        // 카메라 권한 취소되어있을 때 Alert
+        //카메라 권한 취소되어있을 때 Alert
         AVCaptureDevice.requestAccess(for: .video) { [weak self] isAuthorized in
             if isAuthorized {
                 self?.openCamera()
@@ -86,6 +88,19 @@ class TabBarViewController: UITabBarController {
     }
     
     func openCamera() {
+        //앨범 권한
+        PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+            if status == .authorized {
+                print("사용자 앨범 권한 획득 성공")
+            } else {
+                print("사용자 앨범 권한 획득 실패")
+            }
+        }
+        
+        //위치 권한
+        let locationManager = CLLocationManager()
+        locationManager.requestWhenInUseAuthorization()
+        
         DispatchQueue.main.async {
             let cameraVC = CameraViewController()
             cameraVC.modalPresentationStyle = .overCurrentContext

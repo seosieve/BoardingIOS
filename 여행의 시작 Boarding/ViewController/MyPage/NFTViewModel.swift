@@ -17,7 +17,6 @@ class NFTViewModel {
     
     let items = BehaviorRelay<[NFT]>(value: Array(repeating: NFT.dummyType, count: 10))
     let itemCount = PublishRelay<Int>()
-    let images = PublishRelay<[UIImage]>()
     
     let disposeBag = DisposeBag()
     

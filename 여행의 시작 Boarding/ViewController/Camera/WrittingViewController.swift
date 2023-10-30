@@ -201,14 +201,6 @@ class WrittingViewController: UIViewController {
     
     @objc func categorySelected(_ sender: UIButton) {
         let index = Int(categoryStackView.arrangedSubviews.firstIndex(of: sender)!)
-        if sender.isSelected {
-            sender.layer.borderWidth = 1
-            let rm = selectedCategoryArr.firstIndex(of: Category.name[index])!
-            selectedCategoryArr.remove(at: rm)
-        } else {
-            sender.layer.borderWidth = 0
-            selectedCategoryArr.append(Category.name[index])
-        }
         sender.isSelected.toggle()
         feedbackGenerator?.impactOccurred()
         categoryResult.accept(selectedCategoryArr)

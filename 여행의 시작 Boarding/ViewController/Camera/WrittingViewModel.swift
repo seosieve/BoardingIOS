@@ -13,8 +13,7 @@ import FirebaseFirestore
 import FirebaseStorage
 
 class WrittingViewModel {
-    let db = Firestore.firestore()
-    let NFTID = Firestore.firestore().collection("NFT").document().documentID
+    let NFTID = db.collection("NFT").document().documentID
     
     let autherUid = BehaviorRelay<String>(value: "")
     let location = BehaviorRelay<String>(value: "")
@@ -54,9 +53,9 @@ class WrittingViewModel {
         metaData.contentType = "image/jpeg"
         
         let imageName = NFTID
-        let firebaseReference = Storage.storage().reference().child("NFTImage/\(imageName)")
-        let uploadTask = firebaseReference.putData(imageData, metadata: metaData) { metaData, error in
-            firebaseReference.downloadURL { url, _ in
+        let imageRef = ref.child("NFTImage/\(imageName)")
+        let uploadTask = imageRef.putData(imageData, metadata: metaData) { metaData, error in
+            imageRef.downloadURL { url, _ in
                 completion(url)
             }
         }

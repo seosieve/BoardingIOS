@@ -7,7 +7,11 @@
 
 import UIKit
 import CryptoKit
+import FirebaseAuth
 import FirebaseFirestore
+import FirebaseStorage
+import FirebaseStorage
+import FirebaseStorageUI
 
 //MARK: - SafeArea Detect
 var window: UIWindow {
@@ -195,6 +199,13 @@ extension UIButton {
     }
 }
 
+//MARK: - Safe Array with Subscript
+extension Collection {
+    subscript (safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
+    }
+}
+
 //MARK: - Apple LogIn Token
 extension NSObject {
     func randomNonceString(length: Int = 32) -> String {
@@ -242,22 +253,73 @@ extension QueryDocumentSnapshot {
         let reports = self.get("reports") as! Int
         
         let NFT = NFT(NFTID: NFTID,
-                   autherUid: autherUid,
-                   writtenDate: writtenDate,
-                   type: type,
-                   url: url,
-                   location: location,
-                   time: time,
-                   weather: weather,
-                   title: title,
-                   content: content,
-                   starPoint: starPoint,
-                   category: category,
-                   comments: comments,
-                   likes: likes,
-                   saves: saves,
-                   reports: reports)
+                      autherUid: autherUid,
+                      writtenDate: writtenDate,
+                      type: type,
+                      url: url,
+                      location: location,
+                      time: time,
+                      weather: weather,
+                      title: title,
+                      content: content,
+                      starPoint: starPoint,
+                      category: category,
+                      comments: comments,
+                      likes: likes,
+                      saves: saves,
+                      reports: reports)
         return NFT
+    }
+    
+//    func makeUser() -> User {
+//        let userUid = self.get("userUid") as! String
+//        let url = self.get("url") as! String
+//        let name = self.get("name") as! String
+//        let introduce = self.get("introduce") as! String
+//        
+//        let User = User(userUid: userUid,
+//                        url: url,
+//                        name: name,
+//                        introduce: introduce)
+//        return User
+//    }
+}
+
+extension DocumentSnapshot {
+    func makeUser() -> User {
+        let userUid = self.get("userUid") as! String
+        let url = self.get("url") as! String
+        let name = self.get("name") as! String
+        let introduce = self.get("introduce") as! String
+        
+        let User = User(userUid: userUid,
+                        url: url,
+                        name: name,
+                        introduce: introduce)
+        return User
     }
 }
 
+//Firestore DB
+let db = Firestore.firestore()
+let ref = Storage.storage().reference()
+
+// Credential 저장 함수
+func saveCredential(credential: AuthCredential) {
+    UserDefaults.standard.set(credential.provider, forKey: "credential")
+}
+
+// Credential 불러오기 함수
+func loadCredential() -> AuthCredential? {
+    if let providerID = UserDefaults.standard.string(forKey: "credential") {
+        // 저장된 providerID로 새로운 credential을 생성
+        switch providerID {
+        case "apple.com":
+            return GoogleAuthProvider.credential(withIDToken: "", accessToken: "")
+        // 다른 provider에 대한 처리 추가
+        default:
+            return nil
+        }
+    }
+    return nil
+}

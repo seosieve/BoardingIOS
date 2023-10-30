@@ -110,12 +110,6 @@ class NFTViewController: UIViewController {
         })
         .disposed(by: disposeBag)
         
-//        viewModel.images
-//            .subscribe(onNext: { image in
-//                print(image.count)
-//            })
-//            .disposed(by: disposeBag)
-        
         viewModel.items
             .bind(to: NFTCollectionView.rx.items(cellIdentifier: "NFTCollectionViewCell", cellType: NFTCollectionViewCell.self)) { (row, element, cell) in
                 if element.NFTID != "" {

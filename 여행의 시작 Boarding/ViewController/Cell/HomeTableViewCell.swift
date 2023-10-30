@@ -9,6 +9,10 @@ import UIKit
 
 class HomeTableViewCell: UITableViewCell {
 
+    var url: URL?
+    var NFT: NFT?
+    var User: User?
+    
     let iconArr = [UIImage(named: "Report"), UIImage(named: "Comment"), UIImage(named: "Like"), UIImage(named: "Save")]
     
     var userImage = UIImageView().then {
@@ -19,7 +23,8 @@ class HomeTableViewCell: UITableViewCell {
     }
     
     var userNameLabel = UILabel().then {
-        $0.text = "JunhoKim"
+        $0.backgroundColor = Gray.white
+        $0.text = ""
         $0.font = Pretendard.regular(17)
         $0.textColor = Gray.black
     }
@@ -30,23 +35,25 @@ class HomeTableViewCell: UITableViewCell {
         $0.spacing = 7
     }
     
-    var mainLabel = UILabel().then {
-        $0.text = "팔레 루아얄 공원 산책"
+    var titleLabel = UILabel().then {
+        $0.text = ""
         $0.font = Pretendard.semiBold(17)
         $0.textColor = Gray.black
     }
     
-    var subLabel = UILabel().then {
-        $0.text = "팔레 루아얄 정원 산책하기 너무 좋다. 꽃들이 활짝 피어서 아주 예뻤고, 햇볕도 딱 좋다. 귀여운 강아지들도 많아 재미있었다."
+    var contentLabel = UILabel().then {
+        $0.text = ""
         $0.font = Pretendard.regular(17)
         $0.textColor = Gray.dark
         $0.numberOfLines = 3
         $0.textAlignment = .left
-        $0.lineBreakMode = .byCharWrapping
+        $0.lineBreakMode = .byTruncatingTail
     }
     
     var photoView = UIImageView().then {
-        $0.image = UIImage(named: "France8")
+        $0.backgroundColor = Gray.bright
+        $0.image = UIImage()
+        $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 12
         $0.layer.masksToBounds = true
     }
@@ -109,7 +116,7 @@ class HomeTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-    func setViews() {
+    func setViews() {        
         contentView.addSubview(userImage)
         userImage.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(30)
@@ -127,31 +134,35 @@ class HomeTableViewCell: UITableViewCell {
         userAchievementStackView.snp.makeConstraints { make in
             make.centerY.equalTo(userImage)
             make.left.equalTo(userNameLabel.snp.right).offset(8)
-            make.width.equalTo(170)
+            make.width.equalTo(52)
             make.height.equalTo(24)
         }
         
-        contentView.addSubview(mainLabel)
-        mainLabel.snp.makeConstraints { make in
+        contentView.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
             make.top.equalTo(userImage.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(20)
         }
         
-        contentView.addSubview(subLabel)
-        subLabel.snp.makeConstraints { make in
-            make.top.equalTo(mainLabel.snp.bottom).offset(6)
+        contentView.addSubview(contentLabel)
+        contentLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(6)
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(20)
+            make.height.lessThanOrEqualTo(72)
         }
         
         contentView.addSubview(photoView)
         photoView.snp.makeConstraints { make in
-            make.top.equalTo(subLabel.snp.bottom).offset(20)
+            make.top.equalTo(contentLabel.snp.bottom).offset(20)
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().inset(77)
             make.height.equalTo(450)
         }
+        UIView.animate(withDuration: 0.5, delay: 0, options: [.repeat, .autoreverse], animations: {
+            self.photoView.backgroundColor = Gray.white
+        })
         
         contentView.addSubview(interactionStackView)
         interactionStackView.snp.makeConstraints { make in
@@ -234,7 +245,7 @@ class HomeTableViewCell: UITableViewCell {
     func putUserAchievement() {
         let userAchieveItem1 = UILabel().then {
             $0.frame = CGRect(x: 0, y: 0, width: 54, height: 24)
-            $0.text = "🇰🇷 Lv.5"
+            $0.text = "🇰🇷 Lv.1"
             $0.font = Pretendard.regular(12)
             $0.textAlignment = .center
             $0.textColor = Gray.dark
@@ -266,7 +277,7 @@ class HomeTableViewCell: UITableViewCell {
         }
         
         userAchievementStackView.addArrangedSubview(userAchieveItem1)
-        userAchievementStackView.addArrangedSubview(userAchieveItem2)
-        userAchievementStackView.addArrangedSubview(userAchieveItem3)
+//        userAchievementStackView.addArrangedSubview(userAchieveItem2)
+//        userAchievementStackView.addArrangedSubview(userAchieveItem3)
     }
 }

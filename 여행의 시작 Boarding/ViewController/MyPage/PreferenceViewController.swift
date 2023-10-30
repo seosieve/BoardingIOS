@@ -31,51 +31,18 @@ class PreferenceViewController: UIViewController {
         $0.color = Gray.light
     }
     
-    var testLabel1 = UILabel().then {
-        $0.text = "토큰"
-        $0.textColor = .white
-        $0.backgroundColor = .blue
-    }
-    
-    var testLabel2 = UILabel().then {
-        $0.text = "이메일"
-        $0.textColor = .white
-        $0.backgroundColor = .blue
-    }
-    
-    var testLabel3 = UILabel().then {
-        $0.text = "닉네임"
-        $0.textColor = .white
-        $0.backgroundColor = .blue
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.setNavigationBar()
         self.view.backgroundColor = Gray.white
         preferenceTableView.register(MenuTableViewCell.self, forCellReuseIdentifier: "menuTableViewCell")
         setViews()
-        test()
         setRx()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.isHidden = true
-    }
-    
-    func test() {
-        viewModel.token
-            .bind(to: testLabel1.rx.text)
-            .disposed(by: disposeBag)
-        
-        viewModel.email
-            .bind(to: testLabel2.rx.text)
-            .disposed(by: disposeBag)
-        
-        viewModel.nickname
-            .bind(to: testLabel3.rx.text)
-            .disposed(by: disposeBag)
     }
     
     func setViews() {
@@ -89,24 +56,6 @@ class PreferenceViewController: UIViewController {
         view.addSubview(indicator)
         indicator.snp.makeConstraints { make in
             make.center.equalToSuperview()
-        }
-        
-        view.addSubview(testLabel1)
-        testLabel1.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(280)
-            make.left.equalToSuperview()
-        }
-        
-        view.addSubview(testLabel2)
-        testLabel2.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(280)
-            make.left.equalTo(testLabel1.snp.right).offset(10)
-        }
-        
-        view.addSubview(testLabel3)
-        testLabel3.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(280)
-            make.left.equalTo(testLabel2.snp.right).offset(10)
         }
     }
     
@@ -148,11 +97,9 @@ class PreferenceViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.processCompleted
-            .subscribe(onNext:{ [weak self] completed in
-                if completed {
-                    self?.indicator.stopAnimating()
-                    self?.presentVC(UINavigationController(rootViewController: StartViewController()))
-                }
+            .subscribe(onNext:{ [weak self] in
+                self?.indicator.stopAnimating()
+                self?.presentVC(UINavigationController(rootViewController: StartViewController()))
             })
             .disposed(by: disposeBag)
     }
@@ -163,9 +110,9 @@ class PreferenceViewController: UIViewController {
         let action = UIAlertAction(title: message.2, style: .default) { action in
             self.indicator.startAnimating()
             if index == 3 {
-                self.viewModel.kakaoLogOut()
+                self.viewModel.logOut()
             } else {
-                self.viewModel.kakaoUnLink()
+                self.viewModel.unLink()
             }
         }
         alert.addAction(cancel)

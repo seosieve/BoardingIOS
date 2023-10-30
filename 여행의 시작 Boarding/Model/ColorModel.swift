@@ -18,10 +18,12 @@ struct Gray {
     static let dark = UIColor("#777777")
     static let medium = UIColor("#919396")
     static let light = UIColor("#BCBCBC")
+    static let semiLight = UIColor("#D3D4D5")
     static let bright = UIColor("#EEEEEE")
     static let white = UIColor("#FFFFFF")
 }
 
+//MARK: - UIColor with Hex
 extension UIColor {
     convenience init(_ hexString: String) {
         let hex = hexString.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)

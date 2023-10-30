@@ -2,22 +2,23 @@
 //  HomeViewController.swift
 //  여행의 시작 Boarding
 //
-//  Created by 서충원 on 2023/06/02.
+//  Created by 서충원 on 2023/09/05.
 //
 
 import UIKit
 import Then
 import SnapKit
+import RxSwift
+import RxCocoa
+import FirebaseStorage
+import FirebaseStorageUI
 
 class HomeViewController: UIViewController {
     
-    private var lastContentOffset: CGFloat = 0
-
-    let popularScheduleArr = [(UIImage(named: "France8"), "파리 4박 여행", "파리, 프랑스"), (UIImage(named: "France9"), "유럽 축구 여행", "런던, 바르셀로나"), (UIImage(named: "France10"), "2023 세느강 야경", "파리, 프랑스")]
+    var cellCount = 10
     
-    var recommendPlaceArr = [(UIImage(named: "France1"), 5.0, "에펠탑"), (UIImage(named: "France2"), 2.9, "바토무슈 크루즈"), (UIImage(named: "France3"), 3.8, "루브르 박물관")]
-    
-    let popularPlaceArr = [(UIImage(named: "France4"), 3.9, "개선문"), (UIImage(named: "France5"), 3.7, "몽마르트 언덕"), (UIImage(named: "France6"), 5.0, "퐁피두 센터"), (UIImage(named: "France7"), 4.2, "노트르담 대성당")]
+    let viewModel = HomeViewModel()
+    let disposeBag = DisposeBag()
     
     var statusBarView = UIView().then {
         $0.backgroundColor = Gray.white
@@ -25,6 +26,25 @@ class HomeViewController: UIViewController {
     
     var iconView = UIView().then {
         $0.backgroundColor = Gray.white
+        $0.layer.shadowOffset = CGSize(width:0, height:12)
+        $0.layer.shadowRadius = 6
+        $0.layer.shadowColor = Gray.black.cgColor
+        $0.layer.shadowOpacity = 0.1
+        $0.layer.shadowOpacity = 0
+    }
+    
+    var locationImageView = UIImageView().then {
+        $0.image = UIImage(named: "Location")
+    }
+    
+    var locationButton = UIButton().then {
+        $0.setTitle("전세계", for: .normal)
+        $0.setImage(UIImage(named: "Triangle2"), for: .normal)
+        $0.titleLabel?.font = Pretendard.semiBold(27)
+        $0.setTitleColor(Gray.black, for: .normal)
+        $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 5)
+        $0.semanticContentAttribute = .forceRightToLeft
     }
     
     lazy var searchButton = UIButton().then {
@@ -45,77 +65,65 @@ class HomeViewController: UIViewController {
     
     @objc func alarmButtonPressed() {
         print("alarmButton Pressed")
-        guard let urlString = UserDefaults.standard.string(forKey: "myImageUrl") else { return }
-        print(urlString)
-        FirebaseStorageManager.downloadImage(urlString: urlString) { [weak self] image in
-            self?.recommendPlaceArr[0].0 = image
-            self?.recommendPlaceCollectionView.reloadData()
+    }
+    
+    var alarmPointView = UIView().then {
+        $0.backgroundColor = Boarding.red
+    }
+    
+    var homeTableView = UITableView().then {
+        $0.contentInset = UIEdgeInsets(top: 120, left: 0, bottom: 60, right: 0)
+        $0.contentOffset = CGPoint(x: 0, y: -120)
+    }
+    
+    var categoryScrollView = UIScrollView().then {
+        $0.backgroundColor = Gray.white
+        $0.showsHorizontalScrollIndicator = false
+        $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        $0.contentOffset = CGPoint(x: -20, y: 0)
+    }
+    
+    var categoryStackView = UIStackView().then {
+        $0.backgroundColor = Gray.white
+        $0.axis = .horizontal
+        $0.alignment = .fill
+        $0.distribution = .equalSpacing
+        $0.spacing = 8
+    }
+    
+    @objc func categorySelected(_ sender: UITapGestureRecognizer) {
+        categoryStackView.arrangedSubviews.forEach { view in
+            guard let button = view.viewWithTag(1) as? UIButton else { return }
+            guard let label = view.viewWithTag(2) as? UILabel else { return }
+            button.layer.borderWidth = 0
+            button.isSelected = false
+            label.font = Pretendard.regular(13)
+            label.textColor = Gray.medium
         }
-    }
-    
-    var homeScrollView = UIScrollView()
-    
-    var homeContentView = UIView()
-    
-    var popularScheduleLabel = UILabel().then {
-        $0.text = "인기 여행 일정"
-        $0.font = Pretendard.bold(20)
-        $0.textColor = Gray.black
-    }
-    
-    var popularScheduleCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
-        var layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        layout.scrollDirection = .horizontal
-        $0.collectionViewLayout = layout
-        $0.showsHorizontalScrollIndicator = false
-    }
-    
-    var recommendPlaceLabel = UILabel().then {
-        $0.text = "정현님을 위한 추천 여행지"
-        $0.font = Pretendard.bold(20)
-        $0.textColor = Gray.black
-    }
-    
-    var recommendPlaceCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
-        var layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
-        layout.scrollDirection = .horizontal
-        $0.collectionViewLayout = layout
-        $0.showsHorizontalScrollIndicator = false
-    }
-    
-    var popularPlaceLabel = UILabel().then {
-        $0.text = "인기 여행지"
-        $0.font = Pretendard.bold(20)
-        $0.textColor = Gray.black
-    }
-    
-    var popularPlaceCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
-        var layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
-        layout.scrollDirection = .horizontal
-        $0.collectionViewLayout = layout
-        $0.showsHorizontalScrollIndicator = false
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.navigationController?.navigationBar.isHidden = true
-        self.view.backgroundColor = Gray.white
-        popularScheduleCollectionView.delegate = self
-        popularScheduleCollectionView.dataSource = self
-        popularScheduleCollectionView.register(TravelCollectionViewCell.self, forCellWithReuseIdentifier: "travelCollectionViewCell")
-        recommendPlaceCollectionView.delegate = self
-        recommendPlaceCollectionView.dataSource = self
-        recommendPlaceCollectionView.register(PlaceCollectionViewCell.self, forCellWithReuseIdentifier: "placeCollectionViewCell")
-        popularPlaceCollectionView.delegate = self
-        popularPlaceCollectionView.dataSource = self
-        popularPlaceCollectionView.register(PlaceCollectionViewCell.self, forCellWithReuseIdentifier: "placeCollectionViewCell")
-        homeScrollView.delegate = self
-        setViews()
+        
+        guard let button = sender.view?.viewWithTag(1) as? UIButton else { return }
+        guard let label = sender.view?.viewWithTag(2) as? UILabel else { return }
+        if button.isSelected {
+            button.layer.borderWidth = 0
+            label.font = Pretendard.regular(13)
+            label.textColor = Gray.medium
+        } else {
+            button.layer.borderWidth = 2
+            label.font = Pretendard.semiBold(13)
+            label.textColor = Boarding.blue
+        }
+        button.isSelected.toggle()
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = Gray.white
+        self.navigationController?.navigationBar.isHidden = true
+        homeTableView.register(HomeTableViewCell.self, forCellReuseIdentifier: "homeTableViewCell")
+        setViews()
+        setRx()
+    }
+    
     func setViews() {
         view.addSubview(statusBarView)
         statusBarView.snp.makeConstraints { make in
@@ -129,205 +137,180 @@ class HomeViewController: UIViewController {
             make.centerX.width.equalToSuperview()
             make.height.equalTo(45)
         }
+        iconView.addSubview(locationImageView)
+        iconView.addSubview(locationButton)
+        locationImageView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(25)
+            make.centerY.equalToSuperview()
+            make.height.equalTo(26)
+        }
+        locationButton.snp.makeConstraints { make in
+            make.left.equalTo(locationImageView.snp.right).offset(8)
+            make.centerY.equalToSuperview()
+        }
         
         iconView.addSubview(searchButton)
         iconView.addSubview(alarmButton)
+        iconView.addSubview(alarmPointView)
         searchButton.snp.makeConstraints { make in
             make.width.height.equalTo(24)
             make.right.equalTo(alarmButton.snp.left).offset(-12)
-            make.top.equalToSuperview().offset(14)
+            make.centerY.equalToSuperview()
         }
         alarmButton.snp.makeConstraints { make in
             make.width.height.equalTo(24)
             make.right.equalToSuperview().offset(-24)
-            make.top.equalToSuperview().offset(14)
+            make.centerY.equalToSuperview()
+        }
+        alarmPointView.snp.makeConstraints { make in
+            make.width.height.equalTo(7)
+            make.right.equalToSuperview().offset(-27.5)
+            make.top.equalToSuperview().offset(12)
+        }
+        alarmPointView.rounded(axis: .horizontal)
+        
+        view.insertSubview(homeTableView, belowSubview: iconView)
+        homeTableView.snp.makeConstraints { make in
+            make.top.equalTo(iconView.snp.bottom)
+            make.centerX.left.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
         
-        view.insertSubview(homeScrollView, belowSubview: iconView)
-        homeScrollView.addSubview(homeContentView)
-        homeScrollView.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
-            make.top.equalTo(statusBarView.snp.bottom)
+        homeTableView.addSubview(categoryScrollView)
+        categoryScrollView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(-120)
+            make.left.centerX.equalToSuperview()
+            make.height.equalTo(120)
         }
-        homeContentView.snp.makeConstraints { make in
+        
+        categoryScrollView.addSubview(categoryStackView)
+        categoryStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.width.equalToSuperview()
-            make.height.equalTo(950)
+            make.height.equalToSuperview()
+        }
+        for index in 0..<Category.count {
+            let subview = UIView().then {
+                $0.backgroundColor = Gray.white
+                let tap = UITapGestureRecognizer(target: self, action: #selector(categorySelected(_:)))
+                tap.cancelsTouchesInView = false
+                $0.addGestureRecognizer(tap)
+            }
+            
+            let emojiButton = UIButton().then {
+                $0.tag = 1
+                $0.backgroundColor = Gray.bright
+                $0.setTitle(Category.imoji[index], for: .normal)
+                $0.titleLabel?.font = Pretendard.regular(30)
+                $0.layer.borderColor = Boarding.blue.cgColor
+            }
+            
+            let nameLabel = UILabel().then {
+                $0.tag = 2
+                $0.text = Category.name[index]
+                $0.font = Pretendard.regular(13)
+                $0.textColor = Gray.medium
+            }
+            
+            subview.addSubview(emojiButton)
+            emojiButton.snp.makeConstraints { make in
+                make.top.equalToSuperview().offset(20)
+                make.left.centerX.equalToSuperview()
+                make.width.height.equalTo(64)
+            }
+            emojiButton.rounded(axis: .horizontal)
+            
+            subview.addSubview(nameLabel)
+            nameLabel.snp.makeConstraints { make in
+                make.top.equalTo(emojiButton.snp.bottom).offset(4)
+                make.centerX.equalToSuperview()
+            }
+            categoryStackView.addArrangedSubview(subview)
         }
         
-        homeContentView.addSubview(popularScheduleLabel)
-        homeContentView.addSubview(popularScheduleCollectionView)
-        popularScheduleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(65)
-            make.left.equalToSuperview().inset(16)
-        }
-        popularScheduleCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(popularScheduleLabel.snp.bottom).offset(10)
-            make.centerX.right.equalToSuperview()
-            make.height.equalTo(260)
-        }
-        
-        homeContentView.addSubview(recommendPlaceLabel)
-        homeContentView.addSubview(recommendPlaceCollectionView)
-        recommendPlaceLabel.snp.makeConstraints { make in
-            make.top.equalTo(popularScheduleCollectionView.snp.bottom).offset(30)
-            make.left.equalToSuperview().inset(16)
-        }
-        recommendPlaceCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(recommendPlaceLabel.snp.bottom).offset(10)
-            make.centerX.right.equalToSuperview()
-            make.height.equalTo(200)
-        }
-        
-        homeContentView.addSubview(popularPlaceLabel)
-        homeContentView.addSubview(popularPlaceCollectionView)
-        popularPlaceLabel.snp.makeConstraints { make in
-            make.top.equalTo(recommendPlaceCollectionView.snp.bottom).offset(30)
-            make.left.equalToSuperview().inset(16)
-        }
-        popularPlaceCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(popularPlaceLabel.snp.bottom).offset(10)
-            make.centerX.right.equalToSuperview()
-            make.height.equalTo(200)
+        let categoryDivider = divider()
+        homeTableView.addSubview(categoryDivider)
+        categoryDivider.snp.makeConstraints { make in
+            make.top.equalTo(categoryStackView.snp.bottom)
+            make.centerX.left.equalToSuperview()
+            make.height.equalTo(1)
         }
     }
     
-    func drawStar(_ score: Double) -> [UIImage] {
-        var starArr: [UIImage] = []
-        for i in 1...5 {
-            let star = i <= Int(score) ? "Star" : "EmptyStar"
-            starArr.append(UIImage(named: star)!)
-        }
-        return starArr
+    func setRx() {
+        locationButton.rx.tap
+            .subscribe(onNext: {
+                let vc = SetLocationViewController()
+                vc.modalPresentationStyle = .automatic
+                vc.modalTransitionStyle = .coverVertical
+                self.present(vc, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.items
+            .bind(to: homeTableView.rx.items(cellIdentifier: "homeTableViewCell", cellType: HomeTableViewCell.self)) { (row, element, cell) in
+                cell.selectionStyle = .none
+                if element.NFTID != "" {
+                    self.viewModel.getAuther(auther: element.autherUid) { user in
+                        cell.User = user
+                        cell.userNameLabel.text = user.name
+                        cell.userImage.sd_setImage(with: URL(string: user.url), placeholderImage: nil, options: .scaleDownLargeImages)
+                    }
+                    cell.NFT = element
+                    cell.url = URL(string: element.url)
+                    cell.titleLabel.text = element.title
+                    cell.contentLabel.text = element.content
+                    cell.photoView.sd_setImage(with: URL(string: element.url), placeholderImage: nil, options: .scaleDownLargeImages)
+                    cell.scoreLabel.text = String(element.starPoint)
+                    cell.locationLabel.text = element.location
+                    cell.isUserInteractionEnabled = true
+                } else {
+                    cell.isUserInteractionEnabled = false
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        homeTableView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
     }
 }
 
-//MARK: - UICollectionView
-extension HomeViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch collectionView {
-        case popularScheduleCollectionView:
-            return 3
-        case recommendPlaceCollectionView:
-            return 3
-        default:
-            return 4
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) ->
-    UICollectionViewCell {
-        if collectionView == popularScheduleCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "travelCollectionViewCell", for: indexPath) as! TravelCollectionViewCell
-            cell.travelImageView.image = popularScheduleArr[indexPath.row].0
-            cell.travelTitleLabel.text = popularScheduleArr[indexPath.row].1
-            cell.travelSubLabel.text = popularScheduleArr[indexPath.row].2
-            return cell
-        } else if collectionView == recommendPlaceCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "placeCollectionViewCell", for: indexPath) as! PlaceCollectionViewCell
-            cell.placeImageView.image = recommendPlaceArr[indexPath.row].0
-            var star = drawStar(recommendPlaceArr[indexPath.row].1)
-            for view in cell.placeStarStackView.arrangedSubviews {
-                if let imgView = view as? UIImageView {
-                    imgView.image = star.removeFirst()
-                }
-            }
-            cell.placeScore.text = String(recommendPlaceArr[indexPath.row].1)
-            cell.placeLabel.text = recommendPlaceArr[indexPath.row].2
-            return cell
+//MARK: - UITableView
+extension HomeViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let item = viewModel.items.value[indexPath.row].content
+        if item == "" {
+            return 720
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "placeCollectionViewCell", for: indexPath) as! PlaceCollectionViewCell
-            cell.placeImageView.image = popularPlaceArr[indexPath.row].0
-            var star = drawStar(popularPlaceArr[indexPath.row].1)
-            for view in cell.placeStarStackView.arrangedSubviews {
-                if let imgView = view as? UIImageView {
-                    imgView.image = star.removeFirst()
-                }
-            }
-            cell.placeScore.text = String(popularPlaceArr[indexPath.row].1)
-            cell.placeLabel.text = popularPlaceArr[indexPath.row].2
-            return cell
+            let label = UILabel()
+            label.text = item
+            label.numberOfLines = 3
+            label.font = Pretendard.regular(17)
+            let maxWidth = view.frame.width - 40
+            let maxSize = CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude)
+            let labelSize = label.sizeThatFits(maxSize)
+            
+            return 640 + labelSize.height
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        switch collectionView {
-        case popularScheduleCollectionView:
-            return CGSize(width: 165, height: 260)
-        case recommendPlaceCollectionView:
-            return CGSize(width: 150, height: 200)
-        default:
-            return CGSize(width: 150, height: 200)
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        switch collectionView {
-        case popularScheduleCollectionView:
-            print(indexPath.row)
-            let vc = FullScreenViewController()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true)
-        case recommendPlaceCollectionView:
-            break
-        default:
-            break
-        }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as? HomeTableViewCell
+        let vc = FullScreenViewController()
+        vc.url = cell?.url
+        vc.NFT = cell?.NFT
+        vc.User = cell?.User
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
 //MARK: - UIScrollView
 extension HomeViewController: UIScrollViewDelegate {
-    
-//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-//        let translation = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
-//        let level = translation.y
-//        print(level)
-//        iconView.snp.updateConstraints { make in
-//            var value: CGFloat = 0
-//            switch level {
-//            case ..<0:
-//                value = window.safeAreaInsets.top
-//            case 0...45:
-//                value = window.safeAreaInsets.top - level
-//            default:
-//                value = 0
-//            }
-    //            make.top.equalTo(value)
-    //        }
-    //        searchButton.alpha = 1 - level*0.03
-    //        alarmButton.alpha = 1 - level*0.03
-    //    }
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let level = scrollView.contentOffset.y
-//        print(level)
-//        if (self.lastContentOffset == scrollView.contentOffset.y) {
-//            print("aa")
-//            iconView.snp.updateConstraints {make in
-//                make.top.equalTo(0)
-//            }
-//            return
-//        }
-//        
-//        iconView.snp.updateConstraints { make in
-//            var value: CGFloat = 0
-//            switch level {
-//            case ..<0:
-//                value = window.safeAreaInsets.top
-//            case 0...45:
-//                value = window.safeAreaInsets.top - level
-//            default:
-//                value = 0
-//            }
-//            make.top.equalTo(value)
-//        }
-//        searchButton.alpha = 1 - level*0.03
-//        alarmButton.alpha = 1 - level*0.03
-//        
-//        self.lastContentOffset = scrollView.contentOffset.y
-//        print(lastContentOffset)
+        var level = scrollView.frame.origin.y + scrollView.contentOffset.y
+        level = max(0, level)
+        level = min(100, level)
+        iconView.layer.shadowOpacity = Float(level/2000)
     }
 }
-

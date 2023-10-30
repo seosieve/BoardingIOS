@@ -1,5 +1,5 @@
 //
-//  SignUpViewModel.swift
+//  StartViewModel.swift
 //  여행의 시작 Boarding
 //
 //  Created by 서충원 on 2023/09/15.
@@ -13,20 +13,22 @@ import KakaoSDKAuth
 import RxKakaoSDKUser
 import KakaoSDKUser
 import FirebaseAuth
+import FirebaseFirestore
+import FirebaseStorage
 import AuthenticationServices
 
-class SignUpViewModel: NSObject {
+class StartViewModel: NSObject {
     var currentNonce: String?
-    let userAlreadyExist = PublishRelay<Bool>()
+    let userNotExist = PublishSubject<Void>()
     
     let errorCatch = PublishRelay<Bool>()
-    let signUpResult = PublishRelay<Bool>()
+    let startResult = PublishRelay<Bool>()
     
     let disposeBag = DisposeBag()
 }
 
 //MARK: - Apple SignUp
-extension SignUpViewModel {    
+extension StartViewModel {
     func appleLogIn() {
         let nonce = randomNonceString()
         currentNonce = nonce
@@ -42,7 +44,7 @@ extension SignUpViewModel {
     }
 }
 
-extension SignUpViewModel: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+extension StartViewModel: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         return window
     }
@@ -63,10 +65,16 @@ extension SignUpViewModel: ASAuthorizationControllerDelegate, ASAuthorizationCon
                     let displayName = [fullName.givenName, fullName.familyName].compactMap{$0}.joined()
                     if displayName == "" {
                         //로그아웃 후 애플로그인 할 때
-                        self?.signUpResult.accept(true)
+                        self?.startResult.accept(true)
                     } else {
                         //처음 애플로그인 할 때
-                        self?.makeProfile(nickname: displayName, thumbnail: URL(string: "https://t3.ftcdn.net/jpg/00/64/67/52/360_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg")!)
+                        self?.userNotExist.onNext(())
+                        //firestore, Storage 저장
+                        self?.saveUserImage(url: User.defaultUrl) { [weak self] url in
+                            self?.saveProfile(url: url!, name: displayName)
+                        }
+                        //Auth 수정
+                        self?.makeProfile(nickname: displayName, thumbnail: User.defaultUrl)
                     }
                     print("유저 로그인 성공")
                 }
@@ -76,13 +84,13 @@ extension SignUpViewModel: ASAuthorizationControllerDelegate, ASAuthorizationCon
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         //X버튼 누를때도 실행되기 때문에 에러처리 안했음
-        self.signUpResult.accept(false)
+        self.startResult.accept(false)
         print("애플 로그인 에러: \(error.localizedDescription)")
     }
 }
 
 //MARK: - Kakao SignUp
-extension SignUpViewModel {
+extension StartViewModel {
     func kakaoLogIn() {
         if UserApi.isKakaoTalkLoginAvailable() {
             UserApi.shared.rx.loginWithKakaoTalk()
@@ -115,7 +123,7 @@ extension SignUpViewModel {
                 }
             }, onFailure: { [weak self] error in
                 self?.errorCatch.accept(true)
-                print("카카오 유저 정보 불러오기 오류: \(error)")
+                print("카카오 유저 정보 불러오기 에러: \(error)")
             })
             .disposed(by: disposeBag)
     }
@@ -127,14 +135,26 @@ extension SignUpViewModel {
                 switch code {
                 case 17007:
                     // 이미 가입된 유저가 있을 때
-                    self?.userAlreadyExist.accept(true)
+                    self?.signInUser(email: email, password: password)
                 default:
                     self?.errorCatch.accept(true)
-                    print("파이어베이스 유저 생성 오류: \(error)")
+                    print("파이어베이스 유저 생성 에러: \(error)")
                 }
             } else if let authResult = authResult {
                 self?.makeProfile(nickname: nickname, thumbnail: thumbnail)
                 print("유저 생성 성공: \(authResult)")
+            }
+        }
+    }
+    
+    func signInUser(email: String, password: String) {
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] (authResult, error) in
+            if let error = error {
+                self?.errorCatch.accept(true)
+                print("파이어베이스 유저 로그인 에러: \(error)")
+            } else if let authResult = authResult {
+                self?.startResult.accept(true)
+                print("유저 로그인 성공: \(authResult)")
             }
         }
     }
@@ -146,10 +166,37 @@ extension SignUpViewModel {
         changeRequest?.commitChanges { [weak self] error in
             if let error = error {
                 self?.errorCatch.accept(true)
-                print("파이어베이스 프로필 생성 오류: \(error)")
+                print("파이어베이스 프로필 생성 에러: \(error)")
             } else {
-                self?.signUpResult.accept(true)
                 print("파이어베이스 프로필 생성 성공")
+            }
+        }
+    }
+    
+    func saveProfile(url: URL, name: String) {
+        guard let user = Auth.auth().currentUser else { return }
+        let User = User(userUid: user.uid, url: url.absoluteString, name: name, introduce: "")
+        db.collection("User").document(user.uid).setData(User.dicType) { [weak self] error in
+            if let error = error {
+                print("유저 저장 에러: \(error)")
+                self?.errorCatch.accept(true)
+            } else {
+                print("유저 저장 성공: \(user.uid)")
+                self?.startResult.accept(true)
+            }
+        }
+    }
+    
+    func saveUserImage(url: URL, completion: @escaping (URL?) -> Void) {
+        guard let user = Auth.auth().currentUser else { return }
+        guard let imageData = try? Data(contentsOf: url) else { return }
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/jpeg"
+        
+        let imageRef = ref.child("UserImage/\(user.uid)")
+        let uploadTask = imageRef.putData(imageData, metadata: metaData) { metaData, error in
+            imageRef.downloadURL { url, _ in
+                completion(url)
             }
         }
     }

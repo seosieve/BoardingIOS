@@ -31,33 +31,4 @@ class SplashViewModel {
             isUserLoggedIn.accept(false)
         }
     }
-    
-    // 카카오 로그인 유무 확인 - 현재는 사용 안하고 Firebase Auth로 로그인 판별중
-    func checkTokenExist() {
-        if AuthApi.hasToken() {
-            checkTokenInfo()
-        } else {
-            //토큰이 없는 상태 - transfer LogIn
-            isUserLoggedIn.accept(false)
-        }
-    }
-    
-    func checkTokenInfo() {
-        UserApi.shared.rx.accessTokenInfo()
-            .subscribe(onSuccess: { [weak self] accessTokenInfo in
-                //토큰도 있고, 토큰에 에러도 없는 상태 - transfer Home
-                self?.isUserLoggedIn.accept(true)
-            }, onFailure: { [weak self] error in
-                if let sdkError = error as? SdkError, sdkError.isInvalidTokenError() == true {
-                    //토큰이 있지만, 토큰에 유효성 에러가 있는 상태 - transfer LogIn
-                    self?.isUserLoggedIn.accept(false)
-                    print("Token is Invalid")
-                } else {
-                    //토큰이 있지만, 토큰에 다른 에러가 있는 상태 - transfer LogIn
-                    self?.isUserLoggedIn.accept(false)
-                    print("Error: \(error)")
-                }
-            })
-            .disposed(by: disposeBag)
-    }
 }

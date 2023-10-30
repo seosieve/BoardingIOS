@@ -6,56 +6,62 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+import KakaoSDKAuth
+import KakaoSDKUser
 
 class StartViewController: UIViewController {
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
-    }
+
+    let viewModel = StartViewModel()
+    let disposeBag = DisposeBag()
     
     var titleImageView = UIImageView().then {
-        $0.image = UIImage(named: "TitleWhite")
+        $0.image = UIImage(named: "TitleGradient")
     }
     
     var subLabel = UILabel().then {
         $0.text = "여행의 시작"
-        $0.textColor = Gray.white.withAlphaComponent(0.8)
-        $0.font = Pretendard.medium(14)
+        $0.textColor = Gray.semiLight
+        $0.font = Pretendard.medium(17)
     }
     
-    lazy var signUpButton = UIButton().then {
-        $0.setBackgroundColor(Gray.white, for: .normal)
-        $0.setTitle("회원가입", for: .normal)
-        $0.setTitleColor(Boarding.lightBlue, for: .normal)
-        $0.titleLabel?.font = Pretendard.medium(19)
-        $0.adjustsImageWhenHighlighted = false
-        $0.addTarget(self, action: #selector(signUpButtonPressed), for: .touchUpInside)
-    }
-    
-    @objc func signUpButtonPressed() {
-        let vc = SignUpViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    lazy var logInButton = UIButton().then {
-        $0.setBackgroundColor(.clear, for: .normal)
-        $0.setTitle("로그인", for: .normal)
-        $0.setTitleColor(Gray.white, for: .normal)
-        $0.titleLabel?.font = Pretendard.medium(19)
+    var appleStartButton = UIButton().then {
+        $0.setTitle("Apple로 시작하기", for: .normal)
+        $0.setTitleColor(Gray.dark, for: .normal)
+        $0.titleLabel?.font = Pretendard.regular(19)
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = Gray.white.cgColor
-        $0.addTarget(self, action: #selector(logInButtonPressed), for: .touchUpInside)
+        $0.layer.borderColor = Gray.semiLight.cgColor
+        $0.layer.cornerRadius = 12
     }
     
-    @objc func logInButtonPressed() {
-        let vc = LogInViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
+    var appleImageView = UIImageView().then {
+        $0.image = UIImage(named: "Apple")
+    }
+    
+    lazy var kakaoStartButton = UIButton().then {
+        $0.setTitle("Kakao로 시작하기", for: .normal)
+        $0.setTitleColor(Gray.dark, for: .normal)
+        $0.titleLabel?.font = Pretendard.regular(19)
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = Gray.semiLight.cgColor
+    }
+    
+    var kakaoImageView = UIImageView().then {
+        $0.image = UIImage(named: "Kakao")
+    }
+    
+    var indicator = UIActivityIndicatorView().then {
+        $0.style = .medium
+        $0.color = Gray.light
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.gradient([Boarding.lightBlue, Boarding.blue], axis: .horizontal)
+        view.backgroundColor = Gray.white
+        self.navigationController?.navigationBar.setNavigationBar()
         setViews()
+        setRx()
     }
     
     func setViews() {
@@ -71,22 +77,97 @@ class StartViewController: UIViewController {
             make.top.equalTo(titleImageView.snp.bottom).offset(3)
         }
         
-        view.addSubview(logInButton)
-        logInButton.snp.makeConstraints { make in
+        view.addSubview(kakaoStartButton)
+        kakaoStartButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(65)
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(16)
             make.height.equalTo(48)
         }
-        logInButton.rounded(axis: .horizontal)
+        kakaoStartButton.rounded(axis: .horizontal)
         
-        view.addSubview(signUpButton)
-        signUpButton.snp.makeConstraints { make in
-            make.bottom.equalTo(logInButton.snp.top).offset(-20)
+        kakaoStartButton.addSubview(kakaoImageView)
+        kakaoImageView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.centerY.equalToSuperview()
+        }
+        
+        view.addSubview(appleStartButton)
+        appleStartButton.snp.makeConstraints { make in
+            make.bottom.equalTo(kakaoStartButton.snp.top).offset(-14)
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(16)
             make.height.equalTo(48)
         }
-        signUpButton.rounded(axis: .horizontal)
+        appleStartButton.rounded(axis: .horizontal)
+        
+        appleStartButton.addSubview(appleImageView)
+        appleImageView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.centerY.equalToSuperview()
+        }
+        
+        view.addSubview(indicator)
+        indicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+    }
+    
+    func setRx() {
+        //Apple
+        appleStartButton.rx.tap
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .subscribe(onNext:{ [weak self] in
+                self?.indicator.startAnimating()
+                self?.viewModel.appleLogIn()
+                self?.appleStartButton.isEnabled = false
+                self?.kakaoStartButton.isEnabled = false
+            })
+            .disposed(by: disposeBag)
+        
+        //Kakao
+        kakaoStartButton.rx.tap
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .subscribe(onNext:{ [weak self] in
+                self?.indicator.startAnimating()
+                self?.viewModel.kakaoLogIn()
+                self?.appleStartButton.isEnabled = false
+                self?.kakaoStartButton.isEnabled = false
+            })
+            .disposed(by: disposeBag)
+        
+        //공통
+        viewModel.errorCatch
+            .subscribe(onNext:{ [weak self] error in
+                self?.appleStartButton.isEnabled = true
+                self?.kakaoStartButton.isEnabled = true
+                if error {
+                    self?.indicator.stopAnimating()
+                    self?.errorAlert()
+                } else {
+                    self?.indicator.stopAnimating()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.startResult
+            .subscribe(onNext:{ [weak self] result in
+                self?.appleStartButton.isEnabled = true
+                self?.kakaoStartButton.isEnabled = true
+                if result {
+                    self?.indicator.stopAnimating()
+                    self?.presentVC(TabBarViewController())
+                } else {
+                    self?.indicator.stopAnimating()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.userNotExist
+            .subscribe(onNext:{ [weak self] in
+                //Onboarding으로 넘어가기
+                print("User not Exist")
+            })
+            .disposed(by: disposeBag)
     }
 }
