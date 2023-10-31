@@ -161,6 +161,9 @@ extension StartViewModel {
                 self?.errorCatch.accept(true)
                 print("파이어베이스 유저 생성 에러: \(error)")
             } else if let authResult = authResult {
+                //credential용 UserDefaults 저장
+                UserDefaults.standard.set(email, forKey: "kakaoEmail")
+                UserDefaults.standard.set(password, forKey: "kakaoPassword")
                 //firestore, Storage 저장
                 DispatchQueue.global().async {
                     self?.saveUserImage(url: thumbnail) { [weak self] url in

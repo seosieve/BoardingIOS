@@ -76,10 +76,20 @@ class PreferenceViewModel: NSObject {
             //카카오 계정삭제
             UserApi.shared.rx.unlink()
                 .subscribe(onCompleted: { [weak self] in
-                    guard let currentUser = Auth.auth().currentUser else { return }
-                    self?.deleteUserImage(uid: currentUser.uid)
-                    self?.deleteProfile(uid: currentUser.uid)
-                    self?.deleteUser()
+                    guard let currentUser = Auth.auth().currentUser,
+                          let email = UserDefaults.standard.string(forKey: "kakaoEmail"),
+                          let password = UserDefaults.standard.string(forKey: "kakaoPassword") else { return }
+                    let credential = EmailAuthProvider.credential(withEmail: email, password: password)
+                    currentUser.reauthenticate(with: credential) { (result, error) in
+                        if let error = error {
+                            print("유저 재인증 실패: \(error)")
+                        } else {
+                            print("유저 재인증 성공")
+                            self?.deleteUserImage(uid: currentUser.uid)
+                            self?.deleteProfile(uid: currentUser.uid)
+                            self?.deleteUser()
+                        }
+                    }
                 }, onError: { [weak self] error in
                     self?.errorCatch.accept(true)
                     print("카카오 연결끊기 에러: \(error)")
