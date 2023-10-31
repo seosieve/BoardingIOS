@@ -13,9 +13,12 @@ import RxCocoa
 import FirebaseStorage
 import FirebaseStorageUI
 
-class HomeViewController: UIViewController {
+import FirebaseAuth
+
+class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     var cellCount = 10
+    var selectedCategory = ""
     
     let viewModel = HomeViewModel()
     let disposeBag = DisposeBag()
@@ -96,23 +99,22 @@ class HomeViewController: UIViewController {
             guard let button = view.viewWithTag(1) as? UIButton else { return }
             guard let label = view.viewWithTag(2) as? UILabel else { return }
             button.layer.borderWidth = 0
-            button.isSelected = false
             label.font = Pretendard.regular(13)
             label.textColor = Gray.medium
         }
         
         guard let button = sender.view?.viewWithTag(1) as? UIButton else { return }
         guard let label = sender.view?.viewWithTag(2) as? UILabel else { return }
-        if button.isSelected {
-            button.layer.borderWidth = 0
-            label.font = Pretendard.regular(13)
-            label.textColor = Gray.medium
-        } else {
+        if button.layer.borderWidth == 0 {
             button.layer.borderWidth = 2
             label.font = Pretendard.semiBold(13)
             label.textColor = Boarding.blue
+            selectedCategory = label.text!
+        } else {
+            button.layer.borderWidth = 0
+            label.font = Pretendard.regular(13)
+            label.textColor = Gray.medium
         }
-        button.isSelected.toggle()
     }
 
     override func viewDidLoad() {
@@ -251,19 +253,40 @@ class HomeViewController: UIViewController {
                 cell.selectionStyle = .none
                 if element.NFTID != "" {
                     self.viewModel.getAuther(auther: element.autherUid) { user in
-                        cell.User = user
                         cell.userNameLabel.text = user.name
                         cell.userImage.sd_setImage(with: URL(string: user.url), placeholderImage: nil, options: .scaleDownLargeImages)
+                        //Add Image Tap Event
+                        
                     }
-                    cell.NFT = element
-                    cell.url = URL(string: element.url)
+                    
+                    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped))
+                    tapGestureRecognizer.delegate = self
+                    // Add this line!
+                    cell.photoView.gestureRecognizers?.removeAll()
+                    
+//                    cell.photoView.isUserInteractionEnabled = true
+//                    cell.photoView.addGestureRecognizer(tapGestureRecognizer)
+                    
+                    
+                    
+                    
+                    cell.imageTapped = {
+                        let vc = FullScreenViewController()
+                        vc.url = URL(string: element.url)
+                        vc.NFT = element
+//                        vc.User = user
+                        vc.hidesBottomBarWhenPushed = true
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    }
                     cell.titleLabel.text = element.title
                     cell.contentLabel.text = element.content
                     cell.photoView.sd_setImage(with: URL(string: element.url), placeholderImage: nil, options: .scaleDownLargeImages)
                     cell.scoreLabel.text = String(element.starPoint)
                     cell.locationLabel.text = element.location
+                    cell.userAchievementStackView.isHidden = false
                     cell.isUserInteractionEnabled = true
                 } else {
+                    cell.userAchievementStackView.isHidden = true
                     cell.isUserInteractionEnabled = false
                 }
             }
@@ -273,6 +296,15 @@ class HomeViewController: UIViewController {
             .setDelegate(self)
             .disposed(by: disposeBag)
     }
+    
+    @objc func imageTapped() {
+        print("aa")
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        print("aaa")
+        return touch.view is UITableView
+    }
 }
 
 //MARK: - UITableView
@@ -280,7 +312,7 @@ extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let item = viewModel.items.value[indexPath.row].content
         if item == "" {
-            return 720
+            return 640
         } else {
             let label = UILabel()
             label.text = item
@@ -292,16 +324,6 @@ extension HomeViewController: UITableViewDelegate {
             
             return 640 + labelSize.height
         }
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as? HomeTableViewCell
-        let vc = FullScreenViewController()
-        vc.url = cell?.url
-        vc.NFT = cell?.NFT
-        vc.User = cell?.User
-        vc.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

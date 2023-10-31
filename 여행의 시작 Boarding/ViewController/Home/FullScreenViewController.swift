@@ -19,8 +19,9 @@ class FullScreenViewController: UIViewController {
     let iconArr = [UIImage(named: "Comment"), UIImage(named: "Like"), UIImage(named: "Save")]
     
     var fullScreenImageView = UIImageView().then {
-        $0.image = UIImage(named: "France1")
+        $0.image = UIImage()
         $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
     }
     
     lazy var backButton = UIButton().then {
@@ -59,8 +60,8 @@ class FullScreenViewController: UIViewController {
         $0.text = NFT?.content
         $0.font = Pretendard.regular(15)
         $0.textColor = Gray.white
-        $0.numberOfLines = 0
-        $0.lineBreakMode = .byClipping
+        $0.numberOfLines = 2
+        $0.lineBreakMode = .byTruncatingTail
     }
     
     var locationView = UIView().then {
@@ -142,6 +143,7 @@ class FullScreenViewController: UIViewController {
             make.top.equalTo(titleLabel.snp.bottom).offset(6)
             make.left.equalToSuperview().offset(17)
             make.right.equalToSuperview().offset(-82)
+            make.height.equalTo(42)
         }
         
         fullScreenTextView.addSubview(locationView)

@@ -70,8 +70,10 @@ extension StartViewModel: ASAuthorizationControllerDelegate, ASAuthorizationCont
                         //처음 애플로그인 할 때
                         self?.userNotExist.onNext(())
                         //firestore, Storage 저장
-                        self?.saveUserImage(url: User.defaultUrl) { [weak self] url in
-                            self?.saveProfile(url: url!, name: displayName)
+                        DispatchQueue.global().async {
+                            self?.saveUserImage(url: User.defaultUrl) { [weak self] url in
+                                self?.saveProfile(url: url!, name: displayName)
+                            }
                         }
                         //Auth 수정
                         self?.makeProfile(nickname: displayName, thumbnail: User.defaultUrl)
@@ -116,8 +118,12 @@ extension StartViewModel {
     func kakaoUserInfo() {
         UserApi.shared.rx.me()
             .subscribe(onSuccess:{ [weak self] user in
-                if let email = user.kakaoAccount?.email, let password = user.id, let nickname = user.kakaoAccount?.profile?.nickname, let thumbnail = user.kakaoAccount?.profile?.profileImageUrl {
-                    self?.createUser(email: email, password: String(password), nickname: nickname, thumbnail: thumbnail)
+                if let email = user.kakaoAccount?.email,
+                   let password = user.id,
+                   let nickname = user.kakaoAccount?.profile?.nickname,
+                   let thumbnail = user.kakaoAccount?.profile?.profileImageUrl {
+                    print(thumbnail)
+                    self?.signInUser(email: email, password: String(password), nickname: nickname, thumbnail: thumbnail)
                 } else {
                     self?.errorCatch.accept(true)
                 }
@@ -128,33 +134,42 @@ extension StartViewModel {
             .disposed(by: disposeBag)
     }
     
-    func createUser(email: String, password: String, nickname: String, thumbnail: URL) {
-        Auth.auth().createUser(withEmail: email, password: password) { [weak self] (authResult, error) in
+    func signInUser(email: String, password: String, nickname: String, thumbnail: URL) {
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] (authResult, error) in
             if let error = error {
                 let code = (error as NSError).code
+                print(code, error)
                 switch code {
-                case 17007:
-                    // 이미 가입된 유저가 있을 때
-                    self?.signInUser(email: email, password: password)
+                case 17011:
+                    //유저가 존재하지 않을때
+                    self?.userNotExist.onNext(())
+                    //유저 생성
+                    self?.createUser(email: email, password: password, nickname: nickname, thumbnail: thumbnail)
                 default:
                     self?.errorCatch.accept(true)
-                    print("파이어베이스 유저 생성 에러: \(error)")
                 }
             } else if let authResult = authResult {
-                self?.makeProfile(nickname: nickname, thumbnail: thumbnail)
-                print("유저 생성 성공: \(authResult)")
+                self?.startResult.accept(true)
+                print("유저 로그인 성공: \(authResult)")
             }
         }
     }
     
-    func signInUser(email: String, password: String) {
-        Auth.auth().signIn(withEmail: email, password: password) { [weak self] (authResult, error) in
+    func createUser(email: String, password: String, nickname: String, thumbnail: URL) {
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self] (authResult, error) in
             if let error = error {
                 self?.errorCatch.accept(true)
-                print("파이어베이스 유저 로그인 에러: \(error)")
+                print("파이어베이스 유저 생성 에러: \(error)")
             } else if let authResult = authResult {
-                self?.startResult.accept(true)
-                print("유저 로그인 성공: \(authResult)")
+                //firestore, Storage 저장
+                DispatchQueue.global().async {
+                    self?.saveUserImage(url: thumbnail) { [weak self] url in
+                        self?.saveProfile(url: url!, name: nickname)
+                    }
+                }
+                //Auth 수정
+                self?.makeProfile(nickname: nickname, thumbnail: thumbnail)
+                print("유저 생성 성공: \(authResult)")
             }
         }
     }
@@ -173,6 +188,24 @@ extension StartViewModel {
         }
     }
     
+    func saveUserImage(url: URL, completion: @escaping (URL?) -> Void) {
+        guard let user = Auth.auth().currentUser else { return }
+        guard let imageData = try? Data(contentsOf: url) else { return }
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/jpeg"
+        
+        let imageRef = ref.child("UserImage/\(user.uid)")
+        imageRef.putData(imageData, metadata: metaData) { metaData, error in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                imageRef.downloadURL { url, _ in
+                    completion(url)
+                }
+            }
+        }
+    }
+    
     func saveProfile(url: URL, name: String) {
         guard let user = Auth.auth().currentUser else { return }
         let User = User(userUid: user.uid, url: url.absoluteString, name: name, introduce: "")
@@ -183,20 +216,6 @@ extension StartViewModel {
             } else {
                 print("유저 저장 성공: \(user.uid)")
                 self?.startResult.accept(true)
-            }
-        }
-    }
-    
-    func saveUserImage(url: URL, completion: @escaping (URL?) -> Void) {
-        guard let user = Auth.auth().currentUser else { return }
-        guard let imageData = try? Data(contentsOf: url) else { return }
-        let metaData = StorageMetadata()
-        metaData.contentType = "image/jpeg"
-        
-        let imageRef = ref.child("UserImage/\(user.uid)")
-        let uploadTask = imageRef.putData(imageData, metadata: metaData) { metaData, error in
-            imageRef.downloadURL { url, _ in
-                completion(url)
             }
         }
     }

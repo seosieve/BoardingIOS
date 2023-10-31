@@ -8,15 +8,13 @@
 import UIKit
 
 class HomeTableViewCell: UITableViewCell {
-
-    var url: URL?
-    var NFT: NFT?
-    var User: User?
+    
+    var imageTapped: (() -> Void)?
     
     let iconArr = [UIImage(named: "Report"), UIImage(named: "Comment"), UIImage(named: "Like"), UIImage(named: "Save")]
     
     var userImage = UIImageView().then {
-        $0.image = UIImage(named: "DefaultUser")?.withRenderingMode(.alwaysTemplate)
+        $0.image = UIImage()
         $0.tintColor = Boarding.blue
         $0.layer.cornerRadius = 16
         $0.layer.masksToBounds = true
@@ -50,12 +48,20 @@ class HomeTableViewCell: UITableViewCell {
         $0.lineBreakMode = .byTruncatingTail
     }
     
-    var photoView = UIImageView().then {
+    lazy var photoView = UIImageView().then {
         $0.backgroundColor = Gray.bright
         $0.image = UIImage()
         $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 12
         $0.layer.masksToBounds = true
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(photoViewTapped))
+//        tap.cancelsTouchesInView = true
+//        $0.addGestureRecognizer(tap)
+    }
+    
+    @objc func photoViewTapped() {
+        print("aa")
+        imageTapped?()
     }
     
     var interactionStackView = UIStackView().then {
@@ -111,12 +117,12 @@ class HomeTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
     
-    func setViews() {        
+    func setViews() {
         contentView.addSubview(userImage)
         userImage.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(30)
@@ -277,7 +283,7 @@ class HomeTableViewCell: UITableViewCell {
         }
         
         userAchievementStackView.addArrangedSubview(userAchieveItem1)
-//        userAchievementStackView.addArrangedSubview(userAchieveItem2)
-//        userAchievementStackView.addArrangedSubview(userAchieveItem3)
+        //        userAchievementStackView.addArrangedSubview(userAchieveItem2)
+        //        userAchievementStackView.addArrangedSubview(userAchieveItem3)
     }
 }

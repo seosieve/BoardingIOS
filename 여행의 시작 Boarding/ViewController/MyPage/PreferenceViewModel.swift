@@ -76,6 +76,9 @@ class PreferenceViewModel: NSObject {
             //카카오 계정삭제
             UserApi.shared.rx.unlink()
                 .subscribe(onCompleted: { [weak self] in
+                    guard let currentUser = Auth.auth().currentUser else { return }
+                    self?.deleteUserImage(uid: currentUser.uid)
+                    self?.deleteProfile(uid: currentUser.uid)
                     self?.deleteUser()
                 }, onError: { [weak self] error in
                     self?.errorCatch.accept(true)
