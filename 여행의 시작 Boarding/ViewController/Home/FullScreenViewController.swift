@@ -17,6 +17,7 @@ class FullScreenViewController: UIViewController {
     var User: User?
     
     let iconArr = [UIImage(named: "Comment"), UIImage(named: "Like"), UIImage(named: "Save")]
+    let iconSelectedArr = [UIImage(), UIImage(), UIImage(named: "LikeFilled"), UIImage(named: "SaveFilled")]
     
     var fullScreenImageView = UIImageView().then {
         $0.image = UIImage()
@@ -33,21 +34,36 @@ class FullScreenViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
-    lazy var fullScreenTextView = UIView().then {
+    var fullScreenDimView = UIView().then {
+        $0.backgroundColor = Gray.black.withAlphaComponent(0.5)
+        $0.alpha = 0
+    }
+    
+    lazy var fullScreenGradientView = UIView().then {
         $0.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 198)
         $0.gradient([Gray.black.withAlphaComponent(0), .black], axis: .vertical)
+    }
+    
+    lazy var fullScreenTextView = UIView().then {
+        $0.backgroundColor = .clear
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapRecognized))
         $0.addGestureRecognizer(tap)
     }
     
     @objc func tapRecognized() {
-        let vc = HomeInfoViewController()
-        vc.image = fullScreenImageView.image
-        vc.infoDetail[0] = NFT!.location
-        vc.infoDetail[1] = NFT!.time
-        vc.titleLabel.text = NFT!.title
-        vc.contentLabel.text = NFT!.content
-        self.navigationController?.pushViewController(vc, animated: true)
+        if contentLabel.numberOfLines == 2 {
+            UIView.animate(withDuration: 0.5) {
+                self.contentLabel.numberOfLines = 0
+                self.fullScreenDimView.alpha = 1
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            UIView.animate(withDuration: 0.5) {
+                self.contentLabel.numberOfLines = 2
+                self.fullScreenDimView.alpha = 0
+                self.view.layoutIfNeeded()
+            }
+        }
     }
     
     lazy var titleLabel = UILabel().then {
@@ -64,36 +80,41 @@ class FullScreenViewController: UIViewController {
         $0.lineBreakMode = .byTruncatingTail
     }
     
-    var locationView = UIView().then {
-        $0.backgroundColor = Gray.light.withAlphaComponent(0.5)
-        $0.layer.cornerRadius = 12
+    lazy var locationButton = UIButton().then {
+//        $0.style
+        $0.imageView?.contentMode = .scaleAspectFit
+        $0.setBackgroundColor(Gray.light.withAlphaComponent(0.5), for: .normal)
+        $0.setImage(UIImage(named: "Location")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        $0.setTitle(NFT?.location, for: .normal)
+        $0.titleLabel?.font = Pretendard.regular(13)
+        $0.setTitleColor(Gray.white, for: .normal)
+        $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 9)
+        $0.imageEdgeInsets = UIEdgeInsets(top: 5, left: -5, bottom: 5, right: 0)
+        $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        $0.addTarget(self, action: #selector(moveToInfo), for: .touchUpInside)
     }
     
-    var locationImage = UIImageView().then {
-        $0.image = UIImage(named: "Location")?.withRenderingMode(.alwaysTemplate)
-        $0.tintColor = Gray.white
+    lazy var categoryButton = UIButton().then {
+        $0.imageView?.contentMode = .scaleAspectFit
+        $0.setBackgroundColor(Gray.light.withAlphaComponent(0.5), for: .normal)
+        $0.setImage(UIImage(named: "Plane")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        $0.setTitle(NFT?.category[0], for: .normal)
+        $0.titleLabel?.font = Pretendard.regular(13)
+        $0.setTitleColor(Gray.white, for: .normal)
+        $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 9)
+        $0.imageEdgeInsets = UIEdgeInsets(top: 5, left: -5, bottom: 5, right: 0)
+        $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        $0.addTarget(self, action: #selector(moveToInfo), for: .touchUpInside)
     }
     
-    lazy var locationLabel = UILabel().then {
-        $0.text = NFT?.location
-        $0.font = Pretendard.regular(13)
-        $0.textColor = Gray.white
-    }
-    
-    var categoryView = UIView().then {
-        $0.backgroundColor = Gray.light.withAlphaComponent(0.5)
-        $0.layer.cornerRadius = 12
-    }
-    
-    var categoryImage = UIImageView().then {
-        $0.image = UIImage(named: "Location")?.withRenderingMode(.alwaysTemplate)
-        $0.tintColor = Gray.white
-    }
-    
-    var categoryLabel = UILabel().then {
-        $0.text = "액티비티"
-        $0.font = Pretendard.regular(13)
-        $0.textColor = Gray.white
+    @objc func moveToInfo() {
+        let vc = HomeInfoViewController()
+        vc.image = fullScreenImageView.image
+        vc.infoDetail[0] = NFT!.location
+        vc.infoDetail[1] = NFT!.time
+        vc.titleLabel.text = NFT!.title
+        vc.contentLabel.text = NFT!.content
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     var interactionStackView = UIStackView().then {
@@ -102,6 +123,18 @@ class FullScreenViewController: UIViewController {
         $0.alignment = .fill
         $0.distribution = .equalSpacing
         $0.spacing = 15
+    }
+    
+    @objc func iconButtonPressed(_ sender: UIButton) {
+        switch sender.tag {
+        case 0:
+            break
+        case 1:
+            break
+        default:
+            sender.isSelected.toggle()
+            sender.buttonAnimation()
+        }
     }
     
     override func viewDidLoad() {
@@ -118,6 +151,11 @@ class FullScreenViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         
+        view.addSubview(fullScreenDimView)
+        fullScreenDimView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
         view.addSubview(backButton)
         backButton.snp.makeConstraints { make in
             make.top.equalTo(window.safeAreaInsets.top)
@@ -126,65 +164,51 @@ class FullScreenViewController: UIViewController {
             make.height.equalTo(48)
         }
         
-        view.addSubview(fullScreenTextView)
-        fullScreenTextView.snp.makeConstraints { make in
-            make.left.centerX.bottom.equalToSuperview()
-            make.height.equalTo(195)
+        view.addSubview(fullScreenGradientView)
+        fullScreenGradientView.snp.makeConstraints { make in
+            make.left.right.bottom.equalToSuperview()
+            make.height.equalTo(198)
         }
         
-        fullScreenTextView.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(35)
-            make.left.equalToSuperview().offset(17)
+        view.addSubview(fullScreenTextView)
+        fullScreenTextView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-82)
+            make.bottom.equalToSuperview().inset(90)
+//            make.height.equalTo(80)
         }
         
         fullScreenTextView.addSubview(contentLabel)
         contentLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(6)
-            make.left.equalToSuperview().offset(17)
-            make.right.equalToSuperview().offset(-82)
-            make.height.equalTo(42)
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.bottom.equalToSuperview()
+//            make.height.equalTo(42)
         }
         
-        fullScreenTextView.addSubview(locationView)
-        locationView.snp.makeConstraints { make in
-            make.top.equalTo(contentLabel.snp.bottom).offset(12)
+        fullScreenTextView.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.bottom.equalTo(contentLabel.snp.top).offset(-10)
+            make.left.equalToSuperview()
+        }
+        
+        
+        view.addSubview(locationButton)
+        locationButton.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().inset(54)
             make.left.equalToSuperview().offset(20)
             make.height.equalTo(24)
         }
-        locationView.addSubview(locationImage)
-        locationImage.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.left.equalToSuperview().offset(8)
-            make.width.equalTo(11)
-            make.height.equalTo(15)
-        }
-        locationView.addSubview(locationLabel)
-        locationLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.left.equalTo(locationImage.snp.right).offset(4)
-            make.right.equalToSuperview().inset(8)
-        }
+        locationButton.rounded(axis: .horizontal)
         
-        fullScreenTextView.addSubview(categoryView)
-        categoryView.snp.makeConstraints { make in
-            make.centerY.equalTo(locationView)
-            make.left.equalTo(locationView.snp.right).offset(8)
+        view.addSubview(categoryButton)
+        categoryButton.snp.makeConstraints { make in
+            make.centerY.equalTo(locationButton)
+            make.left.equalTo(locationButton.snp.right).offset(8)
             make.height.equalTo(24)
         }
-        categoryView.addSubview(categoryImage)
-        categoryImage.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.left.equalToSuperview().offset(8)
-            make.width.equalTo(11)
-            make.height.equalTo(15)
-        }
-        categoryView.addSubview(categoryLabel)
-        categoryLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.left.equalTo(categoryImage.snp.right).offset(4)
-            make.right.equalToSuperview().inset(8)
-        }
+        categoryButton.rounded(axis: .horizontal)
         
         view.addSubview(interactionStackView)
         interactionStackView.snp.makeConstraints { make in
@@ -198,9 +222,11 @@ class FullScreenViewController: UIViewController {
                 $0.backgroundColor = .clear
             }
             
-            let iconImageView = UIImageView().then {
-                $0.image = iconArr[index]?.withRenderingMode(.alwaysTemplate)
-                $0.tintColor = Gray.white
+            lazy var iconButton = UIButton().then {
+                $0.tag = index
+                $0.setImage(iconArr[index], for: .normal)
+                $0.setImage(iconSelectedArr[index], for: .selected)
+                $0.addTarget(self, action: #selector(iconButtonPressed(_:)), for: .touchUpInside)
             }
             
             let numberLabel = UILabel().then {
@@ -210,14 +236,14 @@ class FullScreenViewController: UIViewController {
                 $0.textAlignment = .center
             }
             
-            subview.addSubview(iconImageView)
-            iconImageView.snp.makeConstraints { make in
+            subview.addSubview(iconButton)
+            iconButton.snp.makeConstraints { make in
                 make.top.left.centerX.equalToSuperview()
                 make.width.height.equalTo(32)
             }
             subview.addSubview(numberLabel)
             numberLabel.snp.makeConstraints { make in
-                make.top.equalTo(iconImageView.snp.bottom)
+                make.top.equalTo(iconButton.snp.bottom)
                 make.left.centerX.equalToSuperview()
                 make.bottom.equalToSuperview()
             }

@@ -197,6 +197,16 @@ extension UIButton {
         UIGraphicsEndImageContext()
         self.setBackgroundImage(backgroundImage, for: state)
     }
+    
+    func buttonAnimation() {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        }) { _ in
+            UIView.animate(withDuration: 0.1) {
+                self.transform = CGAffineTransform.identity
+            }
+        }
+    }
 }
 
 //MARK: - Safe Array with Subscript
@@ -303,23 +313,3 @@ extension DocumentSnapshot {
 //Firestore DB
 let db = Firestore.firestore()
 let ref = Storage.storage().reference()
-
-// Credential 저장 함수
-func saveCredential(credential: AuthCredential) {
-    UserDefaults.standard.set(credential.provider, forKey: "credential")
-}
-
-// Credential 불러오기 함수
-func loadCredential() -> AuthCredential? {
-    if let providerID = UserDefaults.standard.string(forKey: "credential") {
-        // 저장된 providerID로 새로운 credential을 생성
-        switch providerID {
-        case "apple.com":
-            return GoogleAuthProvider.credential(withIDToken: "", accessToken: "")
-        // 다른 provider에 대한 처리 추가
-        default:
-            return nil
-        }
-    }
-    return nil
-}

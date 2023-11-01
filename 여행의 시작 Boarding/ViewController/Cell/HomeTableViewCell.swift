@@ -9,9 +9,11 @@ import UIKit
 
 class HomeTableViewCell: UITableViewCell {
     
-    var imageTapped: (() -> Void)?
+    var photoTapped: (() -> Void)?
+    var iconTapped: ((UIButton) -> Void)?
     
     let iconArr = [UIImage(named: "Report"), UIImage(named: "Comment"), UIImage(named: "Like"), UIImage(named: "Save")]
+    let iconSelectedArr = [UIImage(), UIImage(), UIImage(named: "LikeFilled"), UIImage(named: "SaveFilled")]
     
     var userImage = UIImageView().then {
         $0.image = UIImage()
@@ -54,14 +56,16 @@ class HomeTableViewCell: UITableViewCell {
         $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 12
         $0.layer.masksToBounds = true
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(photoViewTapped))
-//        tap.cancelsTouchesInView = true
-//        $0.addGestureRecognizer(tap)
     }
     
-    @objc func photoViewTapped() {
-        print("aa")
-        imageTapped?()
+    lazy var photoContainerButton = UIButton().then {
+        $0.backgroundColor = .clear
+        $0.isUserInteractionEnabled = true
+        $0.addTarget(self, action: #selector(photoContainerPressed), for: .touchUpInside)
+    }
+    
+    @objc func photoContainerPressed() {
+        photoTapped?()
     }
     
     var interactionStackView = UIStackView().then {
@@ -70,6 +74,10 @@ class HomeTableViewCell: UITableViewCell {
         $0.alignment = .fill
         $0.distribution = .equalSpacing
         $0.spacing = 15
+    }
+    
+    @objc func iconButtonPressed(_ sender: UIButton) {
+        iconTapped?(sender)
     }
     
     var scoreView = UIView().then {
@@ -170,6 +178,14 @@ class HomeTableViewCell: UITableViewCell {
             self.photoView.backgroundColor = Gray.white
         })
         
+        contentView.addSubview(photoContainerButton)
+        photoContainerButton.snp.makeConstraints { make in
+            make.top.equalTo(contentLabel.snp.bottom).offset(20)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().inset(77)
+            make.height.equalTo(450)
+        }
+        
         contentView.addSubview(interactionStackView)
         interactionStackView.snp.makeConstraints { make in
             make.left.equalTo(photoView.snp.right).offset(28)
@@ -182,8 +198,11 @@ class HomeTableViewCell: UITableViewCell {
                 $0.backgroundColor = Gray.white
             }
             
-            let iconImageView = UIImageView().then {
-                $0.image = iconArr[index]
+            lazy var iconButton = UIButton().then {
+                $0.tag = index
+                $0.setImage(iconArr[index], for: .normal)
+                $0.setImage(iconSelectedArr[index], for: .selected)
+                $0.addTarget(self, action: #selector(iconButtonPressed(_:)), for: .touchUpInside)
             }
             
             let numberLabel = UILabel().then {
@@ -193,14 +212,14 @@ class HomeTableViewCell: UITableViewCell {
                 $0.textAlignment = .center
             }
             
-            subview.addSubview(iconImageView)
-            iconImageView.snp.makeConstraints { make in
+            subview.addSubview(iconButton)
+            iconButton.snp.makeConstraints { make in
                 make.top.left.centerX.equalToSuperview()
                 make.width.height.equalTo(32)
             }
             subview.addSubview(numberLabel)
             numberLabel.snp.makeConstraints { make in
-                make.top.equalTo(iconImageView.snp.bottom)
+                make.top.equalTo(iconButton.snp.bottom)
                 make.left.centerX.equalToSuperview()
                 make.bottom.equalToSuperview()
             }

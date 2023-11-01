@@ -255,28 +255,12 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
                     self.viewModel.getAuther(auther: element.autherUid) { user in
                         cell.userNameLabel.text = user.name
                         cell.userImage.sd_setImage(with: URL(string: user.url), placeholderImage: nil, options: .scaleDownLargeImages)
-                        //Add Image Tap Event
-                        
                     }
-                    
-                    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped))
-                    tapGestureRecognizer.delegate = self
-                    // Add this line!
-                    cell.photoView.gestureRecognizers?.removeAll()
-                    
-//                    cell.photoView.isUserInteractionEnabled = true
-//                    cell.photoView.addGestureRecognizer(tapGestureRecognizer)
-                    
-                    
-                    
-                    
-                    cell.imageTapped = {
-                        let vc = FullScreenViewController()
-                        vc.url = URL(string: element.url)
-                        vc.NFT = element
-//                        vc.User = user
-                        vc.hidesBottomBarWhenPushed = true
-                        self.navigationController?.pushViewController(vc, animated: true)
+                    cell.photoTapped = {
+                        self.goToFullScreen(url: URL(string: element.url), NFT: element)
+                    }
+                    cell.iconTapped = { sender in
+                        self.iconInteraction(sender)
                     }
                     cell.titleLabel.text = element.title
                     cell.contentLabel.text = element.content
@@ -297,13 +281,25 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
             .disposed(by: disposeBag)
     }
     
-    @objc func imageTapped() {
-        print("aa")
+    func goToFullScreen(url: URL?, NFT: NFT) {
+        let vc = FullScreenViewController()
+        vc.url = url
+        vc.NFT = NFT
+//        vc.User = user
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        print("aaa")
-        return touch.view is UITableView
+    func iconInteraction(_ sender: UIButton) {
+        switch sender.tag {
+        case 0:
+            break
+        case 1:
+            break
+        default:
+            sender.isSelected.toggle()
+            sender.buttonAnimation()
+        }
     }
 }
 
