@@ -37,7 +37,7 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     var locationImageView = UIImageView().then {
-        $0.image = UIImage(named: "Location")
+        $0.image = UIImage(named: "GlobalLocation")
     }
     
     var locationButton = UIButton().then {

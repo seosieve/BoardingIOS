@@ -203,6 +203,7 @@ class WrittingViewController: UIViewController {
         let index = Int(categoryStackView.arrangedSubviews.firstIndex(of: sender)!)
         sender.isSelected.toggle()
         feedbackGenerator?.impactOccurred()
+        print()
         categoryResult.accept(selectedCategoryArr)
     }
     

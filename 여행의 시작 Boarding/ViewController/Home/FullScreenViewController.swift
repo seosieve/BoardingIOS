@@ -17,7 +17,11 @@ class FullScreenViewController: UIViewController {
     var User: User?
     
     let iconArr = [UIImage(named: "Comment"), UIImage(named: "Like"), UIImage(named: "Save")]
-    let iconSelectedArr = [UIImage(), UIImage(), UIImage(named: "LikeFilled"), UIImage(named: "SaveFilled")]
+    let iconSelectedArr = [UIImage(), UIImage(named: "LikeFilled"), UIImage(named: "SaveFilled")]
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
     
     var fullScreenImageView = UIImageView().then {
         $0.image = UIImage()
@@ -81,10 +85,10 @@ class FullScreenViewController: UIViewController {
     }
     
     lazy var locationButton = UIButton().then {
-//        $0.style
+        $0.adjustsImageWhenHighlighted = false
         $0.imageView?.contentMode = .scaleAspectFit
         $0.setBackgroundColor(Gray.light.withAlphaComponent(0.5), for: .normal)
-        $0.setImage(UIImage(named: "Location")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        $0.setImage(UIImage(named: "GlobalLocation")?.withRenderingMode(.alwaysTemplate), for: .normal)
         $0.setTitle(NFT?.location, for: .normal)
         $0.titleLabel?.font = Pretendard.regular(13)
         $0.setTitleColor(Gray.white, for: .normal)
@@ -95,6 +99,7 @@ class FullScreenViewController: UIViewController {
     }
     
     lazy var categoryButton = UIButton().then {
+        $0.adjustsImageWhenHighlighted = false
         $0.imageView?.contentMode = .scaleAspectFit
         $0.setBackgroundColor(Gray.light.withAlphaComponent(0.5), for: .normal)
         $0.setImage(UIImage(named: "Plane")?.withRenderingMode(.alwaysTemplate), for: .normal)
@@ -110,8 +115,8 @@ class FullScreenViewController: UIViewController {
     @objc func moveToInfo() {
         let vc = HomeInfoViewController()
         vc.image = fullScreenImageView.image
-        vc.infoDetail[0] = NFT!.location
-        vc.infoDetail[1] = NFT!.time
+        vc.infoArr[0] = NFT!.location
+        vc.infoArr[1] = NFT!.time
         vc.titleLabel.text = NFT!.title
         vc.contentLabel.text = NFT!.content
         self.navigationController?.pushViewController(vc, animated: true)
@@ -128,8 +133,6 @@ class FullScreenViewController: UIViewController {
     @objc func iconButtonPressed(_ sender: UIButton) {
         switch sender.tag {
         case 0:
-            break
-        case 1:
             break
         default:
             sender.isSelected.toggle()
@@ -224,8 +227,9 @@ class FullScreenViewController: UIViewController {
             
             lazy var iconButton = UIButton().then {
                 $0.tag = index
-                $0.setImage(iconArr[index], for: .normal)
-                $0.setImage(iconSelectedArr[index], for: .selected)
+                $0.setImage(iconArr[index]?.withRenderingMode(.alwaysTemplate), for: .normal)
+                $0.setImage(iconSelectedArr[index]?.withRenderingMode(.alwaysTemplate), for: .selected)
+                $0.tintColor = Gray.white
                 $0.addTarget(self, action: #selector(iconButtonPressed(_:)), for: .touchUpInside)
             }
             

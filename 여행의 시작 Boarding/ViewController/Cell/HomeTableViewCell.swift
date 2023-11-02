@@ -102,7 +102,7 @@ class HomeTableViewCell: UITableViewCell {
     }
     
     var locationImage = UIImageView().then {
-        $0.image = UIImage(named: "Location")?.withRenderingMode(.alwaysTemplate)
+        $0.image = UIImage(named: "GlobalLocation")?.withRenderingMode(.alwaysTemplate)
         $0.tintColor = Gray.medium
     }
     
