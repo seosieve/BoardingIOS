@@ -9,10 +9,14 @@ import UIKit
 import RxSwift
 import RxCocoa
 import MapKit
+import GooglePlaces
+import GoogleMaps
 
 class HomeInfoViewController: UIViewController {
     
     var image = UIImage(named: "France3")
+    var latitude = 37.4220604
+    var longitude = -112.0852343
     
     var infoIconArr = [UIImage(named: "Location"), UIImage(named: "Time"), UIImage(named: "Weather")]
     var infoArr = ["Magnan 해변, 니스", "2023.07.14.  18:32", "맑음, 25°C"]
@@ -22,6 +26,7 @@ class HomeInfoViewController: UIViewController {
     private var lastContentOffset: CGPoint = .zero
     private var isFirstScroll = false
     
+    lazy var viewModel = HomeInfoViewModel(latitude: latitude, longitude: longitude)
     let modalClosed = BehaviorRelay<Bool>(value: true)
     let disposeBag = DisposeBag()
     
@@ -73,6 +78,7 @@ class HomeInfoViewController: UIViewController {
     
     var infoScrollView = UIScrollView().then {
         $0.isScrollEnabled = false
+        $0.backgroundColor = Gray.bright
     }
     
     lazy var infoContentView = UIView().then {
@@ -140,10 +146,11 @@ class HomeInfoViewController: UIViewController {
     }
     
     var contentLabel = UILabel().then {
-        $0.text = "푸른 바다 위를 날며 주변의 아름다운 경치와 아즈르 해안을 한 눈에 볼 수 있습니다. 높이 올라갈수록 더욱 시원한 바람과 함께 숨막히는 뷰를 볼수 있어요. \n가격은 1인당 90유로입니다. 조금 비싸긴 하지만 후회없는 선택이었어요!"
+        $0.text = "푸른 바다 위를 날며 주변의 아름다운 경치와 아즈르 해안을 한 눈에 볼 수 있습니다. 높이 올라갈수록 더욱 시원한 바람과 함께 숨막히는 뷰를 볼수 있어요. \n\n가격은 1인당 90유로입니다. 조금 비싸긴 하지만 후회없는 선택이었어요!"
         $0.textColor = Gray.dark
         $0.font = Pretendard.regular(17)
         $0.numberOfLines = 0
+        $0.lineBreakMode = .byTruncatingTail
     }
     
     var interactionStackView = UIStackView().then {
@@ -155,13 +162,7 @@ class HomeInfoViewController: UIViewController {
     }
     
     @objc func iconButtonPressed(_ sender: UIButton) {
-        switch sender.tag {
-        case 0:
-            sender.isSelected.toggle()
-            sender.buttonAnimation()
-        default:
-            break
-        }
+        print("icon Pressed")
     }
     
     var mapBackgroundView = UIView().then {
@@ -180,19 +181,36 @@ class HomeInfoViewController: UIViewController {
     }
     
     var locationSubLabel = UILabel().then {
-        $0.text = "2 All. Adrienne Lecouvreur, 75007 Paris, 프랑스"
+        $0.text = ""
         $0.font = Pretendard.regular(13)
         $0.textColor = Gray.medium
+        $0.numberOfLines = 0
+        $0.lineBreakMode = .byCharWrapping
     }
     
-    var map = RoundedMapView().then {
-        $0.backgroundColor = .red
+    lazy var camera = GMSCameraPosition.camera(withLatitude: latitude, longitude: longitude, zoom: 9.0)
+    
+    lazy var map = GMSMapView.map(withFrame: CGRect.zero, camera: camera).then {
+        $0.layer.cornerRadius = 20
+        $0.layer.masksToBounds = true
     }
     
     var locationInfoLabel = UILabel().then {
-        $0.text = "그림 같은 풍경과 맑고 푸른 바다로 많은 관광객과 현지인들에게 사랑받고 있습니다. \n해변에서는 다양한 물놀이 활동을 즐길 수 있으며, 주변에는 카페, 레스토랑, 상점들이 있어 편의시설이 잘 갖춰져 있습니다. 또한, 이곳에서는 일몰을 감상하거나, 긴 산책을 즐기며 아름다운 니스의 경치를 만끽할 수 있습니다."
+        $0.text = ""
         $0.font = Pretendard.regular(17)
         $0.textColor = Gray.dark
+        $0.numberOfLines = 0
+        $0.lineBreakMode = .byTruncatingTail
+    }
+    
+    var moreReviewButton = UIButton().then {
+        $0.backgroundColor = Gray.white
+        $0.setTitle("리뷰 더보기", for: .normal)
+        $0.setTitleColor(Boarding.blue, for: .normal)
+        $0.titleLabel?.font = Pretendard.medium(19)
+        $0.layer.cornerRadius = 20
+        $0.contentHorizontalAlignment = .left
+        $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -297,7 +315,6 @@ class HomeInfoViewController: UIViewController {
         infoContentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalToSuperview()
-            make.height.equalTo(1000)
         }
         
         infoContentView.addSubview(userImage)
@@ -390,15 +407,13 @@ class HomeInfoViewController: UIViewController {
         infoContentView.addSubview(mapBackgroundView)
         mapBackgroundView.snp.makeConstraints { make in
             make.top.equalTo(interactionStackView.snp.bottom).offset(24)
-            make.centerX.equalToSuperview()
-            make.left.equalToSuperview()
-            make.height.equalTo(600)
+            make.centerX.left.bottom.equalToSuperview()
         }
         
         mapBackgroundView.addSubview(mapView)
         mapView.snp.makeConstraints { make in
             make.top.left.equalToSuperview().offset(20)
-            make.center.equalToSuperview()
+            make.centerX.equalToSuperview()
         }
         
         mapView.addSubview(locationLabel)
@@ -411,6 +426,7 @@ class HomeInfoViewController: UIViewController {
         locationSubLabel.snp.makeConstraints { make in
             make.top.equalTo(locationLabel.snp.bottom).offset(2)
             make.left.equalTo(locationLabel)
+            make.centerX.equalToSuperview()
         }
         
         mapView.addSubview(map)
@@ -421,14 +437,29 @@ class HomeInfoViewController: UIViewController {
             make.height.equalTo(200)
         }
         
+        lazy var _ = GMSMarker().then {
+            $0.position = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            $0.title = "Sydney"
+            $0.snippet = "Australia"
+            $0.map = map
+        }
+        
         mapView.addSubview(locationInfoLabel)
         locationInfoLabel.snp.makeConstraints { make in
             make.top.equalTo(map.snp.bottom).offset(12)
             make.left.equalTo(map)
-            make.bottom.equalToSuperview().offset(12)
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-16)
         }
         
-        
+        mapBackgroundView.addSubview(moreReviewButton)
+        moreReviewButton.snp.makeConstraints { make in
+            make.top.equalTo(mapView.snp.bottom).offset(10)
+            make.left.equalTo(mapView)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(52)
+            make.bottom.equalToSuperview().offset(-20)
+        }
     }
 
     func setRx() {
@@ -446,6 +477,14 @@ class HomeInfoViewController: UIViewController {
             }
         })
         .disposed(by: disposeBag)
+        
+        viewModel.locationAddress
+            .bind(to: locationSubLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.locationInfo
+            .bind(to: locationInfoLabel.rx.text)
+            .disposed(by: disposeBag)
     }
     
     func findPan(for view: UIView) -> UIPanGestureRecognizer? {
@@ -455,39 +494,6 @@ class HomeInfoViewController: UIViewController {
             }
         }
         return nil
-    }
-}
-
-class RoundedMapView: UIView {
-
-    private let mapView: MKMapView = {
-        let map = MKMapView()
-        map.translatesAutoresizingMaskIntoConstraints = false
-        return map
-    }()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupMapView()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupMapView()
-    }
-
-    private func setupMapView() {
-        addSubview(mapView)
-
-        // MapView을 UIView와 같은 크기로 설정
-        mapView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        mapView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        mapView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        mapView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        
-        // UIView에 라운드 처리
-        layer.cornerRadius = 10
-        layer.masksToBounds = true
     }
 }
 

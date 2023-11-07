@@ -10,6 +10,7 @@ import Photos
 import CoreLocation
 import RxSwift
 import RxCocoa
+import GooglePlaces
 
 class CameraViewModel: NSObject {
     var captureSession: AVCaptureSession!

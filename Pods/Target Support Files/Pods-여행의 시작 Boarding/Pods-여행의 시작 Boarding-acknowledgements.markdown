@@ -2582,6 +2582,14 @@ FirestoreEncoder
    limitations under the License.
 
 
+## GoogleMaps
+
+Copyright 2023 Google
+
+## GooglePlaces
+
+Copyright 2023 Google
+
 ## GoogleUtilities
 
 

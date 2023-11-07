@@ -31,6 +31,9 @@
 		4E4C143D2AE4D9B500E504D4 /* NFTViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4C143C2AE4D9B500E504D4 /* NFTViewModel.swift */; };
 		4E4C143F2AE62C5800E504D4 /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4C143E2AE62C5800E504D4 /* CategoryModel.swift */; };
 		4E4C14412AE650C900E504D4 /* SetLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4C14402AE650C900E504D4 /* SetLocationViewController.swift */; };
+		4E55AB822AFA2612008066E5 /* BackendExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E55AB812AFA2612008066E5 /* BackendExtension.swift */; };
+		4E55AB842AFA5229008066E5 /* HomeInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E55AB832AFA5229008066E5 /* HomeInfoViewModel.swift */; };
+		4E55AB862AFA6066008066E5 /* GoogleApiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E55AB852AFA6066008066E5 /* GoogleApiModel.swift */; };
 		4E7D52E62AC41AF200054800 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E52AC41AF200054800 /* SplashViewController.swift */; };
 		4E7D52E82AC41B0100054800 /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E72AC41B0100054800 /* SplashViewModel.swift */; };
 		4E7D52EA2AC6FD0000054800 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E92AC6FD0000054800 /* MyPageViewModel.swift */; };
@@ -100,6 +103,9 @@
 		4E4C143C2AE4D9B500E504D4 /* NFTViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTViewModel.swift; sourceTree = "<group>"; };
 		4E4C143E2AE62C5800E504D4 /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
 		4E4C14402AE650C900E504D4 /* SetLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetLocationViewController.swift; sourceTree = "<group>"; };
+		4E55AB812AFA2612008066E5 /* BackendExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendExtension.swift; sourceTree = "<group>"; };
+		4E55AB832AFA5229008066E5 /* HomeInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInfoViewModel.swift; sourceTree = "<group>"; };
+		4E55AB852AFA6066008066E5 /* GoogleApiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleApiModel.swift; sourceTree = "<group>"; };
 		4E7D52E52AC41AF200054800 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		4E7D52E72AC41B0100054800 /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 		4E7D52E92AC6FD0000054800 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
@@ -209,6 +215,7 @@
 				4EECA6352A29BED0006FB764 /* Info.plist */,
 				4E8B35A42A70D28A00AD2C72 /* GoogleService-Info.plist */,
 				4EECA7D82A2B3005006FB764 /* Extension.swift */,
+				4E55AB812AFA2612008066E5 /* BackendExtension.swift */,
 				4EECA7BC2A29C80C006FB764 /* Font */,
 				4EECA7D32A2B028D006FB764 /* Model */,
 				4EECA6412A29C21D006FB764 /* ViewController */,
@@ -256,6 +263,7 @@
 				4E4C143E2AE62C5800E504D4 /* CategoryModel.swift */,
 				4E44FB9C2AD0ED430021FAB9 /* NFTModel.swift */,
 				4EB72F432AEF2D6B00F9CC67 /* UserModel.swift */,
+				4E55AB852AFA6066008066E5 /* GoogleApiModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -268,6 +276,7 @@
 				4E4C14402AE650C900E504D4 /* SetLocationViewController.swift */,
 				4EECA7E02A2DD179006FB764 /* FullScreenViewController.swift */,
 				4EB8FEF12AEF8D0F0094C109 /* HomeInfoViewController.swift */,
+				4E55AB832AFA5229008066E5 /* HomeInfoViewModel.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -361,6 +370,7 @@
 				4EECA6212A29BECF006FB764 /* Frameworks */,
 				4EECA6222A29BECF006FB764 /* Resources */,
 				205F72B81638BABE8E128405 /* [CP] Embed Pods Frameworks */,
+				CA11E2FC215001E026C81EED /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -467,6 +477,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		CA11E2FC215001E026C81EED /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-여행의 시작 Boarding/Pods-여행의 시작 Boarding-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-여행의 시작 Boarding/Pods-여행의 시작 Boarding-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-여행의 시작 Boarding/Pods-여행의 시작 Boarding-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -493,7 +520,9 @@
 				4EECA63C2A29C1DF006FB764 /* PlanViewController.swift in Sources */,
 				4EECA63E2A29C1F6006FB764 /* RecordViewController.swift in Sources */,
 				4EB72F442AEF2D6B00F9CC67 /* UserModel.swift in Sources */,
+				4E55AB842AFA5229008066E5 /* HomeInfoViewModel.swift in Sources */,
 				4E4C14412AE650C900E504D4 /* SetLocationViewController.swift in Sources */,
+				4E55AB862AFA6066008066E5 /* GoogleApiModel.swift in Sources */,
 				4E44FBA72ADCF9160021FAB9 /* NewPlanViewController.swift in Sources */,
 				4EECA7EC2A2F0013006FB764 /* RecordCollectionViewCell.swift in Sources */,
 				4E44FB992ACFD9D80021FAB9 /* NFTDetailViewController.swift in Sources */,
@@ -508,6 +537,7 @@
 				4E7D52E62AC41AF200054800 /* SplashViewController.swift in Sources */,
 				4E44FB9F2AD50DC20021FAB9 /* CameraViewModel.swift in Sources */,
 				4E19AA672A83E4F100213589 /* CameraCustomViewController.swift in Sources */,
+				4E55AB822AFA2612008066E5 /* BackendExtension.swift in Sources */,
 				4EA7AFC42AA6D0E40055F4C7 /* HomeTableViewCell.swift in Sources */,
 				4E44FB9B2AD050F60021FAB9 /* WrittingViewModel.swift in Sources */,
 				4E8B35A92A70DFCE00AD2C72 /* aaModel.swift in Sources */,
@@ -652,6 +682,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				"SWIFT_ACTIVE_COMPILATION_CONDITIONS[arch=*]" = "-Xfrontend -warn-long-expression-type-checking=400";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
