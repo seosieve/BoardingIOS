@@ -13,7 +13,6 @@ import FirebaseFirestore
 import FirebaseStorage
 
 class NFTViewModel {
-    let db = Firestore.firestore()
     
     let items = BehaviorRelay<[NFT]>(value: Array(repeating: NFT.dummyType, count: 10))
     let itemCount = PublishRelay<Int>()

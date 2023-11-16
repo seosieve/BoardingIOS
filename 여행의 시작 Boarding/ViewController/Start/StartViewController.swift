@@ -156,7 +156,7 @@ class StartViewController: UIViewController {
                 self?.kakaoStartButton.isEnabled = true
                 if result {
                     self?.indicator.stopAnimating()
-                    self?.presentVC(TabBarViewController())
+                    self?.presentVC(TabBarViewController(), transition: .crossDissolve)
                 } else {
                     self?.indicator.stopAnimating()
                 }

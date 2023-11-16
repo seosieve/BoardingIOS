@@ -12,7 +12,6 @@ import RxSwift
 import RxCocoa
 import FirebaseStorage
 import FirebaseStorageUI
-
 import FirebaseAuth
 
 class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
@@ -95,25 +94,31 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @objc func categorySelected(_ sender: UITapGestureRecognizer) {
-        categoryStackView.arrangedSubviews.forEach { view in
-            guard let button = view.viewWithTag(1) as? UIButton else { return }
-            guard let label = view.viewWithTag(2) as? UILabel else { return }
+        guard let button = sender.view?.viewWithTag(1) as? UIButton else { return }
+        guard let label = sender.view?.viewWithTag(2) as? UILabel else { return }
+        
+        if label.text == selectedCategory {
+            selectedCategory = ""
+            button.isSelected = false
             button.layer.borderWidth = 0
             label.font = Pretendard.regular(13)
             label.textColor = Gray.medium
-        }
-        
-        guard let button = sender.view?.viewWithTag(1) as? UIButton else { return }
-        guard let label = sender.view?.viewWithTag(2) as? UILabel else { return }
-        if button.layer.borderWidth == 0 {
+            viewModel.getAllNFT()
+        } else {
+            categoryStackView.arrangedSubviews.forEach { view in
+                guard let button = view.viewWithTag(1) as? UIButton else { return }
+                guard let label = view.viewWithTag(2) as? UILabel else { return }
+                button.isSelected = false
+                button.layer.borderWidth = 0
+                label.font = Pretendard.regular(13)
+                label.textColor = Gray.medium
+            }
+            selectedCategory = label.text!
+            button.isSelected = true
             button.layer.borderWidth = 2
             label.font = Pretendard.semiBold(13)
             label.textColor = Boarding.blue
-            selectedCategory = label.text!
-        } else {
-            button.layer.borderWidth = 0
-            label.font = Pretendard.regular(13)
-            label.textColor = Gray.medium
+            viewModel.getNFTbyCategory(selectedCategory)
         }
     }
 
@@ -190,7 +195,7 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
             make.edges.equalToSuperview()
             make.height.equalToSuperview()
         }
-        for index in 0..<Category.count {
+        for index in 0..<CategoryInfo.count {
             let subview = UIView().then {
                 $0.backgroundColor = Gray.white
                 let tap = UITapGestureRecognizer(target: self, action: #selector(categorySelected(_:)))
@@ -200,15 +205,16 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
             
             let emojiButton = UIButton().then {
                 $0.tag = 1
-                $0.backgroundColor = Gray.bright
-                $0.setTitle(Category.imoji[index], for: .normal)
+                $0.setBackgroundColor(Gray.bright, for: .normal)
+                $0.setBackgroundColor(Boarding.blue.withAlphaComponent(0.2), for: .selected)
+                $0.setTitle(CategoryInfo.imoji[index], for: .normal)
                 $0.titleLabel?.font = Pretendard.regular(30)
                 $0.layer.borderColor = Boarding.blue.cgColor
             }
             
             let nameLabel = UILabel().then {
                 $0.tag = 2
-                $0.text = Category.name[index]
+                $0.text = CategoryInfo.name[index]
                 $0.font = Pretendard.regular(13)
                 $0.textColor = Gray.medium
             }
@@ -255,17 +261,17 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
                     self.viewModel.getAuther(auther: element.autherUid) { user in
                         cell.userNameLabel.text = user.name
                         cell.userImage.sd_setImage(with: URL(string: user.url), placeholderImage: nil, options: .scaleDownLargeImages)
-                    }
-                    cell.photoTapped = {
-                        self.goToFullScreen(url: URL(string: element.url), NFT: element)
+                        cell.photoTapped = {
+                            self.goToFullScreen(url: URL(string: element.url), NFT: element, user: user)
+                        }
                     }
                     cell.iconTapped = { sender in
-                        self.iconInteraction(sender)
+                        self.iconInteraction(sender, element.NFTID)
                     }
                     cell.titleLabel.text = element.title
                     cell.contentLabel.text = element.content
                     cell.photoView.sd_setImage(with: URL(string: element.url), placeholderImage: nil, options: .scaleDownLargeImages)
-                    cell.scoreLabel.text = String(element.starPoint)
+                    cell.scoreLabel.text = String(Double(element.starPoint))
                     cell.locationLabel.text = element.location
                     cell.userAchievementStackView.isHidden = false
                     cell.isUserInteractionEnabled = true
@@ -281,24 +287,30 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
             .disposed(by: disposeBag)
     }
     
-    func goToFullScreen(url: URL?, NFT: NFT) {
+    func goToFullScreen(url: URL?, NFT: NFT, user: User) {
         let vc = FullScreenViewController()
         vc.url = url
         vc.NFT = NFT
-//        vc.User = user
+        vc.user = user
         vc.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func iconInteraction(_ sender: UIButton) {
+    func iconInteraction(_ sender: UIButton, _ NFTID: String) {
         switch sender.tag {
         case 0:
             break
         case 1:
             break
-        default:
+        case 2:
             sender.isSelected.toggle()
             sender.buttonAnimation()
+        default:
+            let vc = AddMyPlanViewController()
+            vc.NFTID = NFTID
+            vc.modalPresentationStyle = .automatic
+            vc.modalTransitionStyle = .coverVertical
+            self.present(vc, animated: true)
         }
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 class CameraCustomViewController: UIViewController {
 
     var image: UIImage?
-    var location: String?
+    var location: (String, Double, Double)?
     var time: String?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -42,7 +42,9 @@ class CameraCustomViewController: UIViewController {
     
     @objc func completeButtonPressed() {
         let vc = WrittingViewController()
-        vc.infoDetail = [location!, time!, "맑음, 25°C"]
+        vc.infoArr = [location!.0, time!, "맑음, 25°C"]
+        vc.latitude = location!.1
+        vc.longitude = location!.2
         vc.image = image
         self.navigationController?.pushViewController(vc, animated: true)
     }

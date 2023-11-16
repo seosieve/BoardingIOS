@@ -99,7 +99,7 @@ class PreferenceViewController: UIViewController {
         viewModel.processCompleted
             .subscribe(onNext:{ [weak self] in
                 self?.indicator.stopAnimating()
-                self?.presentVC(UINavigationController(rootViewController: StartViewController()))
+                self?.presentVC(UINavigationController(rootViewController: StartViewController()), transition: .crossDissolve)
             })
             .disposed(by: disposeBag)
     }

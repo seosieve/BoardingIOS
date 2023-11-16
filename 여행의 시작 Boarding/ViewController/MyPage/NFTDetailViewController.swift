@@ -13,9 +13,6 @@ class NFTDetailViewController: UIViewController {
     
     var NFTResult = NFT.dummyType
     var isFlipped = false
-    let statusImage = [UIImage(named: "Like"), UIImage(named: "Comment"), UIImage(named: "Report"), UIImage(named: "Save")]
-    let NFTTitle = ["위치", "시간", "날씨", "카테고리", "평점"]
-    let QRTitle = ["Contract Ad.", "Token ID", "Standard", "Chain"]
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
@@ -97,7 +94,7 @@ class NFTDetailViewController: UIViewController {
     lazy var NFTSubTitleLabel = UILabel().then {
         $0.text = self.NFTResult.content
         $0.font = Pretendard.regular(14)
-        $0.textColor = UIColor("#8C8C8C")
+        $0.textColor = Gray.medium
         $0.numberOfLines = 0
         $0.lineBreakMode = .byCharWrapping
     }
@@ -202,12 +199,13 @@ class NFTDetailViewController: UIViewController {
             make.left.equalToSuperview().inset(20)
             make.height.equalTo(60)
         }
-        for index in 0...3 {
+        let icon = [InteractionInfo.like, InteractionInfo.comment, InteractionInfo.report, InteractionInfo.save]
+        for index in 0..<icon.count {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear
             }
             let statusImageView = UIImageView().then {
-                $0.image = statusImage[index]
+                $0.image = icon[index].0
             }
             let statusLabel = UILabel().then {
                 $0.text = "0"
@@ -264,6 +262,7 @@ class NFTDetailViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(21)
             make.top.equalTo(NFTMainTitleLabel.snp.bottom).offset(6)
+            make.bottom.equalToSuperview().offset(-10)
         }
         
         NFTTitleView.addSubview(QRDetailView)
@@ -287,12 +286,12 @@ class NFTDetailViewController: UIViewController {
             make.centerY.top.equalToSuperview()
         }
         let QRInfo = [String(NFTResult.writtenDate), NFTResult.NFTID, "Standard", NFTResult.autherUid]
-        for index in 0...3 {
+        for index in 0..<TicketInfo.QR.count {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear
             }
             let mainLabel = UILabel().then {
-                $0.text = QRTitle[index]
+                $0.text = TicketInfo.QR[index]
                 $0.font = Pretendard.semiBold(13)
                 $0.textColor = Gray.black
             }
@@ -335,13 +334,13 @@ class NFTDetailViewController: UIViewController {
             make.left.equalToSuperview().inset(20)
             make.height.equalTo(360)
         }
-        let NFTInfo = [NFTResult.location, NFTResult.time, NFTResult.weather, NFTResult.category.map{String($0)}.joined(separator: ", "), String(Double(NFTResult.starPoint))]
-        for index in 0...4 {
+        let NFTInfo = [NFTResult.location, NFTResult.time, NFTResult.weather, NFTResult.category, String(Double(NFTResult.starPoint))]
+        for index in 0..<TicketInfo.NFT.count {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear
             }
             let mainLabel = UILabel().then {
-                $0.text = NFTTitle[index]
+                $0.text = TicketInfo.NFT[index]
                 $0.font = Pretendard.semiBold(15)
                 $0.textColor = Gray.white
             }

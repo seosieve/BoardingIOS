@@ -9,6 +9,8 @@ import UIKit
 
 class PlanCollectionViewCell: UICollectionViewCell {
     
+    var photoTapped: (() -> Void)?
+    
     var borderView = UIView().then {
         $0.backgroundColor = Gray.white
     }
@@ -17,30 +19,39 @@ class PlanCollectionViewCell: UICollectionViewCell {
         $0.image = UIImage(named: "France8")
     }
     
+    lazy var planDetailButton = UIButton().then {
+        $0.backgroundColor = .clear
+        $0.addTarget(self, action: #selector(planDetailButtonPressed), for: .touchUpInside)
+    }
+    
+    @objc func planDetailButtonPressed() {
+        photoTapped?()
+    }
+    
     var mainTextView = UIView()
     
     var mainLabel = UILabel().then {
-        $0.text = "파리 4박 여행"
+        $0.text = ""
         $0.font = Pretendard.semiBold(25)
         $0.textColor = Gray.black
     }
     
     var DdayLabel = UILabel().then {
-        $0.backgroundColor = .magenta
-        $0.text = "D-3"
+        $0.backgroundColor = Boarding.red
+        $0.text = ""
         $0.font = Pretendard.semiBold(13)
         $0.textColor = Gray.white
         $0.textAlignment = .center
     }
     
-    var travelSubLabel = UILabel().then {
-        $0.text = "파리, 프랑스"
+    var durationLabel = UILabel().then {
+        $0.text = ""
         $0.font = Pretendard.regular(17)
         $0.textColor = Gray.medium
     }
     
     var locationLabel = UILabel().then {
-        $0.text = "유럽 전체"
+        $0.text = ""
         $0.font = Pretendard.regular(17)
         $0.textColor = Gray.medium
     }
@@ -61,12 +72,14 @@ class PlanCollectionViewCell: UICollectionViewCell {
     func setViews() {
         contentView.addSubview(borderView)
         borderView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(20)
+            make.left.equalToSuperview().offset(10)
             make.centerX.equalToSuperview()
-            make.top.left.equalToSuperview().offset(20)
             make.height.equalTo(400)
         }
         borderView.rounded(axis: .vertical)
-        borderView.makeShadow(shadowRadius: 20)
+        borderView.layer.masksToBounds = false
+        borderView.makeShadow(opacity: 0.3, shadowRadius: 10)
         
         borderView.addSubview(travelImageView)
         travelImageView.snp.makeConstraints { make in
@@ -74,28 +87,34 @@ class PlanCollectionViewCell: UICollectionViewCell {
         }
         travelImageView.rounded(axis: .vertical)
         
+        borderView.addSubview(planDetailButton)
+        planDetailButton.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        contentView.addSubview(mainTextView)
+        mainTextView.snp.makeConstraints { make in
+            make.top.equalTo(borderView.snp.bottom).offset(20)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(35)
+        }
+        
         mainTextView.addSubview(mainLabel)
         mainLabel.snp.makeConstraints { make in
-            make.left.top.centerY.equalToSuperview()
+            make.left.centerY.equalToSuperview()
         }
         
         mainTextView.addSubview(DdayLabel)
         DdayLabel.snp.makeConstraints { make in
             make.left.equalTo(mainLabel.snp.right).offset(6)
-            make.right.top.centerY.equalToSuperview()
+            make.right.centerY.equalToSuperview()
             make.width.equalTo(45)
             make.height.equalTo(26)
         }
-        DdayLabel.rounded(axis: .vertical)
+        DdayLabel.rounded(axis: .horizontal)
         
-        contentView.addSubview(mainTextView)
-        mainTextView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(borderView.snp.bottom).offset(20)
-        }
-        
-        contentView.addSubview(travelSubLabel)
-        travelSubLabel.snp.makeConstraints { make in
+        contentView.addSubview(durationLabel)
+        durationLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(mainTextView.snp.bottom).offset(10)
         }
@@ -103,7 +122,7 @@ class PlanCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(locationLabel)
         locationLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(travelSubLabel.snp.bottom).offset(6)
+            make.top.equalTo(durationLabel.snp.bottom).offset(6)
         }
     }
 }

@@ -64,12 +64,14 @@ extension QueryDocumentSnapshot {
         let type = self.get("type") as! String
         let url = self.get("url") as! String
         let location = self.get("location") as! String
+        let latitude = self.get("latitude") as! Double
+        let longitude = self.get("longitude") as! Double
         let time = self.get("time") as! String
         let weather = self.get("weather") as! String
         let title = self.get("title") as! String
         let content = self.get("content") as! String
         let starPoint = self.get("starPoint") as! Int
-        let category = self.get("category") as! [String]
+        let category = self.get("category") as! String
         let comments = self.get("comments") as! Int
         let likes = self.get("likes") as! Int
         let saves = self.get("saves") as! Int
@@ -81,6 +83,8 @@ extension QueryDocumentSnapshot {
                       type: type,
                       url: url,
                       location: location,
+                      latitude: latitude,
+                      longitude: longitude,
                       time: time,
                       weather: weather,
                       title: title,
@@ -92,6 +96,32 @@ extension QueryDocumentSnapshot {
                       saves: saves,
                       reports: reports)
         return NFT
+    }
+    
+    func makePlan() -> Plan {
+        let planID = self.get("planID") as! String
+        let title = self.get("title") as! String
+        let location = self.get("location") as! String
+        let latitude = self.get("latitude") as! Double
+        let longitude = self.get("longitude") as! Double
+        let boarding = self.get("boarding") as! String
+        let landing = self.get("landing") as! String
+        let days = self.get("days") as! Int
+        let writtenDate = self.get("writtenDate") as! Double
+        let scrap = self.get("scrap") as! [String]
+        
+        let plan = Plan(planID: planID,
+                        title: title,
+                        location: location,
+                        latitude: latitude,
+                        longitude: longitude,
+                        boarding: boarding,
+                        landing: landing,
+                        days: days,
+                        writtenDate: writtenDate,
+                        scrap: scrap
+        )
+        return plan
     }
     
 //    func makeUser() -> User {

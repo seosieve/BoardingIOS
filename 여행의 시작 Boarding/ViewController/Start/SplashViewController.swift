@@ -60,7 +60,7 @@ class SplashViewController: UIViewController {
                 let homeVC = TabBarViewController()
                 let startVC = ChangableNavigationController(rootViewController: StartViewController())
                 let vc = loggedIn ? homeVC : startVC
-                self?.presentVC(vc)
+                self?.presentVC(vc, transition: .crossDissolve)
             })
             .disposed(by: disposeBag)
         

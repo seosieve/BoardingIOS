@@ -17,12 +17,14 @@ class WrittingViewModel {
     
     let autherUid = BehaviorRelay<String>(value: "")
     let location = BehaviorRelay<String>(value: "")
+    let latitude = BehaviorRelay<Double>(value: 0.0)
+    let longitude = BehaviorRelay<Double>(value: 0.0)
     let time = BehaviorRelay<String>(value: "")
     let weather = BehaviorRelay<String>(value: "")
     let title = BehaviorRelay<String>(value: "")
     let content = BehaviorRelay<String>(value: "")
     let starPoint = BehaviorRelay<Int>(value: 0)
-    let category = BehaviorRelay<[String]>(value: [])
+    let category = BehaviorRelay<String>(value: "")
     
     let NFTResult = PublishRelay<NFT>()
     
@@ -38,7 +40,7 @@ class WrittingViewModel {
         }
         
         dataValid = Observable.combineLatest(title, content, starPoint, category)
-            .map{ $0.0 != "제목을 입력해주세요." && $0.1 != "내용을 입력해주세요." && $0.2 != 0 && $0.3 != []}
+            .map{ $0.0 != "제목을 입력해주세요." && $0.1 != "내용을 입력해주세요." && $0.2 != 0 && $0.3 != ""}
     }
     
     func NFTWrite(image: UIImage?) {
@@ -75,6 +77,8 @@ class WrittingViewModel {
                       type: "photo",
                       url: url.absoluteString,
                       location: location.value,
+                      latitude: latitude.value,
+                      longitude: longitude.value,
                       time: time.value,
                       weather: weather.value,
                       title: title.value,

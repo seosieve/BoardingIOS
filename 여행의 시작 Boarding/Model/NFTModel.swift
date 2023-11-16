@@ -14,12 +14,14 @@ struct NFT {
     let type: String
     let url: String
     let location: String
+    let latitude: Double
+    let longitude: Double
     let time: String
     let weather: String
     let title: String
     let content: String
     let starPoint: Int
-    let category: [String]
+    let category: String
     let comments: Int
     let likes: Int
     let saves: Int
@@ -33,6 +35,8 @@ struct NFT {
                 "type": type,
                 "url": url,
                 "location": location,
+                "latitude": latitude,
+                "longitude": longitude,
                 "time": time,
                 "weather": weather,
                 "title": title,
@@ -54,12 +58,14 @@ struct NFT {
                    type: "",
                    url: "",
                    location: "",
+                   latitude: 0.0,
+                   longitude: 0.0,
                    time: "",
                    weather: "",
                    title: "",
                    content: "",
                    starPoint: 0,
-                   category: [String](),
+                   category: "",
                    comments: 0,
                    likes: 0,
                    saves: 0,

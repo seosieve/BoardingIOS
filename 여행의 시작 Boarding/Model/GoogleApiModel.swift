@@ -1,5 +1,5 @@
 //
-//  GeoModel.swift
+//  GoogleApiModel.swift
 //  여행의 시작 Boarding
 //
 //  Created by 서충원 on 2023/11/07.
@@ -26,6 +26,7 @@ struct Result: Codable {
     var editorial_summary: editorialSummary?
     var name: String
     var reviews: [review]?
+    var vicinity: String
 }
 
 struct editorialSummary: Codable {

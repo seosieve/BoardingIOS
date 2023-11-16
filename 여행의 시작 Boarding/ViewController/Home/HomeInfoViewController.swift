@@ -11,27 +11,23 @@ import RxCocoa
 import MapKit
 import GooglePlaces
 import GoogleMaps
+import FirebaseStorageUI
 
 class HomeInfoViewController: UIViewController {
     
-    var image = UIImage(named: "France3")
-    var latitude = 37.4220604
-    var longitude = -112.0852343
-    
-    var infoIconArr = [UIImage(named: "Location"), UIImage(named: "Time"), UIImage(named: "Weather")]
-    var infoArr = ["Magnan 해변, 니스", "2023.07.14.  18:32", "맑음, 25°C"]
-    let iconArr = [UIImage(named: "Like"), UIImage(named: "Comment"), UIImage(named: "Report")]
-    let iconSelectedArr = [UIImage(named: "LikeFilled"), UIImage(), UIImage()]
+    var image: UIImage?
+    var NFTResult = NFT.dummyType
+    var user = User.dummyType
     
     private var lastContentOffset: CGPoint = .zero
     private var isFirstScroll = false
     
-    lazy var viewModel = HomeInfoViewModel(latitude: latitude, longitude: longitude)
+    lazy var viewModel = HomeInfoViewModel(latitude: NFTResult.latitude, longitude: NFTResult.longitude)
     let modalClosed = BehaviorRelay<Bool>(value: true)
     let disposeBag = DisposeBag()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        .darkContent
+        .lightContent
     }
 
     lazy var backButton = UIButton().then {
@@ -55,8 +51,8 @@ class HomeInfoViewController: UIViewController {
     
     var headerVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
     
-    var titleLabel = UILabel().then {
-        $0.text = "니스 해변 패러세일링 후기"
+    lazy var titleLabel = UILabel().then {
+        $0.text = NFTResult.title
         $0.textColor = Gray.white
         $0.font = Pretendard.semiBold(25)
     }
@@ -120,21 +116,21 @@ class HomeInfoViewController: UIViewController {
     }
     
     var userImage = UIImageView().then {
-        $0.image = UIImage(named: "DefaultUser")?.withRenderingMode(.alwaysTemplate)
+        $0.image = UIImage()
         $0.tintColor = Boarding.blue
         $0.layer.cornerRadius = 16
         $0.layer.masksToBounds = true
     }
     
-    var userNameLabel = UILabel().then {
+    lazy var userNameLabel = UILabel().then {
         $0.backgroundColor = Gray.white
-        $0.text = "JunhoKim"
+        $0.text = user.name
         $0.font = Pretendard.medium(19)
         $0.textColor = Gray.black
     }
     
-    let starValue = UILabel().then {
-        $0.text = "5.0"
+    lazy var starValue = UILabel().then {
+        $0.text = String(Double(NFTResult.starPoint))
         $0.font = Pretendard.regular(17)
         $0.textColor = Boarding.blue
     }
@@ -145,8 +141,8 @@ class HomeInfoViewController: UIViewController {
         $0.spacing = 0
     }
     
-    var contentLabel = UILabel().then {
-        $0.text = "푸른 바다 위를 날며 주변의 아름다운 경치와 아즈르 해안을 한 눈에 볼 수 있습니다. 높이 올라갈수록 더욱 시원한 바람과 함께 숨막히는 뷰를 볼수 있어요. \n\n가격은 1인당 90유로입니다. 조금 비싸긴 하지만 후회없는 선택이었어요!"
+    lazy var contentLabel = UILabel().then {
+        $0.text = NFTResult.content
         $0.textColor = Gray.dark
         $0.font = Pretendard.regular(17)
         $0.numberOfLines = 0
@@ -174,8 +170,8 @@ class HomeInfoViewController: UIViewController {
         $0.layer.cornerRadius = 20
     }
     
-    var locationLabel = UILabel().then {
-        $0.text = "니스 해변"
+    lazy var locationLabel = UILabel().then {
+        $0.text = NFTResult.location
         $0.font = Pretendard.semiBold(21)
         $0.textColor = Gray.black
     }
@@ -188,11 +184,18 @@ class HomeInfoViewController: UIViewController {
         $0.lineBreakMode = .byCharWrapping
     }
     
-    lazy var camera = GMSCameraPosition.camera(withLatitude: latitude, longitude: longitude, zoom: 9.0)
+    lazy var camera = GMSCameraPosition.camera(withLatitude: NFTResult.latitude, longitude: NFTResult.longitude, zoom: 14.0)
     
     lazy var map = GMSMapView.map(withFrame: CGRect.zero, camera: camera).then {
         $0.layer.cornerRadius = 20
         $0.layer.masksToBounds = true
+    }
+    
+    lazy var marker = GMSMarker().then {
+        $0.position = CLLocationCoordinate2D(latitude: NFTResult.latitude, longitude: NFTResult.longitude)
+        $0.title = ""
+        $0.snippet = ""
+        $0.map = map
     }
     
     var locationInfoLabel = UILabel().then {
@@ -228,6 +231,7 @@ class HomeInfoViewController: UIViewController {
     }
     
     func setViews() {
+        userImage.sd_setImage(with: URL(string: user.url), placeholderImage: nil, options: .scaleDownLargeImages)
         view.addSubview(backButton)
         backButton.snp.makeConstraints { make in
             make.top.equalTo(window.safeAreaInsets.top)
@@ -268,15 +272,16 @@ class HomeInfoViewController: UIViewController {
             make.height.equalTo(photoView)
             make.right.equalToSuperview().inset(20)
         }
+        let info = [NFTResult.location, NFTResult.time, NFTResult.weather]
         for index in 0...2 {
             let subview = UIView().then {
                 $0.backgroundColor = .clear
             }
             let iconImageView = UIImageView().then {
-                $0.image = infoIconArr[index]
+                $0.image = PhotoInfo.icon[index]
             }
             let infoLabel = UILabel().then {
-                $0.text = infoArr[index]
+                $0.text = info[index]
                 $0.textColor = Gray.white
                 $0.font = Pretendard.regular(17)
             }
@@ -346,7 +351,7 @@ class HomeInfoViewController: UIViewController {
             let star = UIImageView().then {
                 $0.tintColor = Boarding.blue
             }
-            if index < 3 {
+            if index < NFTResult.starPoint {
                 star.image = UIImage(named: "Star")?.withRenderingMode(.alwaysTemplate)
             } else {
                 star.image = UIImage(named: "EmptyStar")?.withRenderingMode(.alwaysTemplate)
@@ -370,15 +375,16 @@ class HomeInfoViewController: UIViewController {
             make.left.equalToSuperview().offset(20)
             make.height.equalTo(50)
         }
-        for index in 0..<iconArr.count {
+        let icon = [InteractionInfo.like, InteractionInfo.comment, InteractionInfo.report]
+        for index in 0..<icon.count {
             let subview = UIView().then {
                 $0.backgroundColor = .clear
             }
             
             lazy var iconButton = UIButton().then {
                 $0.tag = index
-                $0.setImage(iconArr[index]?.withRenderingMode(.alwaysTemplate), for: .normal)
-                $0.setImage(iconSelectedArr[index]?.withRenderingMode(.alwaysTemplate), for: .selected)
+                $0.setImage(icon[index].0.withRenderingMode(.alwaysTemplate), for: .normal)
+                $0.setImage(icon[index].1.withRenderingMode(.alwaysTemplate), for: .selected)
                 $0.tintColor = Gray.dark
                 $0.addTarget(self, action: #selector(iconButtonPressed(_:)), for: .touchUpInside)
             }
@@ -437,13 +443,6 @@ class HomeInfoViewController: UIViewController {
             make.height.equalTo(200)
         }
         
-        lazy var _ = GMSMarker().then {
-            $0.position = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            $0.title = "Sydney"
-            $0.snippet = "Australia"
-            $0.map = map
-        }
-        
         mapView.addSubview(locationInfoLabel)
         locationInfoLabel.snp.makeConstraints { make in
             make.top.equalTo(map.snp.bottom).offset(12)
@@ -461,9 +460,10 @@ class HomeInfoViewController: UIViewController {
             make.bottom.equalToSuperview().offset(-20)
         }
     }
-
+    
     func setRx() {
-        modalClosed.subscribe(onNext: { isClosed in
+        modalClosed.subscribe(onNext: { [self] isClosed in
+            if self.infoScrollView.bounds.height >= self.infoContentView.bounds.height { return }
             if isClosed {
                 self.infoScrollView.isScrollEnabled = false
                 if let panGestureRecognizer = self.findPan(for: self.infoContentView) {
@@ -484,6 +484,13 @@ class HomeInfoViewController: UIViewController {
         
         viewModel.locationInfo
             .bind(to: locationInfoLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.marker
+            .subscribe(onNext: { [weak self] in
+                self?.marker.title = $0.0
+                self?.marker.snippet = $0.1
+            })
             .disposed(by: disposeBag)
     }
     

@@ -14,10 +14,7 @@ class FullScreenViewController: UIViewController {
     
     var url: URL?
     var NFT: NFT?
-    var User: User?
-    
-    let iconArr = [UIImage(named: "Comment"), UIImage(named: "Like"), UIImage(named: "Save")]
-    let iconSelectedArr = [UIImage(), UIImage(named: "LikeFilled"), UIImage(named: "SaveFilled")]
+    var user: User?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
@@ -103,7 +100,7 @@ class FullScreenViewController: UIViewController {
         $0.imageView?.contentMode = .scaleAspectFit
         $0.setBackgroundColor(Gray.light.withAlphaComponent(0.5), for: .normal)
         $0.setImage(UIImage(named: "Plane")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        $0.setTitle(NFT?.category[0], for: .normal)
+        $0.setTitle(NFT?.category, for: .normal)
         $0.titleLabel?.font = Pretendard.regular(13)
         $0.setTitleColor(Gray.white, for: .normal)
         $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 9)
@@ -115,10 +112,8 @@ class FullScreenViewController: UIViewController {
     @objc func moveToInfo() {
         let vc = HomeInfoViewController()
         vc.image = fullScreenImageView.image
-        vc.infoArr[0] = NFT!.location
-        vc.infoArr[1] = NFT!.time
-        vc.titleLabel.text = NFT!.title
-        vc.contentLabel.text = NFT!.content
+        vc.NFTResult = NFT!
+        vc.user = user!
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -178,7 +173,6 @@ class FullScreenViewController: UIViewController {
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().offset(-82)
             make.bottom.equalToSuperview().inset(90)
-//            make.height.equalTo(80)
         }
         
         fullScreenTextView.addSubview(contentLabel)
@@ -186,7 +180,6 @@ class FullScreenViewController: UIViewController {
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.bottom.equalToSuperview()
-//            make.height.equalTo(42)
         }
         
         fullScreenTextView.addSubview(titleLabel)
@@ -195,7 +188,6 @@ class FullScreenViewController: UIViewController {
             make.bottom.equalTo(contentLabel.snp.top).offset(-10)
             make.left.equalToSuperview()
         }
-        
         
         view.addSubview(locationButton)
         locationButton.snp.makeConstraints { make in
@@ -220,15 +212,16 @@ class FullScreenViewController: UIViewController {
             make.width.equalTo(33)
             make.height.equalTo(198)
         }
-        for index in 0..<iconArr.count {
+        let icon = [InteractionInfo.comment, InteractionInfo.like, InteractionInfo.save]
+        for index in 0..<icon.count {
             let subview = UIView().then {
                 $0.backgroundColor = .clear
             }
             
             lazy var iconButton = UIButton().then {
                 $0.tag = index
-                $0.setImage(iconArr[index]?.withRenderingMode(.alwaysTemplate), for: .normal)
-                $0.setImage(iconSelectedArr[index]?.withRenderingMode(.alwaysTemplate), for: .selected)
+                $0.setImage(icon[index].0.withRenderingMode(.alwaysTemplate), for: .normal)
+                $0.setImage(icon[index].1.withRenderingMode(.alwaysTemplate), for: .selected)
                 $0.tintColor = Gray.white
                 $0.addTarget(self, action: #selector(iconButtonPressed(_:)), for: .touchUpInside)
             }

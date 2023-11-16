@@ -57,8 +57,6 @@ class NFTViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = Gray.bright
         NFTScrollView.delegate = self
-//        NFTCollectionView.delegate = self
-//        NFTCollectionView.dataSource = self
         NFTCollectionView.register(NFTCollectionViewCell.self, forCellWithReuseIdentifier: "NFTCollectionViewCell")
         setViews()
         setRx()

@@ -69,7 +69,7 @@ class NFTTicketViewController: UIViewController {
     lazy var NFTSubTitleLabel = UILabel().then {
         $0.text = self.NFTResult.content
         $0.font = Pretendard.regular(14)
-        $0.textColor = UIColor("#8C8C8C")
+        $0.textColor = Gray.medium
         $0.numberOfLines = 0
         $0.lineBreakMode = .byCharWrapping
     }
@@ -171,6 +171,7 @@ class NFTTicketViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(21)
             make.top.equalTo(NFTMainTitleLabel.snp.bottom).offset(6)
+            make.bottom.equalToSuperview().offset(-10)
         }
         
         NFTTitleView.addSubview(QRDetailView)
@@ -242,7 +243,7 @@ class NFTTicketViewController: UIViewController {
             make.left.equalToSuperview().inset(20)
             make.height.equalTo(360)
         }
-        let NFTInfo = [NFTResult.location, NFTResult.time, NFTResult.weather, NFTResult.category.map{String($0)}.joined(separator: ", "), String(Double(NFTResult.starPoint))]
+        let NFTInfo = [NFTResult.location, NFTResult.time, NFTResult.weather, NFTResult.category, String(Double(NFTResult.starPoint))]
         for index in 0...4 {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear

@@ -24,7 +24,7 @@ class SetLocationViewController: UIViewController {
     }
     
     var modalIndicator = UIView().then {
-        $0.backgroundColor = Gray.light
+        $0.backgroundColor = Gray.semiLight
     }
     
     var setLocationLabel = UILabel().then {
@@ -81,7 +81,7 @@ class SetLocationViewController: UIViewController {
         
         modalView.addSubview(setLocationLabel)
         setLocationLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(46)
+            make.top.equalToSuperview().offset(36)
             make.left.equalToSuperview().offset(20)
         }
         

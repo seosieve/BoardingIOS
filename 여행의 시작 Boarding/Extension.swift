@@ -55,12 +55,17 @@ extension UIView {
         self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     }
     
-    func makeShadow(radius: CGFloat = 0, width: Int = 0, height: Int = 0, opacity: Float = 0.5, shadowRadius: Int = 2) {
+    func makeShadow(width: Int = 0, height: Int = 0, opacity: Float = 0.5, shadowRadius: Int = 2) {
         self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOpacity = opacity
         self.layer.shadowOffset = CGSize(width: width, height: height)
         self.layer.shadowRadius = CGFloat(shadowRadius)
     }
+}
+
+//MARK: - StringStoredView
+class StringStoredView: UIView {
+    var storedString: String = ""
 }
 
 //MARK: - BezierPath Make Ticket Shape
@@ -152,10 +157,10 @@ extension UIViewController {
         view.endEditing(true)
     }
     
-    func presentVC(_ vc: UIViewController) {
+    func presentVC(_ vc: UIViewController, transition: UIModalTransitionStyle) {
         let viewController = vc
         viewController.modalPresentationStyle = .fullScreen
-        viewController.modalTransitionStyle = .crossDissolve
+        viewController.modalTransitionStyle = transition
         present(viewController, animated: true, completion: nil)
     }
     
@@ -203,3 +208,33 @@ extension UIButton {
     }
 }
 
+//MARK: - RemoveAllArrangedSubviews
+extension UIStackView {
+    func removeAllArrangedSubviews() {
+        let removedSubviews = arrangedSubviews.reduce([]) { (allSubviews, subview) -> [UIView] in
+            self.removeArrangedSubview(subview)
+            return allSubviews + [subview]
+        }
+        NSLayoutConstraint.deactivate(removedSubviews.flatMap({ $0.constraints }))
+        removedSubviews.forEach({ $0.removeFromSuperview() })
+    }
+}
+
+//MARK: - make Dday
+func stringDate(_ string: String) -> Date {
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "ko_KR")
+    dateFormatter.timeZone = TimeZone(abbreviation: "KST")
+    dateFormatter.dateFormat = "yyyy. MM. dd"
+    return dateFormatter.date(from: string)!
+}
+
+func makeDday(boardingDate: String) -> String {
+    let boardingDate = stringDate(boardingDate)
+    let distance = Calendar.current.dateComponents([.day], from: boardingDate, to: Date()).day!
+    if distance <= 0 {
+        return "D\(distance)"
+    } else {
+        return "D+\(distance)"
+    }
+}

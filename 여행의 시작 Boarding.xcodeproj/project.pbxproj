@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E0648B22B01CCFD009DB83B /* AddMyPlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0648B12B01CCFD009DB83B /* AddMyPlanViewController.swift */; };
+		4E0648B42B05BBA4009DB83B /* AddMyPlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0648B32B05BBA4009DB83B /* AddMyPlanViewModel.swift */; };
 		4E19AA612A80FB3A00213589 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19AA602A80FB3A00213589 /* CameraViewController.swift */; };
 		4E19AA672A83E4F100213589 /* CameraCustomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19AA662A83E4F100213589 /* CameraCustomViewController.swift */; };
 		4E19AA692A9F1A7300213589 /* NFTTicketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19AA682A9F1A7300213589 /* NFTTicketViewController.swift */; };
@@ -15,6 +17,7 @@
 		4E2DDF522AB40ED300C7F4B9 /* StartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DDF512AB40ED300C7F4B9 /* StartViewModel.swift */; };
 		4E2DDF542AB8050600C7F4B9 /* PreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DDF532AB8050600C7F4B9 /* PreferenceViewController.swift */; };
 		4E2DDF562AB80A5200C7F4B9 /* PreferenceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DDF552AB80A5200C7F4B9 /* PreferenceViewModel.swift */; };
+		4E32D17D2B060B30001BD1B7 /* PlanDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E32D17C2B060B30001BD1B7 /* PlanDetailViewModel.swift */; };
 		4E44FB952ACAAA320021FAB9 /* ModalPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FB942ACAAA320021FAB9 /* ModalPageViewController.swift */; };
 		4E44FB972ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FB962ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift */; };
 		4E44FB992ACFD9D80021FAB9 /* NFTDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FB982ACFD9D80021FAB9 /* NFTDetailViewController.swift */; };
@@ -29,8 +32,9 @@
 		4E44FBAB2ADD14A20021FAB9 /* WrittingTitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FBAA2ADD14A20021FAB9 /* WrittingTitleViewController.swift */; };
 		4E44FBAD2ADD1A4B0021FAB9 /* WrittingContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FBAC2ADD1A4B0021FAB9 /* WrittingContentViewController.swift */; };
 		4E4C143D2AE4D9B500E504D4 /* NFTViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4C143C2AE4D9B500E504D4 /* NFTViewModel.swift */; };
-		4E4C143F2AE62C5800E504D4 /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4C143E2AE62C5800E504D4 /* CategoryModel.swift */; };
+		4E4C143F2AE62C5800E504D4 /* InfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4C143E2AE62C5800E504D4 /* InfoModel.swift */; };
 		4E4C14412AE650C900E504D4 /* SetLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4C14402AE650C900E504D4 /* SetLocationViewController.swift */; };
+		4E4DB84C2AFCDB6E000491A6 /* NewPlanLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4DB84B2AFCDB6E000491A6 /* NewPlanLocationViewController.swift */; };
 		4E55AB822AFA2612008066E5 /* BackendExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E55AB812AFA2612008066E5 /* BackendExtension.swift */; };
 		4E55AB842AFA5229008066E5 /* HomeInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E55AB832AFA5229008066E5 /* HomeInfoViewModel.swift */; };
 		4E55AB862AFA6066008066E5 /* GoogleApiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E55AB852AFA6066008066E5 /* GoogleApiModel.swift */; };
@@ -40,12 +44,17 @@
 		4E8B35A52A70D28A00AD2C72 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4E8B35A42A70D28A00AD2C72 /* GoogleService-Info.plist */; };
 		4E8B35A72A70DA1100AD2C72 /* aa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8B35A62A70DA1100AD2C72 /* aa.swift */; };
 		4E8B35A92A70DFCE00AD2C72 /* aaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8B35A82A70DFCE00AD2C72 /* aaModel.swift */; };
+		4E9B90FC2AFCE1D100F6D347 /* NewPlanDurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9B90FB2AFCE1D100F6D347 /* NewPlanDurationViewController.swift */; };
+		4E9B90FE2AFDB9AE00F6D347 /* NewPlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9B90FD2AFDB9AE00F6D347 /* NewPlanViewModel.swift */; };
+		4E9B91002AFDBC0E00F6D347 /* PlanModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9B90FF2AFDBC0E00F6D347 /* PlanModel.swift */; };
+		4E9B91022AFDDAAA00F6D347 /* PlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9B91012AFDDAAA00F6D347 /* PlanViewModel.swift */; };
 		4EA7AFC22AA6C86D0055F4C7 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA7AFC12AA6C86D0055F4C7 /* HomeViewController.swift */; };
 		4EA7AFC42AA6D0E40055F4C7 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA7AFC32AA6D0E40055F4C7 /* HomeTableViewCell.swift */; };
 		4EB72F402AEB912A00F9CC67 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB72F3F2AEB912A00F9CC67 /* HomeViewModel.swift */; };
 		4EB72F422AEE480100F9CC67 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB72F412AEE480100F9CC67 /* OnboardingViewController.swift */; };
 		4EB72F442AEF2D6B00F9CC67 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB72F432AEF2D6B00F9CC67 /* UserModel.swift */; };
 		4EB8FEF22AEF8D0F0094C109 /* HomeInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB8FEF12AEF8D0F0094C109 /* HomeInfoViewController.swift */; };
+		4ECA2CC22B00D8B900695D8F /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECA2CC12B00D8B900695D8F /* PlanDetailViewController.swift */; };
 		4EECA6282A29BECF006FB764 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA6272A29BECF006FB764 /* AppDelegate.swift */; };
 		4EECA62A2A29BECF006FB764 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA6292A29BECF006FB764 /* SceneDelegate.swift */; };
 		4EECA6312A29BED0006FB764 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4EECA6302A29BED0006FB764 /* Assets.xcassets */; };
@@ -79,6 +88,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4E0648B12B01CCFD009DB83B /* AddMyPlanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMyPlanViewController.swift; sourceTree = "<group>"; };
+		4E0648B32B05BBA4009DB83B /* AddMyPlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMyPlanViewModel.swift; sourceTree = "<group>"; };
 		4E19AA602A80FB3A00213589 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		4E19AA662A83E4F100213589 /* CameraCustomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCustomViewController.swift; sourceTree = "<group>"; };
 		4E19AA682A9F1A7300213589 /* NFTTicketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTTicketViewController.swift; sourceTree = "<group>"; };
@@ -87,6 +98,7 @@
 		4E2DDF512AB40ED300C7F4B9 /* StartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewModel.swift; sourceTree = "<group>"; };
 		4E2DDF532AB8050600C7F4B9 /* PreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceViewController.swift; sourceTree = "<group>"; };
 		4E2DDF552AB80A5200C7F4B9 /* PreferenceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceViewModel.swift; sourceTree = "<group>"; };
+		4E32D17C2B060B30001BD1B7 /* PlanDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDetailViewModel.swift; sourceTree = "<group>"; };
 		4E44FB942ACAAA320021FAB9 /* ModalPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalPageViewController.swift; sourceTree = "<group>"; };
 		4E44FB962ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCollectionViewCell.swift; sourceTree = "<group>"; };
 		4E44FB982ACFD9D80021FAB9 /* NFTDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTDetailViewController.swift; sourceTree = "<group>"; };
@@ -101,8 +113,9 @@
 		4E44FBAA2ADD14A20021FAB9 /* WrittingTitleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrittingTitleViewController.swift; sourceTree = "<group>"; };
 		4E44FBAC2ADD1A4B0021FAB9 /* WrittingContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrittingContentViewController.swift; sourceTree = "<group>"; };
 		4E4C143C2AE4D9B500E504D4 /* NFTViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTViewModel.swift; sourceTree = "<group>"; };
-		4E4C143E2AE62C5800E504D4 /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
+		4E4C143E2AE62C5800E504D4 /* InfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoModel.swift; sourceTree = "<group>"; };
 		4E4C14402AE650C900E504D4 /* SetLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetLocationViewController.swift; sourceTree = "<group>"; };
+		4E4DB84B2AFCDB6E000491A6 /* NewPlanLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlanLocationViewController.swift; sourceTree = "<group>"; };
 		4E55AB812AFA2612008066E5 /* BackendExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendExtension.swift; sourceTree = "<group>"; };
 		4E55AB832AFA5229008066E5 /* HomeInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInfoViewModel.swift; sourceTree = "<group>"; };
 		4E55AB852AFA6066008066E5 /* GoogleApiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleApiModel.swift; sourceTree = "<group>"; };
@@ -113,12 +126,17 @@
 		4E8B35A42A70D28A00AD2C72 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4E8B35A62A70DA1100AD2C72 /* aa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aa.swift; sourceTree = "<group>"; };
 		4E8B35A82A70DFCE00AD2C72 /* aaModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aaModel.swift; sourceTree = "<group>"; };
+		4E9B90FB2AFCE1D100F6D347 /* NewPlanDurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlanDurationViewController.swift; sourceTree = "<group>"; };
+		4E9B90FD2AFDB9AE00F6D347 /* NewPlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlanViewModel.swift; sourceTree = "<group>"; };
+		4E9B90FF2AFDBC0E00F6D347 /* PlanModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanModel.swift; sourceTree = "<group>"; };
+		4E9B91012AFDDAAA00F6D347 /* PlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanViewModel.swift; sourceTree = "<group>"; };
 		4EA7AFC12AA6C86D0055F4C7 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		4EA7AFC32AA6D0E40055F4C7 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		4EB72F3F2AEB912A00F9CC67 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		4EB72F412AEE480100F9CC67 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		4EB72F432AEF2D6B00F9CC67 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		4EB8FEF12AEF8D0F0094C109 /* HomeInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInfoViewController.swift; sourceTree = "<group>"; };
+		4ECA2CC12B00D8B900695D8F /* PlanDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDetailViewController.swift; sourceTree = "<group>"; };
 		4EECA6242A29BECF006FB764 /* 여행의 시작 Boarding.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "여행의 시작 Boarding.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EECA6272A29BECF006FB764 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4EECA6292A29BECF006FB764 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -260,7 +278,8 @@
 			children = (
 				4EECA7D42A2B02A2006FB764 /* FontModel.swift */,
 				4EECA7D62A2B1120006FB764 /* ColorModel.swift */,
-				4E4C143E2AE62C5800E504D4 /* CategoryModel.swift */,
+				4E4C143E2AE62C5800E504D4 /* InfoModel.swift */,
+				4E9B90FF2AFDBC0E00F6D347 /* PlanModel.swift */,
 				4E44FB9C2AD0ED430021FAB9 /* NFTModel.swift */,
 				4EB72F432AEF2D6B00F9CC67 /* UserModel.swift */,
 				4E55AB852AFA6066008066E5 /* GoogleApiModel.swift */,
@@ -274,6 +293,8 @@
 				4EA7AFC12AA6C86D0055F4C7 /* HomeViewController.swift */,
 				4EB72F3F2AEB912A00F9CC67 /* HomeViewModel.swift */,
 				4E4C14402AE650C900E504D4 /* SetLocationViewController.swift */,
+				4E0648B12B01CCFD009DB83B /* AddMyPlanViewController.swift */,
+				4E0648B32B05BBA4009DB83B /* AddMyPlanViewModel.swift */,
 				4EECA7E02A2DD179006FB764 /* FullScreenViewController.swift */,
 				4EB8FEF12AEF8D0F0094C109 /* HomeInfoViewController.swift */,
 				4E55AB832AFA5229008066E5 /* HomeInfoViewModel.swift */,
@@ -285,8 +306,14 @@
 			isa = PBXGroup;
 			children = (
 				4EECA63B2A29C1DF006FB764 /* PlanViewController.swift */,
+				4E9B91012AFDDAAA00F6D347 /* PlanViewModel.swift */,
+				4ECA2CC12B00D8B900695D8F /* PlanDetailViewController.swift */,
+				4E32D17C2B060B30001BD1B7 /* PlanDetailViewModel.swift */,
 				4E44FBA62ADCF9160021FAB9 /* NewPlanViewController.swift */,
+				4E9B90FD2AFDB9AE00F6D347 /* NewPlanViewModel.swift */,
 				4E44FBA82ADCFC4E0021FAB9 /* NewPlanTitleViewController.swift */,
+				4E4DB84B2AFCDB6E000491A6 /* NewPlanLocationViewController.swift */,
+				4E9B90FB2AFCE1D100F6D347 /* NewPlanDurationViewController.swift */,
 			);
 			path = Plan;
 			sourceTree = "<group>";
@@ -503,15 +530,18 @@
 			files = (
 				4E44FB972ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift in Sources */,
 				4E7D52E82AC41B0100054800 /* SplashViewModel.swift in Sources */,
+				4E9B90FC2AFCE1D100F6D347 /* NewPlanDurationViewController.swift in Sources */,
 				4E8B35A72A70DA1100AD2C72 /* aa.swift in Sources */,
 				4E19AA612A80FB3A00213589 /* CameraViewController.swift in Sources */,
 				4E7D52EA2AC6FD0000054800 /* MyPageViewModel.swift in Sources */,
 				4E44FBAD2ADD1A4B0021FAB9 /* WrittingContentViewController.swift in Sources */,
 				4EECA6402A29C208006FB764 /* MyPageViewController.swift in Sources */,
+				4E32D17D2B060B30001BD1B7 /* PlanDetailViewModel.swift in Sources */,
 				4EECA7F02A2F2968006FB764 /* NFTViewController.swift in Sources */,
 				4E19AA692A9F1A7300213589 /* NFTTicketViewController.swift in Sources */,
 				4E2DDF562AB80A5200C7F4B9 /* PreferenceViewModel.swift in Sources */,
-				4E4C143F2AE62C5800E504D4 /* CategoryModel.swift in Sources */,
+				4E4C143F2AE62C5800E504D4 /* InfoModel.swift in Sources */,
+				4ECA2CC22B00D8B900695D8F /* PlanDetailViewController.swift in Sources */,
 				4E44FB9D2AD0ED430021FAB9 /* NFTModel.swift in Sources */,
 				4E2DDF522AB40ED300C7F4B9 /* StartViewModel.swift in Sources */,
 				4EB72F402AEB912A00F9CC67 /* HomeViewModel.swift in Sources */,
@@ -524,6 +554,7 @@
 				4E4C14412AE650C900E504D4 /* SetLocationViewController.swift in Sources */,
 				4E55AB862AFA6066008066E5 /* GoogleApiModel.swift in Sources */,
 				4E44FBA72ADCF9160021FAB9 /* NewPlanViewController.swift in Sources */,
+				4E0648B42B05BBA4009DB83B /* AddMyPlanViewModel.swift in Sources */,
 				4EECA7EC2A2F0013006FB764 /* RecordCollectionViewCell.swift in Sources */,
 				4E44FB992ACFD9D80021FAB9 /* NFTDetailViewController.swift in Sources */,
 				4E44FBA32ADA323A0021FAB9 /* PastTravelTitleViewController.swift in Sources */,
@@ -532,6 +563,7 @@
 				4E4C143D2AE4D9B500E504D4 /* NFTViewModel.swift in Sources */,
 				4EECA7E12A2DD179006FB764 /* FullScreenViewController.swift in Sources */,
 				4E44FB952ACAAA320021FAB9 /* ModalPageViewController.swift in Sources */,
+				4E9B90FE2AFDB9AE00F6D347 /* NewPlanViewModel.swift in Sources */,
 				4EECA7D92A2B3005006FB764 /* Extension.swift in Sources */,
 				4EECA7D52A2B02A2006FB764 /* FontModel.swift in Sources */,
 				4E7D52E62AC41AF200054800 /* SplashViewController.swift in Sources */,
@@ -539,15 +571,19 @@
 				4E19AA672A83E4F100213589 /* CameraCustomViewController.swift in Sources */,
 				4E55AB822AFA2612008066E5 /* BackendExtension.swift in Sources */,
 				4EA7AFC42AA6D0E40055F4C7 /* HomeTableViewCell.swift in Sources */,
+				4E0648B22B01CCFD009DB83B /* AddMyPlanViewController.swift in Sources */,
+				4E4DB84C2AFCDB6E000491A6 /* NewPlanLocationViewController.swift in Sources */,
 				4E44FB9B2AD050F60021FAB9 /* WrittingViewModel.swift in Sources */,
 				4E8B35A92A70DFCE00AD2C72 /* aaModel.swift in Sources */,
 				4E44FBA92ADCFC4E0021FAB9 /* NewPlanTitleViewController.swift in Sources */,
+				4E9B91022AFDDAAA00F6D347 /* PlanViewModel.swift in Sources */,
 				4EB72F422AEE480100F9CC67 /* OnboardingViewController.swift in Sources */,
 				4EECA7DF2A2DC352006FB764 /* TravelCollectionViewCell.swift in Sources */,
 				4EB8FEF22AEF8D0F0094C109 /* HomeInfoViewController.swift in Sources */,
 				4EECA7EE2A2F2148006FB764 /* MenuTableViewCell.swift in Sources */,
 				4EECA7DD2A2C820F006FB764 /* PlaceCollectionViewCell.swift in Sources */,
 				4E2DDF542AB8050600C7F4B9 /* PreferenceViewController.swift in Sources */,
+				4E9B91002AFDBC0E00F6D347 /* PlanModel.swift in Sources */,
 				4EECA7F42A2F3235006FB764 /* ExpertLevelViewController.swift in Sources */,
 				4EECA6432A29C2A9006FB764 /* TabBarViewController.swift in Sources */,
 				4E2DDF502AB330E800C7F4B9 /* StartViewController.swift in Sources */,

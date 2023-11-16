@@ -14,28 +14,29 @@ class WrittingViewController: UIViewController {
     var feedbackGenerator: UIImpactFeedbackGenerator?
     
     var image: UIImage?
-    var infoTitle = ["위치", "시간", "날씨"]
-    var infoDetail = ["", "", "맑음, 25°C"]
+    var infoArr = ["", "", "맑음, 25°C"]
+    var latitude = 0.0
+    var longitude = 0.0
     var scoreArr = [false, false, false, false, false]
-    var selectedCategoryArr = [String]()
+    var selectedCategory = ""
     
     var titleResult = BehaviorRelay<String>(value: "제목을 입력해주세요.")
     var contentResult = BehaviorRelay<String>(value: "내용을 입력해주세요.")
     var starPointResult = BehaviorRelay<Int>(value: 0)
-    var categoryResult = BehaviorRelay<[String]>(value: [])
+    var categoryResult = BehaviorRelay<String>(value: "")
     var NFTResult = NFT.dummyType
     
     let viewModel = WrittingViewModel()
     let disposeBag = DisposeBag()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        .darkContent
+        .lightContent
     }
 
     lazy var backButton = UIButton().then {
         let image = UIImage(named: "Back")?.withRenderingMode(.alwaysTemplate)
         $0.setImage(image, for: .normal)
-        $0.tintColor = Gray.dark
+        $0.tintColor = Gray.white
         $0.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
     }
     
@@ -43,11 +44,15 @@ class WrittingViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
-    var mainLabel = UILabel().then {
-        $0.text = "내용작성"
-        $0.textColor = Gray.black
-        $0.font = Pretendard.semiBold(18)
+    lazy var headerImageView = UIImageView().then {
+        $0.image = image
+        $0.contentMode = .scaleAspectFill
+        $0.layer.cornerRadius = 24
+        $0.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        $0.layer.masksToBounds = true
     }
+    
+    var headerVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
     
     lazy var photoView = UIImageView().then {
         $0.image = image
@@ -60,8 +65,8 @@ class WrittingViewController: UIViewController {
         $0.axis = .vertical
         $0.alignment = .fill
         $0.distribution = .fillEqually
-        $0.spacing = 1
-        $0.backgroundColor = Gray.light.withAlphaComponent(0.4)
+        $0.spacing = 0
+        $0.backgroundColor = .clear
     }
     
     var titleLabel = UILabel().then {
@@ -110,7 +115,7 @@ class WrittingViewController: UIViewController {
         $0.axis = .horizontal
         $0.alignment = .fill
         $0.distribution = .fillEqually
-        $0.spacing = 4
+        $0.spacing = 0
         $0.backgroundColor = Gray.white
     }
     
@@ -200,11 +205,18 @@ class WrittingViewController: UIViewController {
     }
     
     @objc func categorySelected(_ sender: UIButton) {
-        let index = Int(categoryStackView.arrangedSubviews.firstIndex(of: sender)!)
-        sender.isSelected.toggle()
+        categoryStackView.arrangedSubviews.forEach { button in
+            if let button = button as? UIButton {
+                button.isSelected = false
+                button.layer.borderWidth = 1
+            }
+        }
+        
+        sender.isSelected = true
+        sender.layer.borderWidth = 0
+        selectedCategory = sender.titleLabel!.text!
         feedbackGenerator?.impactOccurred()
-        print()
-        categoryResult.accept(selectedCategoryArr)
+        categoryResult.accept(selectedCategory)
     }
     
     func setViews() {
@@ -216,114 +228,116 @@ class WrittingViewController: UIViewController {
             make.height.equalTo(48)
         }
         
-        view.addSubview(mainLabel)
-        mainLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(backButton)
-            make.centerX.equalToSuperview()
+        view.insertSubview(headerImageView, belowSubview: backButton)
+        headerImageView.snp.makeConstraints { make in
+            make.top.left.centerX.equalToSuperview()
+            make.height.equalTo(340)
         }
         
-        let navigationDivider = divider()
-        view.addSubview(navigationDivider)
-        navigationDivider.snp.makeConstraints { make in
-            make.top.equalTo(backButton.snp.bottom)
-            make.centerX.left.equalToSuperview()
-            make.height.equalTo(1)
+        headerImageView.addSubview(headerVisualEffectView)
+        headerVisualEffectView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
         
-        view.addSubview(photoView)
+        headerImageView.addSubview(photoView)
         photoView.snp.makeConstraints { make in
-            make.top.equalTo(navigationDivider).offset(16)
-            make.left.equalToSuperview().offset(24)
+            make.top.equalTo(backButton.snp.bottom).offset(18)
+            make.left.equalToSuperview().offset(20)
             make.height.equalTo(200)
             make.width.equalTo(150)
         }
         
-        view.addSubview(infoStackView)
+        headerImageView.addSubview(infoStackView)
         infoStackView.snp.makeConstraints { make in
             make.top.equalTo(photoView)
-            make.left.equalTo(photoView.snp.right).offset(9)
+            make.left.equalTo(photoView.snp.right).offset(12)
             make.height.equalTo(photoView)
-            make.right.equalToSuperview().inset(24)
+            make.right.equalToSuperview().inset(20)
         }
         for index in 0...2 {
             let subview = UIView().then {
+                $0.backgroundColor = .clear
+            }
+            let iconImageView = UIImageView().then {
+                $0.image = PhotoInfo.icon[index]
+            }
+            let infoLabel = UILabel().then {
+                $0.text = infoArr[index]
+                $0.textColor = Gray.white
+                $0.font = Pretendard.regular(17)
+            }
+            let infoDivider = divider().then {
                 $0.backgroundColor = Gray.white
+                if index == 2 { $0.alpha = 0 }
             }
-            let mainLabel = UILabel().then {
-                $0.text = infoTitle[index]
-                $0.textColor = Gray.black
-                $0.font = Pretendard.semiBold(16)
+            
+            subview.addSubview(iconImageView)
+            subview.addSubview(infoLabel)
+            subview.addSubview(infoDivider)
+            iconImageView.snp.makeConstraints { make in
+                make.left.equalToSuperview().offset(4)
+                make.centerY.equalToSuperview()
+                make.width.height.equalTo(24)
             }
-            let subLabel = UILabel().then {
-                $0.text = infoDetail[index]
-                $0.textColor = Gray.dark
-                $0.font = Pretendard.regular(14)
-            }
-            subview.addSubview(mainLabel)
-            subview.addSubview(subLabel)
-            mainLabel.snp.makeConstraints { make in
-                make.left.equalToSuperview().offset(12)
-                make.top.equalToSuperview().offset(10)
-            }
-            subLabel.snp.makeConstraints { make in
-                make.left.equalToSuperview().offset(12)
+            infoLabel.snp.makeConstraints { make in
+                make.left.equalTo(iconImageView.snp.right).offset(8)
+                make.centerY.equalToSuperview()
                 make.bottom.equalToSuperview().inset(10)
+            }
+            infoDivider.snp.makeConstraints { make in
+                make.top.equalTo(subview.snp.bottom)
+                make.centerX.left.equalToSuperview()
+                make.height.equalTo(0.5)
             }
             infoStackView.addArrangedSubview(subview)
         }
         
-        let photoDivider = divider()
-        view.addSubview(photoDivider)
-        photoDivider.snp.makeConstraints { make in
-            make.top.equalTo(photoView.snp.bottom).offset(18)
-            make.centerX.left.equalToSuperview()
-            make.height.equalTo(4)
-        }
-        
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(photoDivider).offset(16)
-            make.left.equalToSuperview().offset(24)
+            make.top.equalTo(headerImageView.snp.bottom).offset(27)
+            make.left.equalToSuperview().offset(32)
         }
         
         view.addSubview(titleTextLabel)
         titleTextLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(6)
-            make.left.equalToSuperview().offset(24)
+            make.left.equalTo(titleLabel)
         }
         
         let titleDivider = divider()
         view.addSubview(titleDivider)
         titleDivider.snp.makeConstraints { make in
             make.top.equalTo(titleTextLabel.snp.bottom).offset(16)
-            make.centerX.left.equalToSuperview()
+            make.left.equalToSuperview().offset(20)
+            make.centerX.equalToSuperview()
             make.height.equalTo(1)
         }
         
         view.addSubview(contentLabel)
         contentLabel.snp.makeConstraints { make in
             make.top.equalTo(titleDivider).offset(12)
-            make.left.equalToSuperview().offset(24)
+            make.left.equalTo(titleLabel)
         }
         
         view.addSubview(contentTextLabel)
         contentTextLabel.snp.makeConstraints { make in
             make.top.equalTo(contentLabel.snp.bottom).offset(8)
+            make.left.equalTo(titleLabel)
             make.centerX.equalToSuperview()
-            make.left.equalToSuperview().offset(24)
         }
         
         let contentDivider = divider()
         view.addSubview(contentDivider)
         contentDivider.snp.makeConstraints { make in
             make.top.equalTo(contentTextLabel.snp.bottom).offset(16)
-            make.centerX.left.equalToSuperview()
+            make.left.equalToSuperview().offset(20)
+            make.centerX.equalToSuperview()
             make.height.equalTo(1)
         }
         
         view.addSubview(tapRecognizerView)
         tapRecognizerView.snp.makeConstraints { make in
-            make.top.equalTo(photoDivider)
+            make.top.equalTo(headerImageView.snp.bottom)
             make.centerX.left.equalToSuperview()
             make.bottom.equalTo(contentDivider.snp.bottom)
         }
@@ -337,17 +351,17 @@ class WrittingViewController: UIViewController {
         view.addSubview(scoreStackView)
         scoreStackView.snp.makeConstraints { make in
             make.centerY.equalTo(scoreLabel)
-            make.height.equalTo(22)
+            make.height.equalTo(28)
             make.right.equalToSuperview().offset(-24)
         }
         for _ in 0...4 {
             let subview = UIImageView().then {
                 let image = UIImage(named: "Star")?.withRenderingMode(.alwaysTemplate)
                 $0.image = image
-                $0.tintColor = Gray.light
+                $0.tintColor = Gray.semiLight
             }
             subview.snp.makeConstraints { make in
-                make.width.equalTo(23.5)
+                make.width.height.equalTo(28)
             }
             scoreStackView.addArrangedSubview(subview)
         }
@@ -356,7 +370,8 @@ class WrittingViewController: UIViewController {
         view.addSubview(scoreDivider)
         scoreDivider.snp.makeConstraints { make in
             make.top.equalTo(scoreStackView.snp.bottom).offset(19)
-            make.centerX.left.equalToSuperview()
+            make.left.equalToSuperview().offset(20)
+            make.centerX.equalToSuperview()
             make.height.equalTo(1)
         }
         
@@ -378,13 +393,13 @@ class WrittingViewController: UIViewController {
             make.edges.equalToSuperview()
             make.height.equalToSuperview()
         }
-        for index in 0..<Category.count {
+        for index in 0..<CategoryInfo.count {
             lazy var button = UIButton().then {
                 $0.setBackgroundColor(Gray.white, for: .normal)
                 $0.setBackgroundColor(Boarding.blue, for: .selected)
                 $0.setTitleColor(Gray.medium, for: .normal)
                 $0.setTitleColor(Gray.white, for: .selected)
-                $0.setTitle(Category.name[index], for: .normal)
+                $0.setTitle(CategoryInfo.name[index], for: .normal)
                 $0.titleLabel?.font = Pretendard.medium(15)
                 $0.layer.masksToBounds = true
                 $0.layer.cornerRadius = 16
@@ -427,9 +442,11 @@ class WrittingViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        viewModel.location.accept(infoDetail[0])
-        viewModel.time.accept(infoDetail[1])
-        viewModel.weather.accept(infoDetail[2])
+        viewModel.location.accept(infoArr[0])
+        viewModel.latitude.accept(latitude)
+        viewModel.longitude.accept(longitude)
+        viewModel.time.accept(infoArr[1])
+        viewModel.weather.accept(infoArr[2])
         
         titleResult
             .bind(to: titleTextLabel.rx.text)

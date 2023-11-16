@@ -12,9 +12,6 @@ class HomeTableViewCell: UITableViewCell {
     var photoTapped: (() -> Void)?
     var iconTapped: ((UIButton) -> Void)?
     
-    let iconArr = [UIImage(named: "Report"), UIImage(named: "Comment"), UIImage(named: "Like"), UIImage(named: "Save")]
-    let iconSelectedArr = [UIImage(), UIImage(), UIImage(named: "LikeFilled"), UIImage(named: "SaveFilled")]
-    
     var userImage = UIImageView().then {
         $0.image = UIImage()
         $0.tintColor = Boarding.blue
@@ -91,7 +88,7 @@ class HomeTableViewCell: UITableViewCell {
     }
     
     var scoreLabel = UILabel().then {
-        $0.text = "4.5"
+        $0.text = "5.0"
         $0.font = Pretendard.regular(13)
         $0.textColor = Gray.medium
     }
@@ -107,7 +104,7 @@ class HomeTableViewCell: UITableViewCell {
     }
     
     var locationLabel = UILabel().then {
-        $0.text = "루레알공원, 파리, 프랑스"
+        $0.text = "Location Label"
         $0.font = Pretendard.regular(13)
         $0.textColor = Gray.medium
     }
@@ -193,15 +190,16 @@ class HomeTableViewCell: UITableViewCell {
             make.width.equalTo(33)
             make.height.equalTo(262)
         }
-        for index in 0...3 {
+        let icon = [InteractionInfo.report, InteractionInfo.comment, InteractionInfo.like, InteractionInfo.save]
+        for index in 0..<icon.count {
             let subview = UIView().then {
                 $0.backgroundColor = Gray.white
             }
             
             lazy var iconButton = UIButton().then {
                 $0.tag = index
-                $0.setImage(iconArr[index], for: .normal)
-                $0.setImage(iconSelectedArr[index], for: .selected)
+                $0.setImage(icon[index].0, for: .normal)
+                $0.setImage(icon[index].1, for: .selected)
                 $0.addTarget(self, action: #selector(iconButtonPressed(_:)), for: .touchUpInside)
             }
             
@@ -257,7 +255,7 @@ class HomeTableViewCell: UITableViewCell {
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().offset(8)
             make.width.equalTo(11)
-            make.height.equalTo(15)
+            make.height.equalTo(13)
         }
         locationView.addSubview(locationLabel)
         locationLabel.snp.makeConstraints { make in
@@ -270,13 +268,15 @@ class HomeTableViewCell: UITableViewCell {
     func putUserAchievement() {
         let userAchieveItem1 = UILabel().then {
             $0.frame = CGRect(x: 0, y: 0, width: 54, height: 24)
+            $0.backgroundColor = Gray.bright
             $0.text = "🇰🇷 Lv.1"
             $0.font = Pretendard.regular(12)
             $0.textAlignment = .center
             $0.textColor = Gray.dark
-            $0.layer.borderWidth = 0.5
-            $0.layer.borderColor = Gray.light.cgColor
+            $0.layer.borderWidth = 1
+            $0.layer.borderColor = Gray.semiLight.withAlphaComponent(0.6).cgColor
             $0.layer.cornerRadius = 4
+            $0.layer.masksToBounds = true
         }
         
         let userAchieveItem2 = UILabel().then {
@@ -290,19 +290,6 @@ class HomeTableViewCell: UITableViewCell {
             $0.layer.cornerRadius = 4
         }
         
-        let userAchieveItem3 = UILabel().then {
-            $0.frame = CGRect(x: 0, y: 0, width: 54, height: 24)
-            $0.text = "🏄‍♂️ Lv.5"
-            $0.font = Pretendard.regular(12)
-            $0.textAlignment = .center
-            $0.textColor = Gray.dark
-            $0.layer.borderWidth = 0.5
-            $0.layer.borderColor = Gray.light.cgColor
-            $0.layer.cornerRadius = 4
-        }
-        
         userAchievementStackView.addArrangedSubview(userAchieveItem1)
-        //        userAchievementStackView.addArrangedSubview(userAchieveItem2)
-        //        userAchievementStackView.addArrangedSubview(userAchieveItem3)
     }
 }

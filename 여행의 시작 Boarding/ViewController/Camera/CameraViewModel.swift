@@ -18,7 +18,7 @@ class CameraViewModel: NSObject {
     var photoOutput: AVCapturePhotoOutput!
     
     let selectImage = PublishRelay<UIImage?>()
-    let selectLocation = BehaviorRelay<String?>(value: nil)
+    let selectLocation = BehaviorRelay<(String, Double, Double)?>(value: nil)
     let selectTime = BehaviorRelay<String?>(value: nil)
     
     let disposeBag = DisposeBag()
@@ -143,7 +143,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         locationManager.startUpdatingLocation()
     }
     
-    func getLocation(completion: @escaping (String?) -> Void) {
+    func getLocation(completion: @escaping ((String, Double, Double)) -> Void) {
         if let currentLocation = locationManager.location {
             let latitude = currentLocation.coordinate.latitude
             let longitude = currentLocation.coordinate.longitude
@@ -152,21 +152,21 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
                 if let error = error {
                     print("Reverse geocoding error: \(error.localizedDescription)")
-                    completion("위치 정보가 없어요")
+                    completion(("위치 정보가 없어요", 0.0, 0.0))
                     return
                 }
                 if let placemark = placemarks?.first {
                     if let name = placemark.name {
-                        completion(name)
+                        completion((name, latitude, longitude))
                     } else {
-                        completion("위치 정보가 없어요")
+                        completion(("위치 정보가 없어요", 0.0, 0.0))
                     }
                 } else {
-                    completion("위치 정보가 없어요")
+                    completion(("위치 정보가 없어요", 0.0, 0.0))
                 }
             }
         } else {
-            completion("위치 정보가 없어요")
+            completion(("위치 정보가 없어요", 0.0, 0.0))
         }
     }
 }
@@ -176,12 +176,12 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
     static let shared = ImagePickerManager()
     var imagePicker = UIImagePickerController()
     var imagePickerSubject = PublishSubject<UIImage?>()
-    var locationSubject = PublishSubject<String?>()
+    var locationSubject = PublishSubject<(String, Double, Double)?>()
     var timeSubject = PublishSubject<String?>()
     
     let disposeBag = DisposeBag()
     
-    func pickImage(from viewController: UIViewController, completion: @escaping (UIImage?, String?, String?) -> Void) {
+    func pickImage(from viewController: UIViewController, completion: @escaping (UIImage?, (String, Double, Double)?, String?) -> Void) {
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
         imagePicker.mediaTypes = ["public.image", "public.movie"]
@@ -220,33 +220,33 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
                 let latitude = location.coordinate.latitude
                 let longitude = location.coordinate.longitude
                 getPlace(latitude, longitude) { [weak self] location in
-                    self?.locationSubject.onNext(location)
+                    self?.locationSubject.onNext((location.0, location.1, location.2))
                 }
             } else {
-                locationSubject.onNext("위치 정보가 없어요")
+                locationSubject.onNext(("위치 정보가 없어요", 0.0, 0.0))
             }
         }
     }
     
-    func getPlace(_ latitude: CLLocationDegrees, _ longitude: CLLocationDegrees, completion: @escaping (String?) -> Void) {
+    func getPlace(_ latitude: CLLocationDegrees, _ longitude: CLLocationDegrees, completion: @escaping ((String, Double, Double)) -> Void) {
         let location = CLLocation(latitude: latitude, longitude: longitude)
         let geocoder = CLGeocoder()
         
         geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
             if let error = error {
                 print("Reverse geocoding error: \(error.localizedDescription)")
-                completion("위치 정보가 없어요")
+                completion(("위치 정보가 없어요", 0.0, 0.0))
                 return
             }
             
             if let placemark = placemarks?.first {
                 if let name = placemark.name {
-                    completion(name)
+                    completion((name, latitude, longitude))
                 } else {
-                    completion("위치 정보가 없어요")
+                    completion(("위치 정보가 없어요", 0.0, 0.0))
                 }
             } else {
-                completion("위치 정보가 없어요")
+                completion(("위치 정보가 없어요", 0.0, 0.0))
             }
         }
     }

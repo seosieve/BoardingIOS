@@ -13,6 +13,7 @@ class HomeInfoViewModel {
     
     let locationAddress = PublishRelay<String>()
     let locationInfo = PublishRelay<String>()
+    let marker = PublishRelay<(String,String)>()
     
     let disposeBag = DisposeBag()
     
@@ -69,9 +70,11 @@ class HomeInfoViewModel {
                         let name = json.result.name
                         let overview = json.result.editorial_summary?.overview ?? ""
                         let review = json.result.reviews?.first?.text ?? ""
+                        let vicinity = json.result.vicinity
                         
                         let text = "\(name)\n\(overview)\n\(review)"
                         self?.locationInfo.accept(text)
+                        self?.marker.accept((name, vicinity))
                     }
                 }
             }

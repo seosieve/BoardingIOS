@@ -20,5 +20,6 @@ target '여행의 시작 Boarding' do
   pod 'RxKakaoSDKUser'
   pod 'GooglePlaces', '8.2.1'
   pod 'GoogleMaps', '8.2.0'
+  pod 'FSCalendar'
 
 end
