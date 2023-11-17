@@ -20,7 +20,7 @@ class SplashViewController: UIViewController {
     let disposeBag = DisposeBag()
     
     var titleImageView = UIImageView().then {
-        $0.image = UIImage(named: "TitleWhite")
+        $0.image = UIImage(named: "FakeTitle")
     }
     
     var subLabel = UILabel().then {
@@ -43,7 +43,8 @@ class SplashViewController: UIViewController {
     func setViews() {
         view.addSubview(titleImageView)
         titleImageView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview().offset(18)
+//            make.centerX.equalToSuperview().offset(18)
+            make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().multipliedBy(4.0/5.0)
         }
         

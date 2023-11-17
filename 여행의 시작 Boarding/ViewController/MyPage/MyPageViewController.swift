@@ -123,7 +123,7 @@ class MyPageViewController: UIViewController {
     
     lazy var NFTButton = UIButton().then {
         $0.tag = 0
-        $0.setTitle("NFT", for: .normal)
+        $0.setTitle("CARD", for: .normal)
         $0.setTitleColor(Gray.light, for: .normal)
         $0.setTitleColor(Boarding.blue, for: .selected)
         $0.titleLabel?.font = Pretendard.semiBold(17)
