@@ -104,7 +104,9 @@ class PlanDetailViewController: UIViewController {
     
     lazy var camera = GMSCameraPosition.camera(withLatitude: 64, longitude: -113, zoom: 14.0)
     
-    lazy var map = GMSMapView.map(withFrame: CGRect.zero, camera: camera).then {
+    lazy var map = GMSMapView().then {
+        $0.frame = CGRect.zero
+        $0.camera = camera
         $0.layer.cornerRadius = 20
         $0.layer.masksToBounds = true
     }
@@ -133,6 +135,12 @@ class PlanDetailViewController: UIViewController {
         $0.text = "일정을 추가해 주세요."
         $0.font = Pretendard.regular(17)
         $0.textColor = Gray.medium
+    }
+    
+    var planTableView = UITableView().then {
+        $0.backgroundColor = Gray.white
+        $0.separatorStyle = .none
+        $0.isHidden = true
     }
     
     lazy var modalView = UIView().then {
@@ -188,6 +196,19 @@ class PlanDetailViewController: UIViewController {
         }
     }
     
+    @objc func scrapStackViewSelected(_ sender: UITapGestureRecognizer) {
+        if modalView.frame.maxY == 844 {
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+                self.modalView.snp.updateConstraints { make in
+                    make.bottom.equalToSuperview().offset(210)
+                }
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+        }
+        planTableView.isHidden = false
+        planPlaceHolder.isHidden = true
+    }
+    
     var modalIndicator = UIView().then {
         $0.backgroundColor = Gray.semiLight
     }
@@ -217,6 +238,9 @@ class PlanDetailViewController: UIViewController {
         view.backgroundColor = Gray.white
         feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
         detailScrollView.delegate = self
+        planTableView.register(PlanDetailTableViewCell.self, forCellReuseIdentifier: "planDetailTableViewCell")
+        planTableView.delegate = self
+        planTableView.dataSource = self
         setViews()
         setRx()
     }
@@ -354,14 +378,22 @@ class PlanDetailViewController: UIViewController {
         planView.snp.makeConstraints { make in
             make.top.equalTo(dayView.snp.bottom).offset(10)
             make.left.equalToSuperview().offset(20)
-            make.bottom.equalToSuperview().offset(-100)
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-200)
         }
         
         planView.addSubview(planPlaceHolder)
         planPlaceHolder.snp.makeConstraints { make in
             make.top.left.equalToSuperview().offset(20)
-            make.height.equalTo(40)
-            make.bottom.equalToSuperview().offset(-100)
+        }
+        
+        planView.addSubview(planTableView)
+        planTableView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(20)
+            make.left.equalToSuperview().offset(15)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(120)
+            make.bottom.equalToSuperview().offset(-20)
         }
         
         view.addSubview(modalView)
@@ -414,6 +446,9 @@ class PlanDetailViewController: UIViewController {
             let subview = UIView().then {
                 $0.layer.cornerRadius = 8
                 $0.layer.masksToBounds = true
+                let tap = UITapGestureRecognizer(target: self, action: #selector(scrapStackViewSelected(_:)))
+                tap.cancelsTouchesInView = false
+                $0.addGestureRecognizer(tap)
             }
             
             let photoView = UIImageView().then {
@@ -435,11 +470,6 @@ class PlanDetailViewController: UIViewController {
             
             let plusImageView = UIImageView().then {
                 $0.image = UIImage(named: "SmallPlus")
-            }
-            
-            let touchableButton = UIButton().then {
-                $0.backgroundColor = .clear
-//                $0.addTarget(self, action: #selector(daySelected), for: .touchUpInside)
             }
             
             subview.snp.makeConstraints { make in
@@ -467,12 +497,23 @@ class PlanDetailViewController: UIViewController {
                 make.right.equalToSuperview().offset(-6)
                 make.width.height.equalTo(24)
             }
-            subview.addSubview(touchableButton)
-            touchableButton.snp.makeConstraints { make in
-                make.edges.equalToSuperview()
-            }
             scrapStackView.addArrangedSubview(subview)
         }
+    }
+}
+
+extension PlanDetailViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "planDetailTableViewCell", for: indexPath) as! PlanDetailTableViewCell
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 120
     }
 }
 

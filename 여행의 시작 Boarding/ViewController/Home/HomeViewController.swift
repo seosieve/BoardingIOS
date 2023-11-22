@@ -14,6 +14,10 @@ import FirebaseStorage
 import FirebaseStorageUI
 import FirebaseAuth
 
+protocol SearchDelegate: AnyObject {
+    func searchNFT(search: String)
+}
+
 class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     var cellCount = 10
@@ -52,11 +56,6 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
     lazy var searchButton = UIButton().then {
         $0.setImage(UIImage(named: "Search"), for: .normal)
         $0.tintColor = Gray.dark
-        $0.addTarget(self, action:#selector(searchButtonPressed), for: .touchUpInside)
-    }
-    
-    @objc func searchButtonPressed() {
-        print("searchButton Pressed")
     }
     
     lazy var alarmButton = UIButton().then {
@@ -210,6 +209,7 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
                 $0.setTitle(CategoryInfo.imoji[index], for: .normal)
                 $0.titleLabel?.font = Pretendard.regular(30)
                 $0.layer.borderColor = Boarding.blue.cgColor
+                $0.adjustsImageWhenHighlighted = false
             }
             
             let nameLabel = UILabel().then {
@@ -248,6 +248,16 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
         locationButton.rx.tap
             .subscribe(onNext: {
                 let vc = SetLocationViewController()
+                vc.modalPresentationStyle = .automatic
+                vc.modalTransitionStyle = .coverVertical
+                self.present(vc, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        searchButton.rx.tap
+            .subscribe(onNext: {
+                let vc = SearchViewController()
+                vc.delegate = self
                 vc.modalPresentationStyle = .automatic
                 vc.modalTransitionStyle = .coverVertical
                 self.present(vc, animated: true)
@@ -342,5 +352,20 @@ extension HomeViewController: UIScrollViewDelegate {
         level = max(0, level)
         level = min(100, level)
         iconView.layer.shadowOpacity = Float(level/2000)
+    }
+}
+
+//MARK: - searchDelegate
+extension HomeViewController: SearchDelegate {
+    func searchNFT(search: String) {
+        categoryStackView.arrangedSubviews.forEach { view in
+            guard let button = view.viewWithTag(1) as? UIButton else { return }
+            guard let label = view.viewWithTag(2) as? UILabel else { return }
+            button.isSelected = false
+            button.layer.borderWidth = 0
+            label.font = Pretendard.regular(13)
+            label.textColor = Gray.medium
+        }
+        viewModel.getNFTbySearch(search)
     }
 }

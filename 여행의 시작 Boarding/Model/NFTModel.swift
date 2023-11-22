@@ -14,6 +14,8 @@ struct NFT {
     let type: String
     let url: String
     let location: String
+    let country: String
+    let city: String
     let latitude: Double
     let longitude: Double
     let time: String
@@ -35,6 +37,8 @@ struct NFT {
                 "type": type,
                 "url": url,
                 "location": location,
+                "country": country,
+                "city": city,
                 "latitude": latitude,
                 "longitude": longitude,
                 "time": time,
@@ -58,6 +62,8 @@ struct NFT {
                    type: "",
                    url: "",
                    location: "",
+                   country: "",
+                   city: "",
                    latitude: 0.0,
                    longitude: 0.0,
                    time: "",

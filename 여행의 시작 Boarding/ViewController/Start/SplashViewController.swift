@@ -31,7 +31,8 @@ class SplashViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.gradient([Boarding.lightBlue, Boarding.blue], axis: .horizontal)
+//        view.gradient([Boarding.lightBlue, Boarding.blue], axis: .horizontal)
+        view.backgroundColor = Gray.white
         setViews()
     }
     
@@ -48,11 +49,11 @@ class SplashViewController: UIViewController {
             make.centerY.equalToSuperview().multipliedBy(4.0/5.0)
         }
         
-        view.addSubview(subLabel)
-        subLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(titleImageView.snp.bottom).offset(3)
-        }
+//        view.addSubview(subLabel)
+//        subLabel.snp.makeConstraints { make in
+//            make.centerX.equalToSuperview()
+//            make.top.equalTo(titleImageView.snp.bottom).offset(3)
+//        }
     }
     
     func setRx() {

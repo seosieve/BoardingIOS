@@ -64,6 +64,8 @@ extension QueryDocumentSnapshot {
         let type = self.get("type") as! String
         let url = self.get("url") as! String
         let location = self.get("location") as! String
+        let country = self.get("country") as! String
+        let city = self.get("city") as! String
         let latitude = self.get("latitude") as! Double
         let longitude = self.get("longitude") as! Double
         let time = self.get("time") as! String
@@ -83,6 +85,8 @@ extension QueryDocumentSnapshot {
                       type: type,
                       url: url,
                       location: location,
+                      country: country,
+                      city: city,
                       latitude: latitude,
                       longitude: longitude,
                       time: time,

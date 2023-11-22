@@ -10,6 +10,9 @@ import AVKit
 import Then
 import SnapKit
 
+
+import CoreLocation
+
 class FullScreenViewController: UIViewController {
     
     var url: URL?
@@ -128,7 +131,7 @@ class FullScreenViewController: UIViewController {
     @objc func iconButtonPressed(_ sender: UIButton) {
         switch sender.tag {
         case 0:
-            break
+            printCityNamesInRegion()
         default:
             sender.isSelected.toggle()
             sender.buttonAnimation()
@@ -141,6 +144,64 @@ class FullScreenViewController: UIViewController {
 //        loadVideoView()
         loadImageView()
         setViews()
+        
+        
+        let location = CLLocation(latitude: NFT!.latitude, longitude: NFT!.longitude)
+        getLocationInfo(for: location)
+        printCityNamesInRegion()
+    }
+    
+    
+    func getLocationInfo(for location: CLLocation) {
+        let geocoder = CLGeocoder()
+        
+        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+            if let error = error {
+                print("Reverse geocoding failed with error: \(error.localizedDescription)")
+                return
+            }
+            
+            if let placemark = placemarks?.first {
+                // 도시 이름 가져오기
+                if let city = placemark.locality {
+                    print("도시: \(city)")
+                }
+                
+                // 국가 이름 가져오기
+                if let country = placemark.country {
+                    print("국가: \(country)")
+                }
+            }
+        }
+    }
+    
+    func printCityNamesInRegion() {
+        // 특정 지역 (예: 미국)의 좌표 범위
+        let regionCoordinates = [
+            CLLocation(latitude: 24.396308, longitude: -125.000000),  // 남서쪽 좌표
+            CLLocation(latitude: 49.384358, longitude: -66.934570)   // 북동쪽 좌표
+        ]
+
+        let geocoder = CLGeocoder()
+
+        for latitude in stride(from: regionCoordinates[0].coordinate.latitude, through: regionCoordinates[1].coordinate.latitude, by: 1.0) {
+            for longitude in stride(from: regionCoordinates[0].coordinate.longitude, through: regionCoordinates[1].coordinate.longitude, by: 1.0) {
+                let coordinate = CLLocation(latitude: latitude, longitude: longitude)
+                
+                geocoder.reverseGeocodeLocation(coordinate) { (placemarks, error) in
+                    if let error = error {
+                        print("Reverse geocoding failed with error: \(error.localizedDescription)")
+                        return
+                    }
+
+                    if let placemark = placemarks?.first {
+                        if let city = placemark.locality {
+                            print("도시: \(city)")
+                        }
+                    }
+                }
+            }
+        }
     }
     
     func setViews() {
@@ -250,7 +311,8 @@ class FullScreenViewController: UIViewController {
     
     func loadVideoView() {
         guard let path = Bundle.main.path(forResource: "Eiffel", ofType: "mp4") else { return }
-        let player = AVPlayer.init(url: URL(filePath: path))
+        let url = URL(fileURLWithPath: path)
+        let player = AVPlayer(url: url)
         let playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = self.view.bounds
         playerLayer.videoGravity = .resizeAspectFill

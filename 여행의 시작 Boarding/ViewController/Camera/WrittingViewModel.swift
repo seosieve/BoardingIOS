@@ -17,6 +17,8 @@ class WrittingViewModel {
     
     let autherUid = BehaviorRelay<String>(value: "")
     let location = BehaviorRelay<String>(value: "")
+    let country = BehaviorRelay<String>(value: "")
+    let city = BehaviorRelay<String>(value: "")
     let latitude = BehaviorRelay<Double>(value: 0.0)
     let longitude = BehaviorRelay<Double>(value: 0.0)
     let time = BehaviorRelay<String>(value: "")
@@ -77,6 +79,8 @@ class WrittingViewModel {
                       type: "photo",
                       url: url.absoluteString,
                       location: location.value,
+                      country: country.value,
+                      city: city.value,
                       latitude: latitude.value,
                       longitude: longitude.value,
                       time: time.value,

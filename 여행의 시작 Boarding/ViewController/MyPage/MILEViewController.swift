@@ -206,7 +206,7 @@ class MILEViewController: UIViewController {
             make.top.equalTo(calculatePlanView.snp.bottom).offset(20)
             make.left.equalToSuperview().offset(20)
             make.centerX.equalToSuperview()
-            make.height.equalTo(520)
+            make.bottom.equalToSuperview().offset(-200)
         }
         
         calculateHistoryView.addSubview(calculateHistoryLabel)
@@ -219,6 +219,7 @@ class MILEViewController: UIViewController {
             make.top.equalTo(calculateHistoryLabel.snp.bottom).offset(20)
             make.left.equalToSuperview().offset(20)
             make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-20)
             make.height.equalTo(230)
         }
 //        let info = ["좋아요", "스크랩", "신뢰도", "합계"]
@@ -262,14 +263,14 @@ class MILEViewController: UIViewController {
             calculateHistoryStackView.addArrangedSubview(subview)
         }
         
-        MILEContentView.addSubview(byRecordView)
-        byRecordView.snp.makeConstraints { make in
-            make.top.equalTo(calculateHistoryView.snp.bottom).offset(20)
-            make.left.equalToSuperview().offset(20)
-            make.centerX.equalToSuperview()
-            make.height.equalTo(400)
-            make.bottom.equalToSuperview().offset(-200)
-        }
+//        MILEContentView.addSubview(byRecordView)
+//        byRecordView.snp.makeConstraints { make in
+//            make.top.equalTo(calculateHistoryView.snp.bottom).offset(20)
+//            make.left.equalToSuperview().offset(20)
+//            make.centerX.equalToSuperview()
+//            make.height.equalTo(400)
+//            make.bottom.equalToSuperview().offset(-200)
+//        }
     }
     
     func makeCalculateStackView(_ title: String) -> UIStackView {

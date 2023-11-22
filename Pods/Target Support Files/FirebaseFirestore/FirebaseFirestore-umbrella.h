@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "FIRAggregateField.h"
 #import "FIRAggregateQuery.h"
 #import "FIRAggregateQuerySnapshot.h"
 #import "FIRAggregateSource.h"
@@ -29,6 +30,7 @@
 #import "FIRListenerRegistration.h"
 #import "FIRLoadBundleTask.h"
 #import "FIRLocalCacheSettings.h"
+#import "FIRPersistentCacheIndexManager.h"
 #import "FIRQuery.h"
 #import "FIRQuerySnapshot.h"
 #import "FIRSnapshotMetadata.h"

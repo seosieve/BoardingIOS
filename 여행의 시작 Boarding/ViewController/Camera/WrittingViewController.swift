@@ -15,6 +15,8 @@ class WrittingViewController: UIViewController {
     
     var image: UIImage?
     var infoArr = ["", "", "맑음, 25°C"]
+    var country = ""
+    var city = ""
     var latitude = 0.0
     var longitude = 0.0
     var scoreArr = [false, false, false, false, false]
@@ -443,6 +445,8 @@ class WrittingViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.location.accept(infoArr[0])
+        viewModel.country.accept(country)
+        viewModel.city.accept(city)
         viewModel.latitude.accept(latitude)
         viewModel.longitude.accept(longitude)
         viewModel.time.accept(infoArr[1])

@@ -15,7 +15,9 @@
 import Foundation
 import RxSwift
 
-/// :nodoc:
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
 public struct ComposeTransformer<T, R> {
     let transformer: (Observable<T>) -> Observable<R>
     public init(transformer: @escaping (Observable<T>) -> Observable<R>) {
@@ -27,7 +29,9 @@ public struct ComposeTransformer<T, R> {
     }
 }
 
-/// :nodoc:
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
 extension ObservableType {
     public func compose<T>(_ transformer: ComposeTransformer<Element, T>) -> Observable<T> {
         return transformer.call(self.asObservable())

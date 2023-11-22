@@ -20,10 +20,14 @@ import Alamofire
 import RxAlamofire
 import KakaoSDKCommon
 
-/// :nodoc:
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
 extension Api: ReactiveCompatible {}
 
-/// :nodoc:
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
 extension Reactive where Base: Api {
     public func decodeDataComposeTransformer<T:Codable>() -> ComposeTransformer<(SdkJSONDecoder, HTTPURLResponse, Data), T> {
         return ComposeTransformer<(SdkJSONDecoder, HTTPURLResponse, Data), T> { (observable) in

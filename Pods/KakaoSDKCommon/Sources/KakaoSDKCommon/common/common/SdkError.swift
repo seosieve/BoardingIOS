@@ -27,7 +27,9 @@ public enum SdkError : Error {
     case AuthFailed(reason:AuthFailureReason, errorInfo:AuthErrorInfo?)
 }
 
-/// :nodoc:
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
 extension SdkError {
     public init(reason:ClientFailureReason = .Unknown, message:String? = nil) {
         switch reason {
@@ -38,7 +40,7 @@ extension SdkError {
         case .Cancelled:
             self = .ClientFailed(reason: reason, errorMessage:message ?? "user cancelled")
         case .NotSupported:
-            self = .ClientFailed(reason: reason, errorMessage: "target app is not installed.")
+            self = .ClientFailed(reason: reason, errorMessage:message ?? "target app is not installed.")
         case .BadParameter:
             self = .ClientFailed(reason: reason, errorMessage:message ?? "bad parameters.")
         case .TokenNotFound:
@@ -53,7 +55,9 @@ extension SdkError {
     }
 }
 
-/// :nodoc:
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
 extension SdkError {
     public init?(response:HTTPURLResponse, data:Data, type:ApiType) {
         if 200 ..< 300 ~= response.statusCode { return nil }
@@ -98,7 +102,8 @@ extension SdkError {
 extension SdkError {
     
     /// 클라이언트 에러인지 확인합니다.
-    /// - seealso: `ClientFailureReason`
+    /// ## SeeAlso
+    /// - ``ClientFailureReason``
     public var isClientFailed : Bool {
         if case .ClientFailed = self {
             return true
@@ -107,7 +112,8 @@ extension SdkError {
     }
     
     /// API 서버 에러인지 확인합니다.
-    /// - seealso: `ApiFailureReason`
+    /// ## SeeAlso
+    /// - ``ApiFailureReason``
     public var isApiFailed : Bool {
         if case .ApiFailed = self {
             return true
@@ -116,7 +122,8 @@ extension SdkError {
     }
     
     /// 인증 서버 에러인지 확인합니다.
-    /// - seealso: `AuthFailureReason`
+    /// ## SeeAlso
+    /// - ``AuthFailureReason``
     public var isAuthFailed : Bool {
         if case .AuthFailed = self {
             return true
@@ -125,7 +132,8 @@ extension SdkError {
     }
     
     /// 클라이언트 에러 정보를 얻습니다. `isClientFailed`가 true인 경우 사용해야 합니다.
-    /// - seealso: `ClientFailureReason`
+    /// ## SeeAlso
+    /// - ``ClientFailureReason``
     public func getClientError() -> (reason:ClientFailureReason, message:String?) {
         if case let .ClientFailed(reason, message) = self {
             return (reason, message)
@@ -134,7 +142,9 @@ extension SdkError {
     }
     
     /// API 요청 에러에 대한 정보를 얻습니다. `isApiFailed`가 true인 경우 사용해야 합니다.
-    /// - seealso: `ApiFailureReason` <br> `ErrorInfo`
+    /// ## SeeAlso
+    /// - ``ApiFailureReason``
+    /// - ``ErrorInfo``
     public func getApiError() -> (reason:ApiFailureReason, info:ErrorInfo?) {
         if case let .ApiFailed(reason, info) = self {
             return (reason, info)
@@ -143,7 +153,9 @@ extension SdkError {
     }
     
     /// 로그인 요청 에러에 대한 정보를 얻습니다. `isAuthFailed`가 true인 경우 사용해야 합니다.
-    /// - seealso: `AuthFailureReason` <br> `AuthErrorInfo`
+    /// ## SeeAlso
+    /// - ``AuthFailureReason``
+    /// - ``AuthErrorInfo``
     public func getAuthError() -> (reason:AuthFailureReason, info:AuthErrorInfo?) {
         if case let .AuthFailed(reason, info) = self {
             return (reason, info)
@@ -292,30 +304,23 @@ public enum ApiFailureReason : Int, Codable {
     
     /// 일간 메시지 전송 허용 횟수 초과
     case TalkSendMessageDailyLimitExceed = -532
+        
+    /// 이미지 업로드 시 최대 용량을 초과한 경우
+    case ImageUploadSizeExceed = -602
     
-    /// 카카오스토리 사용자가 아님
-    case NotStoryUser = -601
+    /// 카카오 플랫폼 내부에서 요청 처리 중 타임아웃이 발생한 경우
+    case ServerTimeout = -603
     
-    /// 카카오스토리 이미지 업로드 사이즈 제한 초과
-    case StoryImageUploadSizeExceed = -602
-    
-    /// 카카오스토리 이미지 업로드 타임아웃
-    case StoryUploadTimeout = -603
-    
-    /// 카카오스토리 스크랩시 잘못된 스크랩 URL로 호출할 경우
-    case StoryInvalidScrapUrl = -604
-    
-    /// 카카오스토리의 내정보 요청시 잘못된 내스토리 아이디(포스트 아이디)로 호출할 경우
-    case StoryInvalidPostId = -605
-    
-    /// 카카오스토리 이미지 업로드시 허용된 업로드 파일 수가 넘을 경우
-    case StoryMaxUploadNumberExceed = -606
+    /// 이미지 업로드시 허용된 업로드 파일 수가 넘을 경우
+    case ImageMaxUploadNumberExceed = -606
     
     /// 서버 점검 중
     case UnderMaintenance = -9798
 }
 
-/// :nodoc:
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
 extension ApiFailureReason {
     public init(from decoder: Decoder) throws {
         self = try ApiFailureReason(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .Unknown
@@ -352,11 +357,16 @@ public enum AuthFailureReason : String, Codable {
     /// 서버 내부 에러
     case ServerError = "server_error"
     
-    /// :nodoc: 카카오싱크 전용
+#if swift(>=5.8)
+    @_documentation(visibility: private)
+#endif
+    /// 카카오싱크 전용
     case AutoLogin = "auto_login"
 }
 
-/// :nodoc:
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
 extension AuthFailureReason {
     public init(from decoder: Decoder) throws {
         self = try AuthFailureReason(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .Unknown

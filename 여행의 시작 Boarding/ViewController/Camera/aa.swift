@@ -134,12 +134,13 @@ class aa: UIViewController {
     
     func loadVideoView() {
         guard let path = Bundle.main.path(forResource: "Eiffel", ofType: "mp4") else { return }
-        player = AVPlayer.init(url: videoURL ?? URL(filePath: path))
+        let url = URL(fileURLWithPath: path)
+        let player = AVPlayer(url: videoURL ?? url)
         let playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = self.videoView.frame
         playerLayer.videoGravity = .resizeAspectFill
         self.view.layer.addSublayer(playerLayer)
-        player!.play()
+        player.play()
         NotificationCenter.default.addObserver(forName: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil, queue: nil) { notification in
             self.player!.seek(to: .zero)
             self.player!.play()
