@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import Then
-import SnapKit
 import RxSwift
 import RxCocoa
 import FirebaseStorage
@@ -15,12 +13,12 @@ import FirebaseStorageUI
 import FirebaseAuth
 
 protocol SearchDelegate: AnyObject {
-    func searchNFT(search: String)
+    func searchNFT(word: String)
+    func searchNFT(country: String, city: String)
 }
 
 class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
     
-    var cellCount = 10
     var selectedCategory = ""
     
     let viewModel = HomeViewModel()
@@ -248,6 +246,7 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
         locationButton.rx.tap
             .subscribe(onNext: {
                 let vc = SetLocationViewController()
+                vc.delegate = self
                 vc.modalPresentationStyle = .automatic
                 vc.modalTransitionStyle = .coverVertical
                 self.present(vc, animated: true)
@@ -271,12 +270,12 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
                     self.viewModel.getAuther(auther: element.autherUid) { user in
                         cell.userNameLabel.text = user.name
                         cell.userImage.sd_setImage(with: URL(string: user.url), placeholderImage: nil, options: .scaleDownLargeImages)
-                        cell.photoTapped = {
-                            self.goToFullScreen(url: URL(string: element.url), NFT: element, user: user)
+                        cell.photoTapped = { [weak self] in
+                            self?.goToFullScreen(url: URL(string: element.url), NFT: element, user: user)
                         }
                     }
-                    cell.iconTapped = { sender in
-                        self.iconInteraction(sender, element.NFTID)
+                    cell.iconTapped = { [weak self] sender in
+                        self?.iconInteraction(sender, element.NFTID)
                     }
                     cell.titleLabel.text = element.title
                     cell.contentLabel.text = element.content
@@ -357,7 +356,7 @@ extension HomeViewController: UIScrollViewDelegate {
 
 //MARK: - searchDelegate
 extension HomeViewController: SearchDelegate {
-    func searchNFT(search: String) {
+    func searchNFT(word: String) {
         categoryStackView.arrangedSubviews.forEach { view in
             guard let button = view.viewWithTag(1) as? UIButton else { return }
             guard let label = view.viewWithTag(2) as? UILabel else { return }
@@ -366,6 +365,19 @@ extension HomeViewController: SearchDelegate {
             label.font = Pretendard.regular(13)
             label.textColor = Gray.medium
         }
-        viewModel.getNFTbySearch(search)
+        viewModel.getNFTbyWord(word)
+    }
+    
+    func searchNFT(country: String, city: String) {
+        categoryStackView.arrangedSubviews.forEach { view in
+            guard let button = view.viewWithTag(1) as? UIButton else { return }
+            guard let label = view.viewWithTag(2) as? UILabel else { return }
+            button.isSelected = false
+            button.layer.borderWidth = 0
+            label.font = Pretendard.regular(13)
+            label.textColor = Gray.medium
+        }
+        locationButton.setTitle("\(country) \(city)", for: .normal)
+        viewModel.getNFTbyLocation(city)
     }
 }

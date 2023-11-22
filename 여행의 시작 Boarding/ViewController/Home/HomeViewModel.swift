@@ -39,6 +39,21 @@ class HomeViewModel {
         }
     }
     
+    func getAuther(auther: String, handler: @escaping (User) -> ()) {
+        db.collection("User").document(auther).getDocument { (document, error) in
+            if let error = error {
+                print("글쓴이 불러오기 에러: \(error)")
+            } else {
+                if let document = document, document.exists {
+                    let user = document.makeUser()
+                    DispatchQueue.main.async {
+                        handler(user)
+                    }
+                }
+            }
+        }
+    }
+    
     func getNFTbyCategory(_ category: String) {
         db.collection("NFT").whereField("category", isEqualTo: category).order(by: "writtenDate", descending: true).getDocuments { (querySnapshot, error) in
             if let error = error {
@@ -55,20 +70,7 @@ class HomeViewModel {
         }
     }
     
-    func getAuther(auther: String, handler: @escaping (User) -> ()) {
-        db.collection("User").document(auther).getDocument { (document, error) in
-            if let error = error {
-                print("글쓴이 불러오기 에러: \(error)")
-            } else {
-                if let document = document, document.exists {
-                    let user = document.makeUser()
-                    handler(user)
-                }
-            }
-        }
-    }
-    
-    func getNFTbySearch(_ search: String) {
+    func getNFTbyWord(_ word: String) {
         db.collection("NFT").order(by: "writtenDate", descending: true).getDocuments { (querySnapshot, error) in
             if let error = error {
                 print("NFT 불러오기 에러: \(error)")
@@ -76,9 +78,25 @@ class HomeViewModel {
                 var items = [NFT]()
                 for document in querySnapshot!.documents {
                     let NFT = document.makeNFT()
-                    if NFT.title.contains(search) || NFT.content.contains(search) {
+                    if NFT.title.contains(word) || NFT.content.contains(word) {
                         items.append(NFT)
                     }
+                }
+                self.items.accept(items)
+                self.itemCount.accept(items.count)
+            }
+        }
+    }
+    
+    func getNFTbyLocation(_ city: String) {
+        db.collection("NFT").whereField("city", isEqualTo: city).order(by: "writtenDate", descending: true).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("NFT 불러오기 에러: \(error)")
+            } else {
+                var items = [NFT]()
+                for document in querySnapshot!.documents {
+                    let NFT = document.makeNFT()
+                    items.append(NFT)
                 }
                 self.items.accept(items)
                 self.itemCount.accept(items.count)

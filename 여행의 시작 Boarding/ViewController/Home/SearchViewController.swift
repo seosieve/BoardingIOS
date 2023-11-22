@@ -74,7 +74,7 @@ class SearchViewController: UIViewController {
     
     @objc func searchButtonPressed() {
         searchTextField.resignFirstResponder()
-        delegate?.searchNFT(search: searchTextField.text!)
+        delegate?.searchNFT(word: searchTextField.text!)
         self.dismiss(animated: true)
     }
     

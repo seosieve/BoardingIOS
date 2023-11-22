@@ -6,9 +6,17 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+import FirebaseStorageUI
 
 class SetLocationViewController: UIViewController {
 
+    weak var delegate: SearchDelegate?
+    
+    let viewModel = SetLocationViewModel()
+    let disposeBag = DisposeBag()
+    
     lazy var backgroundView = UIView().then {
         $0.backgroundColor = .clear
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissModal))
@@ -50,11 +58,19 @@ class SetLocationViewController: UIViewController {
         $0.tintColor = Boarding.blue
     }
     
+    lazy var locationTableView = UITableView().then {
+        $0.backgroundColor = Gray.white
+        $0.separatorStyle = .none
+        $0.showsVerticalScrollIndicator = false
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
         dismissKeyboardWhenTapped()
+        locationTableView.register(LocationTableViewCell.self, forCellReuseIdentifier: "locationTableViewCell")
         setViews()
+        setRx()
     }
 
     func setViews() {
@@ -106,5 +122,36 @@ class SetLocationViewController: UIViewController {
             make.left.equalTo(searchImageView.snp.right).offset(10)
             make.right.equalToSuperview().offset(-20)
         }
+        
+        modalView.addSubview(locationTableView)
+        locationTableView.snp.makeConstraints { make in
+            make.top.equalTo(searchView.snp.bottom).offset(30)
+            make.left.equalToSuperview().offset(20)
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-30)
+        }
+    }
+    
+    func setRx() {
+        viewModel.items
+            .bind(to: locationTableView.rx.items(cellIdentifier: "locationTableViewCell", cellType: LocationTableViewCell.self)) { (row, element, cell) in
+                cell.selectionStyle = .none
+                cell.photoView.sd_setImage(with: URL(string: element.url), placeholderImage: nil, options: .scaleDownLargeImages)
+                cell.titleLabel.text = element.city
+                cell.subLabel.text = "최근 게시물 \(element.count)개"
+                cell.iconTapped = { [weak self] sender in
+                    self?.iconInteraction(sender)
+                }
+                cell.cellTapped = { [weak self] in
+                    self?.delegate?.searchNFT(country: element.country, city: element.city)
+                    self?.dismiss(animated: true)
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    func iconInteraction(_ sender: UIButton) {
+        sender.isSelected.toggle()
+        sender.buttonAnimation()
     }
 }
