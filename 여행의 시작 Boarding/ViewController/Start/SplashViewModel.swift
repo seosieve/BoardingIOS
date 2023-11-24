@@ -23,10 +23,9 @@ class SplashViewModel {
     let disposeBag = DisposeBag()
     
     func checkCurrentUser() {
-        let user = Auth.auth().currentUser
-        if let user = user {
+        if let user = Auth.auth().currentUser {
             isUserLoggedIn.accept(true)
-            print("현재 로그인된 유저는 \(user)")
+            print("현재 로그인된 유저는 \(user.displayName ?? "")")
         } else {
             isUserLoggedIn.accept(false)
         }

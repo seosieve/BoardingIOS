@@ -488,6 +488,7 @@ class WrittingViewController: UIViewController {
             .throttle(.seconds(2), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
                 self?.completeButton.isEnabled = false
+                self?.view.isUserInteractionEnabled = false
                 self?.uploadProgressView.isHidden = false
                 self?.indicator.startAnimating()
                 self?.viewModel.NFTWrite(image: self?.image)

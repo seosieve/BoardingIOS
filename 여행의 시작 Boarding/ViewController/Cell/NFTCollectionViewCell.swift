@@ -10,8 +10,8 @@ import UIKit
 class NFTCollectionViewCell: UICollectionViewCell {
     
     var NFTImageView = UIImageView().then {
-        $0.backgroundColor = Gray.bright
         $0.image = UIImage()
+        $0.contentMode = .scaleAspectFill
     }
     
     override init(frame: CGRect) {

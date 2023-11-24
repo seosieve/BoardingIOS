@@ -164,14 +164,14 @@ class NFTTicketViewController: UIViewController {
         NFTTitleView.addSubview(NFTMainTitleLabel)
         NFTTitleView.addSubview(NFTSubTitleLabel)
         NFTMainTitleLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(21)
             make.top.equalToSuperview().offset(18)
+            make.left.equalToSuperview().offset(21)
         }
         NFTSubTitleLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.left.equalToSuperview().offset(21)
             make.top.equalTo(NFTMainTitleLabel.snp.bottom).offset(6)
-            make.bottom.equalToSuperview().offset(-10)
+            make.left.equalToSuperview().offset(21)
+            make.centerX.equalToSuperview()
+            make.bottom.lessThanOrEqualToSuperview().offset(-10)
         }
         
         NFTTitleView.addSubview(QRDetailView)

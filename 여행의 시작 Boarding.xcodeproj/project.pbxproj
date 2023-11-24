@@ -12,6 +12,7 @@
 		4E19AA612A80FB3A00213589 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19AA602A80FB3A00213589 /* CameraViewController.swift */; };
 		4E19AA672A83E4F100213589 /* CameraCustomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19AA662A83E4F100213589 /* CameraCustomViewController.swift */; };
 		4E19AA692A9F1A7300213589 /* NFTTicketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19AA682A9F1A7300213589 /* NFTTicketViewController.swift */; };
+		4E1EA0872B1053D90081397B /* NFTDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1EA0862B1053D90081397B /* NFTDetailViewModel.swift */; };
 		4E1EB4212AA47F8000620D57 /* WrittingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1EB4202AA47F8000620D57 /* WrittingViewController.swift */; };
 		4E2DDF502AB330E800C7F4B9 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DDF4F2AB330E800C7F4B9 /* StartViewController.swift */; };
 		4E2DDF522AB40ED300C7F4B9 /* StartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DDF512AB40ED300C7F4B9 /* StartViewModel.swift */; };
@@ -99,6 +100,7 @@
 		4E19AA602A80FB3A00213589 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		4E19AA662A83E4F100213589 /* CameraCustomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCustomViewController.swift; sourceTree = "<group>"; };
 		4E19AA682A9F1A7300213589 /* NFTTicketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTTicketViewController.swift; sourceTree = "<group>"; };
+		4E1EA0862B1053D90081397B /* NFTDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTDetailViewModel.swift; sourceTree = "<group>"; };
 		4E1EB4202AA47F8000620D57 /* WrittingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrittingViewController.swift; sourceTree = "<group>"; };
 		4E2DDF4F2AB330E800C7F4B9 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		4E2DDF512AB40ED300C7F4B9 /* StartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewModel.swift; sourceTree = "<group>"; };
@@ -343,6 +345,7 @@
 				4EECA7EF2A2F2968006FB764 /* NFTViewController.swift */,
 				4E4C143C2AE4D9B500E504D4 /* NFTViewModel.swift */,
 				4E44FB982ACFD9D80021FAB9 /* NFTDetailViewController.swift */,
+				4E1EA0862B1053D90081397B /* NFTDetailViewModel.swift */,
 				4EECA7F12A2F3213006FB764 /* MILEViewController.swift */,
 				4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */,
 				4E2DDF532AB8050600C7F4B9 /* PreferenceViewController.swift */,
@@ -600,6 +603,7 @@
 				4EB72F422AEE480100F9CC67 /* OnboardingViewController.swift in Sources */,
 				4EECA7DF2A2DC352006FB764 /* TravelCollectionViewCell.swift in Sources */,
 				4EB8FEF22AEF8D0F0094C109 /* HomeInfoViewController.swift in Sources */,
+				4E1EA0872B1053D90081397B /* NFTDetailViewModel.swift in Sources */,
 				4EECA7EE2A2F2148006FB764 /* MenuTableViewCell.swift in Sources */,
 				4EECA7DD2A2C820F006FB764 /* PlaceCollectionViewCell.swift in Sources */,
 				4E2DDF542AB8050600C7F4B9 /* PreferenceViewController.swift in Sources */,

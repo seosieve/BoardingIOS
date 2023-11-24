@@ -6,13 +6,18 @@
 //
 
 import UIKit
-import FirebaseStorage
+import RxSwift
+import RxCocoa
 import FirebaseStorageUI
 
 class NFTDetailViewController: UIViewController {
     
+    var url = URL(string: "")
     var NFTResult = NFT.dummyType
     var isFlipped = false
+    
+    let viewModel = NFTDetailViewModel()
+    let disposeBag = DisposeBag()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
@@ -27,25 +32,13 @@ class NFTDetailViewController: UIViewController {
         $0.menu = UIMenu(options: .displayInline, children: [popularityOrder])
     }
     
-    func popUpAlert(_ message: (String, String, String)) {
-        let alert = UIAlertController(title: message.0, message: message.1, preferredStyle: .alert)
-        let cancel = UIAlertAction(title: "취소", style: .cancel)
-        let action = UIAlertAction(title: message.2, style: .default) { action in
-            print("aa")
-        }
-        alert.addAction(cancel)
-        alert.addAction(action)
-        action.setValue(UIColor.red, forKey: "titleTextColor")
-        alert.view.tintColor = Gray.dark
-        present(alert, animated: true, completion: nil)
-    }
-    
-    lazy var backgroundFullImageView = UIImageView().then {
-        $0.sd_setImage(with: URL(string: NFTResult.url))
+    lazy var fullScreenImageView = UIImageView().then {
+        $0.sd_setImage(with: url)
         $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
     }
     
-    var backgroundVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+    var fullScreenVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
     
     var NFTStatusView = UIView().then {
         $0.backgroundColor = Gray.white
@@ -132,6 +125,11 @@ class NFTDetailViewController: UIViewController {
         $0.image = UIImage(named: "QRCode")
     }
     
+    var indicator = UIActivityIndicatorView().then {
+        $0.style = .medium
+        $0.color = Gray.light
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.setNeedsStatusBarAppearanceUpdate()
@@ -146,21 +144,21 @@ class NFTDetailViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(flipNFT))
         NFTView.addGestureRecognizer(tap)
         setViews()
+        setRx()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        backgroundFullImageView.alpha = 0
         self.navigationController?.navigationBar.isHidden = true
     }
     
     func setViews() {
-        view.addSubview(backgroundFullImageView)
-        view.addSubview(backgroundVisualEffectView)
-        backgroundFullImageView.snp.makeConstraints { make in
+        view.addSubview(fullScreenImageView)
+        view.addSubview(fullScreenVisualEffectView)
+        fullScreenImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        backgroundVisualEffectView.snp.makeConstraints { make in
+        fullScreenVisualEffectView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
@@ -259,10 +257,10 @@ class NFTDetailViewController: UIViewController {
             make.top.equalToSuperview().offset(18)
         }
         NFTSubTitleLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.left.equalToSuperview().offset(21)
             make.top.equalTo(NFTMainTitleLabel.snp.bottom).offset(6)
-            make.bottom.equalToSuperview().offset(-10)
+            make.left.equalToSuperview().offset(21)
+            make.centerX.equalToSuperview()
+            make.bottom.lessThanOrEqualToSuperview().offset(-10)
         }
         
         NFTTitleView.addSubview(QRDetailView)
@@ -409,6 +407,11 @@ class NFTDetailViewController: UIViewController {
             NFTDetailStackView.addArrangedSubview(subview)
         }
         NFTImageView.roundCorners(topLeft: 20, topRight: 20)
+        
+        view.addSubview(indicator)
+        indicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
     }
     
     func changeContents() {
@@ -422,5 +425,30 @@ class NFTDetailViewController: UIViewController {
             QRDetailView.alpha = 1
         }
         isFlipped.toggle()
+    }
+    
+    func setRx() {
+        viewModel.deleteCompleted
+            .subscribe(onNext:{ [weak self] in
+                self?.indicator.stopAnimating()
+                self?.view.isUserInteractionEnabled = true
+                self?.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func popUpAlert(_ message: (String, String, String)) {
+        let alert = UIAlertController(title: message.0, message: message.1, preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        let action = UIAlertAction(title: message.2, style: .default) { action in
+            self.indicator.startAnimating()
+            self.view.isUserInteractionEnabled = false
+            self.viewModel.NFTDelete(NFTID: self.NFTResult.NFTID)
+        }
+        alert.addAction(cancel)
+        alert.addAction(action)
+        action.setValue(UIColor.red, forKey: "titleTextColor")
+        alert.view.tintColor = Gray.dark
+        present(alert, animated: true, completion: nil)
     }
 }

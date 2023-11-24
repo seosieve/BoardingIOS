@@ -15,7 +15,6 @@ import FirebaseStorageUI
 
 class NFTViewController: UIViewController {
 
-    var cellCount = 10
     let modalClosed = BehaviorRelay<Bool>(value: true)
     
     let viewModel = NFTViewModel()
@@ -26,14 +25,14 @@ class NFTViewController: UIViewController {
     var NFTContentView = UIView()
     
     lazy var NFTnumberLabel = UILabel().then {
-        $0.textColor = Gray.dark
+        $0.textColor = Gray.medium
         $0.font = Pretendard.regular(17)
     }
     
     var sortButton = UIButton().then {
         $0.setImage(UIImage(named: "Triangle"), for: .normal)
         $0.setTitle("등록순", for: .normal)
-        $0.setTitleColor(Gray.dark, for: .normal)
+        $0.setTitleColor(Gray.medium, for: .normal)
         $0.titleLabel?.font = Pretendard.regular(16)
         $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 5)
@@ -53,22 +52,33 @@ class NFTViewController: UIViewController {
         $0.showsHorizontalScrollIndicator = false
     }
     
+    var placeHolderLabel = UILabel().then {
+        $0.text = "등록된 NFT가 없습니다.\n아래 버튼을 눌러 여행을 기록해보세요."
+        $0.font = Pretendard.regular(20)
+        $0.textColor = Gray.medium
+        $0.textAlignment = .center
+        $0.numberOfLines = 2
+    }
+    
+    var placeHolderImage = UIImageView().then {
+        $0.image = UIImage(named: "Arrow")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = Gray.bright
+        self.view.backgroundColor = Gray.white
         NFTScrollView.delegate = self
         NFTCollectionView.register(NFTCollectionViewCell.self, forCellWithReuseIdentifier: "NFTCollectionViewCell")
         setViews()
         setRx()
-        updateViewHeight()
+        updateViewHeight(count: 10)
     }
     
     func setViews() {
         view.addSubview(NFTScrollView)
         NFTScrollView.addSubview(NFTContentView)
         NFTScrollView.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
-            make.top.equalToSuperview()
+            make.edges.equalToSuperview()
         }
         NFTContentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -95,6 +105,18 @@ class NFTViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(20)
             make.height.equalTo(1)
+        }
+                
+        NFTContentView.addSubview(placeHolderImage)
+        placeHolderImage.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(100)
+        }
+        
+        NFTContentView.addSubview(placeHolderLabel)
+        placeHolderLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(placeHolderImage.snp.top).offset(-10)
         }
     }
     
@@ -124,6 +146,7 @@ class NFTViewController: UIViewController {
             .subscribe(onNext:{ [weak self] NFT in
                 let presentingVC = self?.parent?.parent as? MyPageViewController
                 let vc = NFTDetailViewController()
+                vc.url = URL(string: NFT.url)
                 vc.NFTResult = NFT
                 vc.hidesBottomBarWhenPushed = true
                 presentingVC?.navigationController?.pushViewController(vc, animated: true)
@@ -132,9 +155,19 @@ class NFTViewController: UIViewController {
         
         viewModel.itemCount
             .subscribe(onNext: { [weak self] count in
-                self?.cellCount = count
-                self?.NFTnumberLabel.text = "총 \(count)개"
-                self?.updateViewHeight()
+                if count == 0 {
+                    self?.NFTnumberLabel.isHidden = true
+                    self?.sortButton.isHidden = true
+                    self?.placeHolderLabel.isHidden = false
+                    self?.placeHolderImage.isHidden = false
+                } else {
+                    self?.NFTnumberLabel.isHidden = false
+                    self?.sortButton.isHidden = false
+                    self?.placeHolderLabel.isHidden = true
+                    self?.placeHolderImage.isHidden = true
+                    self?.NFTnumberLabel.text = "총 \(count)개"
+                }
+                self?.updateViewHeight(count: count)
             })
             .disposed(by: disposeBag)
         
@@ -145,11 +178,11 @@ class NFTViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    func updateViewHeight() {
+    func updateViewHeight(count: Int) {
         // UICollectionView, ScrollContentView의 높이를 업데이트
         let width = (view.bounds.width - 54)/2
         let height = width*4/3 + 10
-        let numberOfCells = ceil(Double(cellCount)/Double(2))
+        let numberOfCells = ceil(Double(count)/Double(2))
         let totalHeight = height * numberOfCells
         NFTCollectionView.snp.updateConstraints { make in
             make.height.equalTo(totalHeight)

@@ -69,8 +69,8 @@ class HomeTableViewCell: UITableViewCell {
         $0.backgroundColor = Gray.white
         $0.axis = .vertical
         $0.alignment = .fill
-        $0.distribution = .equalSpacing
-        $0.spacing = 15
+        $0.distribution = .fillEqually
+        $0.spacing = 12
     }
     
     @objc func iconButtonPressed(_ sender: UIButton) {
@@ -99,7 +99,7 @@ class HomeTableViewCell: UITableViewCell {
     }
     
     var locationImage = UIImageView().then {
-        $0.image = UIImage(named: "GlobalLocation")?.withRenderingMode(.alwaysTemplate)
+        $0.image = UIImage(named: "Place")?.withRenderingMode(.alwaysTemplate)
         $0.tintColor = Gray.medium
     }
     
@@ -185,16 +185,13 @@ class HomeTableViewCell: UITableViewCell {
         
         contentView.addSubview(interactionStackView)
         interactionStackView.snp.makeConstraints { make in
-            make.left.equalTo(photoView.snp.right).offset(28)
+            make.left.equalTo(photoView.snp.right).offset(24)
             make.bottom.equalTo(photoView)
-            make.width.equalTo(33)
-            make.height.equalTo(262)
+            make.width.equalTo(32)
         }
         let icon = [InteractionInfo.report, InteractionInfo.comment, InteractionInfo.like, InteractionInfo.save]
         for index in 0..<icon.count {
-            let subview = UIView().then {
-                $0.backgroundColor = Gray.white
-            }
+            let subview = UIView()
             
             lazy var iconButton = UIButton().then {
                 $0.tag = index
@@ -210,16 +207,20 @@ class HomeTableViewCell: UITableViewCell {
                 $0.textAlignment = .center
             }
             
+            subview.snp.makeConstraints { make in
+                make.height.equalTo(50)
+            }
+            
             subview.addSubview(iconButton)
             iconButton.snp.makeConstraints { make in
                 make.top.left.centerX.equalToSuperview()
-                make.width.height.equalTo(32)
+                make.height.equalTo(32)
             }
+            
             subview.addSubview(numberLabel)
             numberLabel.snp.makeConstraints { make in
-                make.top.equalTo(iconButton.snp.bottom)
-                make.left.centerX.equalToSuperview()
-                make.bottom.equalToSuperview()
+                make.top.equalTo(iconButton.snp.bottom).offset(4)
+                make.centerX.equalToSuperview()
             }
             interactionStackView.addArrangedSubview(subview)
         }
@@ -232,10 +233,9 @@ class HomeTableViewCell: UITableViewCell {
         }
         scoreView.addSubview(scoreImage)
         scoreImage.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(5)
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().offset(8)
-            make.width.equalTo(15)
+            make.width.height.equalTo(15)
         }
         scoreView.addSubview(scoreLabel)
         scoreLabel.snp.makeConstraints { make in
@@ -254,8 +254,7 @@ class HomeTableViewCell: UITableViewCell {
         locationImage.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().offset(8)
-            make.width.equalTo(11)
-            make.height.equalTo(13)
+            make.width.height.equalTo(15)
         }
         locationView.addSubview(locationLabel)
         locationLabel.snp.makeConstraints { make in

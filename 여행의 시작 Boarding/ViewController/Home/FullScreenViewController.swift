@@ -85,7 +85,7 @@ class FullScreenViewController: UIViewController {
         $0.adjustsImageWhenHighlighted = false
         $0.imageView?.contentMode = .scaleAspectFit
         $0.setBackgroundColor(Gray.light.withAlphaComponent(0.5), for: .normal)
-        $0.setImage(UIImage(named: "GlobalLocation")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        $0.setImage(UIImage(named: "Place")?.withRenderingMode(.alwaysTemplate), for: .normal)
         $0.setTitle(NFT?.location, for: .normal)
         $0.titleLabel?.font = Pretendard.regular(13)
         $0.setTitleColor(Gray.white, for: .normal)
@@ -121,8 +121,8 @@ class FullScreenViewController: UIViewController {
         $0.backgroundColor = .clear
         $0.axis = .vertical
         $0.alignment = .fill
-        $0.distribution = .equalSpacing
-        $0.spacing = 15
+        $0.distribution = .fillEqually
+        $0.spacing = 12
     }
     
     @objc func iconButtonPressed(_ sender: UIButton) {
@@ -208,9 +208,8 @@ class FullScreenViewController: UIViewController {
         view.addSubview(interactionStackView)
         interactionStackView.snp.makeConstraints { make in
             make.right.equalToSuperview().offset(-20)
-            make.bottom.equalToSuperview().inset(83)
-            make.width.equalTo(33)
-            make.height.equalTo(198)
+            make.bottom.equalToSuperview().inset(84)
+            make.width.equalTo(32)
         }
         let icon = [InteractionInfo.comment, InteractionInfo.like, InteractionInfo.save]
         for index in 0..<icon.count {
@@ -233,16 +232,19 @@ class FullScreenViewController: UIViewController {
                 $0.textAlignment = .center
             }
             
+            subview.snp.makeConstraints { make in
+                make.height.equalTo(50)
+            }
+            
             subview.addSubview(iconButton)
             iconButton.snp.makeConstraints { make in
                 make.top.left.centerX.equalToSuperview()
-                make.width.height.equalTo(32)
+                make.height.equalTo(32)
             }
             subview.addSubview(numberLabel)
             numberLabel.snp.makeConstraints { make in
-                make.top.equalTo(iconButton.snp.bottom)
-                make.left.centerX.equalToSuperview()
-                make.bottom.equalToSuperview()
+                make.top.equalTo(iconButton.snp.bottom).offset(4)
+                make.centerX.equalToSuperview()
             }
             interactionStackView.addArrangedSubview(subview)
         }

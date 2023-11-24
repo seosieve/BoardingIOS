@@ -38,7 +38,7 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     var locationImageView = UIImageView().then {
-        $0.image = UIImage(named: "GlobalLocation")
+        $0.image = UIImage(named: "HomeBlueLocation")
     }
     
     var locationButton = UIButton().then {
@@ -86,7 +86,7 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
         $0.backgroundColor = Gray.white
         $0.axis = .horizontal
         $0.alignment = .fill
-        $0.distribution = .equalSpacing
+        $0.distribution = .fillEqually
         $0.spacing = 8
     }
     
@@ -217,11 +217,15 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
                 $0.textColor = Gray.medium
             }
             
+            subview.snp.makeConstraints { make in
+                make.width.equalTo(64)
+            }
+            
             subview.addSubview(emojiButton)
             emojiButton.snp.makeConstraints { make in
                 make.top.equalToSuperview().offset(20)
                 make.left.centerX.equalToSuperview()
-                make.width.height.equalTo(64)
+                make.height.equalTo(64)
             }
             emojiButton.rounded(axis: .horizontal)
             
