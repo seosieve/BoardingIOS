@@ -77,8 +77,7 @@ class PlanCollectionViewCell: UICollectionViewCell {
             make.centerX.equalToSuperview()
             make.height.equalTo(400)
         }
-        borderView.rounded(axis: .vertical)
-        borderView.layer.masksToBounds = false
+        borderView.rounded(axis: .vertical, mask: false)
         borderView.makeShadow(opacity: 0.3, shadowRadius: 10)
         
         borderView.addSubview(travelImageView)

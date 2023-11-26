@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E04A99A2B137C3200EE6530 /* RecordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E04A9992B137C3200EE6530 /* RecordViewModel.swift */; };
 		4E0648B22B01CCFD009DB83B /* AddMyPlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0648B12B01CCFD009DB83B /* AddMyPlanViewController.swift */; };
 		4E0648B42B05BBA4009DB83B /* AddMyPlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0648B32B05BBA4009DB83B /* AddMyPlanViewModel.swift */; };
 		4E19AA612A80FB3A00213589 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19AA602A80FB3A00213589 /* CameraViewController.swift */; };
@@ -82,11 +83,9 @@
 		4EECA7D52A2B02A2006FB764 /* FontModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7D42A2B02A2006FB764 /* FontModel.swift */; };
 		4EECA7D72A2B1120006FB764 /* ColorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7D62A2B1120006FB764 /* ColorModel.swift */; };
 		4EECA7D92A2B3005006FB764 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7D82A2B3005006FB764 /* Extension.swift */; };
-		4EECA7DD2A2C820F006FB764 /* PlaceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7DC2A2C820F006FB764 /* PlaceCollectionViewCell.swift */; };
 		4EECA7DF2A2DC352006FB764 /* TravelCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7DE2A2DC352006FB764 /* TravelCollectionViewCell.swift */; };
 		4EECA7E12A2DD179006FB764 /* FullScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7E02A2DD179006FB764 /* FullScreenViewController.swift */; };
-		4EECA7EC2A2F0013006FB764 /* RecordCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7EB2A2F0013006FB764 /* RecordCollectionViewCell.swift */; };
-		4EECA7EE2A2F2148006FB764 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7ED2A2F2148006FB764 /* MenuTableViewCell.swift */; };
+		4EECA7EE2A2F2148006FB764 /* PreferenceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7ED2A2F2148006FB764 /* PreferenceTableViewCell.swift */; };
 		4EECA7F02A2F2968006FB764 /* NFTViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7EF2A2F2968006FB764 /* NFTViewController.swift */; };
 		4EECA7F22A2F3213006FB764 /* MILEViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7F12A2F3213006FB764 /* MILEViewController.swift */; };
 		4EECA7F42A2F3235006FB764 /* ExpertLevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */; };
@@ -95,6 +94,7 @@
 
 /* Begin PBXFileReference section */
 		36A396191B40B7E0E6D4F9B1 /* Pods-여행의 시작 Boarding.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-여행의 시작 Boarding.debug.xcconfig"; path = "Target Support Files/Pods-여행의 시작 Boarding/Pods-여행의 시작 Boarding.debug.xcconfig"; sourceTree = "<group>"; };
+		4E04A9992B137C3200EE6530 /* RecordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewModel.swift; sourceTree = "<group>"; };
 		4E0648B12B01CCFD009DB83B /* AddMyPlanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMyPlanViewController.swift; sourceTree = "<group>"; };
 		4E0648B32B05BBA4009DB83B /* AddMyPlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMyPlanViewModel.swift; sourceTree = "<group>"; };
 		4E19AA602A80FB3A00213589 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
@@ -173,11 +173,9 @@
 		4EECA7D42A2B02A2006FB764 /* FontModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontModel.swift; sourceTree = "<group>"; };
 		4EECA7D62A2B1120006FB764 /* ColorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorModel.swift; sourceTree = "<group>"; };
 		4EECA7D82A2B3005006FB764 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
-		4EECA7DC2A2C820F006FB764 /* PlaceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCollectionViewCell.swift; sourceTree = "<group>"; };
 		4EECA7DE2A2DC352006FB764 /* TravelCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelCollectionViewCell.swift; sourceTree = "<group>"; };
 		4EECA7E02A2DD179006FB764 /* FullScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewController.swift; sourceTree = "<group>"; };
-		4EECA7EB2A2F0013006FB764 /* RecordCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollectionViewCell.swift; sourceTree = "<group>"; };
-		4EECA7ED2A2F2148006FB764 /* MenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
+		4EECA7ED2A2F2148006FB764 /* PreferenceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceTableViewCell.swift; sourceTree = "<group>"; };
 		4EECA7EF2A2F2968006FB764 /* NFTViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTViewController.swift; sourceTree = "<group>"; };
 		4EECA7F12A2F3213006FB764 /* MILEViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MILEViewController.swift; sourceTree = "<group>"; };
 		4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpertLevelViewController.swift; sourceTree = "<group>"; };
@@ -330,6 +328,7 @@
 			isa = PBXGroup;
 			children = (
 				4EECA63D2A29C1F6006FB764 /* RecordViewController.swift */,
+				4E04A9992B137C3200EE6530 /* RecordViewModel.swift */,
 				4E44FBA02AD978520021FAB9 /* PastTravelViewController.swift */,
 				4E44FBA22ADA323A0021FAB9 /* PastTravelTitleViewController.swift */,
 			);
@@ -376,13 +375,11 @@
 			children = (
 				4EA7AFC32AA6D0E40055F4C7 /* HomeTableViewCell.swift */,
 				4E35524B2B0DF72E0060E391 /* LocationTableViewCell.swift */,
-				4EECA7DE2A2DC352006FB764 /* TravelCollectionViewCell.swift */,
 				4E44FBA42ADCF0C10021FAB9 /* PlanCollectionViewCell.swift */,
 				4E32D1862B088B0B001BD1B7 /* PlanDetailTableViewCell.swift */,
-				4EECA7DC2A2C820F006FB764 /* PlaceCollectionViewCell.swift */,
-				4EECA7EB2A2F0013006FB764 /* RecordCollectionViewCell.swift */,
-				4EECA7ED2A2F2148006FB764 /* MenuTableViewCell.swift */,
+				4EECA7DE2A2DC352006FB764 /* TravelCollectionViewCell.swift */,
 				4E44FB962ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift */,
+				4EECA7ED2A2F2148006FB764 /* PreferenceTableViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -577,7 +574,6 @@
 				4E55AB862AFA6066008066E5 /* GoogleApiModel.swift in Sources */,
 				4E44FBA72ADCF9160021FAB9 /* NewPlanViewController.swift in Sources */,
 				4E0648B42B05BBA4009DB83B /* AddMyPlanViewModel.swift in Sources */,
-				4EECA7EC2A2F0013006FB764 /* RecordCollectionViewCell.swift in Sources */,
 				4E44FB992ACFD9D80021FAB9 /* NFTDetailViewController.swift in Sources */,
 				4E44FBA32ADA323A0021FAB9 /* PastTravelTitleViewController.swift in Sources */,
 				4E1EB4212AA47F8000620D57 /* WrittingViewController.swift in Sources */,
@@ -591,6 +587,7 @@
 				4E7D52E62AC41AF200054800 /* SplashViewController.swift in Sources */,
 				4E35524A2B0DA0660060E391 /* SearchViewController.swift in Sources */,
 				4E44FB9F2AD50DC20021FAB9 /* CameraViewModel.swift in Sources */,
+				4E04A99A2B137C3200EE6530 /* RecordViewModel.swift in Sources */,
 				4E19AA672A83E4F100213589 /* CameraCustomViewController.swift in Sources */,
 				4E55AB822AFA2612008066E5 /* BackendExtension.swift in Sources */,
 				4EA7AFC42AA6D0E40055F4C7 /* HomeTableViewCell.swift in Sources */,
@@ -604,8 +601,7 @@
 				4EECA7DF2A2DC352006FB764 /* TravelCollectionViewCell.swift in Sources */,
 				4EB8FEF22AEF8D0F0094C109 /* HomeInfoViewController.swift in Sources */,
 				4E1EA0872B1053D90081397B /* NFTDetailViewModel.swift in Sources */,
-				4EECA7EE2A2F2148006FB764 /* MenuTableViewCell.swift in Sources */,
-				4EECA7DD2A2C820F006FB764 /* PlaceCollectionViewCell.swift in Sources */,
+				4EECA7EE2A2F2148006FB764 /* PreferenceTableViewCell.swift in Sources */,
 				4E2DDF542AB8050600C7F4B9 /* PreferenceViewController.swift in Sources */,
 				4E9B91002AFDBC0E00F6D347 /* PlanModel.swift in Sources */,
 				4EECA7F42A2F3235006FB764 /* ExpertLevelViewController.swift in Sources */,

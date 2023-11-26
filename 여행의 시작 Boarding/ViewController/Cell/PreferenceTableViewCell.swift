@@ -1,5 +1,5 @@
 //
-//  MenuTableViewCell.swift
+//  PreferenceTableViewCell.swift
 //  여행의 시작 Boarding
 //
 //  Created by 서충원 on 2023/06/06.
@@ -7,10 +7,10 @@
 
 import UIKit
 
-class MenuTableViewCell: UITableViewCell {
+class PreferenceTableViewCell: UITableViewCell {
 
-    var menuLabel = UILabel().then {
-        $0.text = "내 NFT"
+    var mainLabel = UILabel().then {
+        $0.text = "이용약관"
         $0.font = Pretendard.regular(16)
         $0.textColor = Gray.dark
     }
@@ -42,8 +42,8 @@ class MenuTableViewCell: UITableViewCell {
     }
     
     func setViews() {
-        contentView.addSubview(menuLabel)
-        menuLabel.snp.makeConstraints { make in
+        contentView.addSubview(mainLabel)
+        mainLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().offset(24)
         }

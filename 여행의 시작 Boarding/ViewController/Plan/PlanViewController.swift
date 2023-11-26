@@ -32,21 +32,21 @@ class PlanViewController: UIViewController {
         $0.textColor = Gray.black
     }
     
-    lazy var addPlanButton = UIButton().then {
+    var addPlanButton = UIButton().then {
         $0.setImage(UIImage(named: "BluePlus")?.withRenderingMode(.alwaysTemplate), for: .normal)
         $0.tintColor = Gray.medium
     }
     
+    lazy var planFlowLayout = UICollectionViewFlowLayout().then {
+        $0.itemSize = CGSize(width: view.bounds.width - 60, height: 550)
+        $0.sectionInset = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
+        $0.minimumLineSpacing = 0
+        $0.scrollDirection = .horizontal
+    }
+    
     lazy var planCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
-        $0.backgroundColor = .clear
-        var layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: self.view.bounds.width - 60, height: 550)
-        
-        layout.minimumLineSpacing = 0
-        layout.scrollDirection = .horizontal
-        $0.collectionViewLayout = layout
+        $0.collectionViewLayout = planFlowLayout
         $0.contentInsetAdjustmentBehavior = .never
-        $0.contentInset = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 20)
         $0.showsHorizontalScrollIndicator = false
         $0.isPagingEnabled = false
         $0.decelerationRate = .fast
@@ -145,6 +145,14 @@ class PlanViewController: UIViewController {
     }
     
     func setRx() {
+        addPlanButton.rx.tap
+            .subscribe(onNext: {
+                let vc = NewPlanViewController()
+                vc.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(vc, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
         viewModel.items
             .bind(to: planCollectionView.rx.items(cellIdentifier: "planCollectionViewCell", cellType: PlanCollectionViewCell.self)) { (row, element, cell) in
                 if element.planID != "" {
@@ -181,14 +189,7 @@ class PlanViewController: UIViewController {
                 } else {
                     self?.addPlanView.isHidden = true
                 }
-            })
-            .disposed(by: disposeBag)
-        
-        addPlanButton.rx.tap
-            .subscribe(onNext: {
-                let vc = NewPlanViewController()
-                vc.hidesBottomBarWhenPushed = true
-                self.navigationController?.pushViewController(vc, animated: true)
+                print("aa")
             })
             .disposed(by: disposeBag)
         

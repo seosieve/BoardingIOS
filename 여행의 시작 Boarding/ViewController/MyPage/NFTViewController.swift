@@ -39,16 +39,15 @@ class NFTViewController: UIViewController {
         $0.semanticContentAttribute = .forceRightToLeft
     }
     
+    lazy var NFTFlowLayout = UICollectionViewFlowLayout().then {
+        let width = (view.bounds.width - 54)/2
+        let height = width * 4/3
+        $0.itemSize = CGSize(width: width, height: height)
+        $0.minimumInteritemSpacing = 10
+    }
+    
     lazy var NFTCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
-        $0.backgroundColor = .clear
-        var layout = UICollectionViewFlowLayout()
-        layout.minimumInteritemSpacing = 10
-        layout.itemSize = {
-            let width = (self.view.bounds.width - 54)/2
-            let height = width*4/3
-            return CGSize(width: width, height: height)
-        }()
-        $0.collectionViewLayout = layout
+        $0.collectionViewLayout = NFTFlowLayout
         $0.showsHorizontalScrollIndicator = false
     }
     
@@ -56,6 +55,11 @@ class NFTViewController: UIViewController {
         $0.text = "등록된 NFT가 없습니다.\n아래 버튼을 눌러 여행을 기록해보세요."
         $0.font = Pretendard.regular(20)
         $0.textColor = Gray.medium
+        let attrString = NSMutableAttributedString(string: $0.text!)
+        let style = NSMutableParagraphStyle()
+        style.lineSpacing = 12
+        attrString.addAttribute(.paragraphStyle, value: style, range: NSMakeRange(0, attrString.length))
+        $0.attributedText = attrString
         $0.textAlignment = .center
         $0.numberOfLines = 2
     }
@@ -83,7 +87,6 @@ class NFTViewController: UIViewController {
         NFTContentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalToSuperview()
-            make.height.equalTo(1)
         }
         
         NFTContentView.addSubview(NFTnumberLabel)
@@ -105,6 +108,7 @@ class NFTViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(20)
             make.height.equalTo(1)
+            make.bottom.equalToSuperview().offset(-200)
         }
                 
         NFTContentView.addSubview(placeHolderImage)
@@ -116,7 +120,7 @@ class NFTViewController: UIViewController {
         NFTContentView.addSubview(placeHolderLabel)
         placeHolderLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(placeHolderImage.snp.top).offset(-10)
+            make.bottom.equalTo(placeHolderImage.snp.top).offset(-16)
         }
     }
     
@@ -179,16 +183,13 @@ class NFTViewController: UIViewController {
     }
     
     func updateViewHeight(count: Int) {
-        // UICollectionView, ScrollContentView의 높이를 업데이트
+        // UICollectionView의 높이를 업데이트
         let width = (view.bounds.width - 54)/2
-        let height = width*4/3 + 10
+        let height = width * 4/3 + 10
         let numberOfCells = ceil(Double(count)/Double(2))
         let totalHeight = height * numberOfCells
         NFTCollectionView.snp.updateConstraints { make in
             make.height.equalTo(totalHeight)
-        }
-        NFTContentView.snp.updateConstraints { make in
-            make.height.equalTo(totalHeight + 250)
         }
     }
     

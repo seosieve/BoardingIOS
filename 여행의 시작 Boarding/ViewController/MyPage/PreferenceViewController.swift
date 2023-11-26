@@ -35,7 +35,7 @@ class PreferenceViewController: UIViewController {
         super.viewDidLoad()
         self.navigationController?.navigationBar.setNavigationBar()
         self.view.backgroundColor = Gray.white
-        preferenceTableView.register(MenuTableViewCell.self, forCellReuseIdentifier: "menuTableViewCell")
+        preferenceTableView.register(PreferenceTableViewCell.self, forCellReuseIdentifier: "preferenceTableViewCell")
         setViews()
         setRx()
     }
@@ -62,8 +62,8 @@ class PreferenceViewController: UIViewController {
     func setRx() {
         viewModel.items
             .bind(to: preferenceTableView.rx.items) { (tableView, row, element) in
-                let cell = tableView.dequeueReusableCell(withIdentifier: "menuTableViewCell", for: IndexPath(row: row, section: 0)) as! MenuTableViewCell
-                cell.menuLabel.text = element
+                let cell = tableView.dequeueReusableCell(withIdentifier: "preferenceTableViewCell", for: IndexPath(row: row, section: 0)) as! PreferenceTableViewCell
+                cell.mainLabel.text = element
                 if row == 3 || row == 4 {
                     cell.detailButton.isHidden = true
                 }

@@ -11,7 +11,10 @@ class NFTCollectionViewCell: UICollectionViewCell {
     
     var NFTImageView = UIImageView().then {
         $0.image = UIImage()
+        $0.backgroundColor = Gray.bright
         $0.contentMode = .scaleAspectFill
+        $0.layer.cornerRadius = 8
+        $0.layer.masksToBounds = true
     }
     
     override init(frame: CGRect) {
@@ -28,14 +31,10 @@ class NFTCollectionViewCell: UICollectionViewCell {
     }
     
     func setViews() {
-        contentView.layer.masksToBounds = true
-        contentView.layer.cornerRadius = 8
         contentView.addSubview(NFTImageView)
         NFTImageView.snp.makeConstraints { make in
             make.edges.equalTo(safeAreaLayoutGuide)
         }
-        UIView.animate(withDuration: 0.5, delay: 0, options: [.repeat, .autoreverse], animations: {
-            self.NFTImageView.backgroundColor = Gray.white
-        })
+        NFTImageView.loadingAnimation()
     }
 }

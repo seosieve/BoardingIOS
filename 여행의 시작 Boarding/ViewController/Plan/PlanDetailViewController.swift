@@ -46,7 +46,7 @@ class PlanDetailViewController: UIViewController {
     }
     
     var modifyButton = UIButton().then {
-        $0.setTitle("수정", for: .normal)
+        $0.setTitle("삭제", for: .normal)
         $0.titleLabel?.font = Pretendard.regular(17)
         $0.setTitleColor(Gray.medium, for: .normal)
     }
@@ -97,7 +97,7 @@ class PlanDetailViewController: UIViewController {
         
         sender.isSelected = true
         sender.layer.borderWidth = 0
-        selectedDay = sender.tag
+        selectedDay = sender.tag + 1
         feedbackGenerator?.impactOccurred()
         dayLabel.text = "Day \(sender.tag)"
     }
@@ -433,6 +433,12 @@ class PlanDetailViewController: UIViewController {
     }
     
     func setRx() {
+        modifyButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                self?.popUpAlert()
+            })
+            .disposed(by: disposeBag)
+        
         viewModel.items
             .subscribe(onNext: { [weak self] NFTArr in
                 self?.makeStackView(NFTArr)
@@ -499,6 +505,21 @@ class PlanDetailViewController: UIViewController {
             }
             scrapStackView.addArrangedSubview(subview)
         }
+    }
+    
+    func popUpAlert() {
+        let alert = UIAlertController(title: "정말로 삭제하시겠어요?", message: "한 번 삭제한 플랜은 되돌릴 수 없어요", preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        let action = UIAlertAction(title: "삭제", style: .default) { action in
+//            self.indicator.startAnimating()
+//            self.view.isUserInteractionEnabled = false
+//            self.viewModel.NFTDelete(NFTID: self.NFTResult.NFTID)
+        }
+        alert.addAction(cancel)
+        alert.addAction(action)
+        action.setValue(UIColor.red, forKey: "titleTextColor")
+        alert.view.tintColor = Gray.dark
+        present(alert, animated: true, completion: nil)
     }
 }
 

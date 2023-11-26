@@ -66,7 +66,7 @@ class AddMyPlanViewController: UIViewController {
         $0.axis = .horizontal
         $0.alignment = .fill
         $0.distribution = .fillEqually
-        $0.spacing = 8
+        $0.spacing = 16
     }
     
     @objc func planStackViewSelected(_ sender: UITapGestureRecognizer) {
@@ -190,7 +190,7 @@ class AddMyPlanViewController: UIViewController {
             
             borderView.addSubview(travelImageView)
             travelImageView.snp.makeConstraints { make in
-                make.edges.equalToSuperview().inset(8)
+                make.edges.equalToSuperview().inset(5)
             }
             travelImageView.rounded(axis: .vertical)
             
@@ -202,7 +202,7 @@ class AddMyPlanViewController: UIViewController {
             
             subview.addSubview(subLabel)
             subLabel.snp.makeConstraints { make in
-                make.top.equalTo(mainLabel.snp.bottom)
+                make.top.equalTo(mainLabel.snp.bottom).offset(4)
                 make.centerX.equalToSuperview()
             }
             planStackView.addArrangedSubview(subview)
@@ -247,7 +247,7 @@ class AddMyPlanViewController: UIViewController {
         
         borderView.addSubview(travelImageView)
         travelImageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(8)
+            make.edges.equalToSuperview().inset(5)
         }
         travelImageView.rounded(axis: .vertical)
         

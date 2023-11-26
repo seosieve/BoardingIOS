@@ -6,14 +6,13 @@
 //
 
 import UIKit
-import Then
-import SnapKit
+import RxSwift
+import RxCocoa
 
 class RecordViewController: UIViewController {
-
-    let planArr = [(UIImage(named: "France11"), "2024 뉴욕 여행", "미정"), (UIImage(named: "France10"), "여름방학 프랑스 여행", "23.07.10 ~ 23.07.25"), (UIImage(named: "France9"), "유럽 축구 여행", "파리, 프랑스")]
     
-    let recordArr = [UIImage(named: "France10"), UIImage(named: "France9"), UIImage(named: "France8"), UIImage(named: "France7"), UIImage(named: "France6"), UIImage(named: "France5"), UIImage(named: "France4"), UIImage(named: "France3"), UIImage(named: "France2")]
+    let viewModel = RecordViewModel()
+    let disposeBag = DisposeBag()
     
     var statusBarView = UIView().then {
         $0.backgroundColor = Gray.white
@@ -29,23 +28,20 @@ class RecordViewController: UIViewController {
         $0.textColor = Gray.black
     }
     
-    lazy var addPastTravelButton = UIButton().then {
-        $0.setImage(UIImage(named: "BluePlus"), for: .normal)
-        $0.tintColor = Boarding.blue
-        $0.addTarget(self, action: #selector(addPastTravelButtonPressed), for: .touchUpInside)
+    var addPastTravelButton = UIButton().then {
+        $0.setImage(UIImage(named: "BluePlus")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        $0.tintColor = Gray.medium
     }
     
-    @objc func addPastTravelButtonPressed() {
-        let vc = PastTravelViewController()
-        vc.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(vc, animated: true)
+    lazy var pastTravelFlowLayout = UICollectionViewFlowLayout().then {
+        $0.itemSize = CGSize(width: 176, height: 280)
+        $0.sectionInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+        $0.minimumLineSpacing = 0
+        $0.scrollDirection = .horizontal
     }
     
-    var pastTravelCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
-        var layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        layout.scrollDirection = .horizontal
-        $0.collectionViewLayout = layout
+    lazy var pastTravelCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
+        $0.collectionViewLayout = pastTravelFlowLayout
         $0.showsHorizontalScrollIndicator = false
     }
     
@@ -55,44 +51,61 @@ class RecordViewController: UIViewController {
         $0.textColor = Gray.black
     }
     
-    var recordCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
-        var layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        layout.minimumInteritemSpacing = 4
-        layout.minimumLineSpacing = 4
-        $0.collectionViewLayout = layout
+    lazy var recordFlowLayout = UICollectionViewFlowLayout().then {
+        let width = (view.bounds.width - 48)/3
+        let height = width * 4/3
+        $0.itemSize = CGSize(width: width, height: height)
+        $0.minimumInteritemSpacing = 4
+        $0.minimumLineSpacing = 4
+    }
+    
+    lazy var recordCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
+        $0.collectionViewLayout = recordFlowLayout
+    }
+    
+    var placeHolderLabel = UILabel().then {
+        $0.text = "등록된 NFT가 없습니다.\n아래 버튼을 눌러 여행을 기록해보세요."
+        $0.font = Pretendard.regular(20)
+        $0.textColor = Gray.medium
+        let attrString = NSMutableAttributedString(string: $0.text!)
+        let style = NSMutableParagraphStyle()
+        style.lineSpacing = 12
+        attrString.addAttribute(.paragraphStyle, value: style, range: NSMakeRange(0, attrString.length))
+        $0.attributedText = attrString
+        $0.textAlignment = .center
+        $0.numberOfLines = 2
+    }
+    
+    var placeHolderImage = UIImageView().then {
+        $0.image = UIImage(named: "Arrow")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
         self.view.backgroundColor = Gray.white
-        pastTravelCollectionView.delegate = self
-        pastTravelCollectionView.dataSource = self
         pastTravelCollectionView.register(TravelCollectionViewCell.self, forCellWithReuseIdentifier: "travelCollectionViewCell")
-        recordCollectionView.delegate = self
-        recordCollectionView.dataSource = self
         recordCollectionView.register(NFTCollectionViewCell.self, forCellWithReuseIdentifier: "NFTCollectionViewCell")
         setViews()
+        setRx()
     }
     
     func setViews() {
         view.addSubview(statusBarView)
         statusBarView.snp.makeConstraints { make in
-            make.centerX.top.width.equalToSuperview()
+            make.top.centerX.width.equalToSuperview()
             make.height.equalTo(window.safeAreaInsets.top)
         }
         
         view.insertSubview(recordScrollView, belowSubview: statusBarView)
         recordScrollView.addSubview(recordContentView)
         recordScrollView.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
             make.top.equalTo(statusBarView.snp.bottom)
+            make.left.right.bottom.equalToSuperview()
         }
         recordContentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalToSuperview()
-            make.height.equalTo(1000)
         }
         
         recordContentView.addSubview(pastTravelLabel)
@@ -111,58 +124,98 @@ class RecordViewController: UIViewController {
         recordContentView.addSubview(pastTravelCollectionView)
         pastTravelCollectionView.snp.makeConstraints { make in
             make.top.equalTo(pastTravelLabel.snp.bottom).offset(20)
-            make.centerX.right.equalToSuperview()
-            make.height.equalTo(270)
+            make.centerX.left.equalToSuperview()
+            make.height.equalTo(280)
+        }
+        
+        let recordDivider = divider()
+        recordContentView.addSubview(recordDivider)
+        recordDivider.snp.makeConstraints { make in
+            make.top.equalTo(pastTravelCollectionView.snp.bottom).offset(16)
+            make.centerX.left.equalToSuperview()
+            make.height.equalTo(1)
         }
         
         recordContentView.addSubview(recordLabel)
         recordLabel.snp.makeConstraints { make in
-            make.top.equalTo(pastTravelCollectionView.snp.bottom).offset(30)
+            make.top.equalTo(recordDivider).offset(24)
             make.left.equalToSuperview().inset(20)
         }
         
         recordContentView.addSubview(recordCollectionView)
         recordCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(recordLabel.snp.bottom).offset(10)
-            make.centerX.right.equalToSuperview()
-            make.height.equalTo(2000)
+            make.top.equalTo(recordLabel.snp.bottom).offset(16)
+            make.left.equalToSuperview().offset(20)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(1)
+            make.bottom.equalToSuperview().offset(-56)
         }
-    }
-}
-
-//MARK: - UICollectionView
-extension RecordViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch collectionView {
-        case pastTravelCollectionView:
-            return 3
-        default:
-            return 9
+        
+        recordContentView.addSubview(placeHolderImage)
+        placeHolderImage.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(180)
+            make.height.equalTo(90)
+            make.width.equalTo(26)
+        }
+        
+        recordContentView.addSubview(placeHolderLabel)
+        placeHolderLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(placeHolderImage.snp.top).offset(-16)
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == pastTravelCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "travelCollectionViewCell", for: indexPath) as! TravelCollectionViewCell
-            cell.travelImageView.image = planArr[indexPath.row].0
-            cell.travelTitleLabel.text = planArr[indexPath.row].1
-            cell.travelSubLabel.text = planArr[indexPath.row].2
-            return cell
-        } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NFTCollectionViewCell", for: indexPath) as! NFTCollectionViewCell
-            cell.NFTImageView.image = recordArr[indexPath.row]
-            return cell
-        }
-    }
+    func setRx() {
+        addPastTravelButton.rx.tap
+            .subscribe(onNext: {
+                let vc = PastTravelViewController()
+                vc.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(vc, animated: true)
+            })
+            .disposed(by: disposeBag)
         
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        switch collectionView {
-        case pastTravelCollectionView:
-            return CGSize(width: 160, height: 270)
-        default:
-            let width = (view.bounds.width - 48)/3
-            let height = width*4/3
-            return CGSize(width: width, height: height)
+        viewModel.pastTravelItems
+            .bind(to: pastTravelCollectionView.rx.items(cellIdentifier: "travelCollectionViewCell", cellType: TravelCollectionViewCell.self)) { (row, element, cell) in
+                cell.travelImageView.image = element.0
+                cell.mainLabel.text = element.1
+                cell.subLabel.text = element.2
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.recordItems
+            .bind(to: recordCollectionView.rx.items(cellIdentifier: "NFTCollectionViewCell", cellType: NFTCollectionViewCell.self)) { (row, element, cell) in
+                if element.NFTID != "" {
+                    cell.NFTImageView.sd_setImage(with: URL(string: element.url), placeholderImage: nil, options: .scaleDownLargeImages)
+                    cell.isUserInteractionEnabled = true
+                } else {
+                    cell.isUserInteractionEnabled = false
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.recordItemCount
+            .subscribe(onNext: { [weak self] count in
+                if count == 0 {
+                    self?.placeHolderLabel.isHidden = false
+                    self?.placeHolderImage.isHidden = false
+                } else {
+                    self?.placeHolderLabel.isHidden = true
+                    self?.placeHolderImage.isHidden = true
+                }
+                self?.updateViewHeight(count: count)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func updateViewHeight(count: Int) {
+        // UICollectionView의 높이를 업데이트
+        let width = (view.bounds.width - 48)/3
+        let height = width * 4/3 + 4
+        let numberOfCells = ceil(Double(count)/Double(3))
+        let totalHeight = height * numberOfCells
+        recordCollectionView.snp.updateConstraints { make in
+            make.height.equalTo(totalHeight)
         }
     }
 }

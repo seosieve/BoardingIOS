@@ -21,11 +21,11 @@ extension UIView {
         case horizontal, vertical
     }
     
-    func rounded(axis: Axis) {
+    func rounded(axis: Axis, mask: Bool = true) {
         layoutIfNeeded()
         let value = axis == .horizontal ? self.frame.height/2 : self.frame.width/2
         self.layer.cornerRadius = value
-        self.layer.masksToBounds = true
+        self.layer.masksToBounds = mask
     }
     
     //Round ShapeLayer
@@ -60,6 +60,12 @@ extension UIView {
         self.layer.shadowOpacity = opacity
         self.layer.shadowOffset = CGSize(width: width, height: height)
         self.layer.shadowRadius = CGFloat(shadowRadius)
+    }
+    
+    func loadingAnimation() {
+        UIView.animate(withDuration: 0.5, delay: 0, options: [.repeat, .autoreverse], animations: {
+            self.backgroundColor = Gray.white
+        })
     }
 }
 

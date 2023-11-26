@@ -13,8 +13,7 @@ class HomeTableViewCell: UITableViewCell {
     var iconTapped: ((UIButton) -> Void)?
     
     var userImage = UIImageView().then {
-        $0.image = UIImage()
-        $0.tintColor = Boarding.blue
+        $0.backgroundColor = Gray.bright
         $0.layer.cornerRadius = 16
         $0.layer.masksToBounds = true
     }
@@ -171,9 +170,7 @@ class HomeTableViewCell: UITableViewCell {
             make.right.equalToSuperview().inset(77)
             make.height.equalTo(450)
         }
-        UIView.animate(withDuration: 0.5, delay: 0, options: [.repeat, .autoreverse], animations: {
-            self.photoView.backgroundColor = Gray.white
-        })
+        photoView.loadingAnimation()
         
         contentView.addSubview(photoContainerButton)
         photoContainerButton.snp.makeConstraints { make in
