@@ -44,7 +44,7 @@ class TabBarViewController: UITabBarController {
         planVC.tabBarItem.title = ""
         planVC.tabBarItem.titlePositionAdjustment = UIOffset(horizontal: -30, vertical: 0)
         
-        let recordVC = UINavigationController(rootViewController: RecordViewController())
+        let recordVC = ChangableNavigationController(rootViewController: RecordViewController())
         recordVC.tabBarItem.image = UIImage(named: "Record")
         recordVC.tabBarItem.title = ""
         recordVC.tabBarItem.titlePositionAdjustment = UIOffset(horizontal: 30, vertical: 0)

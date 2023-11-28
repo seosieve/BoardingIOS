@@ -23,13 +23,22 @@ class NFTDetailViewController: UIViewController {
         .lightContent
     }
     
-    lazy var viewMoreButton = UIBarButtonItem().then {
-        $0.image = UIImage(named: "ViewMore")
-        $0.style = .plain
-        let popularityOrder = UIAction(title: "삭제하기", handler: { _ in
+    lazy var backButton = UIButton().then {
+        $0.setImage(UIImage(named: "Back"), for: .normal)
+        $0.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+    }
+    
+    @objc func backButtonPressed() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    lazy var viewMoreButton = UIButton().then {
+        $0.setImage(UIImage(named: "ViewMore")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        $0.tintColor = Gray.white
+        $0.menu = UIMenu(options: .displayInline, children: [UIAction(title: "삭제하기", handler: { _ in
             self.popUpAlert(("정말로 삭제하시겠어요?", "한 번 삭제한 NFT는 되돌릴 수 없어요", "삭제"))
-        })
-        $0.menu = UIMenu(options: .displayInline, children: [popularityOrder])
+        })])
+        $0.showsMenuAsPrimaryAction = true
     }
     
     lazy var fullScreenImageView = UIImageView().then {
@@ -38,7 +47,7 @@ class NFTDetailViewController: UIViewController {
         $0.clipsToBounds = true
     }
     
-    var fullScreenVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+    var fullScreenVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
     
     var NFTStatusView = UIView().then {
         $0.backgroundColor = Gray.white
@@ -137,9 +146,6 @@ class NFTDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.setNavigationBar()
-        self.navigationItem.rightBarButtonItem = viewMoreButton
-        self.navigationController?.navigationBar.tintColor = Gray.white
         view.backgroundColor = Gray.white
         let tap = UITapGestureRecognizer(target: self, action: #selector(flipNFT))
         NFTView.addGestureRecognizer(tap)
@@ -147,19 +153,30 @@ class NFTDetailViewController: UIViewController {
         setRx()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.navigationBar.isHidden = true
-    }
-    
     func setViews() {
         view.addSubview(fullScreenImageView)
-        view.addSubview(fullScreenVisualEffectView)
         fullScreenImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+
+        fullScreenImageView.addSubview(fullScreenVisualEffectView)
         fullScreenVisualEffectView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+        
+        view.addSubview(backButton)
+        backButton.snp.makeConstraints { make in
+            make.top.equalTo(window.safeAreaInsets.top)
+            make.left.equalToSuperview()
+            make.width.equalTo(60)
+            make.height.equalTo(48)
+        }
+        
+        view.addSubview(viewMoreButton)
+        viewMoreButton.snp.makeConstraints { make in
+            make.centerY.equalTo(backButton)
+            make.right.equalToSuperview().offset(-24)
+            make.width.height.equalTo(28)
         }
         
         view.addSubview(NFTStatusView)
@@ -237,7 +254,7 @@ class NFTDetailViewController: UIViewController {
         
         view.addSubview(NFTView)
         NFTView.snp.makeConstraints { make in
-            make.top.equalTo(self.navigationController!.navigationBar.bottom()+20)
+            make.top.equalTo(backButton.snp.bottom).offset(20)
             make.bottom.equalTo(NFTStatusView.snp.top).offset(-32)
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(24)
@@ -253,8 +270,9 @@ class NFTDetailViewController: UIViewController {
         NFTTitleView.addSubview(NFTMainTitleLabel)
         NFTTitleView.addSubview(NFTSubTitleLabel)
         NFTMainTitleLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(21)
             make.top.equalToSuperview().offset(18)
+            make.left.equalToSuperview().offset(21)
+            make.centerX.equalToSuperview()
         }
         NFTSubTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(NFTMainTitleLabel.snp.bottom).offset(6)
@@ -284,7 +302,7 @@ class NFTDetailViewController: UIViewController {
             make.centerY.top.equalToSuperview()
         }
         let QRInfo = [String(NFTResult.writtenDate), NFTResult.NFTID, "Standard", NFTResult.autherUid]
-        for index in 0..<TicketInfo.QR.count {
+        for index in 0..<4 {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear
             }

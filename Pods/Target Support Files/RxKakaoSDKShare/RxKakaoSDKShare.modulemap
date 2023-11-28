@@ -1,0 +1,6 @@
+framework module RxKakaoSDKShare {
+  umbrella header "RxKakaoSDKShare-umbrella.h"
+
+  export *
+  module * { export * }
+}

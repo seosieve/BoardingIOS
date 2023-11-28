@@ -26,6 +26,6 @@ struct InteractionInfo {
 
 struct TicketInfo {
     static let NFT = ["위치", "시간", "날씨", "카테고리", "평점"]
-    static let QR = ["Contract Ad.", "Token ID", "Standard", "Chain"]
+    static let QR = ["Contract Ad.", "Token ID", "Standard", "Chain", "Last Updated", "Creator Earnings"]
 }
 

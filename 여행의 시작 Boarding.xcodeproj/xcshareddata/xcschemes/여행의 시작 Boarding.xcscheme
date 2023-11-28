@@ -51,6 +51,13 @@
             ReferencedContainer = "container:&#x110b;&#x1167;&#x1112;&#x1162;&#x11bc;&#x110b;&#x1174; &#x1109;&#x1175;&#x110c;&#x1161;&#x11a8; Boarding.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "OS_ACTIVITY_MODE"
+            value = "disable"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

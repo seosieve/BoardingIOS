@@ -19,8 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
         RxKakaoSDK.initSDK(appKey: APIKey.kakao)
-        GMSServices.provideAPIKey("AIzaSyBcH3Of0Ymx0f7hIPNMn5lh1gDKhmSaTqU")
-        GMSPlacesClient.provideAPIKey("AIzaSyBcH3Of0Ymx0f7hIPNMn5lh1gDKhmSaTqU")
+        GMSServices.provideAPIKey(APIKey.googleMap)
+        GMSPlacesClient.provideAPIKey(APIKey.googleMap)
         return true
     }
 

@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import Then
-import SnapKit
 import RxSwift
 import RxCocoa
 
@@ -314,7 +312,6 @@ class MyPageViewController: UIViewController {
         default:
             forward = true
         }
-        
         modalPageViewController.moveFromIndex(index: tag, forward: forward)
     }
 

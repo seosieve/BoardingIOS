@@ -6,16 +6,12 @@
 //
 
 import UIKit
-import Then
-import SnapKit
 
 class NFTTicketViewController: UIViewController {
 
     var image: UIImage?
     var NFTResult = NFT.dummyType
     var isFlipped = false
-    let NFTTitle = ["위치", "시간", "날씨", "카테고리", "평점"]
-    let QRTitle = ["Contract Ad.", "Token ID", "Standard", "Chain"]
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
@@ -166,6 +162,7 @@ class NFTTicketViewController: UIViewController {
         NFTMainTitleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(18)
             make.left.equalToSuperview().offset(21)
+            make.centerX.equalToSuperview()
         }
         NFTSubTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(NFTMainTitleLabel.snp.bottom).offset(6)
@@ -195,12 +192,12 @@ class NFTTicketViewController: UIViewController {
             make.centerY.top.equalToSuperview()
         }
         let QRInfo = [String(NFTResult.writtenDate), NFTResult.NFTID, "Standard", NFTResult.autherUid]
-        for index in 0...3 {
+        for index in 0..<4 {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear
             }
             let mainLabel = UILabel().then {
-                $0.text = QRTitle[index]
+                $0.text = TicketInfo.QR[index]
                 $0.font = Pretendard.semiBold(13)
                 $0.textColor = Gray.black
             }
@@ -244,12 +241,12 @@ class NFTTicketViewController: UIViewController {
             make.height.equalTo(360)
         }
         let NFTInfo = [NFTResult.location, NFTResult.time, NFTResult.weather, NFTResult.category, String(Double(NFTResult.starPoint))]
-        for index in 0...4 {
+        for index in 0..<5 {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear
             }
             let mainLabel = UILabel().then {
-                $0.text = NFTTitle[index]
+                $0.text = TicketInfo.NFT[index]
                 $0.font = Pretendard.semiBold(15)
                 $0.textColor = Gray.white
             }

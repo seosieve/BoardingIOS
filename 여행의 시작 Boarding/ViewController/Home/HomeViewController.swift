@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Then
+import SnapKit
 import RxSwift
 import RxCocoa
 import FirebaseStorage
@@ -301,7 +303,7 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func goToFullScreen(url: URL?, NFT: NFT, user: User) {
-        let vc = FullScreenViewController()
+        let vc = HomeFullScreenViewController()
         vc.url = url
         vc.NFT = NFT
         vc.user = user

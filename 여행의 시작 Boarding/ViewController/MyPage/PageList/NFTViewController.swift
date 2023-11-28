@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import Then
-import SnapKit
 import RxSwift
 import RxCocoa
 import FirebaseStorage
@@ -80,10 +78,11 @@ class NFTViewController: UIViewController {
     
     func setViews() {
         view.addSubview(NFTScrollView)
-        NFTScrollView.addSubview(NFTContentView)
         NFTScrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        NFTScrollView.addSubview(NFTContentView)
         NFTContentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalToSuperview()
@@ -134,6 +133,12 @@ class NFTViewController: UIViewController {
         })
         .disposed(by: disposeBag)
         
+        sortButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                self?.showMenu()
+            })
+            .disposed(by: disposeBag)
+        
         viewModel.items
             .bind(to: NFTCollectionView.rx.items(cellIdentifier: "NFTCollectionViewCell", cellType: NFTCollectionViewCell.self)) { (row, element, cell) in
                 if element.NFTID != "" {
@@ -143,18 +148,6 @@ class NFTViewController: UIViewController {
                     cell.isUserInteractionEnabled = false
                 }
             }
-            .disposed(by: disposeBag)
-        
-        
-        NFTCollectionView.rx.modelSelected(NFT.self)
-            .subscribe(onNext:{ [weak self] NFT in
-                let presentingVC = self?.parent?.parent as? MyPageViewController
-                let vc = NFTDetailViewController()
-                vc.url = URL(string: NFT.url)
-                vc.NFTResult = NFT
-                vc.hidesBottomBarWhenPushed = true
-                presentingVC?.navigationController?.pushViewController(vc, animated: true)
-            })
             .disposed(by: disposeBag)
         
         viewModel.itemCount
@@ -175,9 +168,14 @@ class NFTViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        sortButton.rx.tap
-            .subscribe(onNext: { [weak self] in
-                self?.showMenu()
+        NFTCollectionView.rx.modelSelected(NFT.self)
+            .subscribe(onNext:{ [weak self] NFT in
+                let presentingVC = self?.parent?.parent as? MyPageViewController
+                let vc = NFTDetailViewController()
+                vc.url = URL(string: NFT.url)
+                vc.NFTResult = NFT
+                vc.hidesBottomBarWhenPushed = true
+                presentingVC?.navigationController?.pushViewController(vc, animated: true)
             })
             .disposed(by: disposeBag)
     }

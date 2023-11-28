@@ -774,6 +774,11 @@ PODS:
   - KakaoSDKCommon/Network (2.19.0):
     - Alamofire (~> 5.1)
     - KakaoSDKCommon/Common (= 2.19.0)
+  - KakaoSDKShare (2.19.0):
+    - KakaoSDKCommon (= 2.19.0)
+    - KakaoSDKTemplate (= 2.19.0)
+  - KakaoSDKTemplate (2.19.0):
+    - KakaoSDKCommon/Common (= 2.19.0)
   - KakaoSDKUser (2.19.0):
     - KakaoSDKAuth (= 2.19.0)
   - leveldb-library (1.22.2)
@@ -806,6 +811,9 @@ PODS:
     - KakaoSDKCommon/Network (= 2.19.0)
     - RxAlamofire (~> 6.0)
     - RxKakaoSDKCommon/Common (= 2.19.0)
+  - RxKakaoSDKShare (2.19.0):
+    - KakaoSDKShare (= 2.19.0)
+    - RxKakaoSDKCommon (= 2.19.0)
   - RxKakaoSDKUser (2.19.0):
     - KakaoSDKUser (= 2.19.0)
     - RxKakaoSDKAuth (= 2.19.0)
@@ -828,9 +836,11 @@ DEPENDENCIES:
   - GooglePlaces (= 8.2.0)
   - KakaoSDKAuth
   - KakaoSDKCommon
+  - KakaoSDKShare
   - KakaoSDKUser
   - RxKakaoSDKAuth
   - RxKakaoSDKCommon
+  - RxKakaoSDKShare
   - RxKakaoSDKUser
   - SnapKit (~> 5.6.0)
   - Then
@@ -860,6 +870,8 @@ SPEC REPOS:
     - GTMSessionFetcher
     - KakaoSDKAuth
     - KakaoSDKCommon
+    - KakaoSDKShare
+    - KakaoSDKTemplate
     - KakaoSDKUser
     - leveldb-library
     - nanopb
@@ -869,6 +881,7 @@ SPEC REPOS:
     - RxCocoa
     - RxKakaoSDKAuth
     - RxKakaoSDKCommon
+    - RxKakaoSDKShare
     - RxKakaoSDKUser
     - RxRelay
     - RxSwift
@@ -900,6 +913,8 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: e8647203b65cee28c5f73d0f473d096653945e72
   KakaoSDKAuth: a1b4c416e54fbfdf086db8591405a17f88ffea64
   KakaoSDKCommon: d642a52ccf618036478643694212c072d5eceea6
+  KakaoSDKShare: 07a70ea20cea3b1c507991eac600800a42609590
+  KakaoSDKTemplate: bb6cc31aec26a7f876fb66ee4c8882f9ce1ca2d5
   KakaoSDKUser: f21d7c3baf7cf2d08784cafc97aa9d49f2141624
   leveldb-library: f03246171cce0484482ec291f88b6d563699ee06
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
@@ -909,6 +924,7 @@ SPEC CHECKSUMS:
   RxCocoa: 44a80de90e25b739b5aeaae3c8c371a32e3343cc
   RxKakaoSDKAuth: 45b863d2d50dfb0f8182cdf872898e8df0c95765
   RxKakaoSDKCommon: 780ffe181fc153f52e87b3598b3add84f9416709
+  RxKakaoSDKShare: 578f4e2e8339a18bfd03cc1fb0995a7f48a7ad8a
   RxKakaoSDKUser: 29e2e302ffe1cd2511fe101d1eb43f2f7a7a71c1
   RxRelay: 45eaa5db8ee4fb50e5ebd57deec0159e97fa51e6
   RxSwift: a4b44f7d24599f674deebd1818eab82e58410632
@@ -916,6 +932,6 @@ SPEC CHECKSUMS:
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   Then: 844265ae87834bbe1147d91d5d41a404da2ec27d
 
-PODFILE CHECKSUM: 5024956edc032bf64af3034ba55b2565e573b156
+PODFILE CHECKSUM: c665d79ad11aedab36f85269a5e1325227a94ef2
 
 COCOAPODS: 1.14.3

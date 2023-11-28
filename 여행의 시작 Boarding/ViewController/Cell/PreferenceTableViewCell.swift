@@ -16,7 +16,8 @@ class PreferenceTableViewCell: UITableViewCell {
     }
     
     var detailButton = UIButton().then {
-        $0.setImage(UIImage(named: "Detail"), for: .normal)
+        $0.setImage(UIImage(named: "Detail")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        $0.tintColor = Gray.light
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -52,6 +53,7 @@ class PreferenceTableViewCell: UITableViewCell {
         detailButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.right.equalToSuperview().inset(24)
+            make.width.height.equalTo(36)
         }
     }
 }

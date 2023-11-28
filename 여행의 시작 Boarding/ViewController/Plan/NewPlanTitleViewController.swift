@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import Then
-import SnapKit
 
 class NewPlanTitleViewController: UIViewController {
     lazy var backButton = UIButton().then {

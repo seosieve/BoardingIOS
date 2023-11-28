@@ -2,11 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>googlechromes</string>
-		<string>comgooglemaps</string>
-	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -17,6 +12,13 @@
 				<string>kakaoa0dc7630ce25410d137528fcda8a9d30</string>
 			</array>
 		</dict>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>googlechromes</string>
+		<string>comgooglemaps</string>
+		<string>kakaokompassauth</string>
+		<string>kakaolink</string>
 	</array>
 	<key>UIAppFonts</key>
 	<array>

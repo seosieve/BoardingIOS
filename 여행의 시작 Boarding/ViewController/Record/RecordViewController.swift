@@ -154,7 +154,7 @@ class RecordViewController: UIViewController {
         recordContentView.addSubview(placeHolderImage)
         placeHolderImage.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(180)
+            make.bottom.equalToSuperview().offset(170)
             make.height.equalTo(90)
             make.width.equalTo(26)
         }
@@ -204,6 +204,16 @@ class RecordViewController: UIViewController {
                     self?.placeHolderImage.isHidden = true
                 }
                 self?.updateViewHeight(count: count)
+            })
+            .disposed(by: disposeBag)
+        
+        recordCollectionView.rx.modelSelected(NFT.self)
+            .subscribe(onNext:{ [weak self] NFT in
+                let vc = RecordFullScreenViewController()
+                vc.url = URL(string: NFT.url)
+                vc.NFTResult = NFT
+                vc.hidesBottomBarWhenPushed = true
+                self?.navigationController?.pushViewController(vc, animated: true)
             })
             .disposed(by: disposeBag)
     }

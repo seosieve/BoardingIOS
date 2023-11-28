@@ -15,8 +15,6 @@ class HomeInfoViewModel {
     let locationInfo = PublishRelay<String>()
     let marker = PublishRelay<(String,String)>()
     
-    let disposeBag = DisposeBag()
-    
     init(latitude: Double, longitude: Double) {
         getAddress(latitude: latitude, longitude: longitude)
     }

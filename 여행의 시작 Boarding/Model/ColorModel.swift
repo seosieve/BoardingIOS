@@ -15,6 +15,7 @@ struct Boarding {
 
 struct Gray {
     static let black = UIColor("#222222")
+    static let semiDark = UIColor("#575B63")
     static let dark = UIColor("#777777")
     static let medium = UIColor("#919396")
     static let light = UIColor("#BCBCBC")

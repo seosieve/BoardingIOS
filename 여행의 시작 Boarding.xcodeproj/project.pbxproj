@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4E04A99A2B137C3200EE6530 /* RecordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E04A9992B137C3200EE6530 /* RecordViewModel.swift */; };
+		4E04A99C2B139C1F00EE6530 /* RecordFullScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E04A99B2B139C1F00EE6530 /* RecordFullScreenViewController.swift */; };
+		4E04A99E2B13B4E000EE6530 /* RecordInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E04A99D2B13B4E000EE6530 /* RecordInfoViewController.swift */; };
 		4E0648B22B01CCFD009DB83B /* AddMyPlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0648B12B01CCFD009DB83B /* AddMyPlanViewController.swift */; };
 		4E0648B42B05BBA4009DB83B /* AddMyPlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0648B32B05BBA4009DB83B /* AddMyPlanViewModel.swift */; };
 		4E19AA612A80FB3A00213589 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19AA602A80FB3A00213589 /* CameraViewController.swift */; };
@@ -45,6 +47,13 @@
 		4E55AB822AFA2612008066E5 /* BackendExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E55AB812AFA2612008066E5 /* BackendExtension.swift */; };
 		4E55AB842AFA5229008066E5 /* HomeInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E55AB832AFA5229008066E5 /* HomeInfoViewModel.swift */; };
 		4E55AB862AFA6066008066E5 /* GoogleApiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E55AB852AFA6066008066E5 /* GoogleApiModel.swift */; };
+		4E6D86292B148F7E008113A4 /* RecordInfoPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D86282B148F7E008113A4 /* RecordInfoPageViewController.swift */; };
+		4E6D862B2B148FA3008113A4 /* LocationInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D862A2B148FA3008113A4 /* LocationInfoViewController.swift */; };
+		4E6D862D2B148FAF008113A4 /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D862C2B148FAF008113A4 /* UserInfoViewController.swift */; };
+		4E6D862F2B14958D008113A4 /* NFTInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D862E2B14958D008113A4 /* NFTInfoViewController.swift */; };
+		4E6D86332B14CDD8008113A4 /* RecordInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D86322B14CDD8008113A4 /* RecordInfoViewModel.swift */; };
+		4E6D86352B14D03E008113A4 /* LocationInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D86342B14D03E008113A4 /* LocationInfoViewModel.swift */; };
+		4E6D86372B150171008113A4 /* UserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D86362B150171008113A4 /* UserInfoViewModel.swift */; };
 		4E7D52E62AC41AF200054800 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E52AC41AF200054800 /* SplashViewController.swift */; };
 		4E7D52E82AC41B0100054800 /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E72AC41B0100054800 /* SplashViewModel.swift */; };
 		4E7D52EA2AC6FD0000054800 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E92AC6FD0000054800 /* MyPageViewModel.swift */; };
@@ -84,17 +93,20 @@
 		4EECA7D72A2B1120006FB764 /* ColorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7D62A2B1120006FB764 /* ColorModel.swift */; };
 		4EECA7D92A2B3005006FB764 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7D82A2B3005006FB764 /* Extension.swift */; };
 		4EECA7DF2A2DC352006FB764 /* TravelCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7DE2A2DC352006FB764 /* TravelCollectionViewCell.swift */; };
-		4EECA7E12A2DD179006FB764 /* FullScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7E02A2DD179006FB764 /* FullScreenViewController.swift */; };
+		4EECA7E12A2DD179006FB764 /* HomeFullScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7E02A2DD179006FB764 /* HomeFullScreenViewController.swift */; };
 		4EECA7EE2A2F2148006FB764 /* PreferenceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7ED2A2F2148006FB764 /* PreferenceTableViewCell.swift */; };
 		4EECA7F02A2F2968006FB764 /* NFTViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7EF2A2F2968006FB764 /* NFTViewController.swift */; };
 		4EECA7F22A2F3213006FB764 /* MILEViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7F12A2F3213006FB764 /* MILEViewController.swift */; };
 		4EECA7F42A2F3235006FB764 /* ExpertLevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */; };
 		4EECA7F62A2F903E006FB764 /* Eiffel.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 4EECA7F52A2F903E006FB764 /* Eiffel.mp4 */; };
+		BB10591A9B5C37E16AE5ED67 /* Pods_______________Boarding.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98D04E3A1009F4067BCD8FE4 /* Pods_______________Boarding.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		36A396191B40B7E0E6D4F9B1 /* Pods-여행의 시작 Boarding.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-여행의 시작 Boarding.debug.xcconfig"; path = "Target Support Files/Pods-여행의 시작 Boarding/Pods-여행의 시작 Boarding.debug.xcconfig"; sourceTree = "<group>"; };
 		4E04A9992B137C3200EE6530 /* RecordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewModel.swift; sourceTree = "<group>"; };
+		4E04A99B2B139C1F00EE6530 /* RecordFullScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFullScreenViewController.swift; sourceTree = "<group>"; };
+		4E04A99D2B13B4E000EE6530 /* RecordInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordInfoViewController.swift; sourceTree = "<group>"; };
 		4E0648B12B01CCFD009DB83B /* AddMyPlanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMyPlanViewController.swift; sourceTree = "<group>"; };
 		4E0648B32B05BBA4009DB83B /* AddMyPlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMyPlanViewModel.swift; sourceTree = "<group>"; };
 		4E19AA602A80FB3A00213589 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
@@ -132,6 +144,13 @@
 		4E55AB812AFA2612008066E5 /* BackendExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendExtension.swift; sourceTree = "<group>"; };
 		4E55AB832AFA5229008066E5 /* HomeInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInfoViewModel.swift; sourceTree = "<group>"; };
 		4E55AB852AFA6066008066E5 /* GoogleApiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleApiModel.swift; sourceTree = "<group>"; };
+		4E6D86282B148F7E008113A4 /* RecordInfoPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordInfoPageViewController.swift; sourceTree = "<group>"; };
+		4E6D862A2B148FA3008113A4 /* LocationInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoViewController.swift; sourceTree = "<group>"; };
+		4E6D862C2B148FAF008113A4 /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
+		4E6D862E2B14958D008113A4 /* NFTInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTInfoViewController.swift; sourceTree = "<group>"; };
+		4E6D86322B14CDD8008113A4 /* RecordInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordInfoViewModel.swift; sourceTree = "<group>"; };
+		4E6D86342B14D03E008113A4 /* LocationInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoViewModel.swift; sourceTree = "<group>"; };
+		4E6D86362B150171008113A4 /* UserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModel.swift; sourceTree = "<group>"; };
 		4E7D52E52AC41AF200054800 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		4E7D52E72AC41B0100054800 /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 		4E7D52E92AC6FD0000054800 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
@@ -174,12 +193,13 @@
 		4EECA7D62A2B1120006FB764 /* ColorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorModel.swift; sourceTree = "<group>"; };
 		4EECA7D82A2B3005006FB764 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		4EECA7DE2A2DC352006FB764 /* TravelCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelCollectionViewCell.swift; sourceTree = "<group>"; };
-		4EECA7E02A2DD179006FB764 /* FullScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewController.swift; sourceTree = "<group>"; };
+		4EECA7E02A2DD179006FB764 /* HomeFullScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFullScreenViewController.swift; sourceTree = "<group>"; };
 		4EECA7ED2A2F2148006FB764 /* PreferenceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceTableViewCell.swift; sourceTree = "<group>"; };
 		4EECA7EF2A2F2968006FB764 /* NFTViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTViewController.swift; sourceTree = "<group>"; };
 		4EECA7F12A2F3213006FB764 /* MILEViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MILEViewController.swift; sourceTree = "<group>"; };
 		4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpertLevelViewController.swift; sourceTree = "<group>"; };
 		4EECA7F52A2F903E006FB764 /* Eiffel.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Eiffel.mp4; sourceTree = "<group>"; };
+		98D04E3A1009F4067BCD8FE4 /* Pods_______________Boarding.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_______________Boarding.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D7290890E26EC19DDB57A8 /* Pods-여행의 시작 Boarding.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-여행의 시작 Boarding.release.xcconfig"; path = "Target Support Files/Pods-여행의 시작 Boarding/Pods-여행의 시작 Boarding.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -188,6 +208,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB10591A9B5C37E16AE5ED67 /* Pods_______________Boarding.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,6 +225,29 @@
 				4EB72F412AEE480100F9CC67 /* OnboardingViewController.swift */,
 			);
 			path = Start;
+			sourceTree = "<group>";
+		};
+		4E6D86302B149663008113A4 /* PageList */ = {
+			isa = PBXGroup;
+			children = (
+				4E6D862A2B148FA3008113A4 /* LocationInfoViewController.swift */,
+				4E6D86342B14D03E008113A4 /* LocationInfoViewModel.swift */,
+				4E6D862C2B148FAF008113A4 /* UserInfoViewController.swift */,
+				4E6D86362B150171008113A4 /* UserInfoViewModel.swift */,
+				4E6D862E2B14958D008113A4 /* NFTInfoViewController.swift */,
+			);
+			path = PageList;
+			sourceTree = "<group>";
+		};
+		4E6D86312B149693008113A4 /* PageList */ = {
+			isa = PBXGroup;
+			children = (
+				4EECA7EF2A2F2968006FB764 /* NFTViewController.swift */,
+				4E4C143C2AE4D9B500E504D4 /* NFTViewModel.swift */,
+				4EECA7F12A2F3213006FB764 /* MILEViewController.swift */,
+				4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */,
+			);
+			path = PageList;
 			sourceTree = "<group>";
 		};
 		4EECA61B2A29BECF006FB764 = {
@@ -301,7 +345,7 @@
 				4E3552492B0DA0660060E391 /* SearchViewController.swift */,
 				4E0648B12B01CCFD009DB83B /* AddMyPlanViewController.swift */,
 				4E0648B32B05BBA4009DB83B /* AddMyPlanViewModel.swift */,
-				4EECA7E02A2DD179006FB764 /* FullScreenViewController.swift */,
+				4EECA7E02A2DD179006FB764 /* HomeFullScreenViewController.swift */,
 				4EB8FEF12AEF8D0F0094C109 /* HomeInfoViewController.swift */,
 				4E55AB832AFA5229008066E5 /* HomeInfoViewModel.swift */,
 			);
@@ -329,6 +373,11 @@
 			children = (
 				4EECA63D2A29C1F6006FB764 /* RecordViewController.swift */,
 				4E04A9992B137C3200EE6530 /* RecordViewModel.swift */,
+				4E04A99B2B139C1F00EE6530 /* RecordFullScreenViewController.swift */,
+				4E04A99D2B13B4E000EE6530 /* RecordInfoViewController.swift */,
+				4E6D86322B14CDD8008113A4 /* RecordInfoViewModel.swift */,
+				4E6D86282B148F7E008113A4 /* RecordInfoPageViewController.swift */,
+				4E6D86302B149663008113A4 /* PageList */,
 				4E44FBA02AD978520021FAB9 /* PastTravelViewController.swift */,
 				4E44FBA22ADA323A0021FAB9 /* PastTravelTitleViewController.swift */,
 			);
@@ -341,12 +390,9 @@
 				4EECA63F2A29C208006FB764 /* MyPageViewController.swift */,
 				4E7D52E92AC6FD0000054800 /* MyPageViewModel.swift */,
 				4E44FB942ACAAA320021FAB9 /* ModalPageViewController.swift */,
-				4EECA7EF2A2F2968006FB764 /* NFTViewController.swift */,
-				4E4C143C2AE4D9B500E504D4 /* NFTViewModel.swift */,
+				4E6D86312B149693008113A4 /* PageList */,
 				4E44FB982ACFD9D80021FAB9 /* NFTDetailViewController.swift */,
 				4E1EA0862B1053D90081397B /* NFTDetailViewModel.swift */,
-				4EECA7F12A2F3213006FB764 /* MILEViewController.swift */,
-				4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */,
 				4E2DDF532AB8050600C7F4B9 /* PreferenceViewController.swift */,
 				4E2DDF552AB80A5200C7F4B9 /* PreferenceViewModel.swift */,
 			);
@@ -387,6 +433,7 @@
 		9BF04F723F3A1A89CAADCF8E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				98D04E3A1009F4067BCD8FE4 /* Pods_______________Boarding.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -544,9 +591,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E6D86332B14CDD8008113A4 /* RecordInfoViewModel.swift in Sources */,
 				4E44FB972ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift in Sources */,
 				4E7D52E82AC41B0100054800 /* SplashViewModel.swift in Sources */,
 				4E9B90FC2AFCE1D100F6D347 /* NewPlanDurationViewController.swift in Sources */,
+				4E6D862D2B148FAF008113A4 /* UserInfoViewController.swift in Sources */,
 				4E8B35A72A70DA1100AD2C72 /* aa.swift in Sources */,
 				4E19AA612A80FB3A00213589 /* CameraViewController.swift in Sources */,
 				4E7D52EA2AC6FD0000054800 /* MyPageViewModel.swift in Sources */,
@@ -563,14 +612,17 @@
 				4E44FB9D2AD0ED430021FAB9 /* NFTModel.swift in Sources */,
 				4E2DDF522AB40ED300C7F4B9 /* StartViewModel.swift in Sources */,
 				4EB72F402AEB912A00F9CC67 /* HomeViewModel.swift in Sources */,
+				4E04A99E2B13B4E000EE6530 /* RecordInfoViewController.swift in Sources */,
 				4EECA7D22A29E31B006FB764 /* CustomTabBar.swift in Sources */,
 				4E44FBA12AD978520021FAB9 /* PastTravelViewController.swift in Sources */,
 				4E32D1872B088B0B001BD1B7 /* PlanDetailTableViewCell.swift in Sources */,
+				4E6D862B2B148FA3008113A4 /* LocationInfoViewController.swift in Sources */,
 				4EECA63C2A29C1DF006FB764 /* PlanViewController.swift in Sources */,
 				4EECA63E2A29C1F6006FB764 /* RecordViewController.swift in Sources */,
 				4EB72F442AEF2D6B00F9CC67 /* UserModel.swift in Sources */,
 				4E55AB842AFA5229008066E5 /* HomeInfoViewModel.swift in Sources */,
 				4E4C14412AE650C900E504D4 /* SetLocationViewController.swift in Sources */,
+				4E6D86292B148F7E008113A4 /* RecordInfoPageViewController.swift in Sources */,
 				4E55AB862AFA6066008066E5 /* GoogleApiModel.swift in Sources */,
 				4E44FBA72ADCF9160021FAB9 /* NewPlanViewController.swift in Sources */,
 				4E0648B42B05BBA4009DB83B /* AddMyPlanViewModel.swift in Sources */,
@@ -579,9 +631,10 @@
 				4E1EB4212AA47F8000620D57 /* WrittingViewController.swift in Sources */,
 				4E44FBAB2ADD14A20021FAB9 /* WrittingTitleViewController.swift in Sources */,
 				4E4C143D2AE4D9B500E504D4 /* NFTViewModel.swift in Sources */,
-				4EECA7E12A2DD179006FB764 /* FullScreenViewController.swift in Sources */,
+				4EECA7E12A2DD179006FB764 /* HomeFullScreenViewController.swift in Sources */,
 				4E44FB952ACAAA320021FAB9 /* ModalPageViewController.swift in Sources */,
 				4E9B90FE2AFDB9AE00F6D347 /* NewPlanViewModel.swift in Sources */,
+				4E6D862F2B14958D008113A4 /* NFTInfoViewController.swift in Sources */,
 				4EECA7D92A2B3005006FB764 /* Extension.swift in Sources */,
 				4EECA7D52A2B02A2006FB764 /* FontModel.swift in Sources */,
 				4E7D52E62AC41AF200054800 /* SplashViewController.swift in Sources */,
@@ -597,10 +650,12 @@
 				4E8B35A92A70DFCE00AD2C72 /* aaModel.swift in Sources */,
 				4E44FBA92ADCFC4E0021FAB9 /* NewPlanTitleViewController.swift in Sources */,
 				4E9B91022AFDDAAA00F6D347 /* PlanViewModel.swift in Sources */,
+				4E6D86352B14D03E008113A4 /* LocationInfoViewModel.swift in Sources */,
 				4EB72F422AEE480100F9CC67 /* OnboardingViewController.swift in Sources */,
 				4EECA7DF2A2DC352006FB764 /* TravelCollectionViewCell.swift in Sources */,
 				4EB8FEF22AEF8D0F0094C109 /* HomeInfoViewController.swift in Sources */,
 				4E1EA0872B1053D90081397B /* NFTDetailViewModel.swift in Sources */,
+				4E04A99C2B139C1F00EE6530 /* RecordFullScreenViewController.swift in Sources */,
 				4EECA7EE2A2F2148006FB764 /* PreferenceTableViewCell.swift in Sources */,
 				4E2DDF542AB8050600C7F4B9 /* PreferenceViewController.swift in Sources */,
 				4E9B91002AFDBC0E00F6D347 /* PlanModel.swift in Sources */,
@@ -613,6 +668,7 @@
 				4E44FBA52ADCF0C10021FAB9 /* PlanCollectionViewCell.swift in Sources */,
 				4EA7AFC22AA6C86D0055F4C7 /* HomeViewController.swift in Sources */,
 				4E3552522B0E1E360060E391 /* LocationModel.swift in Sources */,
+				4E6D86372B150171008113A4 /* UserInfoViewModel.swift in Sources */,
 				4EECA7F22A2F3213006FB764 /* MILEViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -810,10 +866,10 @@
 				INFOPLIST_FILE = "여행의 시작 Boarding/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Traverse;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
-				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME)앱을 사용하기 위해서 카메라 권한이 필요합니다.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "$(PRODUCT_NAME)앱을 사용하기 위해서 사용자 위치 권한이 필요합니다.";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "$(PRODUCT_NAME)앱을 사용하기 위해서 사용자 사진 저장 권한이 필요합니다.";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "$(PRODUCT_NAME)앱을 사용하기 위해서 사용자 앨범 권한이 필요합니다.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 카메라 권한이 필요합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 사용자 위치 권한이 필요합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 사용자 사진 저장 권한이 필요합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 사용자 앨범 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
@@ -897,10 +953,10 @@
 				INFOPLIST_FILE = "여행의 시작 Boarding/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Traverse;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
-				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME)앱을 사용하기 위해서 카메라 권한이 필요합니다.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "$(PRODUCT_NAME)앱을 사용하기 위해서 사용자 위치 권한이 필요합니다.";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "$(PRODUCT_NAME)앱을 사용하기 위해서 사용자 사진 저장 권한이 필요합니다.";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "$(PRODUCT_NAME)앱을 사용하기 위해서 사용자 앨범 권한이 필요합니다.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 카메라 권한이 필요합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 사용자 위치 권한이 필요합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 사용자 사진 저장 권한이 필요합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 사용자 앨범 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;

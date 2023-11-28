@@ -104,6 +104,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>KakaoSDKShare.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>KakaoSDKTemplate.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>KakaoSDKUser.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -140,6 +150,11 @@
 			<false/>
 		</dict>
 		<key>RxKakaoSDKCommon.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>RxKakaoSDKShare.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

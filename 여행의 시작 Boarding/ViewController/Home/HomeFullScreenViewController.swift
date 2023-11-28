@@ -1,5 +1,5 @@
 //
-//  FullScreenViewController.swift
+//  HomeFullScreenViewController.swift
 //  여행의 시작 Boarding
 //
 //  Created by 서충원 on 2023/06/05.
@@ -7,10 +7,8 @@
 
 import UIKit
 import AVKit
-import Then
-import SnapKit
 
-class FullScreenViewController: UIViewController {
+class HomeFullScreenViewController: UIViewController {
     
     var url: URL?
     var NFT: NFT?
@@ -137,7 +135,6 @@ class FullScreenViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .systemGreen
 //        loadVideoView()
         loadImageView()
         setViews()
@@ -177,16 +174,14 @@ class FullScreenViewController: UIViewController {
         
         fullScreenTextView.addSubview(contentLabel)
         contentLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.left.right.bottom.equalToSuperview()
         }
         
         fullScreenTextView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
+            make.left.right.equalToSuperview()
             make.bottom.equalTo(contentLabel.snp.top).offset(-10)
-            make.left.equalToSuperview()
         }
         
         view.addSubview(locationButton)
