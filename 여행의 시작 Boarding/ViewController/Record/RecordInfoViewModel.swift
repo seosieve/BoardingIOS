@@ -32,7 +32,7 @@ class RecordInfoViewModel {
         }
     }
     
-    func NFTDelete(NFTID: String) {
+    func deleteNFT(NFTID: String) {
         deleteImage(NFTID: NFTID) {
             db.collection("NFT").document(NFTID).delete() { error in
                 if let error = error {
@@ -55,18 +55,15 @@ class RecordInfoViewModel {
         }
     }
     
-    func NFTshare(NFT: NFT) {
-        let templateId = 101300
-
+    func shareNFT(NFT: NFT) {
+        let templateID = 101300
         let templateArgs = ["photo": NFT.url, "title": NFT.title, "content": NFT.content, "userImage": thumbnail.value!.absoluteString, "userName": username.value!]
         
-        ShareApi.shared.rx.shareCustom(templateId:Int64(templateId), templateArgs: templateArgs)
+        ShareApi.shared.rx.shareCustom(templateId:Int64(templateID), templateArgs: templateArgs)
             .subscribe(onSuccess: { (sharingResult) in
-                print("shareCustom() success.")
-                
                 UIApplication.shared.open(sharingResult.url, options: [:], completionHandler: nil)
             }, onFailure: {error in
-                print(error)
+                print("NFT 공유 에러: \(error)")
             })
             .disposed(by: disposeBag)
     }

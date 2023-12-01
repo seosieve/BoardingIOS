@@ -92,7 +92,7 @@ class AddMyPlanViewController: UIViewController {
         view.addSubview(modalView)
         modalView.snp.makeConstraints { make in
             make.centerX.left.bottom.equalToSuperview().inset(0)
-            make.height.equalTo(400)
+            make.height.equalTo(380)
         }
         modalView.makeModalCircular()
         
@@ -132,16 +132,72 @@ class AddMyPlanViewController: UIViewController {
         }
     }
     
-    func setRx() {
-        viewModel.items
-            .subscribe(onNext: { [weak self] planArr in
-                if planArr.count == 0 {
-                    self?.makeEmptyStackView()
-                } else {
-                    self?.makeStackView(planArr)
-                }
-            })
-            .disposed(by: disposeBag)
+    func makeEmptyStackView() {
+        planStackView.removeAllArrangedSubviews()
+        let subview = UIView()
+        
+        let borderView = UIView().then {
+            $0.backgroundColor = Gray.white
+            $0.layer.borderWidth = 1
+            $0.layer.borderColor = Gray.semiLight.cgColor
+        }
+        
+        let backgroundView = UIImageView().then {
+            $0.backgroundColor = Gray.semiLight
+        }
+        
+        let addImageView = UIImageView().then {
+            $0.image = UIImage(named: "LargePlus")
+        }
+        
+        lazy var addButton = UIButton().then {
+            $0.backgroundColor = .clear
+            $0.addTarget(self, action: #selector(addPlanButtonPressed), for: .touchUpInside)
+        }
+        
+        let makeNewLabel = UILabel().then {
+            $0.text = "새로 만들기"
+            $0.font = Pretendard.semiBold(17)
+            $0.textColor = Gray.black
+        }
+        
+        subview.snp.makeConstraints { make in
+            make.width.equalTo(160)
+        }
+        
+        subview.addSubview(borderView)
+        borderView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.left.centerX.equalToSuperview()
+            make.height.equalTo(210)
+        }
+        borderView.rounded(axis: .vertical)
+        
+        borderView.addSubview(backgroundView)
+        backgroundView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(5)
+        }
+        backgroundView.rounded(axis: .vertical)
+        
+        borderView.addSubview(addImageView)
+        addImageView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.height.equalTo(60)
+        }
+        
+        borderView.addSubview(addButton)
+        addButton.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        addButton.rounded(axis: .vertical)
+        
+        subview.addSubview(makeNewLabel)
+        makeNewLabel.snp.makeConstraints { make in
+            make.top.equalTo(borderView.snp.bottom).offset(12)
+            make.centerX.equalToSuperview()
+        }
+        
+        planStackView.addArrangedSubview(subview)
     }
     
     func makeStackView(_ planArr: [Plan]) {
@@ -209,60 +265,15 @@ class AddMyPlanViewController: UIViewController {
         }
     }
     
-    func makeEmptyStackView() {
-        planStackView.removeAllArrangedSubviews()
-        let subview = UIView()
-        
-        let borderView = UIView().then {
-            $0.backgroundColor = Gray.white
-            $0.layer.borderWidth = 1
-            $0.layer.borderColor = Gray.semiLight.cgColor
-        }
-        
-        let travelImageView = UIImageView().then {
-            $0.backgroundColor = Gray.semiLight
-        }
-        
-        let plusImageView = UIImageView().then {
-            $0.image = UIImage(named: "LargePlus")
-        }
-        
-        let makeNewLabel = UILabel().then {
-            $0.text = "새로 만들기"
-            $0.font = Pretendard.semiBold(17)
-            $0.textColor = Gray.black
-        }
-        
-        subview.snp.makeConstraints { make in
-            make.width.equalTo(160)
-        }
-        
-        subview.addSubview(borderView)
-        borderView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.left.centerX.equalToSuperview()
-            make.height.equalTo(210)
-        }
-        borderView.rounded(axis: .vertical)
-        
-        borderView.addSubview(travelImageView)
-        travelImageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(5)
-        }
-        travelImageView.rounded(axis: .vertical)
-        
-        travelImageView.addSubview(plusImageView)
-        plusImageView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.width.height.equalTo(60)
-        }
-        
-        subview.addSubview(makeNewLabel)
-        makeNewLabel.snp.makeConstraints { make in
-            make.top.equalTo(borderView.snp.bottom).offset(12)
-            make.centerX.equalToSuperview()
-        }
-        
-        planStackView.addArrangedSubview(subview)
+    func setRx() {
+        viewModel.items
+            .subscribe(onNext: { [weak self] planArr in
+                if planArr.count == 0 {
+                    self?.makeEmptyStackView()
+                } else {
+                    self?.makeStackView(planArr)
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }

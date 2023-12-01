@@ -6,10 +6,14 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class PlanCollectionViewCell: UICollectionViewCell {
     
     var photoTapped: (() -> Void)?
+    
+    let disposeBag = DisposeBag()
     
     var borderView = UIView().then {
         $0.backgroundColor = Gray.white
@@ -21,11 +25,6 @@ class PlanCollectionViewCell: UICollectionViewCell {
     
     lazy var planDetailButton = UIButton().then {
         $0.backgroundColor = .clear
-        $0.addTarget(self, action: #selector(planDetailButtonPressed), for: .touchUpInside)
-    }
-    
-    @objc func planDetailButtonPressed() {
-        photoTapped?()
     }
     
     var mainTextView = UIView()
@@ -59,6 +58,7 @@ class PlanCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setViews()
+        setRx()
     }
     
     required init?(coder: NSCoder) {
@@ -90,6 +90,7 @@ class PlanCollectionViewCell: UICollectionViewCell {
         planDetailButton.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        planDetailButton.rounded(axis: .vertical)
         
         contentView.addSubview(mainTextView)
         mainTextView.snp.makeConstraints { make in
@@ -123,5 +124,14 @@ class PlanCollectionViewCell: UICollectionViewCell {
             make.centerX.equalToSuperview()
             make.top.equalTo(durationLabel.snp.bottom).offset(6)
         }
+    }
+    
+    func setRx() {
+        planDetailButton.rx.tap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                self?.photoTapped?()
+            })
+            .disposed(by: disposeBag)
     }
 }

@@ -10,33 +10,18 @@ import RxSwift
 import RxCocoa
 import FirebaseAuth
 import FirebaseFirestore
-import FirebaseStorage
 
 class PlanDetailViewModel {
     
-    let items = BehaviorRelay<[NFT]>(value: Array(repeating: NFT.dummyType, count: 1))
-    let itemCount = PublishRelay<Int>()
+    let deleteCompleted = PublishSubject<Void>()
     
-    init(scrap: [String]) {
-        if scrap.isEmpty {
-            
-        } else {
-            getScrapNFT(scrap: scrap)
-        }
-    }
-    
-    func getScrapNFT(scrap: [String]) {
-        db.collection("NFT").whereField("NFTID", in: scrap).getDocuments { (querySnapshot, err) in
-            if let err = err {
-                print("scrap 불러오기 오류: \(err)")
+    func deletePlan(planID: String) {
+        guard let user = Auth.auth().currentUser else { return }
+        db.collection("User").document(user.uid).collection("Plan").document(planID).delete() { error in
+            if let error = error {
+                print("NFT 삭제 에러: \(error)")
             } else {
-                var items = [NFT]()
-                for document in querySnapshot!.documents {
-                    let NFT = document.makeNFT()
-                    items.append(NFT)
-                }
-                self.items.accept(items)
-                self.itemCount.accept(items.count)
+                self.deleteCompleted.onNext(())
             }
         }
     }

@@ -9,7 +9,8 @@ import UIKit
 
 struct Boarding {
     static let blue = UIColor("#107CFA")
-    static let lightBlue = UIColor("#44D0FA")
+    static let lightBlue = UIColor("#E8F2FF")
+    static let skyBlue = UIColor("#44D0FA")
     static let red = UIColor("#F9207B")
 }
 

@@ -78,9 +78,9 @@ class PreferenceViewController: UIViewController {
             .subscribe(onNext:{ [weak self] index in
                 switch index {
                 case 3:
-                    self?.popUpAlert(message[0], index)
+                    self?.preferenceAlert(message[0], index)
                 case 4:
-                    self?.popUpAlert(message[1], index)
+                    self?.preferenceAlert(message[1], index)
                 default:
                     break
                 }
@@ -104,7 +104,7 @@ class PreferenceViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    func popUpAlert(_ message: (String, String, String), _ index: Int) {
+    func preferenceAlert(_ message: (String, String, String), _ index: Int) {
         let alert = UIAlertController(title: message.0, message: message.1, preferredStyle: .alert)
         let cancel = UIAlertAction(title: "취소", style: .cancel)
         let action = UIAlertAction(title: message.2, style: .default) { action in

@@ -67,6 +67,16 @@ extension UIView {
             self.backgroundColor = Gray.white
         })
     }
+    
+    func touchAnimation() {
+        UIView.animate(withDuration: 0.1, animations: {
+            self.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        }) { _ in
+            UIView.animate(withDuration: 0.1) {
+                self.transform = CGAffineTransform.identity
+            }
+        }
+    }
 }
 
 //MARK: - StringStoredView
@@ -152,6 +162,13 @@ class ChangableNavigationController: UINavigationController {
     override var childForStatusBarStyle: UIViewController? { return visibleViewController }
 }
 
+//MARK: - unmodifiable UITextField
+class immovableTextField: UITextField {
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        return false
+    }
+}
+
 //MARK: - Keyboard Dismiss
 extension UIViewController {
     func dismissKeyboardWhenTapped() {
@@ -184,6 +201,19 @@ extension UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    func deleteAlert(_ content: String, _ alertHandler: @escaping () -> Void) {
+        let alert = UIAlertController(title: "정말로 삭제하시겠어요?", message: "한 번 삭제한 \(content)은 되돌릴 수 없어요", preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        let action = UIAlertAction(title: "삭제", style: .default) { action in
+            alertHandler()
+        }
+        alert.addAction(cancel)
+        alert.addAction(action)
+        action.setValue(UIColor.red, forKey: "titleTextColor")
+        alert.view.tintColor = Gray.dark
+        present(alert, animated: true, completion: nil)
+    }
+    
     func divider() -> UIView {
         return UIView().then {
             $0.backgroundColor = Gray.light.withAlphaComponent(0.4)
@@ -201,16 +231,6 @@ extension UIButton {
         let backgroundImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         self.setBackgroundImage(backgroundImage, for: state)
-    }
-    
-    func buttonAnimation() {
-        UIView.animate(withDuration: 0.1, animations: {
-            self.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-        }) { _ in
-            UIView.animate(withDuration: 0.1) {
-                self.transform = CGAffineTransform.identity
-            }
-        }
     }
 }
 

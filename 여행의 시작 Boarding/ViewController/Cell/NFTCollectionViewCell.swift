@@ -6,8 +6,14 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class NFTCollectionViewCell: UICollectionViewCell {
+    
+    var addTapped: (() -> Void)?
+    
+    let disposeBag = DisposeBag()
     
     var NFTImageView = UIImageView().then {
         $0.image = UIImage()
@@ -17,9 +23,15 @@ class NFTCollectionViewCell: UICollectionViewCell {
         $0.layer.masksToBounds = true
     }
     
+    var addButton = UIButton().then {
+        $0.setImage(UIImage(named: "SmallPlus"), for: .normal)
+        $0.isHidden = true
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setViews()
+        setRx()
     }
     
     required init?(coder: NSCoder) {
@@ -33,8 +45,25 @@ class NFTCollectionViewCell: UICollectionViewCell {
     func setViews() {
         contentView.addSubview(NFTImageView)
         NFTImageView.snp.makeConstraints { make in
-            make.edges.equalTo(safeAreaLayoutGuide)
+            make.edges.equalToSuperview()
         }
         NFTImageView.loadingAnimation()
+        
+        contentView.addSubview(addButton)
+        addButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(8)
+            make.right.equalToSuperview().inset(8)
+            make.width.height.equalTo(32)
+        }
+        addButton.makeShadow()
+    }
+    
+    func setRx() {
+        addButton.rx.tap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                self?.addTapped?()
+            })
+            .disposed(by: disposeBag)
     }
 }

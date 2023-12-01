@@ -11,9 +11,10 @@ import RxCocoa
 
 class RecordFullScreenViewController: UIViewController {
 
+    var byScrapVC = false
+    
     var url = URL(string: "")
     var NFTResult = NFT.dummyType
-    var user: User?
     
     let disposeBag = DisposeBag()
     
@@ -34,7 +35,11 @@ class RecordFullScreenViewController: UIViewController {
     }
     
     @objc func backButtonPressed() {
-        self.navigationController?.popViewController(animated: true)
+        if byScrapVC {
+            self.dismiss(animated: true)
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     lazy var bottomGradientView = UIView().then {
@@ -65,6 +70,8 @@ class RecordFullScreenViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.isHidden = true
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = byScrapVC ? false : true
         setViews()
         setRx()
     }
@@ -113,11 +120,13 @@ class RecordFullScreenViewController: UIViewController {
     
     func setRx() {
         textContainerButton.rx.tap
-            .subscribe(onNext: { [weak self] in
-                let vc = RecordInfoViewController()
-                vc.url = self?.url
-                vc.NFTResult = self?.NFTResult ?? NFT.dummyType
-                self?.navigationController?.pushViewController(vc, animated: true)
+            .subscribe(onNext: {
+                if !self.byScrapVC {
+                    let vc = RecordInfoViewController()
+                    vc.url = self.url
+                    vc.NFTResult = self.NFTResult
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
             })
             .disposed(by: disposeBag)
     }

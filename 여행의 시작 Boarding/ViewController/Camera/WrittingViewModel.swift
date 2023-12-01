@@ -45,9 +45,9 @@ class WrittingViewModel {
             .map{ $0.0 != "제목을 입력해주세요." && $0.1 != "내용을 입력해주세요." && $0.2 != 0 && $0.3 != ""}
     }
     
-    func NFTWrite(image: UIImage?) {
+    func writeNFT(image: UIImage?) {
         uploadImage(image: image) { [weak self] url in
-            self?.NFTSave(url: url!)
+            self?.saveNFT(url: url!)
         }
     }
     
@@ -72,7 +72,7 @@ class WrittingViewModel {
         }
     }
     
-    func NFTSave(url: URL) {
+    func saveNFT(url: URL) {
         let NFT = NFT(NFTID: NFTID,
                       autherUid: autherUid.value,
                       writtenDate: NSDate().timeIntervalSince1970,

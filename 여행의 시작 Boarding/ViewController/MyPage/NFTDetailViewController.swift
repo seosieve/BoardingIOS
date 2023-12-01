@@ -8,7 +8,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import FirebaseStorageUI
 
 class NFTDetailViewController: UIViewController {
     
@@ -35,9 +34,13 @@ class NFTDetailViewController: UIViewController {
     lazy var viewMoreButton = UIButton().then {
         $0.setImage(UIImage(named: "ViewMore")?.withRenderingMode(.alwaysTemplate), for: .normal)
         $0.tintColor = Gray.white
-        $0.menu = UIMenu(options: .displayInline, children: [UIAction(title: "삭제하기", handler: { _ in
-            self.popUpAlert(("정말로 삭제하시겠어요?", "한 번 삭제한 NFT는 되돌릴 수 없어요", "삭제"))
-        })])
+        $0.menu = UIMenu(options: .displayInline, children: [UIAction(title: "삭제하기") { _ in
+            self.deleteAlert("NFT") {
+                self.indicator.startAnimating()
+                self.view.isUserInteractionEnabled = false
+                self.viewModel.deleteNFT(NFTID: self.NFTResult.NFTID)
+            }
+        }])
         $0.showsMenuAsPrimaryAction = true
     }
     
@@ -292,7 +295,7 @@ class NFTDetailViewController: UIViewController {
         QRImageView.snp.makeConstraints { make in
             make.left.equalToSuperview()
             make.centerY.top.equalToSuperview()
-            make.width.equalTo(68)
+            make.width.equalTo(88)
         }
         
         QRDetailView.addSubview(QRDetailStackView)
@@ -453,20 +456,5 @@ class NFTDetailViewController: UIViewController {
                 self?.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
-    }
-    
-    func popUpAlert(_ message: (String, String, String)) {
-        let alert = UIAlertController(title: message.0, message: message.1, preferredStyle: .alert)
-        let cancel = UIAlertAction(title: "취소", style: .cancel)
-        let action = UIAlertAction(title: message.2, style: .default) { action in
-            self.indicator.startAnimating()
-            self.view.isUserInteractionEnabled = false
-            self.viewModel.NFTDelete(NFTID: self.NFTResult.NFTID)
-        }
-        alert.addAction(cancel)
-        alert.addAction(action)
-        action.setValue(UIColor.red, forKey: "titleTextColor")
-        alert.view.tintColor = Gray.dark
-        present(alert, animated: true, completion: nil)
     }
 }

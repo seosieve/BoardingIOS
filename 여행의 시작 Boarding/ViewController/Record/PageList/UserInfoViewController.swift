@@ -73,7 +73,7 @@ class UserInfoViewController: UIViewController {
     
     var levelProgressView = UIView().then {
         $0.frame = CGRect(x: 0, y: 0, width: 80, height: 8)
-        $0.gradient([Boarding.blue, Boarding.lightBlue], axis: .horizontal)
+        $0.gradient([Boarding.blue, Boarding.skyBlue], axis: .horizontal)
     }
     
     var expLabel = UILabel().then {

@@ -9,7 +9,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 import FirebaseStorage
-import FirebaseStorageUI
 
 class NFTViewController: UIViewController {
 
@@ -38,15 +37,15 @@ class NFTViewController: UIViewController {
     }
     
     lazy var NFTFlowLayout = UICollectionViewFlowLayout().then {
-        let width = (view.bounds.width - 54)/2
+        let width = (view.bounds.width - 50)/2
         let height = width * 4/3
         $0.itemSize = CGSize(width: width, height: height)
+        $0.minimumLineSpacing = 10
         $0.minimumInteritemSpacing = 10
     }
     
     lazy var NFTCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init()).then {
         $0.collectionViewLayout = NFTFlowLayout
-        $0.showsHorizontalScrollIndicator = false
     }
     
     var placeHolderLabel = UILabel().then {
@@ -182,7 +181,7 @@ class NFTViewController: UIViewController {
     
     func updateViewHeight(count: Int) {
         // UICollectionView의 높이를 업데이트
-        let width = (view.bounds.width - 54)/2
+        let width = (view.bounds.width - 50)/2
         let height = width * 4/3 + 10
         let numberOfCells = ceil(Double(count)/Double(2))
         let totalHeight = height * numberOfCells

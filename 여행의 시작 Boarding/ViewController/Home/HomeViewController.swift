@@ -319,7 +319,7 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
             break
         case 2:
             sender.isSelected.toggle()
-            sender.buttonAnimation()
+            sender.touchAnimation()
         default:
             let vc = AddMyPlanViewController()
             vc.NFTID = NFTID

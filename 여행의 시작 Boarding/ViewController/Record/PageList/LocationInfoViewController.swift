@@ -38,7 +38,7 @@ class LocationInfoViewController: UIViewController {
     
     lazy var camera = GMSCameraPosition.camera(withLatitude: NFTResult.latitude, longitude: NFTResult.longitude, zoom: 14.0)
     
-    lazy var map = GMSMapView.map(withFrame: CGRect.zero, camera: camera).then {
+    lazy var map = GMSMapView(frame: CGRect.zero, camera: camera).then {
         $0.settings.scrollGestures = false
         $0.settings.zoomGestures = false
         $0.settings.tiltGestures = false
@@ -54,15 +54,16 @@ class LocationInfoViewController: UIViewController {
     }
     
     var locationDetailButton = UIButton().then {
-        var config = UIButton.Configuration.tinted()
+        var config = UIButton.Configuration.filled()
+        var title = AttributedString.init("장소 상세정보")
+        title.font = Pretendard.medium(19)
+        config.baseBackgroundColor = Gray.white
+        config.baseForegroundColor = Boarding.blue
+        config.attributedTitle = title
+        config.background.cornerRadius = 20
         config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0)
         $0.configuration = config
-        $0.backgroundColor = Gray.white
-        $0.setTitle("장소 상세정보", for: .normal)
-        $0.setTitleColor(Boarding.blue, for: .normal)
-        $0.titleLabel?.font = Pretendard.medium(19)
         $0.contentHorizontalAlignment = .left
-        $0.layer.cornerRadius = 20
     }
     
     var locationDetailImage = UIImageView().then {

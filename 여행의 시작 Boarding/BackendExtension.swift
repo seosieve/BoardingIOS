@@ -36,7 +36,7 @@ extension NSObject {
         var randomBytes = [UInt8](repeating: 0, count: length)
         let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
         if errorCode != errSecSuccess {
-            fatalError("Nonce 생성 오류: \(errorCode)")
+            fatalError("Nonce 생성 에러: \(errorCode)")
         }
         let charset: [Character] = Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
         let nonce = randomBytes.map { byte in
@@ -55,8 +55,8 @@ extension NSObject {
     }
 }
 
-//MARK: - make NFT from QueryDocument
-extension QueryDocumentSnapshot {
+//MARK: - make NFT from Document
+extension DocumentSnapshot {
     func makeNFT() -> NFT {
         let NFTID = self.get("NFTID") as! String
         let autherUid = self.get("autherUid") as! String
@@ -123,27 +123,10 @@ extension QueryDocumentSnapshot {
                         landing: landing,
                         days: days,
                         writtenDate: writtenDate,
-                        scrap: scrap
-        )
+                        scrap: scrap)
         return plan
     }
     
-//    func makeUser() -> User {
-//        let userUid = self.get("userUid") as! String
-//        let url = self.get("url") as! String
-//        let name = self.get("name") as! String
-//        let introduce = self.get("introduce") as! String
-//
-//        let User = User(userUid: userUid,
-//                        url: url,
-//                        name: name,
-//                        introduce: introduce)
-//        return User
-//    }
-}
-
-//MARK: - make NFT from Document
-extension DocumentSnapshot {
     func makeUser() -> User {
         let userUid = self.get("userUid") as! String
         let url = self.get("url") as! String

@@ -129,7 +129,7 @@ class HomeFullScreenViewController: UIViewController {
             break
         default:
             sender.isSelected.toggle()
-            sender.buttonAnimation()
+            sender.touchAnimation()
         }
     }
     

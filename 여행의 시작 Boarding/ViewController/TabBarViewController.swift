@@ -39,7 +39,7 @@ class TabBarViewController: UITabBarController {
         homeVC.tabBarItem.title = ""
         homeVC.tabBarItem.titlePositionAdjustment = UIOffset(horizontal: -5, vertical: 0)
         
-        let planVC = UINavigationController(rootViewController: PlanViewController())
+        let planVC = ChangableNavigationController(rootViewController: PlanViewController())
         planVC.tabBarItem.image = UIImage(named: "Plan")
         planVC.tabBarItem.title = ""
         planVC.tabBarItem.titlePositionAdjustment = UIOffset(horizontal: -30, vertical: 0)

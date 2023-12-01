@@ -17,7 +17,7 @@ class NFTDetailViewModel {
     
     let disposeBag = DisposeBag()
     
-    func NFTDelete(NFTID: String) {
+    func deleteNFT(NFTID: String) {
         deleteImage(NFTID: NFTID) {
             db.collection("NFT").document(NFTID).delete() { error in
                 if let error = error {

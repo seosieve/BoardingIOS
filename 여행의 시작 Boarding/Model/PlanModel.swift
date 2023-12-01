@@ -45,8 +45,7 @@ struct Plan {
                     landing: "",
                     days: 0,
                     writtenDate: 0.0,
-                    scrap: [String]()
-        )
+                    scrap: [String]())
     }
     
     static let placeHolder = ["여행 제목", "여행지", "가는 날", "오는 날"]

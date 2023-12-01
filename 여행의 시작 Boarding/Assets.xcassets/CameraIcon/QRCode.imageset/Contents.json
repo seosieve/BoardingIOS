@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "QR Code.png",
+      "filename" : "홈페이지 QR.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "QR Code@2x.png",
+      "filename" : "홈페이지 QR@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "QR Code@3x.png",
+      "filename" : "홈페이지 QR@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

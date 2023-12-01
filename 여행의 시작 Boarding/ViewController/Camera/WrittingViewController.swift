@@ -491,7 +491,7 @@ class WrittingViewController: UIViewController {
                 self?.view.isUserInteractionEnabled = false
                 self?.uploadProgressView.isHidden = false
                 self?.indicator.startAnimating()
-                self?.viewModel.NFTWrite(image: self?.image)
+                self?.viewModel.writeNFT(image: self?.image)
             })
             .disposed(by: disposeBag)
         

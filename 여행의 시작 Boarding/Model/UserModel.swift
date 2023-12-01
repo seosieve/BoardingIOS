@@ -20,8 +20,7 @@ struct User {
         return ["userUid": userUid,
                 "url": url,
                 "name": name,
-                "introduce": introduce
-        ]
+                "introduce": introduce]
     }
     
     // Dummy User
@@ -29,7 +28,6 @@ struct User {
         return User(userUid: "",
                     url: "",
                     name: "",
-                    introduce: ""
-        )
+                    introduce: "")
     }
 }

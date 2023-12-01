@@ -8,7 +8,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import FirebaseStorageUI
 
 class SetLocationViewController: UIViewController {
 
@@ -152,6 +151,6 @@ class SetLocationViewController: UIViewController {
     
     func iconInteraction(_ sender: UIButton) {
         sender.isSelected.toggle()
-        sender.buttonAnimation()
+        sender.touchAnimation()
     }
 }

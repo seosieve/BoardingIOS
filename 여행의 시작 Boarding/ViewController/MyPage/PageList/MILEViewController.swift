@@ -220,8 +220,7 @@ class MILEViewController: UIViewController {
             make.bottom.equalToSuperview().offset(-20)
             make.height.equalTo(230)
         }
-//        let info = ["좋아요", "스크랩", "신뢰도", "합계"]
-        for index in 0..<3 {
+        for _ in 0..<3 {
             let subview = UIView().then {
                 $0.backgroundColor = Gray.bright
                 $0.layer.cornerRadius = 12

@@ -9,7 +9,10 @@ import UIKit
 import RxSwift
 import RxCocoa
 import GoogleMaps
-import FirebaseStorageUI
+
+protocol AddPlanDelegate: AnyObject {
+    func presentAddPlanModal()
+}
 
 class PlanDetailViewController: UIViewController {
 
@@ -18,7 +21,7 @@ class PlanDetailViewController: UIViewController {
     var plan = Plan.dummyType
     var selectedDay = 1
     
-    lazy var viewModel = PlanDetailViewModel(scrap: plan.scrap)
+    let viewModel = PlanDetailViewModel()
     let disposeBag = DisposeBag()
     
     var statusBarView = UIView().then {
@@ -54,6 +57,10 @@ class PlanDetailViewController: UIViewController {
     var detailScrollView = UIScrollView()
     
     var detailContentView = UIView()
+    
+    var backgroundView = UIView().then {
+        $0.backgroundColor = Gray.white
+    }
     
     lazy var titleLabel = UILabel().then {
         $0.text = plan.title
@@ -97,22 +104,20 @@ class PlanDetailViewController: UIViewController {
         
         sender.isSelected = true
         sender.layer.borderWidth = 0
-        selectedDay = sender.tag + 1
+        selectedDay = sender.tag
         feedbackGenerator?.impactOccurred()
         dayLabel.text = "Day \(sender.tag)"
     }
     
     lazy var camera = GMSCameraPosition.camera(withLatitude: 64, longitude: -113, zoom: 14.0)
     
-    lazy var map = GMSMapView().then {
-        $0.frame = CGRect.zero
-        $0.camera = camera
+    lazy var map = GMSMapView(frame: CGRect.zero, camera: camera).then {
+        $0.settings.scrollGestures = false
+        $0.settings.zoomGestures = false
+        $0.settings.tiltGestures = false
+        $0.settings.rotateGestures = false
         $0.layer.cornerRadius = 20
         $0.layer.masksToBounds = true
-    }
-    
-    var planBackgroundView = UIView().then {
-        $0.backgroundColor = Gray.bright
     }
     
     var dayView = UIView().then {
@@ -142,100 +147,51 @@ class PlanDetailViewController: UIViewController {
         $0.separatorStyle = .none
         $0.isHidden = true
     }
-    
-    lazy var modalView = UIView().then {
-        $0.backgroundColor = Gray.white
-        $0.layer.cornerRadius = 24
-        $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        $0.layer.shadowOffset = CGSize(width:0, height:-3)
-        $0.layer.shadowRadius = 10
-        $0.layer.shadowColor = Gray.black.cgColor
-        $0.layer.shadowOpacity = 0.1
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(panModalMotion))
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapModalMotion))
-        $0.addGestureRecognizer(pan)
-        $0.addGestureRecognizer(tap)
+
+    var addMemoButton = UIButton().then {
+        var config = UIButton.Configuration.filled()
+        var title = AttributedString.init("메모 추가")
+        title.font = Pretendard.semiBold(17)
+        config.baseBackgroundColor = Gray.bright
+        config.baseForegroundColor = Gray.medium
+        config.attributedTitle = title
+        config.background.cornerRadius = 12
+        config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0)
+        $0.configuration = config
+        $0.contentHorizontalAlignment = .left
     }
     
-    @objc func panModalMotion(_ recognizer: UIPanGestureRecognizer) {
-        let minY:CGFloat = 0
-        let maxY:CGFloat = 210
-        
-        switch recognizer.state {
-        case .began, .changed:
-            let translation = recognizer.translation(in: modalView)
-            let y = min(maxY, max(minY, modalView.frame.maxY - 844 + translation.y))
-    
-            modalView.snp.updateConstraints { make in
-                make.bottom.equalToSuperview().offset(y)
-            }
-            recognizer.setTranslation(CGPoint.zero, in: self.view)
-            
-        case .ended:
-            let velocity = recognizer.velocity(in: modalView).y
-            let shouldClose = velocity > 0
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-                self.modalView.snp.updateConstraints { make in
-                    make.bottom.equalToSuperview().offset(shouldClose ? maxY : minY)
-                }
-                self.view.layoutIfNeeded()
-            }, completion: nil)
-        default:
-            break
-        }
+    var addMemoImage = UIImageView().then {
+        $0.image = UIImage(named: "Memo")
     }
     
-    @objc func tapModalMotion(_ recognizer: UIPanGestureRecognizer) {
-        if modalView.frame.maxY == 1054 {
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-                self.modalView.snp.updateConstraints { make in
-                    make.bottom.equalToSuperview().offset(0)
-                }
-                self.view.layoutIfNeeded()
-            }, completion: nil)
-        }
+    var myScrapButton = UIButton().then {
+        var config = UIButton.Configuration.filled()
+        var title = AttributedString.init("내 스크랩")
+        title.font = Pretendard.semiBold(17)
+        config.baseBackgroundColor = Boarding.lightBlue
+        config.baseForegroundColor = Boarding.blue
+        config.attributedTitle = title
+        config.background.cornerRadius = 12
+        config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0)
+        $0.configuration = config
+        $0.contentHorizontalAlignment = .left
     }
     
-    @objc func scrapStackViewSelected(_ sender: UITapGestureRecognizer) {
-        if modalView.frame.maxY == 844 {
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-                self.modalView.snp.updateConstraints { make in
-                    make.bottom.equalToSuperview().offset(210)
-                }
-                self.view.layoutIfNeeded()
-            }, completion: nil)
-        }
-        planTableView.isHidden = false
-        planPlaceHolder.isHidden = true
+    var myScrapImage = UIImageView().then {
+        $0.image = UIImage(named: "SaveFilled")?.withRenderingMode(.alwaysTemplate)
+        $0.tintColor = Boarding.blue
     }
     
-    var modalIndicator = UIView().then {
-        $0.backgroundColor = Gray.semiLight
-    }
-    
-    var scrapLabel = UILabel().then {
-        $0.text = "나의 스크랩"
-        $0.font = Pretendard.semiBold(21)
-        $0.textColor = Gray.black
-    }
-    
-    var scrapScrollView = UIScrollView().then {
-        $0.showsHorizontalScrollIndicator = false
-        $0.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        $0.contentOffset = CGPoint(x: -20, y: 0)
-    }
-    
-    var scrapStackView = UIStackView().then {
-        $0.axis = .horizontal
-        $0.alignment = .fill
-        $0.distribution = .fillEqually
-        $0.spacing = 8
+    var indicator = UIActivityIndicatorView().then {
+        $0.style = .medium
+        $0.color = Gray.light
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = true
-        view.backgroundColor = Gray.white
+        view.backgroundColor = Gray.bright
         feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
         detailScrollView.delegate = self
         planTableView.register(PlanDetailTableViewCell.self, forCellReuseIdentifier: "planDetailTableViewCell")
@@ -286,6 +242,13 @@ class PlanDetailViewController: UIViewController {
             make.width.equalToSuperview()
         }
         
+        detailContentView.addSubview(backgroundView)
+        backgroundView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(-300)
+            make.left.centerX.equalToSuperview()
+            make.height.equalTo(700)
+        }
+        
         detailContentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)
@@ -322,7 +285,7 @@ class PlanDetailViewController: UIViewController {
         }
         for index in 0..<plan.days {
             let dayButton = UIButton().then {
-                $0.tag = index
+                $0.tag = index+1
                 $0.setBackgroundColor(Gray.white, for: .normal)
                 $0.setBackgroundColor(Boarding.blue, for: .selected)
                 $0.setTitle("Day \(index+1)", for: .normal)
@@ -353,16 +316,9 @@ class PlanDetailViewController: UIViewController {
             make.height.equalTo(230)
         }
         
-        detailContentView.addSubview(planBackgroundView)
-        planBackgroundView.snp.makeConstraints { make in
-            make.top.equalTo(map.snp.bottom).offset(20)
-            make.centerX.left.equalToSuperview()
-            make.bottom.equalToSuperview()
-        }
-        
-        planBackgroundView.addSubview(dayView)
+        detailContentView.addSubview(dayView)
         dayView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
+            make.top.equalTo(backgroundView.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(20)
             make.height.equalTo(65)
@@ -374,12 +330,12 @@ class PlanDetailViewController: UIViewController {
             make.left.equalToSuperview().offset(20)
         }
         
-        planBackgroundView.addSubview(planView)
+        detailContentView.addSubview(planView)
         planView.snp.makeConstraints { make in
             make.top.equalTo(dayView.snp.bottom).offset(10)
             make.left.equalToSuperview().offset(20)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-200)
+            make.bottom.equalToSuperview().offset(-40)
         }
         
         planView.addSubview(planPlaceHolder)
@@ -392,134 +348,76 @@ class PlanDetailViewController: UIViewController {
             make.top.equalToSuperview().offset(20)
             make.left.equalToSuperview().offset(15)
             make.centerX.equalToSuperview()
-            make.height.equalTo(120)
+            make.height.equalTo(50)
+        }
+        
+        planView.addSubview(addMemoButton)
+        addMemoButton.snp.makeConstraints { make in
+            make.top.equalTo(planTableView.snp.bottom).offset(20)
+            make.left.equalToSuperview().offset(15)
+            make.right.equalTo(planView.snp.centerX).offset(-6)
+            make.height.equalTo(48)
             make.bottom.equalToSuperview().offset(-20)
         }
         
-        view.addSubview(modalView)
-        modalView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(210)
-            make.centerX.left.equalToSuperview()
-            make.height.equalTo(290)
+        addMemoButton.addSubview(addMemoImage)
+        addMemoImage.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.right.equalToSuperview().offset(-20)
+            make.width.height.equalTo(20)
         }
         
-        modalView.addSubview(modalIndicator)
-        modalIndicator.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(12)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(36)
-            make.height.equalTo(4)
-        }
-        modalIndicator.rounded(axis: .horizontal)
-        
-        modalView.addSubview(scrapLabel)
-        scrapLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(36)
-            make.left.equalToSuperview().offset(20)
+        planView.addSubview(myScrapButton)
+        myScrapButton.snp.makeConstraints { make in
+            make.top.equalTo(planTableView.snp.bottom).offset(20)
+            make.left.equalTo(planView.snp.centerX).offset(6)
+            make.right.equalToSuperview().offset(-15)
+            make.height.equalTo(48)
+            make.bottom.equalToSuperview().offset(-20)
         }
         
-        modalView.addSubview(scrapScrollView)
-        scrapScrollView.snp.makeConstraints { make in
-            make.top.equalTo(scrapLabel.snp.bottom).offset(30)
-            make.left.centerX.equalToSuperview()
-            make.height.equalTo(150)
+        myScrapButton.addSubview(myScrapImage)
+        myScrapImage.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.right.equalToSuperview().offset(-20)
+            make.width.height.equalTo(20)
         }
         
-        scrapScrollView.addSubview(scrapStackView)
-        scrapStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.height.equalToSuperview()
+        view.addSubview(indicator)
+        indicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
     
     func setRx() {
         modifyButton.rx.tap
-            .subscribe(onNext: { [weak self] in
-                self?.popUpAlert()
+            .subscribe(onNext: {
+                self.deleteAlert("플랜") {
+                    self.indicator.startAnimating()
+                    self.view.isUserInteractionEnabled = false
+                    self.viewModel.deletePlan(planID: self.plan.planID)
+                }
             })
             .disposed(by: disposeBag)
         
-        viewModel.items
-            .subscribe(onNext: { [weak self] NFTArr in
-                self?.makeStackView(NFTArr)
+        myScrapButton.rx.tap
+            .subscribe(onNext: {
+                let vc = MyScrapViewController()
+                vc.planID = self.plan.planID
+                vc.delegate = self
+                vc.modalPresentationStyle = .automatic
+                vc.modalTransitionStyle = .coverVertical
+                self.present(vc, animated: true)
             })
             .disposed(by: disposeBag)
-    }
-    
-    func makeStackView(_ NFTArr: [NFT]) {
-        scrapStackView.removeAllArrangedSubviews()
-        for index in 0..<NFTArr.count {
-            let subview = UIView().then {
-                $0.layer.cornerRadius = 8
-                $0.layer.masksToBounds = true
-                let tap = UITapGestureRecognizer(target: self, action: #selector(scrapStackViewSelected(_:)))
-                tap.cancelsTouchesInView = false
-                $0.addGestureRecognizer(tap)
-            }
-            
-            let photoView = UIImageView().then {
-                $0.image = UIImage(named: "France1")
-                $0.layer.cornerRadius = 8
-                $0.clipsToBounds = true
-            }
-            
-            let gradientView = UIView().then {
-                $0.frame = CGRect(x: 0, y: 0, width: 113, height: 100)
-                $0.gradient([Gray.black.withAlphaComponent(0), .black], axis: .vertical)
-            }
-            
-            let titleLabel = UILabel().then {
-                $0.text = NFTArr[index].title
-                $0.font = Pretendard.regular(13)
-                $0.textColor = Gray.white
-            }
-            
-            let plusImageView = UIImageView().then {
-                $0.image = UIImage(named: "SmallPlus")
-            }
-            
-            subview.snp.makeConstraints { make in
-                make.width.equalTo(113)
-            }
-            subview.addSubview(photoView)
-            photoView.snp.makeConstraints { make in
-                make.edges.equalToSuperview()
-            }
-            photoView.sd_setImage(with: URL(string: NFTArr[index].url), placeholderImage: nil, options: .scaleDownLargeImages)
-            subview.addSubview(gradientView)
-            gradientView.snp.makeConstraints { make in
-                make.left.centerX.bottom.equalToSuperview()
-                make.height.equalTo(100)
-            }
-            subview.addSubview(titleLabel)
-            titleLabel.snp.makeConstraints { make in
-                make.left.equalToSuperview().offset(6)
-                make.centerX.equalToSuperview()
-                make.bottom.equalToSuperview().offset(-14)
-            }
-            subview.addSubview(plusImageView)
-            plusImageView.snp.makeConstraints { make in
-                make.top.equalToSuperview().offset(6)
-                make.right.equalToSuperview().offset(-6)
-                make.width.height.equalTo(24)
-            }
-            scrapStackView.addArrangedSubview(subview)
-        }
-    }
-    
-    func popUpAlert() {
-        let alert = UIAlertController(title: "정말로 삭제하시겠어요?", message: "한 번 삭제한 플랜은 되돌릴 수 없어요", preferredStyle: .alert)
-        let cancel = UIAlertAction(title: "취소", style: .cancel)
-        let action = UIAlertAction(title: "삭제", style: .default) { action in
-//            self.indicator.startAnimating()
-//            self.view.isUserInteractionEnabled = false
-//            self.viewModel.NFTDelete(NFTID: self.NFTResult.NFTID)
-        }
-        alert.addAction(cancel)
-        alert.addAction(action)
-        action.setValue(UIColor.red, forKey: "titleTextColor")
-        alert.view.tintColor = Gray.dark
-        present(alert, animated: true, completion: nil)
+        
+        viewModel.deleteCompleted
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext:{
+                self.indicator.stopAnimating()
+                self.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -546,5 +444,16 @@ extension PlanDetailViewController: UIScrollViewDelegate {
         level = max(0, level)
         level = min(100, level)
         iconView.layer.shadowOpacity = Float(level/2000)
+    }
+}
+
+extension PlanDetailViewController: AddPlanDelegate {
+    func presentAddPlanModal() {
+        let vc = AddPlanViewController()
+        vc.NFTID = ""
+        vc.days = plan.days
+        vc.modalPresentationStyle = .automatic
+        vc.modalTransitionStyle = .coverVertical
+        self.present(vc, animated: true)
     }
 }

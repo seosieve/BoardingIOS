@@ -17,7 +17,6 @@ struct Location {
         return Location(url: "",
                         country: "",
                         city: "",
-                        count: 0
-        )
+                        count: 0)
     }
 }

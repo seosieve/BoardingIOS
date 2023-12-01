@@ -39,11 +39,15 @@ class RecordInfoViewController: UIViewController {
         $0.tintColor = Gray.white
         
         let shareAction = UIAction(title: "공유하기", handler: { _ in
-            self.viewModel.NFTshare(NFT: self.NFTResult)
+            self.viewModel.shareNFT(NFT: self.NFTResult)
         })
-        let deleteAction = UIAction(title: "삭제하기", handler: { _ in
-            self.popUpAlert(("정말로 삭제하시겠어요?", "한 번 삭제한 NFT는 되돌릴 수 없어요", "삭제"))
-        })
+        let deleteAction = UIAction(title: "삭제하기") { aa in
+            self.deleteAlert("NFT") {
+                self.indicator.startAnimating()
+                self.view.isUserInteractionEnabled = false
+                self.viewModel.deleteNFT(NFTID: self.NFTResult.NFTID)
+            }
+        }
         $0.menu = UIMenu(options: .displayInline, children: [shareAction, deleteAction])
         $0.showsMenuAsPrimaryAction = true
     }
@@ -251,7 +255,7 @@ class RecordInfoViewController: UIViewController {
         headerImageView.snp.makeConstraints { make in
             make.left.centerX.equalToSuperview()
             make.top.equalToSuperview().offset(-300)
-            make.height.equalTo(700)
+            make.height.equalTo(670)
         }
         
         headerImageView.addSubview(headerVisualEffectView)
@@ -259,18 +263,18 @@ class RecordInfoViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         
-        headerImageView.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(405)
-            make.left.equalToSuperview().offset(20)
-        }
-        
         headerImageView.addSubview(photoView)
         photoView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(16)
             make.left.equalToSuperview().offset(20)
             make.height.equalTo(200)
             make.width.equalTo(150)
+            make.bottom.equalToSuperview().offset(-20)
+        }
+        
+        headerImageView.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(photoView.snp.top).offset(-12)
+            make.left.equalToSuperview().offset(20)
         }
         
         headerImageView.addSubview(infoStackView)
@@ -299,18 +303,19 @@ class RecordInfoViewController: UIViewController {
             }
             
             subview.addSubview(iconImageView)
-            subview.addSubview(infoLabel)
-            subview.addSubview(infoDivider)
             iconImageView.snp.makeConstraints { make in
                 make.left.equalToSuperview().offset(4)
                 make.centerY.equalToSuperview()
                 make.width.height.equalTo(24)
             }
+            subview.addSubview(infoLabel)
             infoLabel.snp.makeConstraints { make in
                 make.left.equalTo(iconImageView.snp.right).offset(8)
+                make.right.equalToSuperview()
                 make.centerY.equalToSuperview()
                 make.bottom.equalToSuperview().inset(10)
             }
+            subview.addSubview(infoDivider)
             infoDivider.snp.makeConstraints { make in
                 make.top.equalTo(subview.snp.bottom)
                 make.centerX.left.equalToSuperview()
@@ -537,20 +542,5 @@ class RecordInfoViewController: UIViewController {
             }
             self.view.layoutIfNeeded()
         }
-    }
-    
-    func popUpAlert(_ message: (String, String, String)) {
-        let alert = UIAlertController(title: message.0, message: message.1, preferredStyle: .alert)
-        let cancel = UIAlertAction(title: "취소", style: .cancel)
-        let action = UIAlertAction(title: message.2, style: .default) { action in
-            self.indicator.startAnimating()
-            self.view.isUserInteractionEnabled = false
-            self.viewModel.NFTDelete(NFTID: self.NFTResult.NFTID)
-        }
-        alert.addAction(cancel)
-        alert.addAction(action)
-        action.setValue(UIColor.red, forKey: "titleTextColor")
-        alert.view.tintColor = Gray.dark
-        present(alert, animated: true, completion: nil)
     }
 }

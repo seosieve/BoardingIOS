@@ -182,7 +182,7 @@ class NFTTicketViewController: UIViewController {
         QRImageView.snp.makeConstraints { make in
             make.left.equalToSuperview()
             make.centerY.top.equalToSuperview()
-            make.width.equalTo(68)
+            make.width.equalTo(88)
         }
         
         QRDetailView.addSubview(QRDetailStackView)

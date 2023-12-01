@@ -54,12 +54,16 @@
 		4E6D86332B14CDD8008113A4 /* RecordInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D86322B14CDD8008113A4 /* RecordInfoViewModel.swift */; };
 		4E6D86352B14D03E008113A4 /* LocationInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D86342B14D03E008113A4 /* LocationInfoViewModel.swift */; };
 		4E6D86372B150171008113A4 /* UserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D86362B150171008113A4 /* UserInfoViewModel.swift */; };
+		4E778DDF2B17C4EE00A6A857 /* MyScrapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E778DDE2B17C4EE00A6A857 /* MyScrapViewController.swift */; };
+		4E778DE12B17C79600A6A857 /* MyScrapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E778DE02B17C79600A6A857 /* MyScrapViewModel.swift */; };
 		4E7D52E62AC41AF200054800 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E52AC41AF200054800 /* SplashViewController.swift */; };
 		4E7D52E82AC41B0100054800 /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E72AC41B0100054800 /* SplashViewModel.swift */; };
 		4E7D52EA2AC6FD0000054800 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E92AC6FD0000054800 /* MyPageViewModel.swift */; };
 		4E8B35A52A70D28A00AD2C72 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4E8B35A42A70D28A00AD2C72 /* GoogleService-Info.plist */; };
 		4E8B35A72A70DA1100AD2C72 /* aa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8B35A62A70DA1100AD2C72 /* aa.swift */; };
 		4E8B35A92A70DFCE00AD2C72 /* aaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8B35A82A70DFCE00AD2C72 /* aaModel.swift */; };
+		4E92000C2B19DB3A005B061F /* AddPlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E92000B2B19DB3A005B061F /* AddPlanViewController.swift */; };
+		4E92000E2B1A2ADF005B061F /* AddPlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E92000D2B1A2ADF005B061F /* AddPlanViewModel.swift */; };
 		4E9B90FC2AFCE1D100F6D347 /* NewPlanDurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9B90FB2AFCE1D100F6D347 /* NewPlanDurationViewController.swift */; };
 		4E9B90FE2AFDB9AE00F6D347 /* NewPlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9B90FD2AFDB9AE00F6D347 /* NewPlanViewModel.swift */; };
 		4E9B91002AFDBC0E00F6D347 /* PlanModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9B90FF2AFDBC0E00F6D347 /* PlanModel.swift */; };
@@ -99,7 +103,6 @@
 		4EECA7F22A2F3213006FB764 /* MILEViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7F12A2F3213006FB764 /* MILEViewController.swift */; };
 		4EECA7F42A2F3235006FB764 /* ExpertLevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */; };
 		4EECA7F62A2F903E006FB764 /* Eiffel.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 4EECA7F52A2F903E006FB764 /* Eiffel.mp4 */; };
-		BB10591A9B5C37E16AE5ED67 /* Pods_______________Boarding.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98D04E3A1009F4067BCD8FE4 /* Pods_______________Boarding.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -151,6 +154,8 @@
 		4E6D86322B14CDD8008113A4 /* RecordInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordInfoViewModel.swift; sourceTree = "<group>"; };
 		4E6D86342B14D03E008113A4 /* LocationInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoViewModel.swift; sourceTree = "<group>"; };
 		4E6D86362B150171008113A4 /* UserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModel.swift; sourceTree = "<group>"; };
+		4E778DDE2B17C4EE00A6A857 /* MyScrapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyScrapViewController.swift; sourceTree = "<group>"; };
+		4E778DE02B17C79600A6A857 /* MyScrapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyScrapViewModel.swift; sourceTree = "<group>"; };
 		4E7D52E52AC41AF200054800 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		4E7D52E72AC41B0100054800 /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 		4E7D52E92AC6FD0000054800 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
@@ -158,6 +163,8 @@
 		4E8B35A42A70D28A00AD2C72 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4E8B35A62A70DA1100AD2C72 /* aa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aa.swift; sourceTree = "<group>"; };
 		4E8B35A82A70DFCE00AD2C72 /* aaModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aaModel.swift; sourceTree = "<group>"; };
+		4E92000B2B19DB3A005B061F /* AddPlanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlanViewController.swift; sourceTree = "<group>"; };
+		4E92000D2B1A2ADF005B061F /* AddPlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlanViewModel.swift; sourceTree = "<group>"; };
 		4E9B90FB2AFCE1D100F6D347 /* NewPlanDurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlanDurationViewController.swift; sourceTree = "<group>"; };
 		4E9B90FD2AFDB9AE00F6D347 /* NewPlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlanViewModel.swift; sourceTree = "<group>"; };
 		4E9B90FF2AFDBC0E00F6D347 /* PlanModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanModel.swift; sourceTree = "<group>"; };
@@ -199,7 +206,6 @@
 		4EECA7F12A2F3213006FB764 /* MILEViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MILEViewController.swift; sourceTree = "<group>"; };
 		4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpertLevelViewController.swift; sourceTree = "<group>"; };
 		4EECA7F52A2F903E006FB764 /* Eiffel.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Eiffel.mp4; sourceTree = "<group>"; };
-		98D04E3A1009F4067BCD8FE4 /* Pods_______________Boarding.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_______________Boarding.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D7290890E26EC19DDB57A8 /* Pods-여행의 시작 Boarding.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-여행의 시작 Boarding.release.xcconfig"; path = "Target Support Files/Pods-여행의 시작 Boarding/Pods-여행의 시작 Boarding.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -208,7 +214,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB10591A9B5C37E16AE5ED67 /* Pods_______________Boarding.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,6 +364,10 @@
 				4E9B91012AFDDAAA00F6D347 /* PlanViewModel.swift */,
 				4ECA2CC12B00D8B900695D8F /* PlanDetailViewController.swift */,
 				4E32D17C2B060B30001BD1B7 /* PlanDetailViewModel.swift */,
+				4E778DDE2B17C4EE00A6A857 /* MyScrapViewController.swift */,
+				4E778DE02B17C79600A6A857 /* MyScrapViewModel.swift */,
+				4E92000B2B19DB3A005B061F /* AddPlanViewController.swift */,
+				4E92000D2B1A2ADF005B061F /* AddPlanViewModel.swift */,
 				4E44FBA62ADCF9160021FAB9 /* NewPlanViewController.swift */,
 				4E9B90FD2AFDB9AE00F6D347 /* NewPlanViewModel.swift */,
 				4E44FBA82ADCFC4E0021FAB9 /* NewPlanTitleViewController.swift */,
@@ -433,7 +442,6 @@
 		9BF04F723F3A1A89CAADCF8E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				98D04E3A1009F4067BCD8FE4 /* Pods_______________Boarding.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -598,6 +606,7 @@
 				4E6D862D2B148FAF008113A4 /* UserInfoViewController.swift in Sources */,
 				4E8B35A72A70DA1100AD2C72 /* aa.swift in Sources */,
 				4E19AA612A80FB3A00213589 /* CameraViewController.swift in Sources */,
+				4E92000C2B19DB3A005B061F /* AddPlanViewController.swift in Sources */,
 				4E7D52EA2AC6FD0000054800 /* MyPageViewModel.swift in Sources */,
 				4E44FBAD2ADD1A4B0021FAB9 /* WrittingContentViewController.swift in Sources */,
 				4EECA6402A29C208006FB764 /* MyPageViewController.swift in Sources */,
@@ -627,9 +636,11 @@
 				4E44FBA72ADCF9160021FAB9 /* NewPlanViewController.swift in Sources */,
 				4E0648B42B05BBA4009DB83B /* AddMyPlanViewModel.swift in Sources */,
 				4E44FB992ACFD9D80021FAB9 /* NFTDetailViewController.swift in Sources */,
+				4E778DDF2B17C4EE00A6A857 /* MyScrapViewController.swift in Sources */,
 				4E44FBA32ADA323A0021FAB9 /* PastTravelTitleViewController.swift in Sources */,
 				4E1EB4212AA47F8000620D57 /* WrittingViewController.swift in Sources */,
 				4E44FBAB2ADD14A20021FAB9 /* WrittingTitleViewController.swift in Sources */,
+				4E778DE12B17C79600A6A857 /* MyScrapViewModel.swift in Sources */,
 				4E4C143D2AE4D9B500E504D4 /* NFTViewModel.swift in Sources */,
 				4EECA7E12A2DD179006FB764 /* HomeFullScreenViewController.swift in Sources */,
 				4E44FB952ACAAA320021FAB9 /* ModalPageViewController.swift in Sources */,
@@ -651,6 +662,7 @@
 				4E44FBA92ADCFC4E0021FAB9 /* NewPlanTitleViewController.swift in Sources */,
 				4E9B91022AFDDAAA00F6D347 /* PlanViewModel.swift in Sources */,
 				4E6D86352B14D03E008113A4 /* LocationInfoViewModel.swift in Sources */,
+				4E92000E2B1A2ADF005B061F /* AddPlanViewModel.swift in Sources */,
 				4EB72F422AEE480100F9CC67 /* OnboardingViewController.swift in Sources */,
 				4EECA7DF2A2DC352006FB764 /* TravelCollectionViewCell.swift in Sources */,
 				4EB8FEF22AEF8D0F0094C109 /* HomeInfoViewController.swift in Sources */,
@@ -864,7 +876,7 @@
 					"\"${PODS_ROOT}/Headers/Public/GooglePlaces\"",
 				);
 				INFOPLIST_FILE = "여행의 시작 Boarding/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = Traverse;
+				INFOPLIST_KEY_CFBundleDisplayName = Boarding;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_NSCameraUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 카메라 권한이 필요합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 사용자 위치 권한이 필요합니다.";
@@ -881,7 +893,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.seosieve.--------------Boarding";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -951,7 +963,7 @@
 					"\"${PODS_ROOT}/Headers/Public/GooglePlaces\"",
 				);
 				INFOPLIST_FILE = "여행의 시작 Boarding/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = Traverse;
+				INFOPLIST_KEY_CFBundleDisplayName = Boarding;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_NSCameraUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 카메라 권한이 필요합니다.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 사용자 위치 권한이 필요합니다.";
@@ -968,7 +980,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.seosieve.--------------Boarding";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

@@ -98,6 +98,7 @@ class NewPlanViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = Gray.white
         self.navigationController?.navigationBar.isHidden = true
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = byHomeVC ? false : true
         setViews()
         setRx()
     }

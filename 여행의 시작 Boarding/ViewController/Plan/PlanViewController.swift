@@ -56,7 +56,8 @@ class PlanViewController: UIViewController {
     
     var addButton = UIButton().then {
         $0.setImage(UIImage(named: "LargePlus"), for: .normal)
-        $0.backgroundColor = Gray.light
+        $0.backgroundColor = Gray.semiLight
+        $0.adjustsImageWhenHighlighted = false
     }
     
     override func viewDidLoad() {
@@ -101,6 +102,8 @@ class PlanViewController: UIViewController {
             make.centerX.left.equalToSuperview()
             make.height.equalTo(550)
         }
+        
+        makeAddPlanView()
     }
     
     func makeAddPlanView() {
@@ -112,7 +115,7 @@ class PlanViewController: UIViewController {
             make.height.equalTo(550)
         }
         
-        var borderView = UIView().then {
+        let borderView = UIView().then {
             $0.backgroundColor = Gray.white
         }
         addPlanView.addSubview(borderView)
@@ -132,14 +135,14 @@ class PlanViewController: UIViewController {
         }
         addButton.rounded(axis: .vertical)
         
-        var addLabel = UILabel().then {
+        let addLabel = UILabel().then {
             $0.text = "새로 만들기"
             $0.font = Pretendard.semiBold(25)
-            $0.textColor = Gray.dark
+            $0.textColor = Gray.semiDark
         }
         addPlanView.addSubview(addLabel)
         addLabel.snp.makeConstraints { make in
-            make.top.equalTo(borderView.snp.bottom).offset(20)
+            make.top.equalTo(borderView.snp.bottom).offset(30)
             make.centerX.equalToSuperview()
         }
     }
@@ -151,6 +154,10 @@ class PlanViewController: UIViewController {
                 vc.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(vc, animated: true)
             })
+            .disposed(by: disposeBag)
+        
+        planCollectionView.rx
+            .setDelegate(self)
             .disposed(by: disposeBag)
         
         viewModel.items
@@ -178,18 +185,13 @@ class PlanViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        planCollectionView.rx
-            .setDelegate(self)
-            .disposed(by: disposeBag)
-        
         viewModel.itemCount
             .subscribe(onNext: { [weak self] count in
                 if count == 0 {
-                    self?.makeAddPlanView()
+                    self?.addPlanView.isHidden = false
                 } else {
                     self?.addPlanView.isHidden = true
                 }
-                print("aa")
             })
             .disposed(by: disposeBag)
         

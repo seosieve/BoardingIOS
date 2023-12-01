@@ -50,8 +50,7 @@ struct NFT {
                 "comments": comments,
                 "likes": likes,
                 "saves": saves,
-                "reports": reports
-        ]
+                "reports": reports]
     }
     
     // Loading 전 등에 사용될 dummy NFT
@@ -75,7 +74,6 @@ struct NFT {
                    comments: 0,
                    likes: 0,
                    saves: 0,
-                   reports: 0
-        )
+                   reports: 0)
     }
 }
