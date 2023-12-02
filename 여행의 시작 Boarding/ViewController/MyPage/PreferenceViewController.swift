@@ -14,11 +14,20 @@ import KakaoSDKUser
 import RxKakaoSDKUser
 
 class PreferenceViewController: UIViewController {
-
-    let menuArr = ["프로필 편집", "내정보", "이용약관", "개인정보 보호 정책", "버전정보", "로그아웃", "회원탈퇴"]
     
     let viewModel = PreferenceViewModel()
     let disposeBag = DisposeBag()
+    
+    lazy var backButton = UIButton().then {
+        let image = UIImage(named: "Back")?.withRenderingMode(.alwaysTemplate)
+        $0.setImage(image, for: .normal)
+        $0.tintColor = Gray.medium
+        $0.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+    }
+    
+    @objc func backButtonPressed() {
+        self.navigationController?.popViewController(animated: true)
+    }
     
     var preferenceTableView = UITableView().then {
         $0.isScrollEnabled = false
@@ -33,22 +42,32 @@ class PreferenceViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.setNavigationBar()
         self.view.backgroundColor = Gray.white
         preferenceTableView.register(PreferenceTableViewCell.self, forCellReuseIdentifier: "preferenceTableViewCell")
         setViews()
         setRx()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.navigationBar.isHidden = true
-    }
-    
     func setViews() {
+        view.addSubview(backButton)
+        backButton.snp.makeConstraints { make in
+            make.top.equalTo(window.safeAreaInsets.top)
+            make.left.equalToSuperview()
+            make.width.equalTo(60)
+            make.height.equalTo(48)
+        }
+        
+        let preferenceDivider = divider()
+        view.addSubview(preferenceDivider)
+        preferenceDivider.snp.makeConstraints { make in
+            make.top.equalTo(backButton.snp.bottom).offset(10)
+            make.centerX.left.equalToSuperview()
+            make.height.equalTo(0.5)
+        }
+        
         view.addSubview(preferenceTableView)
         preferenceTableView.snp.makeConstraints { make in
-            make.top.equalTo(self.navigationController!.navigationBar.bottom())
+            make.top.equalTo(preferenceDivider.snp.bottom)
             make.centerX.left.equalToSuperview()
             make.height.equalTo(300)
         }
@@ -61,13 +80,11 @@ class PreferenceViewController: UIViewController {
     
     func setRx() {
         viewModel.items
-            .bind(to: preferenceTableView.rx.items) { (tableView, row, element) in
-                let cell = tableView.dequeueReusableCell(withIdentifier: "preferenceTableViewCell", for: IndexPath(row: row, section: 0)) as! PreferenceTableViewCell
+            .bind(to: preferenceTableView.rx.items(cellIdentifier: "preferenceTableViewCell", cellType: PreferenceTableViewCell.self)) { (row, element, cell) in
                 cell.mainLabel.text = element
                 if row == 3 || row == 4 {
                     cell.detailButton.isHidden = true
                 }
-                return cell
             }
             .disposed(by: disposeBag)
         
@@ -77,6 +94,14 @@ class PreferenceViewController: UIViewController {
             .map{$0.row}
             .subscribe(onNext:{ [weak self] index in
                 switch index {
+                case 0:
+                    let vc = TermsViewController()
+                    vc.terms = "이용약관"
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                case 1:
+                    let vc = TermsViewController()
+                    vc.terms = "개인정보 보호 정책"
+                    self?.navigationController?.pushViewController(vc, animated: true)
                 case 3:
                     self?.preferenceAlert(message[0], index)
                 case 4:

@@ -17,7 +17,7 @@ class PreferenceTableViewCell: UITableViewCell {
     
     var detailButton = UIButton().then {
         $0.setImage(UIImage(named: "Detail")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        $0.tintColor = Gray.light
+        $0.tintColor = Gray.semiLight
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -46,14 +46,14 @@ class PreferenceTableViewCell: UITableViewCell {
         contentView.addSubview(mainLabel)
         mainLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.left.equalToSuperview().offset(24)
+            make.left.equalToSuperview().offset(20)
         }
         
         contentView.addSubview(detailButton)
         detailButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.right.equalToSuperview().inset(24)
-            make.width.height.equalTo(36)
+            make.right.equalToSuperview().inset(20)
+            make.width.height.equalTo(28)
         }
     }
 }

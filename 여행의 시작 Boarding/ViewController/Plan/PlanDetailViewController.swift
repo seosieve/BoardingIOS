@@ -21,6 +21,9 @@ class PlanDetailViewController: UIViewController {
     var plan = Plan.dummyType
     var selectedDay = 1
     
+    var dataArray = ["TableView row 0", "TableView row 1", "TableView row 2"]
+    
+    
     let viewModel = PlanDetailViewModel()
     let disposeBag = DisposeBag()
     
@@ -146,6 +149,7 @@ class PlanDetailViewController: UIViewController {
         $0.backgroundColor = Gray.white
         $0.separatorStyle = .none
         $0.isHidden = true
+        $0.dragInteractionEnabled = true
     }
 
     var addMemoButton = UIButton().then {
@@ -197,6 +201,8 @@ class PlanDetailViewController: UIViewController {
         planTableView.register(PlanDetailTableViewCell.self, forCellReuseIdentifier: "planDetailTableViewCell")
         planTableView.delegate = self
         planTableView.dataSource = self
+        planTableView.dragDelegate = self
+        planTableView.dropDelegate = self
         setViews()
         setRx()
     }
@@ -232,8 +238,8 @@ class PlanDetailViewController: UIViewController {
         
         view.insertSubview(detailScrollView, belowSubview: iconView)
         detailScrollView.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
             make.top.equalTo(iconView.snp.bottom)
+            make.left.right.bottom.equalToSuperview()
         }
         
         detailScrollView.addSubview(detailContentView)
@@ -411,6 +417,14 @@ class PlanDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        addMemoButton.rx.tap
+            .subscribe(onNext: {
+                self.planTableView.isHidden = false
+                self.planPlaceHolder.isHidden = true
+                self.updateViewHeight(count: 3)
+            })
+            .disposed(by: disposeBag)
+        
         viewModel.deleteCompleted
             .observe(on: MainScheduler.instance)
             .subscribe(onNext:{
@@ -419,23 +433,80 @@ class PlanDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
+    
+    func updateViewHeight(count: Int) {
+        // UICollectionView의 높이를 업데이트
+        let height = 140
+        let numberOfCells = count
+        let totalHeight = height * numberOfCells
+        planTableView.snp.updateConstraints { make in
+            make.height.equalTo(totalHeight)
+        }
+    }
 }
 
 //MARK: - UITableViewDelegate
 extension PlanDetailViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return dataArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "planDetailTableViewCell", for: indexPath) as! PlanDetailTableViewCell
+        cell.selectionStyle = .none
+        cell.numberLabel.text = "\(indexPath.row)"
+        cell.locationLabel.text = dataArray[indexPath.row]
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 120
+        return 140
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
+    -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { (_, _, completionHandler) in
+            self.dataArray.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            completionHandler(true)
+        }
+        deleteAction.image = UIImage(named: "Trash")
+        deleteAction.backgroundColor = Boarding.lightRed
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return configuration
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        print("\(sourceIndexPath.row) -> \(destinationIndexPath.row)")
+        let moveCell = self.dataArray[sourceIndexPath.row]
+        self.dataArray.remove(at: sourceIndexPath.row)
+        self.dataArray.insert(moveCell, at: destinationIndexPath.row)
     }
 }
+
+//MARK: - UITableViewDragDelegate
+extension PlanDetailViewController: UITableViewDragDelegate {
+    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        return [UIDragItem(itemProvider: NSItemProvider())]
+    }
+}
+
+//MARK: - UITableViewDropDelegate
+extension PlanDetailViewController: UITableViewDropDelegate {
+    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+        if session.localDragSession != nil {
+            return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+        }
+        return UITableViewDropProposal(operation: .cancel, intent: .unspecified)
+    }
+    
+    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) { }
+}
+
 
 //MARK: - UIScrollView
 extension PlanDetailViewController: UIScrollViewDelegate {
@@ -447,6 +518,7 @@ extension PlanDetailViewController: UIScrollViewDelegate {
     }
 }
 
+//MARK: - AddPlanDelegate
 extension PlanDetailViewController: AddPlanDelegate {
     func presentAddPlanModal() {
         let vc = AddPlanViewController()

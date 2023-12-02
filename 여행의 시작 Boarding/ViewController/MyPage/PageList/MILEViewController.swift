@@ -34,11 +34,11 @@ class MILEViewController: UIViewController {
     }
     
     var MILELabel = UILabel().then {
-        $0.text = "0 MILE"
+        $0.text = "200 MILE"
         $0.font = Pretendard.light(21)
         $0.textColor = Gray.black
         let attributedString = NSMutableAttributedString(string: $0.text!)
-        attributedString.addAttribute(.font, value: Pretendard.medium(35), range: ($0.text! as NSString).range(of: "0"))
+        attributedString.addAttribute(.font, value: Pretendard.medium(35), range: ($0.text! as NSString).range(of: "200"))
         $0.attributedText = attributedString
     }
     
@@ -157,17 +157,17 @@ class MILEViewController: UIViewController {
                 $0.textColor = Gray.medium
             }
             let valueLabel = UILabel().then {
-                $0.text = "+ 0"
+                $0.text = "+ 25"
                 $0.font = Pretendard.regular(14)
                 $0.textColor = Gray.black
             }
             
             let calculateResultLabel = UILabel().then {
-                $0.text = "0 MILE"
+                $0.text = "75 MILE"
                 $0.font = Pretendard.light(17)
                 $0.textColor = Gray.black
                 let attributedString = NSMutableAttributedString(string: $0.text!)
-                attributedString.addAttribute(.font, value: Pretendard.medium(27), range: ($0.text! as NSString).range(of: "0"))
+                attributedString.addAttribute(.font, value: Pretendard.medium(27), range: ($0.text! as NSString).range(of: "75"))
                 $0.attributedText = attributedString
             }
             
@@ -227,17 +227,17 @@ class MILEViewController: UIViewController {
             }
             
             let weekRangeLabel = UILabel().then {
-                $0.text = "2023.10.17 ~ 2023.10.23"
+                $0.text = "2023.12.01 ~ 2023.12.08"
                 $0.font = Pretendard.regular(14)
                 $0.textColor = Gray.medium
             }
             let weekLabel = UILabel().then {
-                $0.text = "10월 4주차"
+                $0.text = "12월 1주차"
                 $0.font = Pretendard.semiBold(17)
                 $0.textColor = Gray.black
             }
             let valueLabel = UILabel().then {
-                $0.text = "0"
+                $0.text = "45"
                 $0.font = Pretendard.semiBold(17)
                 $0.textColor = Gray.black
             }

@@ -47,6 +47,8 @@
 		4E55AB822AFA2612008066E5 /* BackendExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E55AB812AFA2612008066E5 /* BackendExtension.swift */; };
 		4E55AB842AFA5229008066E5 /* HomeInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E55AB832AFA5229008066E5 /* HomeInfoViewModel.swift */; };
 		4E55AB862AFA6066008066E5 /* GoogleApiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E55AB852AFA6066008066E5 /* GoogleApiModel.swift */; };
+		4E5B50352B1AEE7F00BA9AB2 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5B50342B1AEE7F00BA9AB2 /* TermsViewController.swift */; };
+		4E5B50372B1AFB0700BA9AB2 /* TermsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5B50362B1AFB0700BA9AB2 /* TermsModel.swift */; };
 		4E6D86292B148F7E008113A4 /* RecordInfoPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D86282B148F7E008113A4 /* RecordInfoPageViewController.swift */; };
 		4E6D862B2B148FA3008113A4 /* LocationInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D862A2B148FA3008113A4 /* LocationInfoViewController.swift */; };
 		4E6D862D2B148FAF008113A4 /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D862C2B148FAF008113A4 /* UserInfoViewController.swift */; };
@@ -147,6 +149,8 @@
 		4E55AB812AFA2612008066E5 /* BackendExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendExtension.swift; sourceTree = "<group>"; };
 		4E55AB832AFA5229008066E5 /* HomeInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInfoViewModel.swift; sourceTree = "<group>"; };
 		4E55AB852AFA6066008066E5 /* GoogleApiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleApiModel.swift; sourceTree = "<group>"; };
+		4E5B50342B1AEE7F00BA9AB2 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
+		4E5B50362B1AFB0700BA9AB2 /* TermsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsModel.swift; sourceTree = "<group>"; };
 		4E6D86282B148F7E008113A4 /* RecordInfoPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordInfoPageViewController.swift; sourceTree = "<group>"; };
 		4E6D862A2B148FA3008113A4 /* LocationInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoViewController.swift; sourceTree = "<group>"; };
 		4E6D862C2B148FAF008113A4 /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
@@ -331,6 +335,7 @@
 				4EECA7D42A2B02A2006FB764 /* FontModel.swift */,
 				4EECA7D62A2B1120006FB764 /* ColorModel.swift */,
 				4E4C143E2AE62C5800E504D4 /* InfoModel.swift */,
+				4E5B50362B1AFB0700BA9AB2 /* TermsModel.swift */,
 				4E9B90FF2AFDBC0E00F6D347 /* PlanModel.swift */,
 				4E44FB9C2AD0ED430021FAB9 /* NFTModel.swift */,
 				4E3552512B0E1E360060E391 /* LocationModel.swift */,
@@ -404,6 +409,7 @@
 				4E1EA0862B1053D90081397B /* NFTDetailViewModel.swift */,
 				4E2DDF532AB8050600C7F4B9 /* PreferenceViewController.swift */,
 				4E2DDF552AB80A5200C7F4B9 /* PreferenceViewModel.swift */,
+				4E5B50342B1AEE7F00BA9AB2 /* TermsViewController.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -633,6 +639,7 @@
 				4E4C14412AE650C900E504D4 /* SetLocationViewController.swift in Sources */,
 				4E6D86292B148F7E008113A4 /* RecordInfoPageViewController.swift in Sources */,
 				4E55AB862AFA6066008066E5 /* GoogleApiModel.swift in Sources */,
+				4E5B50352B1AEE7F00BA9AB2 /* TermsViewController.swift in Sources */,
 				4E44FBA72ADCF9160021FAB9 /* NewPlanViewController.swift in Sources */,
 				4E0648B42B05BBA4009DB83B /* AddMyPlanViewModel.swift in Sources */,
 				4E44FB992ACFD9D80021FAB9 /* NFTDetailViewController.swift in Sources */,
@@ -661,6 +668,7 @@
 				4E8B35A92A70DFCE00AD2C72 /* aaModel.swift in Sources */,
 				4E44FBA92ADCFC4E0021FAB9 /* NewPlanTitleViewController.swift in Sources */,
 				4E9B91022AFDDAAA00F6D347 /* PlanViewModel.swift in Sources */,
+				4E5B50372B1AFB0700BA9AB2 /* TermsModel.swift in Sources */,
 				4E6D86352B14D03E008113A4 /* LocationInfoViewModel.swift in Sources */,
 				4E92000E2B1A2ADF005B061F /* AddPlanViewModel.swift in Sources */,
 				4EB72F422AEE480100F9CC67 /* OnboardingViewController.swift in Sources */,
@@ -893,7 +901,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.seosieve.--------------Boarding";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -980,7 +988,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.seosieve.--------------Boarding";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

@@ -89,8 +89,7 @@ public final class CustomTabBar: UITabBar {
         
         centerButton.setTitle(buttonTitle, for: .normal)
         centerButton.setImage(buttonImage, for: .normal)
-//        centerButton.gradient([Boarding.lightBlue, Boarding.blue], axis: .horizontal)
-        centerButton.backgroundColor = Boarding.blue
+        centerButton.gradient([Boarding.skyBlue, Boarding.blue], axis: .horizontal)
         centerButton.layer.cornerRadius = centerButton.frame.size.width / 2.0
         
         centerButton.imageView?.layer.zPosition = 1

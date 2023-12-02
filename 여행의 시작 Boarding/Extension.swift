@@ -62,6 +62,20 @@ extension UIView {
         self.layer.shadowRadius = CGFloat(shadowRadius)
     }
     
+    func makeDashLine() {
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.strokeColor = Gray.light.cgColor
+        shapeLayer.lineWidth = 1
+        shapeLayer.lineDashPattern = [4,4]
+        
+        let start = CGPoint(x: 0, y: 0)
+        let end = CGPoint(x: 0, y: self.frame.height)
+        let path = CGMutablePath()
+        path.addLines(between: [start, end])
+        shapeLayer.path = path
+        layer.addSublayer(shapeLayer)
+    }
+    
     func loadingAnimation() {
         UIView.animate(withDuration: 0.5, delay: 0, options: [.repeat, .autoreverse], animations: {
             self.backgroundColor = Gray.white

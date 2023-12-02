@@ -9,12 +9,17 @@ import UIKit
 
 class PlanDetailTableViewCell: UITableViewCell {
 
+    
     var numberLabel = UILabel().then {
         $0.backgroundColor = Boarding.blue
         $0.text = "1"
         $0.font = Pretendard.medium(13)
         $0.textColor = Gray.white
         $0.textAlignment = .center
+    }
+    
+    var dashedLineView = UIView().then {
+        $0.frame = CGRect(x: 0, y: 0, width: 1, height: 94)
     }
     
     var photoView = UIImageView().then {
@@ -44,6 +49,11 @@ class PlanDetailTableViewCell: UITableViewCell {
         $0.numberOfLines = 3
         $0.textAlignment = .left
         $0.lineBreakMode = .byTruncatingTail
+        let attString = NSMutableAttributedString(string: $0.text!)
+        let style = NSMutableParagraphStyle()
+        style.lineSpacing = 4
+        attString.addAttribute(.paragraphStyle, value: style, range: NSMakeRange(0, attString.length))
+        $0.attributedText = attString
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -63,6 +73,11 @@ class PlanDetailTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0))
+    }
+    
     func setViews() {
         contentView.addSubview(numberLabel)
         numberLabel.snp.makeConstraints { make in
@@ -79,6 +94,13 @@ class PlanDetailTableViewCell: UITableViewCell {
             make.width.equalTo(90)
             make.height.equalTo(120)
         }
+        
+        contentView.addSubview(dashedLineView)
+        dashedLineView.snp.makeConstraints { make in
+            make.top.equalTo(numberLabel.snp.bottom).offset(6)
+            make.centerX.equalTo(numberLabel)
+        }
+        dashedLineView.makeDashLine()
         
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
@@ -97,6 +119,7 @@ class PlanDetailTableViewCell: UITableViewCell {
             make.top.equalTo(locationLabel.snp.bottom).offset(10)
             make.left.equalTo(locationLabel)
             make.right.equalToSuperview()
+            make.bottom.lessThanOrEqualTo(photoView)
         }
     }
 }

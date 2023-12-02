@@ -20,14 +20,8 @@ class MyPageViewController: UIViewController {
         $0.backgroundColor = Gray.bright
     }
     
-    lazy var settingButton = UIButton().then {
+    var settingButton = UIButton().then {
         $0.setImage(UIImage(named: "Setting"), for: .normal)
-        $0.addTarget(self, action: #selector(settingButtonPressed), for: .touchUpInside)
-    }
-    
-    @objc func settingButtonPressed() {
-        let vc = PreferenceViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     var userThumbnailView = UIImageView().then {
@@ -359,6 +353,14 @@ class MyPageViewController: UIViewController {
         
         viewModel.username
             .bind(to: userNameLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        settingButton.rx.tap
+            .subscribe(onNext: {
+                let vc = PreferenceViewController()
+                vc.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(vc, animated: true)
+            })
             .disposed(by: disposeBag)
     }
 }
