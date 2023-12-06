@@ -9,7 +9,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 import MapKit
-import GooglePlaces
 import GoogleMaps
 
 class HomeInfoViewController: UIViewController {

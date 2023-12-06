@@ -21,7 +21,7 @@ class PreferenceViewModel: NSObject {
     let deleteUserImageSubject = PublishSubject<Void>()
     let deleteProfileSubject = PublishSubject<Void>()
     
-    let items = BehaviorRelay<[String]>(value: ["이용약관", "개인정보 보호 정책", "버전정보", "로그아웃", "회원탈퇴"])
+    let items = BehaviorRelay<[String]>(value: ["차단 유저 목록", "이용약관", "개인정보 보호 정책", "버전정보", "로그아웃", "회원탈퇴"])
     let messageArr = BehaviorRelay<[(String, String, String)]>(value: [("정말 로그아웃 하시겠어요?", "로그아웃 후 Boarding를 이용하시려면 다시 로그인을 해 주세요!", "로그아웃"), ("정말 회원탈퇴 하시겠어요?", "아쉽지만 다음에 기회가 된다면 다시 Boarding을 찾아주세요!", "회원탈퇴")])
     
     var currentNonce: String?
@@ -159,11 +159,20 @@ extension PreferenceViewModel: ASAuthorizationControllerDelegate, ASAuthorizatio
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             guard let currentUser = Auth.auth().currentUser else { return }
+            guard let nonce = currentNonce else { return }
+            guard let appleIdToken = appleIDCredential.identityToken else { return }
+            guard let tokenString = String(data: appleIdToken, encoding: .utf8) else { return }
+            let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: tokenString, rawNonce: nonce)
             
-            let nonce = currentNonce!
-            let tokenData = appleIDCredential.identityToken!
-            let token = String(data: tokenData, encoding: .utf8)!
-            let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: token, rawNonce: nonce)
+            let token = UserDefaults.standard.string(forKey: "refreshToken")
+            if let token = token {
+                let url = URL(string: "https://us-central1-boarding-ef2f1.cloudfunctions.net/revokeToken?refresh_token=\(token)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "https://apple.com")!
+                let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+                    guard data != nil else { return }
+                }
+                task.resume()
+            }
+            
             currentUser.reauthenticate(with: credential) { authResult, error in
                 if let error = error {
                     print("유저 재인증 실패: \(error)")
@@ -182,5 +191,11 @@ extension PreferenceViewModel: ASAuthorizationControllerDelegate, ASAuthorizatio
                 }
             }
         }
+    }
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        //X버튼 누를때도 실행되기 때문에 에러처리 안했음
+        print("애플 로그인 에러: \(error.localizedDescription)")
+        self.errorCatch.accept(false)
     }
 }

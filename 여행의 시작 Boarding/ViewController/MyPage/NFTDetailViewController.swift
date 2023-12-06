@@ -304,7 +304,7 @@ class NFTDetailViewController: UIViewController {
             make.right.equalToSuperview()
             make.centerY.top.equalToSuperview()
         }
-        let QRInfo = [String(NFTResult.writtenDate), NFTResult.NFTID, "Standard", NFTResult.autherUid]
+        let QRInfo = [String(NFTResult.writtenDate), NFTResult.NFTID, "Standard", NFTResult.authorUid]
         for index in 0..<4 {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear

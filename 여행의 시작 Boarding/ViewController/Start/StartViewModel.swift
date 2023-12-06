@@ -51,10 +51,21 @@ extension StartViewModel: ASAuthorizationControllerDelegate, ASAuthorizationCont
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-            let nonce = currentNonce!
-            let tokenData = appleIDCredential.identityToken!
-            let token = String(data: tokenData, encoding: .utf8)!
-            let credential = OAuthProvider.appleCredential(withIDToken: token, rawNonce: nonce, fullName: appleIDCredential.fullName)
+            guard let nonce = currentNonce else { return }
+            guard let appleIdToken = appleIDCredential.identityToken else { return }
+            guard let tokenString = String(data: appleIdToken, encoding: .utf8) else { return }
+            let credential = OAuthProvider.appleCredential(withIDToken: tokenString, rawNonce: nonce, fullName: appleIDCredential.fullName)
+            
+            if let code = appleIDCredential.authorizationCode, let codeString = String(data: code, encoding: .utf8) {
+                let url = URL(string: "https://us-central1-boarding-ef2f1.cloudfunctions.net/getRefreshToken?code=\(codeString)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "https://apple.com")!
+                let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+                    if let data = data {
+                        let refreshToken = String(data: data, encoding: .utf8) ?? ""
+                        UserDefaults.standard.set(refreshToken, forKey: "refreshToken")
+                    }
+                }
+                task.resume()
+            }
             
             Auth.auth().signIn(with: credential) { [weak self] (authResult, error) in
                 if let error = error {
@@ -211,7 +222,7 @@ extension StartViewModel {
     
     func saveProfile(url: URL, name: String) {
         guard let user = Auth.auth().currentUser else { return }
-        let User = User(userUid: user.uid, url: url.absoluteString, name: name, introduce: "")
+        let User = User(userUid: user.uid, url: url.absoluteString, name: name, introduce: "", blockedUser: [])
         db.collection("User").document(user.uid).setData(User.dicType) { [weak self] error in
             if let error = error {
                 print("유저 저장 에러: \(error)")

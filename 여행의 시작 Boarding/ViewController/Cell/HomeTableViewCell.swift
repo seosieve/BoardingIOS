@@ -198,6 +198,7 @@ class HomeTableViewCell: UITableViewCell {
             }
             
             let numberLabel = UILabel().then {
+                $0.tag = 1
                 $0.text = "0"
                 $0.font = Pretendard.regular(13)
                 $0.textColor = Gray.dark
@@ -287,5 +288,14 @@ class HomeTableViewCell: UITableViewCell {
         }
         
         userAchievementStackView.addArrangedSubview(userAchieveItem1)
+    }
+    
+    func makeInteractionCount(_ count: [Int]) {
+        var index = 0
+        interactionStackView.arrangedSubviews.forEach { view in
+            guard let label = view.viewWithTag(1) as? UILabel else { return }
+            label.text = String(count[index])
+            index += 1
+        }
     }
 }

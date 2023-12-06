@@ -91,7 +91,7 @@ class AddMyPlanViewController: UIViewController {
         
         view.addSubview(modalView)
         modalView.snp.makeConstraints { make in
-            make.centerX.left.bottom.equalToSuperview().inset(0)
+            make.centerX.left.bottom.equalToSuperview()
             make.height.equalTo(380)
         }
         modalView.makeModalCircular()

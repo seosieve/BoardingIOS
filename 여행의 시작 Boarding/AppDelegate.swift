@@ -8,7 +8,6 @@
 import UIKit
 import FirebaseCore
 import RxKakaoSDKCommon
-import GooglePlaces
 import GoogleMaps
 
 @main
@@ -20,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         RxKakaoSDK.initSDK(appKey: APIKey.kakao)
         GMSServices.provideAPIKey(APIKey.googleMap)
-        GMSPlacesClient.provideAPIKey(APIKey.googleMap)
         return true
     }
 

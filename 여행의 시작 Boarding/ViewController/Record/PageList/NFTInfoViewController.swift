@@ -56,7 +56,7 @@ class NFTInfoViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.height.equalTo(220)
         }
-        let info = [String(NFTResult.writtenDate), NFTResult.NFTID, "Standard", NFTResult.autherUid, "1", "5%"]
+        let info = [String(NFTResult.writtenDate), NFTResult.NFTID, "Standard", NFTResult.authorUid, "1", "5%"]
         for index in 0..<6 {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear

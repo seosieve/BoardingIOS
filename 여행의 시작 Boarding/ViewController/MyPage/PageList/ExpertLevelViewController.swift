@@ -110,9 +110,8 @@ class ExpertLevelViewController: UIViewController {
                 $0.layer.cornerRadius = 12
             }
             
-            let emojiLabel = UILabel().then {
-                $0.text = CategoryInfo.imoji[index]
-                $0.font = Pretendard.semiBold(40)
+            let categoryImage = UIImageView().then {
+                $0.image = CategoryInfo.image[index]
             }
             
             let titleLabel = UILabel().then {
@@ -127,14 +126,15 @@ class ExpertLevelViewController: UIViewController {
                 $0.textColor = Gray.medium
             }
             
-            subview.addSubview(emojiLabel)
-            emojiLabel.snp.makeConstraints { make in
-                make.top.equalToSuperview().offset(22)
+            subview.addSubview(categoryImage)
+            categoryImage.snp.makeConstraints { make in
+                make.top.equalToSuperview().offset(8)
                 make.centerX.equalToSuperview()
+                make.width.height.equalTo(64)
             }
             subview.addSubview(titleLabel)
             titleLabel.snp.makeConstraints { make in
-                make.top.equalTo(emojiLabel.snp.bottom)
+                make.top.equalTo(categoryImage.snp.bottom)
                 make.centerX.equalToSuperview()
             }
             subview.addSubview(levelLabel)

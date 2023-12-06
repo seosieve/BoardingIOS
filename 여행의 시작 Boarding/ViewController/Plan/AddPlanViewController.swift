@@ -12,11 +12,13 @@ import RxCocoa
 
 class AddPlanViewController: UIViewController {
     
+    var planID = ""
     var NFTID = ""
     var days = 2
     lazy var dayArr = (1...days).map{"day\($0)"}
     var placeHolder = "메모를 작성해주세요"
     
+    lazy var viewModel = AddPlanViewModel()
     let disposeBag = DisposeBag()
 
     lazy var backgroundView = UIView().then {
@@ -137,7 +139,7 @@ class AddPlanViewController: UIViewController {
         
         view.addSubview(modalView)
         modalView.snp.makeConstraints { make in
-            make.centerX.left.bottom.equalToSuperview().inset(0)
+            make.centerX.left.bottom.equalToSuperview()
         }
         modalView.makeModalCircular()
         
@@ -218,6 +220,8 @@ class AddPlanViewController: UIViewController {
     func setRx() {
         completeButton.rx.tap
             .subscribe(onNext: {
+//                self.viewModel.addPlan(planID: self.planID, NFTID: self.NFTID)
+                self.viewModel.getDayPlan(planID: self.planID)
                 self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)

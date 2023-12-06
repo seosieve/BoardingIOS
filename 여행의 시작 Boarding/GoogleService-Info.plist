@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CLIENT_ID</key>
-	<string>974021604400-fi2g9qtauuqkc0clu4q7f60h7cq7v793.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.974021604400-fi2g9qtauuqkc0clu4q7f60h7cq7v793</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDZgS7hMkcHyBT-CKOlEwz49d3ISVuX0Xk</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.seosieve.--------------Boarding</string>
+	<string>co.kr.company.Boarding</string>
 	<key>PROJECT_ID</key>
 	<string>boarding-ef2f1</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:974021604400:ios:93472084e018a4c2a629f5</string>
+	<string>1:974021604400:ios:96a48fa9eefdda01a629f5</string>
 </dict>
 </plist>

@@ -223,7 +223,7 @@ extension UIViewController {
         }
         alert.addAction(cancel)
         alert.addAction(action)
-        action.setValue(UIColor.red, forKey: "titleTextColor")
+        action.setValue(Boarding.red, forKey: "titleTextColor")
         alert.view.tintColor = Gray.dark
         present(alert, animated: true, completion: nil)
     }
@@ -261,7 +261,7 @@ extension UIStackView {
 }
 
 //MARK: - make Dday
-func stringDate(_ string: String) -> Date {
+func stringToDate(_ string: String) -> Date {
     let dateFormatter = DateFormatter()
     dateFormatter.locale = Locale(identifier: "ko_KR")
     dateFormatter.timeZone = TimeZone(abbreviation: "KST")
@@ -269,8 +269,16 @@ func stringDate(_ string: String) -> Date {
     return dateFormatter.date(from: string)!
 }
 
+func dateToString(_ date: Date) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "ko_KR")
+    dateFormatter.timeZone = TimeZone(abbreviation: "KST")
+    dateFormatter.dateFormat = "yyyy. MM. dd"
+    return dateFormatter.string(from: date)
+}
+
 func makeDday(boardingDate: String) -> String {
-    let boardingDate = stringDate(boardingDate)
+    let boardingDate = stringToDate(boardingDate)
     let distance = Calendar.current.dateComponents([.day], from: boardingDate, to: Date()).day!
     if distance <= 0 {
         return "D\(distance)"

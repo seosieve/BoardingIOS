@@ -67,9 +67,9 @@ class TermsViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
         
-        let termsDivider = divider()
-        view.addSubview(termsDivider)
-        termsDivider.snp.makeConstraints { make in
+        let divider = divider()
+        view.addSubview(divider)
+        divider.snp.makeConstraints { make in
             make.top.equalTo(backButton.snp.bottom).offset(10)
             make.centerX.left.equalToSuperview()
             make.height.equalTo(0.5)
@@ -77,7 +77,7 @@ class TermsViewController: UIViewController {
         
         view.addSubview(termsScrollView)
         termsScrollView.snp.makeConstraints { make in
-            make.top.equalTo(termsDivider.snp.bottom)
+            make.top.equalTo(divider.snp.bottom)
             make.left.right.bottom.equalToSuperview()
         }
         

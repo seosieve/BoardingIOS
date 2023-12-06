@@ -30,8 +30,10 @@ class SetLocationViewModel {
                 var dictionary = [String: (Int, String)]()
                 for document in querySnapshot!.documents {
                     let NFT = document.makeNFT()
-                    let count = dictionary["\(NFT.country),\(NFT.city)", default: (0, "")]
-                    dictionary["\(NFT.country),\(NFT.city)"] = (count.0 + 1, NFT.url)
+                    if NFT.country != "" && NFT.city != "" {
+                        let count = dictionary["\(NFT.country),\(NFT.city)", default: (0, "")]
+                        dictionary["\(NFT.country),\(NFT.city)"] = (count.0 + 1, NFT.url)
+                    }
                 }
                 
                 var items = [Location]()

@@ -20,7 +20,6 @@ target '여행의 시작 Boarding' do
   pod 'RxKakaoSDKUser'
   pod 'KakaoSDKShare'
   pod 'RxKakaoSDKShare'
-  pod 'GooglePlaces', '8.2.0'
   pod 'GoogleMaps', '8.2.0'
   pod 'FSCalendar'
 

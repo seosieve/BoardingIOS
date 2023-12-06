@@ -153,6 +153,7 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
         locationButton.snp.makeConstraints { make in
             make.left.equalTo(locationImageView.snp.right).offset(8)
             make.centerY.equalToSuperview()
+            make.width.lessThanOrEqualTo(230)
         }
         
         iconView.addSubview(searchButton)
@@ -206,10 +207,12 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
                 $0.tag = 1
                 $0.setBackgroundColor(Gray.bright, for: .normal)
                 $0.setBackgroundColor(Boarding.blue.withAlphaComponent(0.2), for: .selected)
-                $0.setTitle(CategoryInfo.imoji[index], for: .normal)
-                $0.titleLabel?.font = Pretendard.regular(30)
                 $0.layer.borderColor = Boarding.blue.cgColor
                 $0.adjustsImageWhenHighlighted = false
+            }
+            
+            let categoryImage = UIImageView().then {
+                $0.image = CategoryInfo.image[index]
             }
             
             let nameLabel = UILabel().then {
@@ -230,6 +233,11 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
                 make.height.equalTo(64)
             }
             emojiButton.rounded(axis: .horizontal)
+            
+            emojiButton.addSubview(categoryImage)
+            categoryImage.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
             
             subview.addSubview(nameLabel)
             nameLabel.snp.makeConstraints { make in
@@ -273,15 +281,16 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
             .bind(to: homeTableView.rx.items(cellIdentifier: "homeTableViewCell", cellType: HomeTableViewCell.self)) { (row, element, cell) in
                 cell.selectionStyle = .none
                 if element.NFTID != "" {
-                    self.viewModel.getAuther(auther: element.autherUid) { user in
+                    self.viewModel.getAuthor(author: element.authorUid) { user in
                         cell.userNameLabel.text = user.name
                         cell.userImage.sd_setImage(with: URL(string: user.url), placeholderImage: nil, options: .scaleDownLargeImages)
                         cell.photoTapped = { [weak self] in
                             self?.goToFullScreen(url: URL(string: element.url), NFT: element, user: user)
                         }
                     }
+                    cell.makeInteractionCount([element.reports, element.comments, element.likes, element.saves])
                     cell.iconTapped = { [weak self] sender in
-                        self?.iconInteraction(sender, element.NFTID)
+                        self?.iconInteraction(sender, element.NFTID, element.authorUid)
                     }
                     cell.titleLabel.text = element.title
                     cell.contentLabel.text = element.content
@@ -311,10 +320,16 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func iconInteraction(_ sender: UIButton, _ NFTID: String) {
+    func iconInteraction(_ sender: UIButton, _ NFTID: String, _ authorUid: String) {
         switch sender.tag {
         case 0:
-            break
+            if viewModel.userUid == authorUid { break }
+            let vc = ReportViewController()
+            vc.authorUid = authorUid
+            vc.NFTID = NFTID
+            vc.modalPresentationStyle = .automatic
+            vc.modalTransitionStyle = .coverVertical
+            self.present(vc, animated: true)
         case 1:
             break
         case 2:

@@ -24,7 +24,7 @@ class NFTViewModel {
     }
     
     func getMyNFT(userUid: String) {
-        db.collection("NFT").whereField("autherUid", isEqualTo: userUid).order(by: "writtenDate", descending: true).addSnapshotListener { (querySnapshot, err) in
+        db.collection("NFT").whereField("authorUid", isEqualTo: userUid).order(by: "writtenDate", descending: true).addSnapshotListener { (querySnapshot, err) in
             if let err = err {
                 print("NFT 불러오기 에러: \(err)")
             } else {

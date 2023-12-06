@@ -22,13 +22,6 @@ struct APIKey {
 let db = Firestore.firestore()
 let ref = Storage.storage().reference()
 
-//MARK: - Safe Array with Subscript
-//extension Collection {
-//    subscript (safe index: Index) -> Element? {
-//        return indices.contains(index) ? self[index] : nil
-//    }
-//}
-
 //MARK: - Apple LogIn Token
 extension NSObject {
     func randomNonceString(length: Int = 32) -> String {
@@ -59,7 +52,7 @@ extension NSObject {
 extension DocumentSnapshot {
     func makeNFT() -> NFT {
         let NFTID = self.get("NFTID") as! String
-        let autherUid = self.get("autherUid") as! String
+        let authorUid = self.get("authorUid") as! String
         let writtenDate = self.get("writtenDate") as! Double
         let type = self.get("type") as! String
         let url = self.get("url") as! String
@@ -80,7 +73,7 @@ extension DocumentSnapshot {
         let reports = self.get("reports") as! Int
         
         let NFT = NFT(NFTID: NFTID,
-                      autherUid: autherUid,
+                      authorUid: authorUid,
                       writtenDate: writtenDate,
                       type: type,
                       url: url,
@@ -132,8 +125,9 @@ extension DocumentSnapshot {
         let url = self.get("url") as! String
         let name = self.get("name") as! String
         let introduce = self.get("introduce") as! String
+        let blockedUser = self.get("blockedUser") as! [String]
         
-        let User = User(userUid: userUid, url: url, name: name, introduce: introduce)
+        let User = User(userUid: userUid, url: url, name: name, introduce: introduce, blockedUser: blockedUser)
         return User
     }
 }

@@ -81,7 +81,7 @@ class SetLocationViewController: UIViewController {
         view.addSubview(modalView)
         modalView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(100)
-            make.centerX.left.bottom.equalToSuperview().inset(0)
+            make.centerX.left.bottom.equalToSuperview()
         }
         modalView.makeModalCircular()
         

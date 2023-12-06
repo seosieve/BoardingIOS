@@ -14,12 +14,16 @@ import FirebaseStorage
 
 class HomeViewModel {
     
+    var userUid = ""
     let items = BehaviorRelay<[NFT]>(value: Array(repeating: NFT.dummyType, count: 10))
     let itemCount = PublishRelay<Int>()
     
     let disposeBag = DisposeBag()
     
     init() {
+        if let user = Auth.auth().currentUser {
+            userUid = user.uid
+        }
         getAllNFT()
     }
     
@@ -39,8 +43,8 @@ class HomeViewModel {
         }
     }
     
-    func getAuther(auther: String, handler: @escaping (User) -> ()) {
-        db.collection("User").document(auther).getDocument { (document, error) in
+    func getAuthor(author: String, handler: @escaping (User) -> ()) {
+        db.collection("User").document(author).getDocument { (document, error) in
             if let error = error {
                 print("글쓴이 불러오기 에러: \(error)")
             } else {

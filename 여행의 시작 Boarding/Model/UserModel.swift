@@ -14,13 +14,15 @@ struct User {
     let url: String
     let name: String
     let introduce: String
+    let blockedUser: [String]
     
     // [String:Any] 타입으로 변환
     var dicType: [String: Any] {
         return ["userUid": userUid,
                 "url": url,
                 "name": name,
-                "introduce": introduce]
+                "introduce": introduce,
+                "blockedUser": blockedUser]
     }
     
     // Dummy User
@@ -28,6 +30,7 @@ struct User {
         return User(userUid: "",
                     url: "",
                     name: "",
-                    introduce: "")
+                    introduce: "",
+                    blockedUser: [])
     }
 }

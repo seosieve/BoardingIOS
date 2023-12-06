@@ -9,7 +9,7 @@ import Foundation
 
 struct NFT {
     let NFTID: String
-    let autherUid: String
+    let authorUid: String
     let writtenDate: Double
     let type: String
     let url: String
@@ -32,7 +32,7 @@ struct NFT {
     // [String:Any] 타입으로 변환
     var dicType: [String: Any] {
         return ["NFTID": NFTID,
-                "autherUid": autherUid,
+                "authorUid": authorUid,
                 "writtenDate": writtenDate,
                 "type": type,
                 "url": url,
@@ -56,7 +56,7 @@ struct NFT {
     // Loading 전 등에 사용될 dummy NFT
     static var dummyType: NFT {
         return NFT(NFTID: "",
-                   autherUid: "",
+                   authorUid: "",
                    writtenDate: 0.0,
                    type: "",
                    url: "",

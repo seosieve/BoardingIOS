@@ -18,6 +18,14 @@ class PreferenceTableViewCell: UITableViewCell {
     var detailButton = UIButton().then {
         $0.setImage(UIImage(named: "Detail")?.withRenderingMode(.alwaysTemplate), for: .normal)
         $0.tintColor = Gray.semiLight
+        $0.isHidden = true
+    }
+    
+    var versionLabel = UILabel().then {
+        $0.text = "1. 0. 2"
+        $0.font = Pretendard.semiBold(16)
+        $0.textColor = Gray.semiLight
+        $0.isHidden = true
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -54,6 +62,12 @@ class PreferenceTableViewCell: UITableViewCell {
             make.centerY.equalToSuperview()
             make.right.equalToSuperview().inset(20)
             make.width.height.equalTo(28)
+        }
+        
+        contentView.addSubview(versionLabel)
+        versionLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.right.equalToSuperview().inset(25)
         }
     }
 }

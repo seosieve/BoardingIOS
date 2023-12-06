@@ -32,9 +32,9 @@ class NFTTicketViewController: UIViewController {
     
     lazy var completeButton = UIButton().then {
         $0.setTitle("완료", for: .normal)
-        $0.setTitleColor(Gray.white, for: .normal)
+        $0.setTitleColor(Gray.black, for: .normal)
         $0.titleLabel?.font = Pretendard.semiBold(18)
-        $0.backgroundColor = Boarding.blue
+        $0.backgroundColor = Gray.white
         $0.addTarget(self, action: #selector(completeButtonPressed), for: .touchUpInside)
     }
     
@@ -191,7 +191,7 @@ class NFTTicketViewController: UIViewController {
             make.right.equalToSuperview()
             make.centerY.top.equalToSuperview()
         }
-        let QRInfo = [String(NFTResult.writtenDate), NFTResult.NFTID, "Standard", NFTResult.autherUid]
+        let QRInfo = [String(NFTResult.writtenDate), NFTResult.NFTID, "Standard", NFTResult.authorUid]
         for index in 0..<4 {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear

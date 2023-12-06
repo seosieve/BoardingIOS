@@ -15,7 +15,7 @@ import FirebaseStorage
 class WrittingViewModel {
     let NFTID = db.collection("NFT").document().documentID
     
-    let autherUid = BehaviorRelay<String>(value: "")
+    let authorUid = BehaviorRelay<String>(value: "")
     let location = BehaviorRelay<String>(value: "")
     let country = BehaviorRelay<String>(value: "")
     let city = BehaviorRelay<String>(value: "")
@@ -38,7 +38,7 @@ class WrittingViewModel {
     
     init() {
         if let user = Auth.auth().currentUser {
-            autherUid.accept(user.uid)
+            authorUid.accept(user.uid)
         }
         
         dataValid = Observable.combineLatest(title, content, starPoint, category)
@@ -74,7 +74,7 @@ class WrittingViewModel {
     
     func saveNFT(url: URL) {
         let NFT = NFT(NFTID: NFTID,
-                      autherUid: autherUid.value,
+                      authorUid: authorUid.value,
                       writtenDate: NSDate().timeIntervalSince1970,
                       type: "photo",
                       url: url.absoluteString,

@@ -225,7 +225,6 @@ class MILEViewController: UIViewController {
                 $0.backgroundColor = Gray.bright
                 $0.layer.cornerRadius = 12
             }
-            
             let weekRangeLabel = UILabel().then {
                 $0.text = "2023.12.01 ~ 2023.12.08"
                 $0.font = Pretendard.regular(14)
@@ -268,57 +267,6 @@ class MILEViewController: UIViewController {
 //            make.height.equalTo(400)
 //            make.bottom.equalToSuperview().offset(-200)
 //        }
-    }
-    
-    func makeCalculateStackView(_ title: String) -> UIStackView {
-        let travelStackView = UIStackView().then {
-            $0.axis = .horizontal
-            $0.alignment = .fill
-            $0.distribution = .fillEqually
-            $0.spacing = 8
-        }
-        
-        for index in 0..<3 {
-            let subview = UIView().then {
-                $0.backgroundColor = Gray.bright
-                $0.layer.cornerRadius = 12
-            }
-            
-            let emojiLabel = UILabel().then {
-                $0.text = CategoryInfo.imoji[index]
-                $0.font = Pretendard.semiBold(40)
-            }
-            
-            let titleLabel = UILabel().then {
-                $0.text = CategoryInfo.name[index]
-                $0.font = Pretendard.semiBold(17)
-                $0.textColor = Gray.black
-            }
-            
-            let levelLabel = UILabel().then {
-                $0.text = "Lv.1 (0%)"
-                $0.font = Pretendard.regular(13)
-                $0.textColor = Gray.medium
-            }
-            
-            subview.addSubview(emojiLabel)
-            emojiLabel.snp.makeConstraints { make in
-                make.top.equalToSuperview().offset(22)
-                make.centerX.equalToSuperview()
-            }
-            subview.addSubview(titleLabel)
-            titleLabel.snp.makeConstraints { make in
-                make.top.equalTo(emojiLabel.snp.bottom)
-                make.centerX.equalToSuperview()
-            }
-            subview.addSubview(levelLabel)
-            levelLabel.snp.makeConstraints { make in
-                make.bottom.equalToSuperview().offset(-20)
-                make.centerX.equalToSuperview()
-            }
-            travelStackView.addArrangedSubview(subview)
-        }
-        return travelStackView
     }
     
     func setRx() {

@@ -49,9 +49,11 @@ extension UIColor {
 
 //MARK: - Add Gradation
 extension UIView {
-    func gradient(_ colors: [UIColor], axis: Axis) {
+    func gradient(_ colors: [UIColor], axis: Axis = .horizontal) {
         let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = self.bounds
         gradientLayer.colors = colors.map{ $0.cgColor }
+
         switch axis {
         case .horizontal:
             gradientLayer.startPoint = CGPoint(x: 0, y: 0)
@@ -60,7 +62,32 @@ extension UIView {
             gradientLayer.startPoint = CGPoint(x: 0, y: 0)
             gradientLayer.endPoint = CGPoint(x: 0, y: 1)
         }
-        gradientLayer.frame = self.bounds
+        
+        self.layer.addSublayer(gradientLayer)
+    }
+    
+    func gradientBorder() {
+        let lineWidth: CGFloat = 2
+        let rect = self.bounds.insetBy(dx: lineWidth / 2, dy: lineWidth / 2)
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = CGRect(origin: CGPoint.zero, size: self.frame.size)
+        gradientLayer.colors = [Boarding.skyBlue, Boarding.blue].map{ $0.cgColor }
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 0)
+        
+        let shape = CAShapeLayer()
+        shape.lineWidth = 2
+        shape.path = UIBezierPath(roundedRect: rect, cornerRadius: self.layer.cornerRadius).cgPath
+        shape.strokeColor = UIColor.black.cgColor
+        shape.fillColor = UIColor.clear.cgColor
+        gradientLayer.mask = shape
+        
+        let backgroundLayer = CAShapeLayer()
+        backgroundLayer.path = UIBezierPath(roundedRect: self.layer.bounds, cornerRadius: self.layer.cornerRadius).cgPath
+        backgroundLayer.fillColor = Boarding.lightBlue.cgColor
+
+        self.layer.addSublayer(backgroundLayer)
         self.layer.addSublayer(gradientLayer)
     }
 }

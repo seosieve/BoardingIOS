@@ -248,14 +248,6 @@ class NewPlanDurationViewController: UIViewController {
 
 //MARK: - FSCalendarDelegate
 extension NewPlanDurationViewController : FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
-    func stringDate(_ date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "ko_KR")
-        dateFormatter.timeZone = TimeZone(abbreviation: "KST")
-        dateFormatter.dateFormat = "yyyy. MM. dd"
-        return dateFormatter.string(from: date)
-    }
-    
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         if selectedDate.isEmpty {
             selectedDate.append(date)
@@ -270,14 +262,14 @@ extension NewPlanDurationViewController : FSCalendarDelegate, FSCalendarDataSour
         }
         
         if selectedDate.count == 1 {
-            boardingLabel.text = stringDate(selectedDate[0])
+            boardingLabel.text = dateToString(selectedDate[0])
             boardingLabel.textColor = Gray.dark
             boardingUnderLine.backgroundColor = Boarding.blue
         } else {
-            boardingLabel.text = stringDate(selectedDate[0])
+            boardingLabel.text = dateToString(selectedDate[0])
             boardingLabel.textColor = Gray.dark
             boardingUnderLine.backgroundColor = Boarding.blue
-            landingLabel.text = stringDate(selectedDate[1])
+            landingLabel.text = dateToString(selectedDate[1])
             landingLabel.textColor = Gray.dark
             landingUnderLine.backgroundColor = Boarding.blue
             writtenDate = selectedDate[0].timeIntervalSince1970
@@ -289,7 +281,7 @@ extension NewPlanDurationViewController : FSCalendarDelegate, FSCalendarDataSour
         selectedDate = selectedDate.filter{$0 != date}
         
         if selectedDate.count == 1 {
-            boardingLabel.text = stringDate(selectedDate[0])
+            boardingLabel.text = dateToString(selectedDate[0])
             landingLabel.text = "오는 날"
             landingLabel.textColor = Gray.light
             landingUnderLine.backgroundColor = Gray.semiLight

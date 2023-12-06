@@ -79,7 +79,7 @@ class MyScrapViewController: UIViewController {
         
         view.addSubview(modalView)
         modalView.snp.makeConstraints { make in
-            make.centerX.left.bottom.equalToSuperview().inset(0)
+            make.centerX.left.bottom.equalToSuperview()
             make.height.equalTo(700)
         }
         modalView.makeModalCircular()
@@ -140,7 +140,7 @@ class MyScrapViewController: UIViewController {
                             }
                         } else {
                             self.dismiss(animated: true)
-                            self.delegate?.presentAddPlanModal()
+                            self.delegate?.presentAddPlanModal(planID: self.planID, NFTID: element.NFTID)
                         }
                     }
                 } else {
