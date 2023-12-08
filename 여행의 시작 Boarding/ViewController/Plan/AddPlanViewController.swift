@@ -220,8 +220,7 @@ class AddPlanViewController: UIViewController {
     func setRx() {
         completeButton.rx.tap
             .subscribe(onNext: {
-//                self.viewModel.addPlan(planID: self.planID, NFTID: self.NFTID)
-                self.viewModel.getDayPlan(planID: self.planID)
+                self.viewModel.addDayPlan(planID: self.planID, NFTID: self.NFTID)
                 self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)

@@ -8,10 +8,12 @@
 import Foundation
 
 struct Location {
-    var url: String
+    static let global =  "https://global.cornell.edu/sites/default/files/styles/homepage_banner/public/2021-08/AdobeStock_283024784_f.jpg?h=df51affa&itok=1GAXdnae"
+    
+    let url: String
     let country: String
     let city: String
-    var count: Int
+    let count: Int
     
     static var dummyType: Location {
         return Location(url: "",

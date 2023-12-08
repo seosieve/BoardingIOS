@@ -15,7 +15,7 @@ import FirebaseStorageUI
 //APIKey
 struct APIKey {
     static let kakao = "a0dc7630ce25410d137528fcda8a9d30"
-    static let googleMap = "AIzaSyBcH3Of0Ymx0f7hIPNMn5lh1gDKhmSaTqU"
+    static let googleMap = "AIzaSyAmNO6vhM_XtGzhOBksA7oqV3OIugSg5sM"
 }
 
 //Firestore DB
@@ -126,8 +126,9 @@ extension DocumentSnapshot {
         let name = self.get("name") as! String
         let introduce = self.get("introduce") as! String
         let blockedUser = self.get("blockedUser") as! [String]
+        let bookMark = self.get("bookMark") as! [String]
         
-        let User = User(userUid: userUid, url: url, name: name, introduce: introduce, blockedUser: blockedUser)
+        let User = User(userUid: userUid, url: url, name: name, introduce: introduce, blockedUser: blockedUser, bookMark: bookMark)
         return User
     }
 }

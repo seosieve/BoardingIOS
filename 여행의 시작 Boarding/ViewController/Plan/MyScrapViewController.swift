@@ -64,6 +64,20 @@ class MyScrapViewController: UIViewController {
         $0.collectionViewLayout = myScrapFlowLayout
     }
     
+    var placeHolderLabel = UILabel().then {
+        $0.text = "저장된 스크랩이 없어요.\n홈에서 스크랩을 추가해보세요."
+        $0.font = Pretendard.semiBold(24)
+        $0.textColor = Gray.semiLight
+        let attrString = NSMutableAttributedString(string: $0.text!)
+        let style = NSMutableParagraphStyle()
+        style.lineSpacing = 16
+        attrString.addAttribute(.paragraphStyle, value: style, range: NSMakeRange(0, attrString.length))
+        $0.attributedText = attrString
+        $0.textAlignment = .center
+        $0.numberOfLines = 2
+        $0.isHidden = true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         myScrapCollectionView.register(NFTCollectionViewCell.self, forCellWithReuseIdentifier: "NFTCollectionViewCell")
@@ -110,6 +124,12 @@ class MyScrapViewController: UIViewController {
             make.top.equalTo(myScrapLabel.snp.bottom).offset(10)
             make.left.centerX.bottom.equalToSuperview()
         }
+        
+        modalView.addSubview(placeHolderLabel)
+        placeHolderLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-60)
+        }
     }
     
     func setRx() {
@@ -152,9 +172,9 @@ class MyScrapViewController: UIViewController {
         viewModel.itemCount
             .subscribe(onNext: { [weak self] count in
                 if count == 0 {
-                    print("a")
+                    self?.placeHolderLabel.isHidden = false
                 } else {
-                    print("b")
+                    self?.placeHolderLabel.isHidden = true
                 }
             })
             .disposed(by: disposeBag)

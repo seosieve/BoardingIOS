@@ -50,7 +50,7 @@
 		4E5B50352B1AEE7F00BA9AB2 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5B50342B1AEE7F00BA9AB2 /* TermsViewController.swift */; };
 		4E5B50372B1AFB0700BA9AB2 /* TermsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5B50362B1AFB0700BA9AB2 /* TermsModel.swift */; };
 		4E5B50392B1D9DC800BA9AB2 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5B50382B1D9DC800BA9AB2 /* ReportViewController.swift */; };
-		4E63EB5D2B1EE46F00BEC1F1 /* PlanDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E63EB5C2B1EE46F00BEC1F1 /* PlanDetailCollectionViewCell.swift */; };
+		4E63EB5D2B1EE46F00BEC1F1 /* PlanDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E63EB5C2B1EE46F00BEC1F1 /* PlanDetailTableViewCell.swift */; };
 		4E6D86292B148F7E008113A4 /* RecordInfoPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D86282B148F7E008113A4 /* RecordInfoPageViewController.swift */; };
 		4E6D862B2B148FA3008113A4 /* LocationInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D862A2B148FA3008113A4 /* LocationInfoViewController.swift */; };
 		4E6D862D2B148FAF008113A4 /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D862C2B148FAF008113A4 /* UserInfoViewController.swift */; };
@@ -158,7 +158,7 @@
 		4E5B50342B1AEE7F00BA9AB2 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		4E5B50362B1AFB0700BA9AB2 /* TermsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsModel.swift; sourceTree = "<group>"; };
 		4E5B50382B1D9DC800BA9AB2 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
-		4E63EB5C2B1EE46F00BEC1F1 /* PlanDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDetailCollectionViewCell.swift; sourceTree = "<group>"; };
+		4E63EB5C2B1EE46F00BEC1F1 /* PlanDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDetailTableViewCell.swift; sourceTree = "<group>"; };
 		4E6D86282B148F7E008113A4 /* RecordInfoPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordInfoPageViewController.swift; sourceTree = "<group>"; };
 		4E6D862A2B148FA3008113A4 /* LocationInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoViewController.swift; sourceTree = "<group>"; };
 		4E6D862C2B148FAF008113A4 /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
@@ -454,7 +454,7 @@
 				4EA7AFC32AA6D0E40055F4C7 /* HomeTableViewCell.swift */,
 				4E35524B2B0DF72E0060E391 /* LocationTableViewCell.swift */,
 				4E44FBA42ADCF0C10021FAB9 /* PlanCollectionViewCell.swift */,
-				4E63EB5C2B1EE46F00BEC1F1 /* PlanDetailCollectionViewCell.swift */,
+				4E63EB5C2B1EE46F00BEC1F1 /* PlanDetailTableViewCell.swift */,
 				4EECA7DE2A2DC352006FB764 /* TravelCollectionViewCell.swift */,
 				4E44FB962ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift */,
 				4E7AD5952B1E6BB300DC8ACB /* BlockedUserTableViewCell.swift */,
@@ -676,7 +676,7 @@
 				4EECA7D92A2B3005006FB764 /* Extension.swift in Sources */,
 				4EECA7D52A2B02A2006FB764 /* FontModel.swift in Sources */,
 				4E7D52E62AC41AF200054800 /* SplashViewController.swift in Sources */,
-				4E63EB5D2B1EE46F00BEC1F1 /* PlanDetailCollectionViewCell.swift in Sources */,
+				4E63EB5D2B1EE46F00BEC1F1 /* PlanDetailTableViewCell.swift in Sources */,
 				4E35524A2B0DA0660060E391 /* SearchViewController.swift in Sources */,
 				4E44FB9F2AD50DC20021FAB9 /* CameraViewModel.swift in Sources */,
 				4E04A99A2B137C3200EE6530 /* RecordViewModel.swift in Sources */,

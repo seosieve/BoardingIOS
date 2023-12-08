@@ -20,6 +20,8 @@ class PreferenceViewModel: NSObject {
     let deleteUserSubject = PublishSubject<Void>()
     let deleteUserImageSubject = PublishSubject<Void>()
     let deleteProfileSubject = PublishSubject<Void>()
+    let deleteNFTSubject = PublishSubject<Void>()
+    let deleteNFTImageSubject = PublishSubject<Void>()
     
     let items = BehaviorRelay<[String]>(value: ["차단 유저 목록", "이용약관", "개인정보 보호 정책", "버전정보", "로그아웃", "회원탈퇴"])
     let messageArr = BehaviorRelay<[(String, String, String)]>(value: [("정말 로그아웃 하시겠어요?", "로그아웃 후 Boarding를 이용하시려면 다시 로그인을 해 주세요!", "로그아웃"), ("정말 회원탈퇴 하시겠어요?", "아쉽지만 다음에 기회가 된다면 다시 Boarding을 찾아주세요!", "회원탈퇴")])
@@ -33,7 +35,7 @@ class PreferenceViewModel: NSObject {
     
     override init() {
         super.init()
-        Observable.zip(deleteUserSubject, deleteUserImageSubject, deleteProfileSubject)
+        Observable.zip(deleteUserSubject, deleteUserImageSubject, deleteProfileSubject, deleteNFTSubject, deleteNFTImageSubject)
             .map{ _ in return }
             .subscribe(onNext: { [weak self] in
                 self?.processCompleted.onNext(())
@@ -88,6 +90,8 @@ class PreferenceViewModel: NSObject {
                             self?.deleteUserImage(uid: currentUser.uid)
                             self?.deleteProfile(uid: currentUser.uid)
                             self?.deleteUser()
+                            self?.deleteNFT()
+                            self?.deleteNFTImage()
                         }
                     }
                 }, onError: { [weak self] error in
@@ -125,13 +129,64 @@ class PreferenceViewModel: NSObject {
     }
     
     func deleteUser() {
-        let user = Auth.auth().currentUser
-        user?.delete { [weak self] error in
+        guard let currentUser = Auth.auth().currentUser else { return }
+        currentUser.delete { [weak self] error in
             if let error = error {
                 print("유저 계정 삭제 에러: \(error)")
             } else {
                 print("계정 삭제 성공")
                 self?.deleteUserSubject.onNext(())
+            }
+        }
+    }
+    
+    func deleteNFT() {
+        guard let currentUser = Auth.auth().currentUser else { return }
+        db.collection("NFT").whereField("authorUid", isEqualTo: currentUser.uid).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("유저 NFT 쿼리 에러: \(error)")
+            } else {
+                if querySnapshot!.documents.isEmpty {
+                    print("유저 소유 NFT 존재하지 않음")
+                    self.deleteNFTSubject.onNext(())
+                }
+                for document in querySnapshot!.documents {
+                    // 유저 소유 NFT 삭제
+                    db.collection("NFT").document(document.documentID).delete { [weak self] error in
+                        if let error = error {
+                            print("유저 NFT 삭제 에러: \(error)")
+                        } else {
+                            print("유저 NFT 삭제 성공")
+                            self?.deleteNFTSubject.onNext(())
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func deleteNFTImage() {
+        guard let currentUser = Auth.auth().currentUser else { return }
+        db.collection("NFT").whereField("authorUid", isEqualTo: currentUser.uid).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("유저 NFT 쿼리 에러: \(error)")
+            } else {
+                if querySnapshot!.documents.isEmpty {
+                    print("유저 소유 NFT 이미지 존재하지 않음")
+                    self.deleteNFTImageSubject.onNext(())
+                }
+                for document in querySnapshot!.documents {
+                    // 유저 소유 NFT 이미지 삭제
+                    let imageRef = ref.child("NFTImage/\(document.documentID)")
+                    imageRef.delete { [weak self] error in
+                        if let error = error {
+                            print("유저 NFT 이미지 삭제 에러: \(error)")
+                        } else {
+                            print("유저 NFT 이미지 삭제 성공")
+                            self?.deleteNFTImageSubject.onNext(())
+                        }
+                    }
+                }
             }
         }
     }
@@ -186,6 +241,8 @@ extension PreferenceViewModel: ASAuthorizationControllerDelegate, ASAuthorizatio
                             self.deleteUserImage(uid: currentUser.uid)
                             self.deleteProfile(uid: currentUser.uid)
                             self.deleteUser()
+                            self.deleteNFT()
+                            self.deleteNFTImage()
                         }
                     }
                 }

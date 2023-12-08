@@ -19,8 +19,20 @@ class RecordInfoViewController: UIViewController {
     
     lazy var buttonWidth = (self.view.frame.width - 40) / 3
     
+    private var currentStatusBarStyle: UIStatusBarStyle = .lightContent
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
+        return currentStatusBarStyle
+    }
+    
+    var headerView = UIView().then {
+        $0.backgroundColor = Gray.bright
+        $0.alpha = 0
+    }
+    
+    var headerDivider = UIView().then {
+        $0.backgroundColor = Gray.bright
+        $0.alpha = 0
     }
     
     lazy var backButton = UIButton().then {
@@ -156,6 +168,14 @@ class RecordInfoViewController: UIViewController {
     
     @objc func iconButtonPressed(_ sender: UIButton) {
         print("icon Pressed")
+        if currentStatusBarStyle == .default {
+            currentStatusBarStyle = .lightContent
+        } else {
+            currentStatusBarStyle = .default
+        }
+        print(currentStatusBarStyle)
+        // 변경된 스타일을 적용
+        setNeedsStatusBarAppearanceUpdate()
     }
     
     var myPageButtonStackView = UIStackView().then {
@@ -219,6 +239,7 @@ class RecordInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Gray.bright
+        recordInfoScrollView.delegate = self
         infoPageViewController.NFT = NFTResult
         setViews()
         setRx()
@@ -234,6 +255,19 @@ class RecordInfoViewController: UIViewController {
         recordInfoContentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalToSuperview()
+        }
+        
+        view.addSubview(headerView)
+        headerView.snp.makeConstraints { make in
+            make.top.left.centerX.equalToSuperview()
+            make.height.equalTo(window.safeAreaInsets.top + 50)
+        }
+        
+        view.addSubview(headerDivider)
+        headerDivider.snp.makeConstraints { make in
+            make.top.equalTo(headerView.snp.bottom)
+            make.left.centerX.equalToSuperview()
+            make.height.equalTo(0.5)
         }
         
         view.addSubview(backButton)
@@ -542,5 +576,16 @@ class RecordInfoViewController: UIViewController {
             }
             self.view.layoutIfNeeded()
         }
+    }
+}
+
+//MARK: - UIScrollView
+extension RecordInfoViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        var level = scrollView.frame.origin.y + scrollView.contentOffset.y
+        level = max(0, level)
+        level = min(100, level)
+        headerView.alpha = CGFloat(level/300)
+        headerDivider.alpha = CGFloat(level/100)
     }
 }

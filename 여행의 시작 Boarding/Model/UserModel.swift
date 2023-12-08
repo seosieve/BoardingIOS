@@ -15,6 +15,7 @@ struct User {
     let name: String
     let introduce: String
     let blockedUser: [String]
+    let bookMark: [String]
     
     // [String:Any] 타입으로 변환
     var dicType: [String: Any] {
@@ -22,7 +23,8 @@ struct User {
                 "url": url,
                 "name": name,
                 "introduce": introduce,
-                "blockedUser": blockedUser]
+                "blockedUser": blockedUser,
+                "bookMark": bookMark]
     }
     
     // Dummy User
@@ -31,6 +33,7 @@ struct User {
                     url: "",
                     name: "",
                     introduce: "",
-                    blockedUser: [])
+                    blockedUser: [],
+                    bookMark: [])
     }
 }

@@ -222,7 +222,7 @@ extension StartViewModel {
     
     func saveProfile(url: URL, name: String) {
         guard let user = Auth.auth().currentUser else { return }
-        let User = User(userUid: user.uid, url: url.absoluteString, name: name, introduce: "", blockedUser: [])
+        let User = User(userUid: user.uid, url: url.absoluteString, name: name, introduce: "", blockedUser: [], bookMark: [])
         db.collection("User").document(user.uid).setData(User.dicType) { [weak self] error in
             if let error = error {
                 print("유저 저장 에러: \(error)")

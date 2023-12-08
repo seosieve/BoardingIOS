@@ -156,10 +156,6 @@ class PlanViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        planCollectionView.rx
-            .setDelegate(self)
-            .disposed(by: disposeBag)
-        
         viewModel.items
             .bind(to: planCollectionView.rx.items(cellIdentifier: "planCollectionViewCell", cellType: PlanCollectionViewCell.self)) { (row, element, cell) in
                 if element.planID != "" {
@@ -193,6 +189,10 @@ class PlanViewController: UIViewController {
                     self?.addPlanView.isHidden = true
                 }
             })
+            .disposed(by: disposeBag)
+        
+        planCollectionView.rx
+            .setDelegate(self)
             .disposed(by: disposeBag)
         
         addButton.rx.tap

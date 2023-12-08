@@ -24,9 +24,9 @@ class MyScrapViewModel {
     }
     
     func getMyScrap(userUid: String, planID: String) {
-        db.collection("User").document(userUid).collection("Plan").document(planID).addSnapshotListener { (documentSnapshot, err) in
-            if let err = err {
-                print("Plan 불러오기 에러: \(err)")
+        db.collection("User").document(userUid).collection("Plan").document(planID).addSnapshotListener { (documentSnapshot, error) in
+            if let error = error {
+                print("Plan 불러오기 에러: \(error)")
             } else {
                 if let document = documentSnapshot, document.exists {
                     let plan = document.makePlan()
@@ -38,9 +38,9 @@ class MyScrapViewModel {
     }
     
     func getScrapNFT(scrap: [String]) {
-        db.collection("NFT").whereField("NFTID", in: scrap).getDocuments { (querySnapshot, err) in
-            if let err = err {
-                print("scrap 불러오기 에러: \(err)")
+        db.collection("NFT").whereField("NFTID", in: scrap).getDocuments { (querySnapshot, error) in
+            if let error = error {
+                print("scrap 불러오기 에러: \(error)")
             } else {
                 var items = [NFT]()
                 for document in querySnapshot!.documents {

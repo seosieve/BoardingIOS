@@ -43,14 +43,17 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
         $0.image = UIImage(named: "HomeBlueLocation")
     }
     
-    var locationButton = UIButton().then {
-        $0.setTitle("전세계", for: .normal)
-        $0.setImage(UIImage(named: "Triangle2"), for: .normal)
-        $0.titleLabel?.font = Pretendard.semiBold(27)
-        $0.setTitleColor(Gray.black, for: .normal)
-        $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-        $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 5)
-        $0.semanticContentAttribute = .forceRightToLeft
+    var locationButton = UIButton()
+    
+    var locationLabel = UILabel().then {
+        $0.text = "전세계"
+        $0.font = Pretendard.semiBold(27)
+        $0.textColor = Gray.black
+        $0.adjustsFontSizeToFitWidth = true
+    }
+    
+    var locationTriangle = UIImageView().then {
+        $0.image = UIImage(named: "Triangle2")
     }
     
     lazy var searchButton = UIButton().then {
@@ -143,17 +146,32 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
             make.centerX.width.equalToSuperview()
             make.height.equalTo(45)
         }
+        
         iconView.addSubview(locationImageView)
-        iconView.addSubview(locationButton)
         locationImageView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(25)
             make.centerY.equalToSuperview()
             make.height.equalTo(26)
         }
+        
+        iconView.addSubview(locationButton)
         locationButton.snp.makeConstraints { make in
-            make.left.equalTo(locationImageView.snp.right).offset(8)
+            make.left.equalTo(locationImageView.snp.right).offset(12)
             make.centerY.equalToSuperview()
-            make.width.lessThanOrEqualTo(230)
+        }
+        
+        locationButton.addSubview(locationLabel)
+        locationLabel.snp.makeConstraints { make in
+            make.left.centerY.equalToSuperview()
+            make.width.lessThanOrEqualTo(200)
+        }
+        
+        locationButton.addSubview(locationTriangle)
+        locationTriangle.snp.makeConstraints { make in
+            make.left.equalTo(locationLabel.snp.right).offset(8)
+            make.right.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(28)
         }
         
         iconView.addSubview(searchButton)
@@ -398,7 +416,13 @@ extension HomeViewController: SearchDelegate {
             label.font = Pretendard.regular(13)
             label.textColor = Gray.medium
         }
-        locationButton.setTitle("\(country) \(city)", for: .normal)
-        viewModel.getNFTbyLocation(city)
+        
+        if city == "전세계" {
+            locationLabel.text = "전세계"
+            viewModel.getAllNFT()
+        } else {
+            locationLabel.text = "\(country) \(city)"
+            viewModel.getNFTbyLocation(city)
+        }
     }
 }

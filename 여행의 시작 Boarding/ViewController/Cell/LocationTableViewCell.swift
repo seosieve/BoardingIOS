@@ -32,9 +32,9 @@ class LocationTableViewCell: UITableViewCell {
         $0.textColor = Gray.medium
     }
     
-    lazy var favoriteButton = UIButton().then {
-        $0.setImage(UIImage(named: "Favorite"), for: .normal)
-        $0.setImage(UIImage(named: "FavoriteFilled"), for: .selected)
+    lazy var bookMarkButton = UIButton().then {
+        $0.setImage(UIImage(named: "BookMark"), for: .normal)
+        $0.setImage(UIImage(named: "BookMarkFilled"), for: .selected)
         $0.addTarget(self, action: #selector(favoriteButtonPressed(_:)), for: .touchUpInside)
     }
     
@@ -86,11 +86,11 @@ class LocationTableViewCell: UITableViewCell {
             make.left.equalTo(titleLabel)
         }
         
-        contentView.addSubview(favoriteButton)
-        favoriteButton.snp.makeConstraints { make in
+        contentView.addSubview(bookMarkButton)
+        bookMarkButton.snp.makeConstraints { make in
             make.centerY.equalTo(photoView)
             make.right.equalToSuperview().offset(-8)
-            make.width.height.equalTo(28)
+            make.width.height.equalTo(34)
         }
     }
 }

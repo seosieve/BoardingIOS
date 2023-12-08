@@ -11,6 +11,7 @@ import RxCocoa
 
 class SetLocationViewController: UIViewController {
 
+    var feedbackGenerator: UIImpactFeedbackGenerator?
     weak var delegate: SearchDelegate?
     
     let viewModel = SetLocationViewModel()
@@ -58,6 +59,7 @@ class SetLocationViewController: UIViewController {
     }
     
     lazy var locationTableView = UITableView().then {
+        $0.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
         $0.backgroundColor = Gray.white
         $0.separatorStyle = .none
         $0.showsVerticalScrollIndicator = false
@@ -66,8 +68,10 @@ class SetLocationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
+        searchTextField.delegate = self
         dismissKeyboardWhenTapped()
         locationTableView.register(LocationTableViewCell.self, forCellReuseIdentifier: "locationTableViewCell")
+        feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
         setViews()
         setRx()
     }
@@ -124,10 +128,10 @@ class SetLocationViewController: UIViewController {
         
         modalView.addSubview(locationTableView)
         locationTableView.snp.makeConstraints { make in
-            make.top.equalTo(searchView.snp.bottom).offset(30)
+            make.top.equalTo(searchView.snp.bottom).offset(20)
             make.left.equalToSuperview().offset(20)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-30)
+            make.bottom.equalToSuperview()
         }
     }
     
@@ -138,8 +142,11 @@ class SetLocationViewController: UIViewController {
                 cell.photoView.sd_setImage(with: URL(string: element.url), placeholderImage: nil, options: .scaleDownLargeImages)
                 cell.titleLabel.text = element.city
                 cell.subLabel.text = "최근 게시물 \(element.count)개"
+                cell.bookMarkButton.isSelected = self.viewModel.bookMark.contains("\(element.country) \(element.city)") ? true : false
+                cell.bookMarkButton.isHidden = element.city == "전세계" ? true : false
+                
                 cell.iconTapped = { [weak self] sender in
-                    self?.iconInteraction(sender)
+                    self?.iconInteraction(sender, country: element.country, city: element.city)
                 }
                 cell.cellTapped = { [weak self] in
                     self?.delegate?.searchNFT(country: element.country, city: element.city)
@@ -149,8 +156,27 @@ class SetLocationViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    func iconInteraction(_ sender: UIButton) {
+    func iconInteraction(_ sender: UIButton, country: String, city: String) {
+        if sender.isSelected {
+            viewModel.removeBookMark(country: country, city: city)
+        } else {
+            viewModel.addBookMark(country: country, city: city)
+        }
+        feedbackGenerator?.impactOccurred()
         sender.isSelected.toggle()
         sender.touchAnimation()
+    }
+}
+
+//MARK: - UITextFieldDelegate
+extension SetLocationViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField.text == "" {
+            viewModel.getAllLocation()
+        } else {
+            viewModel.getSearchedLocation(search: textField.text!)
+        }
+        searchTextField.resignFirstResponder()
+        return true
     }
 }

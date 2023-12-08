@@ -22,25 +22,22 @@ class AddPlanViewModel {
         }
     }
     
-    func addPlan(planID: String, NFTID: String) {
-        db.collection("User").document(userUid).collection("Plan").document(planID).updateData(["day1": FieldValue.arrayUnion([NFTID])]) { error in
+    func addDayPlan(planID: String, NFTID: String) {
+        let ref = db.collection("User").document(userUid).collection("Plan").document(planID)
+        ref.getDocument { (document, error) in
             if let error = error {
-                print("reports count 증가 에러: \(error)")
-            } else {
-                print("reports count 증가 성공")
-//                self.addReportCountSubject.onNext(())
-            }
-        }
-    }
-    
-    func getDayPlan(planID: String) {
-        db.collection("User").document(userUid).collection("Plan").document(planID).getDocument { (document, error) in
-            if let error = error {
-                print("Plan 불러오기 에러: \(error)")
+                print("day 쿼리 에러: \(error)")
             } else {
                 if let document = document, document.exists {
-                    let day1 = document.get("day1") as! [String]?
-                    print(day1)
+                    var dayArray = document.get("day1") as? [String] ?? []
+                    if !dayArray.contains(NFTID) { dayArray.append(NFTID) }
+                    ref.updateData(["day1": dayArray]) { error in
+                        if let error = error {
+                            print("dayPlan 추가 에러: \(error)")
+                        } else {
+                            print("dayPlan 추가 성공")
+                        }
+                    }
                 }
             }
         }
