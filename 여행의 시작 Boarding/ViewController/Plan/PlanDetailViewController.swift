@@ -19,11 +19,12 @@ class PlanDetailViewController: UIViewController {
     var feedbackGenerator: UIImpactFeedbackGenerator?
     
     var dataArray = [NFT]()
+    var memoArray = [String]()
     var plan = Plan.dummyType
     var selectedDay = 1
     var lastCount = 0
     
-    lazy var viewModel = PlanDetailViewModel(plan: self.plan)
+    lazy var viewModel = PlanDetailViewModel(planID: self.plan.planID)
     let disposeBag = DisposeBag()
     
     var statusBarView = UIView().then {
@@ -103,7 +104,6 @@ class PlanDetailViewController: UIViewController {
                 button.layer.borderWidth = 1
             }
         }
-        
         sender.isSelected = true
         sender.layer.borderWidth = 0
         selectedDay = sender.tag
@@ -111,7 +111,7 @@ class PlanDetailViewController: UIViewController {
         dayLabel.text = "Day \(sender.tag)"
     }
     
-    lazy var camera = GMSCameraPosition.camera(withLatitude: 64, longitude: -113, zoom: 14.0)
+    lazy var camera = GMSCameraPosition.camera(withLatitude: 0, longitude: 0, zoom: 12.0)
     
     lazy var map = GMSMapView(frame: CGRect.zero, camera: camera).then {
         $0.settings.scrollGestures = false
@@ -153,7 +153,7 @@ class PlanDetailViewController: UIViewController {
 
     var addMemoButton = UIButton().then {
         var config = UIButton.Configuration.filled()
-        var title = AttributedString.init("메모 추가")
+        var title = AttributedString.init("메모 수정")
         title.font = Pretendard.semiBold(17)
         config.baseBackgroundColor = Gray.bright
         config.baseForegroundColor = Gray.medium
@@ -340,7 +340,7 @@ class PlanDetailViewController: UIViewController {
             make.top.equalTo(dayView.snp.bottom).offset(10)
             make.left.equalToSuperview().offset(20)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-40)
+            make.bottom.equalToSuperview().offset(-20)
         }
         
         planView.addSubview(planPlaceHolder)
@@ -405,34 +405,18 @@ class PlanDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-//        viewModel.items
-//            .bind(to: planDetailTableView.rx.items(cellIdentifier: "planDetailTableViewCell", cellType: PlanDetailTableViewCell.self)) { (row, element, cell) in
-//                cell.selectionStyle = .none
-//                if element.NFTID != "" {
-//                    cell.photoView.sd_setImage(with: URL(string: element.url), placeholderImage: nil, options: .scaleDownLargeImages)
-//                    cell.numberLabel.text = String(row+1)
-//                    cell.titleLabel.text = element.title
-//                    self.viewModel.getAddress(latitude: element.latitude, longitude: element.longitude) { location in
-//                        cell.locationLabel.text = location
-//                    }
-//                    cell.contentLabel.text = element.content
-//                }
-//            }
-//            .disposed(by: disposeBag)
-//
-//        planDetailTableView.rx
-//            .setDelegate(self)
-//            .disposed(by: disposeBag)
-        
         viewModel.itemCount
             .subscribe(onNext: { [weak self] count in
                 if count == 0 {
                     self?.planDetailTableView.isHidden = true
                     self?.planPlaceHolder.isHidden = false
+                    self?.addMemoButton.isEnabled = false
                 } else {
                     self?.planDetailTableView.isHidden = false
                     self?.planPlaceHolder.isHidden = true
+                    self?.addMemoButton.isEnabled = true
                 }
+                self?.updateMap(data: self?.dataArray.last)
                 self?.updateViewHeight(count: count)
             })
             .disposed(by: disposeBag)
@@ -450,9 +434,12 @@ class PlanDetailViewController: UIViewController {
         
         addMemoButton.rx.tap
             .subscribe(onNext: {
-                self.planDetailTableView.isHidden = false
-                self.planPlaceHolder.isHidden = true
-                self.updateViewHeight(count: 3)
+                let vc = MemoEditViewController()
+                vc.planID = self.plan.planID
+                vc.memoArray = self.memoArray
+                vc.modalPresentationStyle = .automatic
+                vc.modalTransitionStyle = .coverVertical
+                self.present(vc, animated: true)
             })
             .disposed(by: disposeBag)
         
@@ -470,13 +457,18 @@ class PlanDetailViewController: UIViewController {
                 self.planDetailTableView.reloadData()
             })
             .disposed(by: disposeBag)
+        
+        viewModel.memo
+            .subscribe(onNext: { items in
+                self.memoArray = items
+            })
+            .disposed(by: disposeBag)
     }
     
     func updateViewHeight(count: Int) {
         // UICollectionView의 높이를 업데이트
-        let height = 140
-        let numberOfCells = count
-        let totalHeight = count == 0 ? 30 : height * numberOfCells
+        let result = memoArray.map { $0.isEmpty ? 140 : 220 }.reduce(0, +)
+        let totalHeight = count == 0 ? 30 : result
         if lastCount <= count {
             self.planDetailTableView.snp.updateConstraints { make in
                 make.height.equalTo(totalHeight)
@@ -490,6 +482,22 @@ class PlanDetailViewController: UIViewController {
             }
         }
         lastCount = count
+    }
+    
+    func updateMap(data: NFT?) {
+        let latitude = data?.latitude ?? 0
+        let longitude = data?.longitude ?? 0
+        let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        //Update Camera
+        let camera = GMSCameraPosition(latitude: latitude, longitude: longitude, zoom: 12.0)
+        map.camera = camera
+        //Update Marker
+        if let title = data?.location {
+            let marker = GMSMarker(position: location)
+            marker.icon = GMSMarker.markerImage(with: Boarding.blue)
+            marker.title = title
+            marker.map = map
+        }
     }
 }
 
@@ -510,12 +518,23 @@ extension PlanDetailViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.locationLabel.text = location
             }
             cell.contentLabel.text = dataArray[indexPath.row].content
+            cell.memoView.isHidden = memoArray[indexPath.row] == "" ? true : false
+            cell.memoLabel.isHidden = memoArray[indexPath.row] == "" ? true : false
+            cell.memoLabel.text = memoArray[indexPath.row]
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 140
+        if memoArray[indexPath.row] == "" {
+            return 140
+        } else {
+            return 220
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        updateMap(data: dataArray[indexPath.row])
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -527,8 +546,10 @@ extension PlanDetailViewController: UITableViewDelegate, UITableViewDataSource {
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { (_, _, completionHandler) in
             let NFTID = self.dataArray[indexPath.row].NFTID
             self.dataArray.remove(at: indexPath.row)
+            self.memoArray.remove(at: indexPath.row)
+            
             tableView.deleteRows(at: [indexPath], with: .fade)
-            self.viewModel.removeDayPlan(NFTID: NFTID)
+            self.viewModel.removeDayPlan(NFTID: NFTID, memoArray: self.memoArray)
             completionHandler(true)
         }
         deleteAction.image = UIImage(named: "Trash")
@@ -539,9 +560,13 @@ extension PlanDetailViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         print("\(sourceIndexPath.row) -> \(destinationIndexPath.row)")
-        let moveCell = self.dataArray[sourceIndexPath.row]
+        let NFT = self.dataArray[sourceIndexPath.row]
+        let memo = self.memoArray[sourceIndexPath.row]
         self.dataArray.remove(at: sourceIndexPath.row)
-        self.dataArray.insert(moveCell, at: destinationIndexPath.row)
+        self.dataArray.insert(NFT, at: destinationIndexPath.row)
+        self.memoArray.remove(at: sourceIndexPath.row)
+        self.memoArray.insert(memo, at: destinationIndexPath.row)
+        self.viewModel.swapDayPlan(dayArray: self.dataArray.map{ $0.NFTID }, memoArray: memoArray)
     }
 }
 

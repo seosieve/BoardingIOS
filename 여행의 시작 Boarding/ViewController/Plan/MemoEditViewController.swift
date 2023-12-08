@@ -1,25 +1,23 @@
 //
-//  AddPlanViewController.swift
+//  MemoEditViewController.swift
 //  여행의 시작 Boarding
 //
-//  Created by 서충원 on 2023/12/01.
+//  Created by 서충원 on 2023/12/08.
 //
 
 import UIKit
 import RxSwift
 import RxCocoa
 
-class AddPlanViewController: UIViewController {
+class MemoEditViewController: UIViewController {
     
     var planID = ""
-    var NFTID = ""
-    var days = 2
-    lazy var dayArr = (1...days).map{"day\($0)"}
+    var memoArray = [String]()
     var placeHolder = "메모를 작성해주세요"
     
-    lazy var viewModel = AddPlanViewModel(planID: self.planID, NFTID: self.NFTID)
+    lazy var viewModel = MemoEditViewModel(planID: self.planID)
     let disposeBag = DisposeBag()
-
+    
     lazy var backgroundView = UIView().then {
         $0.backgroundColor = .clear
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissModal))
@@ -39,37 +37,37 @@ class AddPlanViewController: UIViewController {
     }
     
     var addPlanLabel = UILabel().then {
-        $0.text = "플랜에 추가"
+        $0.text = "메모 수정"
         $0.font = Pretendard.semiBold(25)
         $0.textColor = Gray.black
     }
     
-    var dayLabel = UILabel().then {
-        $0.text = "일정"
+    var numberLabel = UILabel().then {
+        $0.text = "위치"
         $0.font = Pretendard.semiBold(17)
         $0.textColor = Gray.semiDark
     }
     
-    var dayBorderView = UIView().then {
+    var numberBorderView = UIView().then {
         $0.backgroundColor = Gray.white
         $0.layer.borderColor = Gray.semiLight.cgColor
         $0.layer.borderWidth = 1
         $0.layer.cornerRadius = 8
     }
     
-    lazy var dayTextField = immovableTextField().then {
-        $0.text = "day1"
+    lazy var numberTextField = immovableTextField().then {
+        $0.text = "1"
         $0.inputView = dayPickerView
         $0.font = Pretendard.regular(18)
         $0.textColor = Gray.black
         $0.tintColor = .clear
     }
     
-    var dayPickerImage = UIImageView().then {
+    var numberPickerImage = UIImageView().then {
         $0.image = UIImage(named: "Triangle")
     }
     
-    var dayPickerView = UIPickerView()
+    lazy var dayPickerView = UIPickerView()
     
     var memoLabel = UILabel().then {
         $0.text = "메모"
@@ -107,6 +105,7 @@ class AddPlanViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         setViews()
+        setMemo()
         setRx()
     }
     
@@ -157,36 +156,36 @@ class AddPlanViewController: UIViewController {
             make.left.equalToSuperview().offset(20)
         }
         
-        modalView.addSubview(dayLabel)
-        dayLabel.snp.makeConstraints { make in
+        modalView.addSubview(numberLabel)
+        numberLabel.snp.makeConstraints { make in
             make.top.equalTo(addPlanLabel.snp.bottom).offset(20)
             make.left.equalToSuperview().offset(20)
         }
         
-        modalView.addSubview(dayBorderView)
-        dayBorderView.snp.makeConstraints { make in
-            make.top.equalTo(dayLabel.snp.bottom).offset(12)
-            make.left.equalTo(dayLabel)
+        modalView.addSubview(numberBorderView)
+        numberBorderView.snp.makeConstraints { make in
+            make.top.equalTo(numberLabel.snp.bottom).offset(12)
+            make.left.equalTo(numberLabel)
             make.centerX.equalToSuperview()
             make.height.equalTo(44)
         }
         
-        dayBorderView.addSubview(dayTextField)
-        dayTextField.snp.makeConstraints { make in
+        numberBorderView.addSubview(numberTextField)
+        numberTextField.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(12)
             make.center.equalToSuperview()
         }
         
-        dayBorderView.addSubview(dayPickerImage)
-        dayPickerImage.snp.makeConstraints { make in
+        numberBorderView.addSubview(numberPickerImage)
+        numberPickerImage.snp.makeConstraints { make in
             make.right.equalToSuperview().offset(-20)
             make.centerY.equalToSuperview()
         }
         
         modalView.addSubview(memoLabel)
         memoLabel.snp.makeConstraints { make in
-            make.top.equalTo(dayBorderView.snp.bottom).offset(20)
-            make.left.equalTo(dayBorderView)
+            make.top.equalTo(numberBorderView.snp.bottom).offset(20)
+            make.left.equalTo(numberBorderView)
         }
         
         modalView.addSubview(memoBorderView)
@@ -216,13 +215,19 @@ class AddPlanViewController: UIViewController {
         completeButton.rounded(axis: .horizontal)
     }
     
+    func setMemo() {
+        memoTextView.textColor = memoArray.first == "" ? Gray.light : Gray.black
+        memoTextView.text = memoArray.first == "" ? placeHolder : memoArray.first
+    }
+    
     func setRx() {
         completeButton.rx.tap
             .subscribe(onNext: {
-                if let day = self.dayTextField.text {
+                if let index = Int(self.numberTextField.text!) {
                     let memo = self.memoTextView.text == self.placeHolder ? "" : self.memoTextView.text!
-                    self.viewModel.addDayPlan(day: day, memo: memo)
+                    self.memoArray[index-1] = memo
                 }
+                self.viewModel.editMemo(memoArray: self.memoArray)
                 self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
@@ -230,7 +235,7 @@ class AddPlanViewController: UIViewController {
 }
 
 //MARK: - UITextViewDelegate
-extension AddPlanViewController: UITextViewDelegate {
+extension MemoEditViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let newLength = textView.text.count - range.length + text.count
         if newLength > 100 {
@@ -266,20 +271,28 @@ extension AddPlanViewController: UITextViewDelegate {
 }
 
 //MARK: - UIPickerViewDelegate
-extension AddPlanViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+extension MemoEditViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return dayArr.count
+        return memoArray.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return dayArr[row]
+        return String(row+1)
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        dayTextField.text = dayArr[row]
+        numberTextField.text = String(row+1)
+        memoTextView.text = memoArray[row]
+        if memoArray[row] == "" {
+            memoTextView.textColor = Gray.light
+            memoTextView.text = placeHolder
+        } else {
+            memoTextView.textColor = Gray.black
+            memoTextView.text = memoArray[row]
+        }
     }
 }

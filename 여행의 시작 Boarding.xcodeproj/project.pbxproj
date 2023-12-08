@@ -50,6 +50,7 @@
 		4E5B50352B1AEE7F00BA9AB2 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5B50342B1AEE7F00BA9AB2 /* TermsViewController.swift */; };
 		4E5B50372B1AFB0700BA9AB2 /* TermsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5B50362B1AFB0700BA9AB2 /* TermsModel.swift */; };
 		4E5B50392B1D9DC800BA9AB2 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5B50382B1D9DC800BA9AB2 /* ReportViewController.swift */; };
+		4E5CD9882B232A7B0021DA87 /* MemoEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5CD9872B232A7B0021DA87 /* MemoEditViewModel.swift */; };
 		4E63EB5D2B1EE46F00BEC1F1 /* PlanDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E63EB5C2B1EE46F00BEC1F1 /* PlanDetailTableViewCell.swift */; };
 		4E6D86292B148F7E008113A4 /* RecordInfoPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D86282B148F7E008113A4 /* RecordInfoPageViewController.swift */; };
 		4E6D862B2B148FA3008113A4 /* LocationInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D862A2B148FA3008113A4 /* LocationInfoViewController.swift */; };
@@ -83,6 +84,7 @@
 		4EB72F442AEF2D6B00F9CC67 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB72F432AEF2D6B00F9CC67 /* UserModel.swift */; };
 		4EB8FEF22AEF8D0F0094C109 /* HomeInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB8FEF12AEF8D0F0094C109 /* HomeInfoViewController.swift */; };
 		4ECA2CC22B00D8B900695D8F /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECA2CC12B00D8B900695D8F /* PlanDetailViewController.swift */; };
+		4ED635DE2B2315C600ECEA7B /* MemoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED635DD2B2315C600ECEA7B /* MemoEditViewController.swift */; };
 		4EECA6282A29BECF006FB764 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA6272A29BECF006FB764 /* AppDelegate.swift */; };
 		4EECA62A2A29BECF006FB764 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA6292A29BECF006FB764 /* SceneDelegate.swift */; };
 		4EECA6312A29BED0006FB764 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4EECA6302A29BED0006FB764 /* Assets.xcassets */; };
@@ -158,6 +160,7 @@
 		4E5B50342B1AEE7F00BA9AB2 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		4E5B50362B1AFB0700BA9AB2 /* TermsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsModel.swift; sourceTree = "<group>"; };
 		4E5B50382B1D9DC800BA9AB2 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
+		4E5CD9872B232A7B0021DA87 /* MemoEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEditViewModel.swift; sourceTree = "<group>"; };
 		4E63EB5C2B1EE46F00BEC1F1 /* PlanDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDetailTableViewCell.swift; sourceTree = "<group>"; };
 		4E6D86282B148F7E008113A4 /* RecordInfoPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordInfoPageViewController.swift; sourceTree = "<group>"; };
 		4E6D862A2B148FA3008113A4 /* LocationInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationInfoViewController.swift; sourceTree = "<group>"; };
@@ -192,6 +195,7 @@
 		4EB72F432AEF2D6B00F9CC67 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		4EB8FEF12AEF8D0F0094C109 /* HomeInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInfoViewController.swift; sourceTree = "<group>"; };
 		4ECA2CC12B00D8B900695D8F /* PlanDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDetailViewController.swift; sourceTree = "<group>"; };
+		4ED635DD2B2315C600ECEA7B /* MemoEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEditViewController.swift; sourceTree = "<group>"; };
 		4EECA6242A29BECF006FB764 /* 여행의 시작 Boarding.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "여행의 시작 Boarding.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EECA6272A29BECF006FB764 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4EECA6292A29BECF006FB764 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -384,6 +388,8 @@
 				4E9B91012AFDDAAA00F6D347 /* PlanViewModel.swift */,
 				4ECA2CC12B00D8B900695D8F /* PlanDetailViewController.swift */,
 				4E32D17C2B060B30001BD1B7 /* PlanDetailViewModel.swift */,
+				4ED635DD2B2315C600ECEA7B /* MemoEditViewController.swift */,
+				4E5CD9872B232A7B0021DA87 /* MemoEditViewModel.swift */,
 				4E778DDE2B17C4EE00A6A857 /* MyScrapViewController.swift */,
 				4E778DE02B17C79600A6A857 /* MyScrapViewModel.swift */,
 				4E92000B2B19DB3A005B061F /* AddPlanViewController.swift */,
@@ -705,11 +711,13 @@
 				4E5B50392B1D9DC800BA9AB2 /* ReportViewController.swift in Sources */,
 				4EECA7F42A2F3235006FB764 /* ExpertLevelViewController.swift in Sources */,
 				4EECA6432A29C2A9006FB764 /* TabBarViewController.swift in Sources */,
+				4ED635DE2B2315C600ECEA7B /* MemoEditViewController.swift in Sources */,
 				4E2DDF502AB330E800C7F4B9 /* StartViewController.swift in Sources */,
 				4EECA6282A29BECF006FB764 /* AppDelegate.swift in Sources */,
 				4EECA62A2A29BECF006FB764 /* SceneDelegate.swift in Sources */,
 				4EECA7D72A2B1120006FB764 /* ColorModel.swift in Sources */,
 				4E44FBA52ADCF0C10021FAB9 /* PlanCollectionViewCell.swift in Sources */,
+				4E5CD9882B232A7B0021DA87 /* MemoEditViewModel.swift in Sources */,
 				4EA7AFC22AA6C86D0055F4C7 /* HomeViewController.swift in Sources */,
 				4E3552522B0E1E360060E391 /* LocationModel.swift in Sources */,
 				4E6D86372B150171008113A4 /* UserInfoViewModel.swift in Sources */,

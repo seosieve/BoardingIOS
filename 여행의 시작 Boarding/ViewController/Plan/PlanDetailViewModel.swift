@@ -15,40 +15,43 @@ class PlanDetailViewModel {
     
     var userUid = ""
     var planID = ""
-    let items = BehaviorRelay<[NFT]>(value: Array(repeating: NFT.dummyType, count: 1))
-    let itemCount = BehaviorRelay<Int>(value: 1)
+    let items = BehaviorRelay<[NFT]>(value: [NFT]())
+    let itemCount = BehaviorRelay<Int>(value: 0)
+    var memo = BehaviorRelay<[String]>(value: [String]())
     let deleteCompleted = PublishSubject<Void>()
     
-    init(plan: Plan) {
+    init(planID: String) {
         if let user = Auth.auth().currentUser {
-            userUid = user.uid
-            planID = plan.planID
-            getMyDayPlan()
+            self.userUid = user.uid
+            self.planID = planID
+            getMyDayPlan(day: "day1")
         }
     }
     
-    func getMyDayPlan() {
+    func getMyDayPlan(day: String) {
         db.collection("User").document(userUid).collection("Plan").document(planID).addSnapshotListener { (documentSnapshot, error) in
             if let error = error {
                 print("DayPlan 불러오기 에러: \(error)")
             } else {
                 if let document = documentSnapshot, document.exists {
-                    var dayArray = document.get("day1") as? [String] ?? [""]
+                    var dayArray = document.get(day) as? [String] ?? [""]
                     if dayArray.isEmpty { dayArray = [""] }
-                    self.getNFT(dayArray: dayArray)
+                    var dayMemoArray = document.get("\(day)Memo") as? [String] ?? [""]
+                    if dayMemoArray.isEmpty { dayMemoArray = [""] }
+                    self.getNFT(dayArray: dayArray, dayMemoArray: dayMemoArray)
                 }
             }
         }
     }
     
-    func getNFT(dayArray: [String]) {
+    func getNFT(dayArray: [String], dayMemoArray: [String]) {
         db.collection("NFT").whereField("NFTID", in: dayArray).getDocuments { (querySnapshot, error) in
             if let error = error {
                 print("NFT 불러오기 에러: \(error)")
             } else {
                 var items = Array(repeating: NFT.dummyType, count: dayArray.count)
                 for document in querySnapshot!.documents {
-                    var NFT = document.makeNFT()
+                    let NFT = document.makeNFT()
                     if let index = dayArray.firstIndex(of: NFT.NFTID) {
                         items[index] = NFT
                     }
@@ -56,10 +59,12 @@ class PlanDetailViewModel {
                 
                 //삭제된 NFT가 포함되어있을 때 dayPlan에서 삭제
                 for (index, item) in items.enumerated() where item.NFTID == "" {
-                    self.removeDayPlan(NFTID: dayArray[index])
+                    let memoArray = dayMemoArray.enumerated().filter { $0.offset != index }.map { $0.element }
+                    self.removeDayPlan(NFTID: dayArray[index], memoArray: memoArray)
                 }
                 items.removeAll { $0.NFTID == "" }
                 
+                self.memo.accept(dayMemoArray)
                 self.items.accept(items)
                 self.itemCount.accept(items.count)
             }
@@ -95,13 +100,25 @@ class PlanDetailViewModel {
         }
     }
     
-    func removeDayPlan(NFTID: String) {
-        db.collection("User").document(userUid).collection("Plan").document(planID).updateData(["day1": FieldValue.arrayRemove([NFTID])]) {
+    func removeDayPlan(NFTID: String, memoArray: [String]) {
+        db.collection("User").document(userUid).collection("Plan").document(planID)
+            .updateData(["day1": FieldValue.arrayRemove([NFTID]), "day1Memo": memoArray]) {
             error in
             if let error = error {
                 print("dayPlan 삭제 에러: \(error)")
             } else {
                 print("dayPlan 삭제 성공")
+            }
+        }
+    }
+    
+    func swapDayPlan(dayArray: [String], memoArray: [String]) {
+        db.collection("User").document(userUid).collection("Plan").document(planID)
+            .updateData(["day1": dayArray, "day1Memo": memoArray]) { error in
+            if let error = error {
+                print("dayPlan 순서 변경 에러: \(error)")
+            } else {
+                print("dayPlan 순서 변경 성공")
             }
         }
     }

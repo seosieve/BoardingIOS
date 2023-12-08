@@ -66,11 +66,11 @@ class MyScrapViewController: UIViewController {
     
     var placeHolderLabel = UILabel().then {
         $0.text = "저장된 스크랩이 없어요.\n홈에서 스크랩을 추가해보세요."
-        $0.font = Pretendard.semiBold(24)
+        $0.font = Pretendard.medium(22)
         $0.textColor = Gray.semiLight
         let attrString = NSMutableAttributedString(string: $0.text!)
         let style = NSMutableParagraphStyle()
-        style.lineSpacing = 16
+        style.lineSpacing = 12
         attrString.addAttribute(.paragraphStyle, value: style, range: NSMakeRange(0, attrString.length))
         $0.attributedText = attrString
         $0.textAlignment = .center
