@@ -22,7 +22,7 @@ class PreferenceTableViewCell: UITableViewCell {
     }
     
     var versionLabel = UILabel().then {
-        $0.text = "1. 0. 2"
+        $0.text = "1. 1. 0"
         $0.font = Pretendard.semiBold(16)
         $0.textColor = Gray.semiLight
         $0.isHidden = true

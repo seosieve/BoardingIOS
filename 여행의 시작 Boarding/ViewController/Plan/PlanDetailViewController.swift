@@ -109,6 +109,8 @@ class PlanDetailViewController: UIViewController {
         selectedDay = sender.tag
         feedbackGenerator?.impactOccurred()
         dayLabel.text = "Day \(sender.tag)"
+        viewModel.stopListening()
+        viewModel.getMyDayPlan(day: "day\(selectedDay)")
     }
     
     lazy var camera = GMSCameraPosition.camera(withLatitude: 0, longitude: 0, zoom: 12.0)
@@ -151,7 +153,7 @@ class PlanDetailViewController: UIViewController {
         $0.dragInteractionEnabled = true
     }
 
-    var addMemoButton = UIButton().then {
+    var editMemoButton = UIButton().then {
         var config = UIButton.Configuration.filled()
         var title = AttributedString.init("메모 수정")
         title.font = Pretendard.semiBold(17)
@@ -356,8 +358,8 @@ class PlanDetailViewController: UIViewController {
             make.height.equalTo(50)
         }
         
-        planView.addSubview(addMemoButton)
-        addMemoButton.snp.makeConstraints { make in
+        planView.addSubview(editMemoButton)
+        editMemoButton.snp.makeConstraints { make in
             make.top.equalTo(planDetailTableView.snp.bottom).offset(10)
             make.left.equalToSuperview().offset(15)
             make.right.equalTo(planView.snp.centerX).offset(-6)
@@ -365,7 +367,7 @@ class PlanDetailViewController: UIViewController {
             make.bottom.equalToSuperview().offset(-20)
         }
         
-        addMemoButton.addSubview(addMemoImage)
+        editMemoButton.addSubview(addMemoImage)
         addMemoImage.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.right.equalToSuperview().offset(-20)
@@ -410,11 +412,11 @@ class PlanDetailViewController: UIViewController {
                 if count == 0 {
                     self?.planDetailTableView.isHidden = true
                     self?.planPlaceHolder.isHidden = false
-                    self?.addMemoButton.isEnabled = false
+                    self?.editMemoButton.isEnabled = false
                 } else {
                     self?.planDetailTableView.isHidden = false
                     self?.planPlaceHolder.isHidden = true
-                    self?.addMemoButton.isEnabled = true
+                    self?.editMemoButton.isEnabled = true
                 }
                 self?.updateMap(data: self?.dataArray.last)
                 self?.updateViewHeight(count: count)
@@ -432,11 +434,12 @@ class PlanDetailViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        addMemoButton.rx.tap
+        editMemoButton.rx.tap
             .subscribe(onNext: {
                 let vc = MemoEditViewController()
                 vc.planID = self.plan.planID
                 vc.memoArray = self.memoArray
+                vc.selectedDay = self.selectedDay
                 vc.modalPresentationStyle = .automatic
                 vc.modalTransitionStyle = .coverVertical
                 self.present(vc, animated: true)
@@ -549,7 +552,7 @@ extension PlanDetailViewController: UITableViewDelegate, UITableViewDataSource {
             self.memoArray.remove(at: indexPath.row)
             
             tableView.deleteRows(at: [indexPath], with: .fade)
-            self.viewModel.removeDayPlan(NFTID: NFTID, memoArray: self.memoArray)
+            self.viewModel.removeDayPlan(day: "day\(self.selectedDay)", NFTID: NFTID, memoArray: self.memoArray)
             completionHandler(true)
         }
         deleteAction.image = UIImage(named: "Trash")
@@ -566,7 +569,7 @@ extension PlanDetailViewController: UITableViewDelegate, UITableViewDataSource {
         self.dataArray.insert(NFT, at: destinationIndexPath.row)
         self.memoArray.remove(at: sourceIndexPath.row)
         self.memoArray.insert(memo, at: destinationIndexPath.row)
-        self.viewModel.swapDayPlan(dayArray: self.dataArray.map{ $0.NFTID }, memoArray: memoArray)
+        self.viewModel.swapDayPlan(day: "day\(self.selectedDay)", dayArray: self.dataArray.map{ $0.NFTID }, memoArray: memoArray)
     }
 }
 

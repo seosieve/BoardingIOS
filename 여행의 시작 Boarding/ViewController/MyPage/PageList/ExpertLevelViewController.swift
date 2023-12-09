@@ -13,6 +13,9 @@ class ExpertLevelViewController: UIViewController {
     
     let tag = 2
     let modalClosed = BehaviorRelay<Bool>(value: true)
+    var travelLevel = [Int]()
+    
+    let viewModel = ExpertLevelViewModel()
     let disposeBag = DisposeBag()
     
     var expertLevelScrollView = UIScrollView()
@@ -40,7 +43,6 @@ class ExpertLevelViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = Gray.bright
         expertLevelScrollView.delegate = self
-        setViews()
         setRx()
     }
     
@@ -121,7 +123,7 @@ class ExpertLevelViewController: UIViewController {
             }
             
             let levelLabel = UILabel().then {
-                $0.text = "Lv.1 (0%)"
+                $0.text = "Lv.\(travelLevel[index]/100+1) (\(travelLevel[index]%100)%)"
                 $0.font = Pretendard.regular(13)
                 $0.textColor = Gray.medium
             }
@@ -156,6 +158,13 @@ class ExpertLevelViewController: UIViewController {
             }
         })
         .disposed(by: disposeBag)
+        
+        viewModel.travelLevel
+            .subscribe(onNext: { travelLevel in
+                self.travelLevel = travelLevel
+                self.setViews()
+            })
+            .disposed(by: disposeBag)
     }
 }
 

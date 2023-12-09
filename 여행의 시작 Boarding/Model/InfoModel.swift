@@ -10,7 +10,6 @@ import UIKit
 struct CategoryInfo {
     static let count = name.count
     static let name = ["관광", "휴양", "액티비티", "사진", "맛집", "숙소", "교통", "쇼핑", "축제"]
-    static let imoji = ["🗽", "🏖️", "🏄🏻", "📸", "🍔", "🏡", "🚃", "🛍️", "🎉"]
     static let image = [UIImage(named: "Tour"), UIImage(named: "Vacation"), UIImage(named: "Activity"), UIImage(named: "Photo"), UIImage(named: "Restaurant"), UIImage(named: "Staying"), UIImage(named: "Transportation"), UIImage(named: "Shopping"), UIImage(named: "Festival")]
 }
 

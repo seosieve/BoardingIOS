@@ -210,7 +210,7 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true)
-        imagePickerSubject.onNext(UIImage(named: "France1"))
+        imagePickerSubject.onNext(UIImage())
     }
     
     func getLocation(info: [UIImagePickerController.InfoKey : Any]) {

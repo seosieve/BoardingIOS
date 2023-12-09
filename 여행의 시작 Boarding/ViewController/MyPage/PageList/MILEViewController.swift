@@ -34,11 +34,11 @@ class MILEViewController: UIViewController {
     }
     
     var MILELabel = UILabel().then {
-        $0.text = "200 MILE"
+        $0.text = "0 MILE"
         $0.font = Pretendard.light(21)
         $0.textColor = Gray.black
         let attributedString = NSMutableAttributedString(string: $0.text!)
-        attributedString.addAttribute(.font, value: Pretendard.medium(35), range: ($0.text! as NSString).range(of: "200"))
+        attributedString.addAttribute(.font, value: Pretendard.medium(35), range: ($0.text! as NSString).range(of: "0"))
         $0.attributedText = attributedString
     }
     
@@ -101,6 +101,7 @@ class MILEViewController: UIViewController {
         MILEContentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalToSuperview()
+            make.height.equalTo(500)// 없었던것
         }
         
         MILEContentView.addSubview(myAssetView)
@@ -127,137 +128,137 @@ class MILEViewController: UIViewController {
             make.right.equalToSuperview().offset(-20)
         }
         
-        MILEContentView.addSubview(calculatePlanView)
-        calculatePlanView.snp.makeConstraints { make in
-            make.top.equalTo(myAssetView.snp.bottom).offset(20)
-            make.left.equalToSuperview().offset(20)
-            make.centerX.equalToSuperview()
-            make.height.equalTo(220)
-        }
-        
-        calculatePlanView.addSubview(calculatePlanLabel)
-        calculatePlanLabel.snp.makeConstraints { make in
-            make.top.left.equalToSuperview().offset(20)
-        }
-        
-        calculatePlanView.addSubview(calculatePlanStackView)
-        calculatePlanStackView.snp.makeConstraints { make in
-            make.top.equalTo(calculatePlanLabel.snp.bottom).offset(20)
-            make.left.equalToSuperview().offset(20)
-            make.centerX.equalToSuperview()
-            make.height.equalTo(150)
-        }
-        let info = ["좋아요", "스크랩", "신뢰도", "합계"]
-        for index in 0..<4 {
-            let subview = UIView()
-            
-            let titleLabel = UILabel().then {
-                $0.text = info[index]
-                $0.font = Pretendard.regular(14)
-                $0.textColor = Gray.medium
-            }
-            let valueLabel = UILabel().then {
-                $0.text = "+ 25"
-                $0.font = Pretendard.regular(14)
-                $0.textColor = Gray.black
-            }
-            
-            let calculateResultLabel = UILabel().then {
-                $0.text = "75 MILE"
-                $0.font = Pretendard.light(17)
-                $0.textColor = Gray.black
-                let attributedString = NSMutableAttributedString(string: $0.text!)
-                attributedString.addAttribute(.font, value: Pretendard.medium(27), range: ($0.text! as NSString).range(of: "75"))
-                $0.attributedText = attributedString
-            }
-            
-            subview.addSubview(titleLabel)
-            titleLabel.snp.makeConstraints { make in
-                make.left.centerY.equalToSuperview()
-            }
-            if index == 3 {
-                subview.addSubview(calculateResultLabel)
-                calculateResultLabel.snp.makeConstraints { make in
-                    make.right.centerY.equalToSuperview()
-                    make.top.equalToSuperview().offset(5)
-                }
-            } else {
-                subview.addSubview(valueLabel)
-                valueLabel.snp.makeConstraints { make in
-                    make.right.top.centerY.equalToSuperview()
-                }
-            }
-            calculatePlanStackView.addArrangedSubview(subview)
-        }
-        
-        let calculateDivider = divider()
-        calculatePlanView.addSubview(calculateDivider)
-        calculateDivider.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(150)
-            make.centerX.equalToSuperview()
-            make.left.equalToSuperview().offset(20)
-            make.height.equalTo(1)
-        }
-        
-        MILEContentView.addSubview(calculateHistoryView)
-        calculateHistoryView.snp.makeConstraints { make in
-            make.top.equalTo(calculatePlanView.snp.bottom).offset(20)
-            make.left.equalToSuperview().offset(20)
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-200)
-        }
-        
-        calculateHistoryView.addSubview(calculateHistoryLabel)
-        calculateHistoryLabel.snp.makeConstraints { make in
-            make.top.left.equalToSuperview().offset(20)
-        }
-        
-        calculateHistoryView.addSubview(calculateHistoryStackView)
-        calculateHistoryStackView.snp.makeConstraints { make in
-            make.top.equalTo(calculateHistoryLabel.snp.bottom).offset(20)
-            make.left.equalToSuperview().offset(20)
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-20)
-            make.height.equalTo(230)
-        }
-        for _ in 0..<3 {
-            let subview = UIView().then {
-                $0.backgroundColor = Gray.bright
-                $0.layer.cornerRadius = 12
-            }
-            let weekRangeLabel = UILabel().then {
-                $0.text = "2023.12.01 ~ 2023.12.08"
-                $0.font = Pretendard.regular(14)
-                $0.textColor = Gray.medium
-            }
-            let weekLabel = UILabel().then {
-                $0.text = "12월 1주차"
-                $0.font = Pretendard.semiBold(17)
-                $0.textColor = Gray.black
-            }
-            let valueLabel = UILabel().then {
-                $0.text = "45"
-                $0.font = Pretendard.semiBold(17)
-                $0.textColor = Gray.black
-            }
-            
-            subview.addSubview(weekRangeLabel)
-            weekRangeLabel.snp.makeConstraints { make in
-                make.top.equalToSuperview().offset(12)
-                make.left.equalToSuperview().offset(20)
-            }
-            subview.addSubview(weekLabel)
-            weekLabel.snp.makeConstraints { make in
-                make.left.equalToSuperview().offset(20)
-                make.bottom.equalToSuperview().offset(-12)
-            }
-            subview.addSubview(valueLabel)
-            valueLabel.snp.makeConstraints { make in
-                make.right.equalToSuperview().offset(-20)
-                make.centerY.equalTo(weekLabel)
-            }
-            calculateHistoryStackView.addArrangedSubview(subview)
-        }
+//        MILEContentView.addSubview(calculatePlanView)
+//        calculatePlanView.snp.makeConstraints { make in
+//            make.top.equalTo(myAssetView.snp.bottom).offset(20)
+//            make.left.equalToSuperview().offset(20)
+//            make.centerX.equalToSuperview()
+//            make.height.equalTo(220)
+//        }
+//        
+//        calculatePlanView.addSubview(calculatePlanLabel)
+//        calculatePlanLabel.snp.makeConstraints { make in
+//            make.top.left.equalToSuperview().offset(20)
+//        }
+//        
+//        calculatePlanView.addSubview(calculatePlanStackView)
+//        calculatePlanStackView.snp.makeConstraints { make in
+//            make.top.equalTo(calculatePlanLabel.snp.bottom).offset(20)
+//            make.left.equalToSuperview().offset(20)
+//            make.centerX.equalToSuperview()
+//            make.height.equalTo(150)
+//        }
+//        let info = ["좋아요", "스크랩", "신뢰도", "합계"]
+//        for index in 0..<4 {
+//            let subview = UIView()
+//            
+//            let titleLabel = UILabel().then {
+//                $0.text = info[index]
+//                $0.font = Pretendard.regular(14)
+//                $0.textColor = Gray.medium
+//            }
+//            let valueLabel = UILabel().then {
+//                $0.text = "+ 25"
+//                $0.font = Pretendard.regular(14)
+//                $0.textColor = Gray.black
+//            }
+//            
+//            let calculateResultLabel = UILabel().then {
+//                $0.text = "75 MILE"
+//                $0.font = Pretendard.light(17)
+//                $0.textColor = Gray.black
+//                let attributedString = NSMutableAttributedString(string: $0.text!)
+//                attributedString.addAttribute(.font, value: Pretendard.medium(27), range: ($0.text! as NSString).range(of: "75"))
+//                $0.attributedText = attributedString
+//            }
+//            
+//            subview.addSubview(titleLabel)
+//            titleLabel.snp.makeConstraints { make in
+//                make.left.centerY.equalToSuperview()
+//            }
+//            if index == 3 {
+//                subview.addSubview(calculateResultLabel)
+//                calculateResultLabel.snp.makeConstraints { make in
+//                    make.right.centerY.equalToSuperview()
+//                    make.top.equalToSuperview().offset(5)
+//                }
+//            } else {
+//                subview.addSubview(valueLabel)
+//                valueLabel.snp.makeConstraints { make in
+//                    make.right.top.centerY.equalToSuperview()
+//                }
+//            }
+//            calculatePlanStackView.addArrangedSubview(subview)
+//        }
+//        
+//        let calculateDivider = divider()
+//        calculatePlanView.addSubview(calculateDivider)
+//        calculateDivider.snp.makeConstraints { make in
+//            make.top.equalToSuperview().offset(150)
+//            make.centerX.equalToSuperview()
+//            make.left.equalToSuperview().offset(20)
+//            make.height.equalTo(1)
+//        }
+//        
+//        MILEContentView.addSubview(calculateHistoryView)
+//        calculateHistoryView.snp.makeConstraints { make in
+//            make.top.equalTo(calculatePlanView.snp.bottom).offset(20)
+//            make.left.equalToSuperview().offset(20)
+//            make.centerX.equalToSuperview()
+//            make.bottom.equalToSuperview().offset(-200)
+//        }
+//        
+//        calculateHistoryView.addSubview(calculateHistoryLabel)
+//        calculateHistoryLabel.snp.makeConstraints { make in
+//            make.top.left.equalToSuperview().offset(20)
+//        }
+//        
+//        calculateHistoryView.addSubview(calculateHistoryStackView)
+//        calculateHistoryStackView.snp.makeConstraints { make in
+//            make.top.equalTo(calculateHistoryLabel.snp.bottom).offset(20)
+//            make.left.equalToSuperview().offset(20)
+//            make.centerX.equalToSuperview()
+//            make.bottom.equalToSuperview().offset(-20)
+//            make.height.equalTo(230)
+//        }
+//        for _ in 0..<3 {
+//            let subview = UIView().then {
+//                $0.backgroundColor = Gray.bright
+//                $0.layer.cornerRadius = 12
+//            }
+//            let weekRangeLabel = UILabel().then {
+//                $0.text = "2023.12.01 ~ 2023.12.08"
+//                $0.font = Pretendard.regular(14)
+//                $0.textColor = Gray.medium
+//            }
+//            let weekLabel = UILabel().then {
+//                $0.text = "12월 1주차"
+//                $0.font = Pretendard.semiBold(17)
+//                $0.textColor = Gray.black
+//            }
+//            let valueLabel = UILabel().then {
+//                $0.text = "45"
+//                $0.font = Pretendard.semiBold(17)
+//                $0.textColor = Gray.black
+//            }
+//            
+//            subview.addSubview(weekRangeLabel)
+//            weekRangeLabel.snp.makeConstraints { make in
+//                make.top.equalToSuperview().offset(12)
+//                make.left.equalToSuperview().offset(20)
+//            }
+//            subview.addSubview(weekLabel)
+//            weekLabel.snp.makeConstraints { make in
+//                make.left.equalToSuperview().offset(20)
+//                make.bottom.equalToSuperview().offset(-12)
+//            }
+//            subview.addSubview(valueLabel)
+//            valueLabel.snp.makeConstraints { make in
+//                make.right.equalToSuperview().offset(-20)
+//                make.centerY.equalTo(weekLabel)
+//            }
+//            calculateHistoryStackView.addArrangedSubview(subview)
+//        }
         
 //        MILEContentView.addSubview(byRecordView)
 //        byRecordView.snp.makeConstraints { make in

@@ -157,7 +157,7 @@ class HomeTableViewCell: UITableViewCell {
         
         contentView.addSubview(contentLabel)
         contentLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(6)
+            make.top.equalTo(titleLabel.snp.bottom).offset(10)
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(20)
             make.height.lessThanOrEqualTo(72)
@@ -165,7 +165,7 @@ class HomeTableViewCell: UITableViewCell {
         
         contentView.addSubview(photoView)
         photoView.snp.makeConstraints { make in
-            make.top.equalTo(contentLabel.snp.bottom).offset(20)
+            make.top.equalTo(contentLabel.snp.bottom).offset(16)
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().inset(77)
             make.height.equalTo(450)
@@ -186,7 +186,7 @@ class HomeTableViewCell: UITableViewCell {
             make.bottom.equalTo(photoView)
             make.width.equalTo(32)
         }
-        let icon = [InteractionInfo.report, InteractionInfo.comment, InteractionInfo.like, InteractionInfo.save]
+        let icon = [InteractionInfo.report, InteractionInfo.like, InteractionInfo.save]
         for index in 0..<icon.count {
             let subview = UIView()
             
@@ -198,7 +198,7 @@ class HomeTableViewCell: UITableViewCell {
             }
             
             let numberLabel = UILabel().then {
-                $0.tag = 1
+                $0.tag = 4
                 $0.text = "0"
                 $0.font = Pretendard.regular(13)
                 $0.textColor = Gray.dark
@@ -263,7 +263,7 @@ class HomeTableViewCell: UITableViewCell {
     }
     
     func putUserAchievement() {
-        let userAchieveItem1 = UILabel().then {
+        let _ = UILabel().then {
             $0.frame = CGRect(x: 0, y: 0, width: 54, height: 24)
             $0.backgroundColor = Gray.bright
             $0.text = "🇰🇷 Lv.1"
@@ -276,7 +276,7 @@ class HomeTableViewCell: UITableViewCell {
             $0.layer.masksToBounds = true
         }
         
-        let userAchieveItem2 = UILabel().then {
+        let _ = UILabel().then {
             $0.frame = CGRect(x: 0, y: 0, width: 54, height: 24)
             $0.text = "📷 Lv.7"
             $0.font = Pretendard.regular(12)
@@ -287,15 +287,15 @@ class HomeTableViewCell: UITableViewCell {
             $0.layer.cornerRadius = 4
         }
         
-        userAchievementStackView.addArrangedSubview(userAchieveItem1)
+//        userAchievementStackView.addArrangedSubview(userAchieveItem1)
     }
     
     func makeInteractionCount(_ count: [Int]) {
-        var index = 0
-        interactionStackView.arrangedSubviews.forEach { view in
-            guard let label = view.viewWithTag(1) as? UILabel else { return }
-            label.text = String(count[index])
-            index += 1
-        }
+        interactionStackView.arrangedSubviews
+            .compactMap { $0.viewWithTag(4) as? UILabel }
+            .enumerated()
+            .forEach { index, label in
+                label.text = String(count[index])
+            }
     }
 }

@@ -28,6 +28,7 @@ struct NFT {
     let likes: Int
     let saves: Int
     let reports: Int
+    let likedPeople: [String]
     
     // [String:Any] 타입으로 변환
     var dicType: [String: Any] {
@@ -50,7 +51,8 @@ struct NFT {
                 "comments": comments,
                 "likes": likes,
                 "saves": saves,
-                "reports": reports]
+                "reports": reports,
+                "likedPeople": likedPeople]
     }
     
     // Loading 전 등에 사용될 dummy NFT
@@ -74,6 +76,7 @@ struct NFT {
                    comments: 0,
                    likes: 0,
                    saves: 0,
-                   reports: 0)
+                   reports: 0,
+                   likedPeople: [])
     }
 }

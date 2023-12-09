@@ -228,6 +228,18 @@ extension UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    func toastAlert() {
+        let alert = UIAlertController(title: "", message: "", preferredStyle: .alert)
+        let attributes = [NSAttributedString.Key.foregroundColor : Gray.semiDark, NSAttributedString.Key.font : Pretendard.semiBold(19)]
+        alert.setValue(NSAttributedString(string: "이미 플랜에 추가되었어요.", attributes: attributes), forKey: "attributedTitle")
+        alert.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = Gray.white
+        
+        present(alert, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+            alert.dismiss(animated: true, completion: nil)
+        }
+    }
+    
     func divider() -> UIView {
         return UIView().then {
             $0.backgroundColor = Gray.light.withAlphaComponent(0.4)
@@ -245,6 +257,17 @@ extension UIButton {
         let backgroundImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         self.setBackgroundImage(backgroundImage, for: state)
+    }
+}
+
+//MARK: - UILabelLineSpacing
+extension UILabel {
+    func withLineSpacing(_ lineSpacing: CGFloat) {
+        let attString = NSMutableAttributedString(string: self.text!)
+        let style = NSMutableParagraphStyle()
+        style.lineSpacing = lineSpacing
+        attString.addAttribute(.paragraphStyle, value: style, range: NSMakeRange(0, attString.length))
+        self.attributedText = attString
     }
 }
 

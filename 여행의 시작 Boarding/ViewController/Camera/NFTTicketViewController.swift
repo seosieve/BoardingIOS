@@ -25,7 +25,7 @@ class NFTTicketViewController: UIViewController {
     var backgroundVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
     
     var mainLabel = UILabel().then {
-        $0.text = "NFT 등록이 완료되었습니다!"
+        $0.text = "CARD 등록이 완료되었습니다!"
         $0.font = Pretendard.extraBold(24)
         $0.textColor = Gray.white
     }

@@ -48,14 +48,15 @@ class NewPlanViewModel {
                         landing:landing.value,
                         days: days.value,
                         writtenDate: writtenDate.value,
-                        scrap: [String]())
+                        scrap: [String](),
+                        thumbnail: "")
         
         db.collection("User").document(userUid).collection("Plan").document(planID).setData(plan.dicType) { error in
             if let error = error {
-                print("NFT 저장 에러: \(error)")
+                print("Plan 저장 에러: \(error)")
                 self.writtingResult.accept(false)
             } else {
-                print("NFT 저장 성공: \(self.planID)")
+                print("Plan 저장 성공: \(self.planID)")
                 self.writtingResult.accept(true)
             }
         }

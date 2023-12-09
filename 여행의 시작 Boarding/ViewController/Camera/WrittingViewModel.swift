@@ -15,7 +15,7 @@ import FirebaseStorage
 class WrittingViewModel {
     let NFTID = db.collection("NFT").document().documentID
     
-    let authorUid = BehaviorRelay<String>(value: "")
+    var userUid = ""
     let location = BehaviorRelay<String>(value: "")
     let country = BehaviorRelay<String>(value: "")
     let city = BehaviorRelay<String>(value: "")
@@ -38,7 +38,7 @@ class WrittingViewModel {
     
     init() {
         if let user = Auth.auth().currentUser {
-            authorUid.accept(user.uid)
+            userUid = user.uid
         }
         
         dataValid = Observable.combineLatest(title, content, starPoint, category)
@@ -47,11 +47,13 @@ class WrittingViewModel {
     
     func writeNFT(image: UIImage?) {
         uploadImage(image: image) { [weak self] url in
-            self?.saveNFT(url: url!)
+            self?.saveNFT(url: url!) {
+                self?.addTravelLevel()
+            }
         }
     }
     
-    func uploadImage(image: UIImage?, completion: @escaping (URL?) -> Void) {
+    func uploadImage(image: UIImage?, handler: @escaping (URL?) -> Void) {
         guard let imageData = image?.jpegData(compressionQuality: 0.6) else { return }
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpeg"
@@ -60,7 +62,7 @@ class WrittingViewModel {
         let imageRef = ref.child("NFTImage/\(imageName)")
         let uploadTask = imageRef.putData(imageData, metadata: metaData) { metaData, error in
             imageRef.downloadURL { url, _ in
-                completion(url)
+                handler(url)
             }
         }
         
@@ -72,9 +74,9 @@ class WrittingViewModel {
         }
     }
     
-    func saveNFT(url: URL) {
+    func saveNFT(url: URL, handler: @escaping () -> Void) {
         let NFT = NFT(NFTID: NFTID,
-                      authorUid: authorUid.value,
+                      authorUid: userUid,
                       writtenDate: NSDate().timeIntervalSince1970,
                       type: "photo",
                       url: url.absoluteString,
@@ -89,17 +91,43 @@ class WrittingViewModel {
                       content: content.value,
                       starPoint: starPoint.value,
                       category: category.value,
-                      comments: 0, likes: 0, saves: 0, reports: 0)
+                      comments: 0, likes: 0, saves: 0, reports: 0,
+                      likedPeople: [])
         NFTResult.accept(NFT)
         
         db.collection("NFT").document(NFTID).setData(NFT.dicType) { error in
             if let error = error {
                 print("NFT 저장 에러: \(error)")
-                self.writtingResult.accept(false)
             } else {
                 print("NFT 저장 성공: \(self.NFTID)")
-                self.writtingResult.accept(true)
+                handler()
             }
+        }
+    }
+    
+    func addTravelLevel() {
+        db.collection("User").document(userUid).getDocument { (document, error) in
+            if let error = error {
+                print("User 불러오기 에러: \(error)")
+            } else {
+                if let document = document, document.exists {
+                    let user = document.makeUser()
+                    var travelLevel = user.travelLevel
+                    if let index = CategoryInfo.name.firstIndex(of: self.category.value) {
+                        travelLevel[index] += 30
+                    }
+                    db.collection("User").document(self.userUid).updateData(["travelLevel": travelLevel]) { error in
+                        if let error = error {
+                            print("travelLevel 증가 에러: \(error)")
+                            self.writtingResult.accept(false)
+                        } else {
+                            print("travelLevel 증가 성공")
+                            self.writtingResult.accept(true)
+                        }
+                    }
+                }
+            }
+            
         }
     }
 }

@@ -16,7 +16,7 @@ class TravelCollectionViewCell: UICollectionViewCell {
     }
     
     var travelImageView = UIImageView().then {
-        $0.image = UIImage(named: "France8")
+        $0.image = UIImage(named: "France1")
     }
     
     var mainLabel = UILabel().then {

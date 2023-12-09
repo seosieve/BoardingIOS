@@ -35,7 +35,7 @@ class AddPlanViewModel {
                 if let document = document, document.exists {
                     var dayArray = document.get(day) as? [String] ?? []
                     var dayMemoArray = document.get("\(day)Memo") as? [String] ?? []
-                    
+                    // 이미 day에 추가한 NFT가 아니라면 추가
                     if !dayArray.contains(self.NFTID) {
                         dayArray.append(self.NFTID)
                         ref.updateData([day: dayArray]) { error in

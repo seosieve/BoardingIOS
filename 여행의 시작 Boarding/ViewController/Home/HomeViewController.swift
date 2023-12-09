@@ -26,6 +26,10 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
     let viewModel = HomeViewModel()
     let disposeBag = DisposeBag()
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .darkContent
+    }
+    
     var statusBarView = UIView().then {
         $0.backgroundColor = Gray.white
     }
@@ -105,21 +109,16 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
             button.layer.borderWidth = 0
             label.font = Pretendard.regular(13)
             label.textColor = Gray.medium
+            viewModel.stopListening()
             viewModel.getAllNFT()
         } else {
-            categoryStackView.arrangedSubviews.forEach { view in
-                guard let button = view.viewWithTag(1) as? UIButton else { return }
-                guard let label = view.viewWithTag(2) as? UILabel else { return }
-                button.isSelected = false
-                button.layer.borderWidth = 0
-                label.font = Pretendard.regular(13)
-                label.textColor = Gray.medium
-            }
+            resetCategory()
             selectedCategory = label.text!
             button.isSelected = true
             button.layer.borderWidth = 2
             label.font = Pretendard.semiBold(13)
             label.textColor = Boarding.blue
+            viewModel.stopListening()
             viewModel.getNFTbyCategory(selectedCategory)
         }
     }
@@ -179,20 +178,21 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
         iconView.addSubview(alarmPointView)
         searchButton.snp.makeConstraints { make in
             make.width.height.equalTo(24)
-            make.right.equalTo(alarmButton.snp.left).offset(-12)
-            make.centerY.equalToSuperview()
-        }
-        alarmButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
             make.right.equalToSuperview().offset(-24)
+//            make.right.equalTo(alarmButton.snp.left).offset(-12)
             make.centerY.equalToSuperview()
         }
-        alarmPointView.snp.makeConstraints { make in
-            make.width.height.equalTo(7)
-            make.right.equalToSuperview().offset(-27.5)
-            make.top.equalToSuperview().offset(12)
-        }
-        alarmPointView.rounded(axis: .horizontal)
+//        alarmButton.snp.makeConstraints { make in
+//            make.width.height.equalTo(24)
+//            make.right.equalToSuperview().offset(-24)
+//            make.centerY.equalToSuperview()
+//        }
+//        alarmPointView.snp.makeConstraints { make in
+//            make.width.height.equalTo(7)
+//            make.right.equalToSuperview().offset(-27.5)
+//            make.top.equalToSuperview().offset(12)
+//        }
+//        alarmPointView.rounded(axis: .horizontal)
         
         view.insertSubview(homeTableView, belowSubview: iconView)
         homeTableView.snp.makeConstraints { make in
@@ -306,12 +306,13 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
                             self?.goToFullScreen(url: URL(string: element.url), NFT: element, user: user)
                         }
                     }
-                    cell.makeInteractionCount([element.reports, element.comments, element.likes, element.saves])
+                    cell.makeInteractionCount([element.reports, element.likes, element.saves])
                     cell.iconTapped = { [weak self] sender in
                         self?.iconInteraction(sender, element.NFTID, element.authorUid)
                     }
                     cell.titleLabel.text = element.title
                     cell.contentLabel.text = element.content
+                    cell.contentLabel.withLineSpacing(4)
                     cell.photoView.sd_setImage(with: URL(string: element.url), placeholderImage: nil, options: .scaleDownLargeImages)
                     cell.scoreLabel.text = String(Double(element.starPoint))
                     cell.locationLabel.text = element.location
@@ -327,13 +328,24 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
         homeTableView.rx
             .setDelegate(self)
             .disposed(by: disposeBag)
+        
+        //blockedUser 해제되었을때 homeVC 초기화
+        viewModel.blockedUserRemoved
+            .subscribe(onNext: {
+                self.locationLabel.text = "전세계"
+                self.resetCategory()
+                self.viewModel.stopListening()
+                self.viewModel.getAllNFT()
+                
+            })
+            .disposed(by: disposeBag)
     }
     
     func goToFullScreen(url: URL?, NFT: NFT, user: User) {
         let vc = HomeFullScreenViewController()
-        vc.url = url
-        vc.NFT = NFT
         vc.user = user
+        vc.url = url
+        vc.NFTResult = NFT
         vc.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -349,8 +361,6 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
             vc.modalTransitionStyle = .coverVertical
             self.present(vc, animated: true)
         case 1:
-            break
-        case 2:
             sender.isSelected.toggle()
             sender.touchAnimation()
         default:
@@ -359,6 +369,17 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
             vc.modalPresentationStyle = .automatic
             vc.modalTransitionStyle = .coverVertical
             self.present(vc, animated: true)
+        }
+    }
+    
+    func resetCategory() {
+        self.categoryStackView.arrangedSubviews.forEach { view in
+            guard let button = view.viewWithTag(1) as? UIButton else { return }
+            guard let label = view.viewWithTag(2) as? UILabel else { return }
+            button.isSelected = false
+            button.layer.borderWidth = 0
+            label.font = Pretendard.regular(13)
+            label.textColor = Gray.medium
         }
     }
 }
@@ -374,6 +395,7 @@ extension HomeViewController: UITableViewDelegate {
             label.text = item
             label.numberOfLines = 3
             label.font = Pretendard.regular(17)
+            label.withLineSpacing(4)
             let maxWidth = view.frame.width - 40
             let maxSize = CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude)
             let labelSize = label.sizeThatFits(maxSize)
@@ -393,7 +415,7 @@ extension HomeViewController: UIScrollViewDelegate {
     }
 }
 
-//MARK: - searchDelegate
+//MARK: - SearchDelegate
 extension HomeViewController: SearchDelegate {
     func searchNFT(word: String) {
         categoryStackView.arrangedSubviews.forEach { view in
@@ -404,6 +426,7 @@ extension HomeViewController: SearchDelegate {
             label.font = Pretendard.regular(13)
             label.textColor = Gray.medium
         }
+        viewModel.stopListening()
         viewModel.getNFTbyWord(word)
     }
     
@@ -419,9 +442,11 @@ extension HomeViewController: SearchDelegate {
         
         if city == "전세계" {
             locationLabel.text = "전세계"
+            viewModel.stopListening()
             viewModel.getAllNFT()
         } else {
             locationLabel.text = "\(country) \(city)"
+            viewModel.stopListening()
             viewModel.getNFTbyLocation(city)
         }
     }

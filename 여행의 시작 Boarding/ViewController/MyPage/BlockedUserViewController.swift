@@ -28,7 +28,7 @@ class BlockedUserViewController: UIViewController {
     lazy var titleLabel = UILabel().then {
         $0.text = "차단 유저 목록"
         $0.font = Pretendard.semiBold(18)
-        $0.textColor = Gray.semiDark
+        $0.textColor = Gray.black
     }
     
     var blockedUserTableView = UITableView().then {

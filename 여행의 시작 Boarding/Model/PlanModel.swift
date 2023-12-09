@@ -18,6 +18,7 @@ struct Plan {
     let days: Int
     let writtenDate: Double
     let scrap: [String]
+    let thumbnail: String
     
     // [String:Any] 타입으로 변환
     var dicType: [String: Any] {
@@ -30,8 +31,8 @@ struct Plan {
                 "landing": landing,
                 "days": days,
                 "writtenDate": writtenDate,
-                "scrap": scrap
-        ]
+                "scrap": scrap,
+                "thumbnail": thumbnail]
     }
     
     // Dummy Plan
@@ -45,7 +46,8 @@ struct Plan {
                     landing: "",
                     days: 0,
                     writtenDate: 0.0,
-                    scrap: [String]())
+                    scrap: [],
+                    thumbnail: "")
     }
     
     static let placeHolder = ["여행 제목", "여행지", "가는 날", "오는 날"]

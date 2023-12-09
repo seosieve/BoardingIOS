@@ -71,6 +71,7 @@ extension DocumentSnapshot {
         let likes = self.get("likes") as! Int
         let saves = self.get("saves") as! Int
         let reports = self.get("reports") as! Int
+        let likedPeople = self.get("likedPeople") as! [String]
         
         let NFT = NFT(NFTID: NFTID,
                       authorUid: authorUid,
@@ -91,7 +92,8 @@ extension DocumentSnapshot {
                       comments: comments,
                       likes: likes,
                       saves: saves,
-                      reports: reports)
+                      reports: reports,
+                      likedPeople: likedPeople)
         return NFT
     }
     
@@ -106,6 +108,7 @@ extension DocumentSnapshot {
         let days = self.get("days") as! Int
         let writtenDate = self.get("writtenDate") as! Double
         let scrap = self.get("scrap") as! [String]
+        let thumbnail = self.get("thumbnail") as! String
         
         let plan = Plan(planID: planID,
                         title: title,
@@ -116,7 +119,8 @@ extension DocumentSnapshot {
                         landing: landing,
                         days: days,
                         writtenDate: writtenDate,
-                        scrap: scrap)
+                        scrap: scrap,
+                        thumbnail: thumbnail)
         return plan
     }
     
@@ -127,8 +131,9 @@ extension DocumentSnapshot {
         let introduce = self.get("introduce") as! String
         let blockedUser = self.get("blockedUser") as! [String]
         let bookMark = self.get("bookMark") as! [String]
+        let travelLevel = self.get("travelLevel") as! [Int]
         
-        let User = User(userUid: userUid, url: url, name: name, introduce: introduce, blockedUser: blockedUser, bookMark: bookMark)
+        let User = User(userUid: userUid, url: url, name: name, introduce: introduce, blockedUser: blockedUser, bookMark: bookMark, travelLevel: travelLevel)
         return User
     }
 }

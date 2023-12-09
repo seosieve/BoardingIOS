@@ -69,10 +69,24 @@ class AddMyPlanViewController: UIViewController {
         $0.spacing = 16
     }
     
+    var indicator = UIActivityIndicatorView().then {
+        $0.style = .medium
+        $0.color = Gray.light
+    }
+    
     @objc func planStackViewSelected(_ sender: UITapGestureRecognizer) {
         guard let view = sender.view as? StringStoredView else { return }
-        viewModel.addScrap(planID: view.storedString, NFTID: NFTID)
-        self.dismiss(animated: true)
+        view.isUserInteractionEnabled = false
+        viewModel.findScrap(planID: view.storedString, NFTID: NFTID) { alreadyExist in
+            if alreadyExist {
+                self.toastAlert()
+                view.isUserInteractionEnabled = true
+            } else {
+                self.indicator.startAnimating()
+                self.viewModel.addScrap(planID: view.storedString, NFTID: self.NFTID)
+                self.viewModel.addSaveCount(NFTID: self.NFTID)
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -217,7 +231,10 @@ class AddMyPlanViewController: UIViewController {
             }
             
             let travelImageView = UIImageView().then {
-                $0.image = UIImage(named: "France8")
+                let url = planArr[index].thumbnail == "" ? URL(string: "") : URL(string: planArr[index].thumbnail)
+                $0.sd_setImage(with: url, placeholderImage: nil, options: .scaleDownLargeImages)
+                $0.contentMode = .scaleAspectFill
+                $0.backgroundColor = Gray.bright
             }
             
             let mainLabel = UILabel().then {
@@ -263,6 +280,11 @@ class AddMyPlanViewController: UIViewController {
             }
             planStackView.addArrangedSubview(subview)
         }
+        
+        modalView.addSubview(indicator)
+        indicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
     }
     
     func setRx() {
@@ -273,6 +295,13 @@ class AddMyPlanViewController: UIViewController {
                 } else {
                     self?.makeStackView(planArr)
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.processCompleted
+            .subscribe(onNext: {
+                self.indicator.stopAnimating()
+                self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
     }

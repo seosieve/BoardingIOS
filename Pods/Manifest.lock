@@ -682,11 +682,6 @@ PODS:
     - FirebaseStorage (< 11.0, >= 8.0)
     - SDWebImage (~> 5.6)
   - FSCalendar (2.8.4)
-  - GoogleMaps (8.2.0):
-    - GoogleMaps/Maps (= 8.2.0)
-  - GoogleMaps/Base (8.2.0)
-  - GoogleMaps/Maps (8.2.0):
-    - GoogleMaps/Base
   - GoogleUtilities/AppDelegateSwizzler (7.12.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -831,7 +826,6 @@ DEPENDENCIES:
   - FirebaseStorage
   - FirebaseStorageUI
   - FSCalendar
-  - GoogleMaps (= 8.2.0)
   - KakaoSDKAuth
   - KakaoSDKCommon
   - KakaoSDKShare
@@ -860,7 +854,6 @@ SPEC REPOS:
     - FirebaseStorage
     - FirebaseStorageUI
     - FSCalendar
-    - GoogleMaps
     - GoogleUtilities
     - "gRPC-C++"
     - gRPC-Core
@@ -902,7 +895,6 @@ SPEC CHECKSUMS:
   FirebaseStorage: 1e0b9c9c18fb73ee3c5728a370c0e7355f8e88e3
   FirebaseStorageUI: 5db14fc4c251fdbe3b706eb1a9dddc55bc51b414
   FSCalendar: 2d1d0d9398f12d439f55c1fe0f01525b151b8260
-  GoogleMaps: 081f2547b60a1c0870a8f49166a653900e5055d5
   GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
   "gRPC-C++": 2df8cba576898bdacd29f0266d5236fa0e26ba6a
   gRPC-Core: a21a60aefc08c68c247b439a9ef97174b0c54f96
@@ -928,6 +920,6 @@ SPEC CHECKSUMS:
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   Then: 844265ae87834bbe1147d91d5d41a404da2ec27d
 
-PODFILE CHECKSUM: 58afb2a23850449a8e2cd56b09d4330010883175
+PODFILE CHECKSUM: 9c09155e37775eb6b2b87d9ae9d9f7819967c86d
 
 COCOAPODS: 1.14.3

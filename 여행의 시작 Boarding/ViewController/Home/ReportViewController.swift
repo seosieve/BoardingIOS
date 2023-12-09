@@ -103,11 +103,7 @@ class ReportViewController: UIViewController {
         $0.font = Pretendard.regular(17)
         $0.textColor = Gray.medium
         $0.numberOfLines = 2
-        let attString = NSMutableAttributedString(string: $0.text!)
-        let style = NSMutableParagraphStyle()
-        style.lineSpacing = 4
-        attString.addAttribute(.paragraphStyle, value: style, range: NSMakeRange(0, attString.length))
-        $0.attributedText = attString
+        $0.withLineSpacing(4)
     }
     
     var blockUserStackView = UIStackView().then {

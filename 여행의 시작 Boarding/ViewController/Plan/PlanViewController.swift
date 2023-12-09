@@ -16,7 +16,7 @@ class PlanViewController: UIViewController {
     let viewModel = PlanViewModel()
     let disposeBag = DisposeBag()
     
-    let planArr = [(UIImage(named: "France11"), "2024 뉴욕 여행", "23.07.10 ~ 23.07.25"), (UIImage(named: "France10"), "여름방학 프랑스 여행", "23.07.10 ~ 23.07.25"), (UIImage(named: "France9"), "유럽 축구 여행", "파리, 프랑스")]
+    let planArr = [(UIImage(named: "France1"), "2024 뉴욕 여행", "23.07.10 ~ 23.07.25"), (UIImage(named: "France1"), "여름방학 프랑스 여행", "23.07.10 ~ 23.07.25"), (UIImage(named: "France1"), "유럽 축구 여행", "파리, 프랑스")]
     
     var statusBarView = UIView().then {
         $0.backgroundColor = Gray.white
@@ -159,6 +159,11 @@ class PlanViewController: UIViewController {
         viewModel.items
             .bind(to: planCollectionView.rx.items(cellIdentifier: "planCollectionViewCell", cellType: PlanCollectionViewCell.self)) { (row, element, cell) in
                 if element.planID != "" {
+                    if element.thumbnail != "" {
+                        cell.travelImageView.sd_setImage(with: URL(string: element.thumbnail), placeholderImage: nil, options: .scaleDownLargeImages)
+                    } else {
+                        cell.travelImageView.image = UIImage()
+                    }
                     cell.photoTapped = {
                         let vc = PlanDetailViewController()
                         vc.plan = element

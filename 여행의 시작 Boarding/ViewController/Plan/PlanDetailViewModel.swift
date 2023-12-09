@@ -13,12 +13,16 @@ import FirebaseFirestore
 
 class PlanDetailViewModel {
     
+    var listener: ListenerRegistration?
+    
     var userUid = ""
     var planID = ""
+    var memo = BehaviorRelay<[String]>(value: [String]())
     let items = BehaviorRelay<[NFT]>(value: [NFT]())
     let itemCount = BehaviorRelay<Int>(value: 0)
-    var memo = BehaviorRelay<[String]>(value: [String]())
     let deleteCompleted = PublishSubject<Void>()
+    
+    let disposeBag = DisposeBag()
     
     init(planID: String) {
         if let user = Auth.auth().currentUser {
@@ -28,8 +32,13 @@ class PlanDetailViewModel {
         }
     }
     
+    func stopListening() {
+        listener?.remove()
+    }
+    
     func getMyDayPlan(day: String) {
-        db.collection("User").document(userUid).collection("Plan").document(planID).addSnapshotListener { (documentSnapshot, error) in
+        listener = db.collection("User").document(userUid).collection("Plan").document(planID)
+            .addSnapshotListener { (documentSnapshot, error) in
             if let error = error {
                 print("DayPlan 불러오기 에러: \(error)")
             } else {
@@ -38,13 +47,13 @@ class PlanDetailViewModel {
                     if dayArray.isEmpty { dayArray = [""] }
                     var dayMemoArray = document.get("\(day)Memo") as? [String] ?? [""]
                     if dayMemoArray.isEmpty { dayMemoArray = [""] }
-                    self.getNFT(dayArray: dayArray, dayMemoArray: dayMemoArray)
+                    self.getNFT(day: day, dayArray: dayArray, dayMemoArray: dayMemoArray)
                 }
             }
         }
     }
     
-    func getNFT(dayArray: [String], dayMemoArray: [String]) {
+    func getNFT(day: String, dayArray: [String], dayMemoArray: [String]) {
         db.collection("NFT").whereField("NFTID", in: dayArray).getDocuments { (querySnapshot, error) in
             if let error = error {
                 print("NFT 불러오기 에러: \(error)")
@@ -60,9 +69,14 @@ class PlanDetailViewModel {
                 //삭제된 NFT가 포함되어있을 때 dayPlan에서 삭제
                 for (index, item) in items.enumerated() where item.NFTID == "" {
                     let memoArray = dayMemoArray.enumerated().filter { $0.offset != index }.map { $0.element }
-                    self.removeDayPlan(NFTID: dayArray[index], memoArray: memoArray)
+                    self.removeDayPlan(day: day, NFTID: dayArray[index], memoArray: memoArray)
                 }
                 items.removeAll { $0.NFTID == "" }
+                
+                //썸네일 설정
+                if day == "day1" {
+                    self.makeThumbnail(thumbnail: items.first?.url ?? "")
+                }
                 
                 self.memo.accept(dayMemoArray)
                 self.items.accept(items)
@@ -100,9 +114,9 @@ class PlanDetailViewModel {
         }
     }
     
-    func removeDayPlan(NFTID: String, memoArray: [String]) {
+    func removeDayPlan(day: String, NFTID: String, memoArray: [String]) {
         db.collection("User").document(userUid).collection("Plan").document(planID)
-            .updateData(["day1": FieldValue.arrayRemove([NFTID]), "day1Memo": memoArray]) {
+            .updateData([day: FieldValue.arrayRemove([NFTID]), "\(day)Memo": memoArray]) {
             error in
             if let error = error {
                 print("dayPlan 삭제 에러: \(error)")
@@ -112,13 +126,23 @@ class PlanDetailViewModel {
         }
     }
     
-    func swapDayPlan(dayArray: [String], memoArray: [String]) {
+    func swapDayPlan(day: String, dayArray: [String], memoArray: [String]) {
         db.collection("User").document(userUid).collection("Plan").document(planID)
-            .updateData(["day1": dayArray, "day1Memo": memoArray]) { error in
+            .updateData([day: dayArray, "\(day)Memo": memoArray]) { error in
             if let error = error {
                 print("dayPlan 순서 변경 에러: \(error)")
             } else {
                 print("dayPlan 순서 변경 성공")
+            }
+        }
+    }
+    
+    func makeThumbnail(thumbnail: String) {
+        db.collection("User").document(userUid).collection("Plan").document(planID).updateData(["thumbnail": thumbnail]) { error in
+            if let error = error {
+                print("thumbnail 설정 에러: \(error)")
+            } else {
+                print("thumbnail 설정 성공")
             }
         }
     }

@@ -23,8 +23,8 @@ class MemoEditViewModel {
         }
     }
     
-    func editMemo(memoArray: [String]) {
-        db.collection("User").document(userUid).collection("Plan").document(planID).updateData(["day1Memo": memoArray]) { error in
+    func editMemo(day: String, memoArray: [String]) {
+        db.collection("User").document(userUid).collection("Plan").document(planID).updateData(["\(day)Memo": memoArray]) { error in
             if let error = error {
                 print("memo 수정 에러: \(error)")
             } else {

@@ -47,7 +47,7 @@ class RecordFullScreenViewController: UIViewController {
         $0.gradient([.clear, .black.withAlphaComponent(0.9)], axis: .vertical)
     }
     
-    lazy var textContainerButton = UIButton()
+    var textContainerButton = UIButton()
     
     lazy var titleLabel = UILabel().then {
         $0.text = NFTResult.title
@@ -61,11 +61,7 @@ class RecordFullScreenViewController: UIViewController {
         $0.textColor = Gray.white
         $0.numberOfLines = 0
         $0.lineBreakMode = .byTruncatingTail
-        let attString = NSMutableAttributedString(string: $0.text!)
-        let style = NSMutableParagraphStyle()
-        style.lineSpacing = 4
-        attString.addAttribute(.paragraphStyle, value: style, range: NSMakeRange(0, attString.length))
-        $0.attributedText = attString
+        $0.withLineSpacing(4)
     }
     
     override func viewDidLoad() {
@@ -122,7 +118,7 @@ class RecordFullScreenViewController: UIViewController {
         textContainerButton.rx.tap
             .subscribe(onNext: {
                 if !self.byScrapVC {
-                    let vc = RecordInfoViewController()
+                    let vc = InfoViewController()
                     vc.url = self.url
                     vc.NFTResult = self.NFTResult
                     self.navigationController?.pushViewController(vc, animated: true)

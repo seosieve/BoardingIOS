@@ -39,4 +39,12 @@ class PlanViewModel {
             }
         }
     }
+//    
+//    func getThumbnail(planID: String) {
+//        db.collection("User").document(userUid).collection("Plan").document(planID).getDocument { (document, error) in
+//            if let error = error {
+//                print("Thumbnail 찾기 에러")
+//            }
+//        }
+//    }
 }

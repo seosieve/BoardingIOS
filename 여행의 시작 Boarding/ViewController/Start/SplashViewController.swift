@@ -24,7 +24,7 @@ class SplashViewController: UIViewController {
     }
     
     var subLabel = UILabel().then {
-        $0.text = "여행의 시작"
+        $0.text = "새로운 여행의 시작"
         $0.textColor = Gray.white.withAlphaComponent(0.8)
         $0.font = Pretendard.medium(14)
     }

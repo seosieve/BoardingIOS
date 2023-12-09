@@ -18,12 +18,8 @@ class CameraViewController: UIViewController {
     let viewModel = CameraViewModel()
     let disposeBag = DisposeBag()
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
-    }
-    
-    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-        return .fade
+    override var prefersStatusBarHidden: Bool {
+        return true
     }
     
     lazy var backButton = UIButton().then {
@@ -47,13 +43,6 @@ class CameraViewController: UIViewController {
     
     var switchButton = UIButton().then {
         $0.setImage(UIImage(named: "Switch"), for: .normal)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        UIView.animate(withDuration: 0.3) {
-            self.setNeedsStatusBarAppearanceUpdate()
-        }
     }
     
     override func viewDidLoad() {

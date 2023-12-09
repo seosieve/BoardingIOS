@@ -25,7 +25,7 @@ class TermsViewController: UIViewController {
     lazy var titleLabel = UILabel().then {
         $0.text = terms
         $0.font = Pretendard.semiBold(18)
-        $0.textColor = Gray.semiDark
+        $0.textColor = Gray.black
     }
     
     var termsScrollView = UIScrollView()
@@ -37,11 +37,7 @@ class TermsViewController: UIViewController {
         $0.text = termsContent
         $0.font = Pretendard.regular(15)
         $0.textColor = Gray.medium
-        let attrString = NSMutableAttributedString(string: $0.text!)
-        let style = NSMutableParagraphStyle()
-        style.lineSpacing = 12
-        attrString.addAttribute(.paragraphStyle, value: style, range: NSMakeRange(0, attrString.length))
-        $0.attributedText = attrString
+        $0.withLineSpacing(12)
         $0.textAlignment = .center
         $0.numberOfLines = 0
     }

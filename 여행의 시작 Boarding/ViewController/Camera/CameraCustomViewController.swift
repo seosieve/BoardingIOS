@@ -18,7 +18,6 @@ class CameraCustomViewController: UIViewController {
     }
     
     var customImageView = UIImageView().then {
-        $0.image = UIImage(named: "France8")
         $0.contentMode = .scaleAspectFill
     }
     
@@ -42,7 +41,7 @@ class CameraCustomViewController: UIViewController {
     
     @objc func completeButtonPressed() {
         let vc = WrittingViewController()
-        vc.infoArr = [location!.0, time!, "맑음, 25°C"]
+        vc.infoArr = [location!.0, time!, "맑음, \(Int.random(in: -4..<12))°C"]
         vc.country = location!.1
         vc.city = location!.2
         vc.latitude = location!.3

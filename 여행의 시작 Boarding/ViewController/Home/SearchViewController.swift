@@ -116,7 +116,7 @@ class SearchViewController: UIViewController {
         
         view.addSubview(modalView)
         modalView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(100)
+            make.top.equalToSuperview().offset(200) // was 100
             make.centerX.left.bottom.equalToSuperview()
         }
         modalView.makeModalCircular()

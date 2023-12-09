@@ -13,6 +13,7 @@ class MemoEditViewController: UIViewController {
     
     var planID = ""
     var memoArray = [String]()
+    var selectedDay = 1
     var placeHolder = "메모를 작성해주세요"
     
     lazy var viewModel = MemoEditViewModel(planID: self.planID)
@@ -111,7 +112,6 @@ class MemoEditViewController: UIViewController {
     
     @objc func keyboardWillShow(_ sender: Notification) {
         let inset = memoTextView.isFirstResponder ? 310 : 235
-        
         UIView.animate(withDuration: 0.3) {
             self.completeButton.snp.updateConstraints { make in
                 make.bottom.equalToSuperview().inset(inset)
@@ -227,7 +227,7 @@ class MemoEditViewController: UIViewController {
                     let memo = self.memoTextView.text == self.placeHolder ? "" : self.memoTextView.text!
                     self.memoArray[index-1] = memo
                 }
-                self.viewModel.editMemo(memoArray: self.memoArray)
+                self.viewModel.editMemo(day: "day\(self.selectedDay)", memoArray: self.memoArray)
                 self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)

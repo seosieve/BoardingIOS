@@ -14,7 +14,6 @@ class LocationTableViewCell: UITableViewCell {
     
     var photoView = UIImageView().then {
         $0.backgroundColor = Gray.bright
-        $0.image = UIImage(named: "France8")
         $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 24
         $0.layer.masksToBounds = true

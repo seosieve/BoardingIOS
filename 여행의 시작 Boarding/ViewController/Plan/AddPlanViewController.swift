@@ -112,7 +112,6 @@ class AddPlanViewController: UIViewController {
     
     @objc func keyboardWillShow(_ sender: Notification) {
         let inset = memoTextView.isFirstResponder ? 310 : 235
-        
         UIView.animate(withDuration: 0.3) {
             self.completeButton.snp.updateConstraints { make in
                 make.bottom.equalToSuperview().inset(inset)

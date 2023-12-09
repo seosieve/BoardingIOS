@@ -21,34 +21,35 @@ class StartViewController: UIViewController {
     }
     
     var subLabel = UILabel().then {
-        $0.text = "여행의 시작"
-        $0.textColor = Gray.semiLight
+        $0.text = "새로운 여행의 시작"
+        $0.textColor = Gray.light
         $0.font = Pretendard.medium(17)
     }
     
     var appleStartButton = UIButton().then {
-        $0.setTitle("Apple로 시작하기", for: .normal)
-        $0.setTitleColor(Gray.dark, for: .normal)
-        $0.titleLabel?.font = Pretendard.regular(19)
+        $0.setTitle("Apple로 계속하기", for: .normal)
+        $0.setTitleColor(Gray.black, for: .normal)
+        $0.titleLabel?.font = Pretendard.medium(18)
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = Gray.semiLight.cgColor
-        $0.layer.cornerRadius = 12
+        $0.layer.borderColor = Gray.medium.cgColor
     }
     
     var appleImageView = UIImageView().then {
-        $0.image = UIImage(named: "Apple")
+        $0.image = UIImage(named: "Apple")?.withRenderingMode(.alwaysTemplate)
+        $0.tintColor = Gray.black
     }
     
     lazy var kakaoStartButton = UIButton().then {
-        $0.setTitle("Kakao로 시작하기", for: .normal)
-        $0.setTitleColor(Gray.dark, for: .normal)
-        $0.titleLabel?.font = Pretendard.regular(19)
+        $0.setTitle("Kakao로 계속하기", for: .normal)
+        $0.setTitleColor(Gray.black, for: .normal)
+        $0.titleLabel?.font = Pretendard.medium(18)
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = Gray.semiLight.cgColor
+        $0.layer.borderColor = Gray.medium.cgColor
     }
     
     var kakaoImageView = UIImageView().then {
-        $0.image = UIImage(named: "Kakao")
+        $0.image = UIImage(named: "Kakao")?.withRenderingMode(.alwaysTemplate)
+        $0.tintColor = Gray.black
     }
     
     var indicator = UIActivityIndicatorView().then {
@@ -79,32 +80,34 @@ class StartViewController: UIViewController {
         
         view.addSubview(kakaoStartButton)
         kakaoStartButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(65)
+            make.left.equalToSuperview().offset(24)
             make.centerX.equalToSuperview()
-            make.left.equalToSuperview().offset(16)
             make.height.equalTo(48)
+            make.bottom.equalToSuperview().inset(60)
         }
         kakaoStartButton.rounded(axis: .horizontal)
         
         kakaoStartButton.addSubview(kakaoImageView)
         kakaoImageView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
+            make.left.equalToSuperview().offset(10)
             make.centerY.equalToSuperview()
+            make.width.height.equalTo(40)
         }
         
         view.addSubview(appleStartButton)
         appleStartButton.snp.makeConstraints { make in
-            make.bottom.equalTo(kakaoStartButton.snp.top).offset(-14)
+            make.left.equalToSuperview().offset(24)
             make.centerX.equalToSuperview()
-            make.left.equalToSuperview().offset(16)
             make.height.equalTo(48)
+            make.bottom.equalTo(kakaoStartButton.snp.top).offset(-12)
         }
         appleStartButton.rounded(axis: .horizontal)
         
         appleStartButton.addSubview(appleImageView)
         appleImageView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
+            make.left.equalToSuperview().offset(10)
             make.centerY.equalToSuperview()
+            make.width.height.equalTo(40)
         }
         
         view.addSubview(indicator)

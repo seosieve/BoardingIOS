@@ -20,7 +20,8 @@ class PlanCollectionViewCell: UICollectionViewCell {
     }
     
     var travelImageView = UIImageView().then {
-        $0.image = UIImage(named: "France8")
+        $0.backgroundColor = Gray.bright
+        $0.contentMode = .scaleAspectFill
     }
     
     lazy var planDetailButton = UIButton().then {

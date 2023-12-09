@@ -7,19 +7,24 @@
 
 import UIKit
 import AVKit
+import RxSwift
+import RxCocoa
 
 class HomeFullScreenViewController: UIViewController {
     
-    var url: URL?
-    var NFT: NFT?
-    var user: User?
+    var user = User.dummyType
+    var url = URL(string: "")
+    var NFTResult = NFT.dummyType
+    
+    let disposeBag = DisposeBag()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
     
-    var fullScreenImageView = UIImageView().then {
-        $0.image = UIImage()
+    lazy var fullScreenImageView = UIImageView().then {
+        $0.sd_setImage(with: url, placeholderImage: UIImage())
+        $0.backgroundColor = Gray.light
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
     }
@@ -33,50 +38,26 @@ class HomeFullScreenViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
-    var fullScreenDimView = UIView().then {
-        $0.backgroundColor = Gray.black.withAlphaComponent(0.5)
-        $0.alpha = 0
+    lazy var bottomGradientView = UIView().then {
+        $0.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 400)
+        $0.gradient([.clear, .black.withAlphaComponent(0.9)], axis: .vertical)
     }
     
-    lazy var fullScreenGradientView = UIView().then {
-        $0.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 198)
-        $0.gradient([Gray.black.withAlphaComponent(0), .black], axis: .vertical)
-    }
-    
-    lazy var fullScreenTextView = UIView().then {
-        $0.backgroundColor = .clear
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapRecognized))
-        $0.addGestureRecognizer(tap)
-    }
-    
-    @objc func tapRecognized() {
-        if contentLabel.numberOfLines == 2 {
-            UIView.animate(withDuration: 0.5) {
-                self.contentLabel.numberOfLines = 0
-                self.fullScreenDimView.alpha = 1
-                self.view.layoutIfNeeded()
-            }
-        } else {
-            UIView.animate(withDuration: 0.5) {
-                self.contentLabel.numberOfLines = 2
-                self.fullScreenDimView.alpha = 0
-                self.view.layoutIfNeeded()
-            }
-        }
-    }
-    
+    var textContainerButton = UIButton()
+
     lazy var titleLabel = UILabel().then {
-        $0.text = NFT?.title
-        $0.font = Pretendard.medium(19)
+        $0.text = NFTResult.title
+        $0.font = Pretendard.semiBold(19)
         $0.textColor = Gray.white
     }
     
     lazy var contentLabel = UILabel().then {
-        $0.text = NFT?.content
+        $0.text = NFTResult.content
         $0.font = Pretendard.regular(15)
         $0.textColor = Gray.white
-        $0.numberOfLines = 2
+        $0.numberOfLines = 0
         $0.lineBreakMode = .byTruncatingTail
+        $0.withLineSpacing(4)
     }
     
     lazy var locationButton = UIButton().then {
@@ -84,13 +65,12 @@ class HomeFullScreenViewController: UIViewController {
         $0.imageView?.contentMode = .scaleAspectFit
         $0.setBackgroundColor(Gray.light.withAlphaComponent(0.5), for: .normal)
         $0.setImage(UIImage(named: "Place")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        $0.setTitle(NFT?.location, for: .normal)
+        $0.setTitle(NFTResult.location, for: .normal)
         $0.titleLabel?.font = Pretendard.regular(13)
         $0.setTitleColor(Gray.white, for: .normal)
         $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 9)
         $0.imageEdgeInsets = UIEdgeInsets(top: 5, left: -5, bottom: 5, right: 0)
         $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        $0.addTarget(self, action: #selector(moveToInfo), for: .touchUpInside)
     }
     
     lazy var categoryButton = UIButton().then {
@@ -98,21 +78,12 @@ class HomeFullScreenViewController: UIViewController {
         $0.imageView?.contentMode = .scaleAspectFit
         $0.setBackgroundColor(Gray.light.withAlphaComponent(0.5), for: .normal)
         $0.setImage(UIImage(named: "Plane")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        $0.setTitle(NFT?.category, for: .normal)
+        $0.setTitle(NFTResult.category, for: .normal)
         $0.titleLabel?.font = Pretendard.regular(13)
         $0.setTitleColor(Gray.white, for: .normal)
         $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 9)
         $0.imageEdgeInsets = UIEdgeInsets(top: 5, left: -5, bottom: 5, right: 0)
         $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        $0.addTarget(self, action: #selector(moveToInfo), for: .touchUpInside)
-    }
-    
-    @objc func moveToInfo() {
-        let vc = HomeInfoViewController()
-        vc.image = fullScreenImageView.image
-        vc.NFTResult = NFT!
-        vc.user = user!
-        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     var interactionStackView = UIStackView().then {
@@ -135,19 +106,13 @@ class HomeFullScreenViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        loadVideoView()
-        loadImageView()
         setViews()
+        setRx()
     }
     
     func setViews() {
         view.addSubview(fullScreenImageView)
         fullScreenImageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        
-        view.addSubview(fullScreenDimView)
-        fullScreenDimView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
@@ -159,34 +124,36 @@ class HomeFullScreenViewController: UIViewController {
             make.height.equalTo(48)
         }
         
-        view.addSubview(fullScreenGradientView)
-        fullScreenGradientView.snp.makeConstraints { make in
+        view.addSubview(bottomGradientView)
+        bottomGradientView.snp.makeConstraints { make in
             make.left.right.bottom.equalToSuperview()
-            make.height.equalTo(198)
+            make.height.equalTo(400)
         }
         
-        view.addSubview(fullScreenTextView)
-        fullScreenTextView.snp.makeConstraints { make in
+        view.addSubview(textContainerButton)
+        textContainerButton.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-82)
-            make.bottom.equalToSuperview().inset(90)
+            make.right.equalToSuperview().offset(-75)
+            make.bottom.equalToSuperview()
+            make.height.equalTo(200)
         }
         
-        fullScreenTextView.addSubview(contentLabel)
+        textContainerButton.addSubview(contentLabel)
         contentLabel.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
+            make.left.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().inset(105)
+            make.height.lessThanOrEqualTo(88)
         }
         
-        fullScreenTextView.addSubview(titleLabel)
+        textContainerButton.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.left.right.equalToSuperview()
-            make.bottom.equalTo(contentLabel.snp.top).offset(-10)
+            make.left.centerX.equalToSuperview()
+            make.bottom.equalTo(contentLabel.snp.top).offset(-8)
         }
         
         view.addSubview(locationButton)
         locationButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(54)
+            make.bottom.equalToSuperview().inset(60)
             make.left.equalToSuperview().offset(20)
             make.height.equalTo(24)
         }
@@ -203,7 +170,7 @@ class HomeFullScreenViewController: UIViewController {
         view.addSubview(interactionStackView)
         interactionStackView.snp.makeConstraints { make in
             make.right.equalToSuperview().offset(-20)
-            make.bottom.equalToSuperview().inset(84)
+            make.bottom.equalToSuperview().inset(105)
             make.width.equalTo(32)
         }
         let icon = [InteractionInfo.comment, InteractionInfo.like, InteractionInfo.save]
@@ -245,6 +212,19 @@ class HomeFullScreenViewController: UIViewController {
         }
     }
     
+    func setRx() {
+        textContainerButton.rx.tap
+            .subscribe(onNext: {
+                let vc = InfoViewController()
+                vc.byHomeVC = true
+                vc.user = self.user
+                vc.url = self.url
+                vc.NFTResult = self.NFTResult
+                self.navigationController?.pushViewController(vc, animated: true)
+            })
+            .disposed(by: disposeBag)
+    }
+    
     func loadVideoView() {
         guard let path = Bundle.main.path(forResource: "Eiffel", ofType: "mp4") else { return }
         let url = URL(fileURLWithPath: path)
@@ -254,9 +234,5 @@ class HomeFullScreenViewController: UIViewController {
         playerLayer.videoGravity = .resizeAspectFill
         self.view.layer.addSublayer(playerLayer)
         player.play()
-    }
-    
-    func loadImageView() {
-        fullScreenImageView.sd_setImage(with: url, placeholderImage: nil, options: .scaleDownLargeImages)
     }
 }

@@ -164,7 +164,7 @@ class MyPageViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
         self.view.backgroundColor = Gray.bright
         setViews()
-        putUserAchievement()
+//        putUserAchievement()
         setRx()
     }
     
@@ -195,17 +195,17 @@ class MyPageViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
         
-        view.addSubview(userAchievementStackView)
-        userAchievementStackView.snp.makeConstraints { make in
-            make.top.equalTo(userNameLabel.snp.bottom).offset(8)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(170)
-            make.height.equalTo(24)
-        }
+//        view.addSubview(userAchievementStackView)
+//        userAchievementStackView.snp.makeConstraints { make in
+//            make.top.equalTo(userNameLabel.snp.bottom).offset(8)
+//            make.centerX.equalToSuperview()
+//            make.width.equalTo(170)
+//            make.height.equalTo(24)
+//        }
         
         view.addSubview(userCommentLabel)
         userCommentLabel.snp.makeConstraints { make in
-            make.top.equalTo(userAchievementStackView.snp.bottom).offset(10)
+            make.top.equalTo(userNameLabel.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
         }
         

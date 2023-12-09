@@ -49,14 +49,10 @@ class NFTViewController: UIViewController {
     }
     
     var placeHolderLabel = UILabel().then {
-        $0.text = "등록된 NFT가 없습니다.\n아래 버튼을 눌러 여행을 기록해보세요."
+        $0.text = "등록된 CARD가 없습니다.\n아래 버튼을 눌러 여행을 기록해보세요."
         $0.font = Pretendard.regular(20)
         $0.textColor = Gray.medium
-        let attrString = NSMutableAttributedString(string: $0.text!)
-        let style = NSMutableParagraphStyle()
-        style.lineSpacing = 12
-        attrString.addAttribute(.paragraphStyle, value: style, range: NSMakeRange(0, attrString.length))
-        $0.attributedText = attrString
+        $0.withLineSpacing(12)
         $0.textAlignment = .center
         $0.numberOfLines = 2
     }
