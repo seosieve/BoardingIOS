@@ -16,6 +16,7 @@ class HomeFullScreenViewController: UIViewController {
     var url = URL(string: "")
     var NFTResult = NFT.dummyType
     
+    lazy var viewModel = HomeFullScreenViewModel(NFTID: NFTResult.NFTID)
     let disposeBag = DisposeBag()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -96,11 +97,16 @@ class HomeFullScreenViewController: UIViewController {
     
     @objc func iconButtonPressed(_ sender: UIButton) {
         switch sender.tag {
-        case 0:
-            break
-        default:
+        case 1:
+            viewModel.likeAction()
             sender.isSelected.toggle()
             sender.touchAnimation()
+        default:
+            let vc = AddMyPlanViewController()
+            vc.NFTID = NFTResult.NFTID
+            vc.modalPresentationStyle = .automatic
+            vc.modalTransitionStyle = .coverVertical
+            self.present(vc, animated: true)
         }
     }
     
@@ -108,6 +114,7 @@ class HomeFullScreenViewController: UIViewController {
         super.viewDidLoad()
         setViews()
         setRx()
+        loadVideoView()
     }
     
     func setViews() {
@@ -173,14 +180,14 @@ class HomeFullScreenViewController: UIViewController {
             make.bottom.equalToSuperview().inset(105)
             make.width.equalTo(32)
         }
-        let icon = [InteractionInfo.comment, InteractionInfo.like, InteractionInfo.save]
+        let icon = [InteractionInfo.like, InteractionInfo.save]
         for index in 0..<icon.count {
             let subview = UIView().then {
                 $0.backgroundColor = .clear
             }
             
             lazy var iconButton = UIButton().then {
-                $0.tag = index
+                $0.tag = index+1
                 $0.setImage(icon[index].0.withRenderingMode(.alwaysTemplate), for: .normal)
                 $0.setImage(icon[index].1.withRenderingMode(.alwaysTemplate), for: .selected)
                 $0.tintColor = Gray.white
@@ -188,7 +195,7 @@ class HomeFullScreenViewController: UIViewController {
             }
             
             let numberLabel = UILabel().then {
-                $0.text = "0"
+                $0.tag = index+3
                 $0.font = Pretendard.regular(13)
                 $0.textColor = Gray.white
                 $0.textAlignment = .center
@@ -221,6 +228,30 @@ class HomeFullScreenViewController: UIViewController {
                 vc.url = self.url
                 vc.NFTResult = self.NFTResult
                 self.navigationController?.pushViewController(vc, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.likeCount
+            .subscribe(onNext: { count in
+                self.interactionStackView.arrangedSubviews
+                    .compactMap { $0.viewWithTag(3) as? UILabel }
+                    .forEach { $0.text = String(count) }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.saveCount
+            .subscribe(onNext: { count in
+                self.interactionStackView.arrangedSubviews
+                    .compactMap { $0.viewWithTag(4) as? UILabel }
+                    .forEach { $0.text = String(count) }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.likedPeople
+            .subscribe(onNext: { likedPeople in
+                self.interactionStackView.arrangedSubviews
+                    .compactMap { $0.viewWithTag(1) as? UIButton }
+                    .forEach { $0.isSelected = likedPeople.contains(self.viewModel.userUid) ? true : false }
             })
             .disposed(by: disposeBag)
     }

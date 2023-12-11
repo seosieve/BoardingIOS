@@ -75,6 +75,11 @@ class NewPlanTitleViewController: UIViewController {
         setViews()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        titleTextField.becomeFirstResponder()
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         titleTextField.resignFirstResponder()
@@ -142,7 +147,7 @@ class NewPlanTitleViewController: UIViewController {
 //MARK: - UITextFieldDelegate
 extension NewPlanTitleViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        titleTextField.resignFirstResponder()
+        nextButtonPressed()
         return true
     }
 }

@@ -269,6 +269,12 @@ extension UILabel {
         attString.addAttribute(.paragraphStyle, value: style, range: NSMakeRange(0, attString.length))
         self.attributedText = attString
     }
+    
+    func withMultipleFont(_ font: UIFont, range: String) {
+        let attributedString = NSMutableAttributedString(string: self.text!)
+        attributedString.addAttribute(.font, value: font, range: (self.text! as NSString).range(of: range))
+        self.attributedText = attributedString
+    }
 }
 
 //MARK: - RemoveAllArrangedSubviews

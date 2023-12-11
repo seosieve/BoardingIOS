@@ -17,7 +17,7 @@ class InfoViewController: UIViewController {
     var url = URL(string: "")
     var NFTResult = NFT.dummyType
     
-    let viewModel = InfoViewModel()
+    lazy var viewModel = InfoViewModel(NFTID: NFTResult.NFTID)
     let disposeBag = DisposeBag()
     
     lazy var buttonWidth = (self.view.frame.width - 40) / 3
@@ -58,7 +58,7 @@ class InfoViewController: UIViewController {
             self.deleteAlert("CARD") {
                 self.indicator.startAnimating()
                 self.view.isUserInteractionEnabled = false
-                self.viewModel.deleteNFT(NFTID: self.NFTResult.NFTID)
+                self.viewModel.delete(NFTID: self.NFTResult.NFTID, category: self.NFTResult.category)
             }
         }
         let actionArray = byHomeVC ? [shareAction] : [shareAction, deleteAction]
@@ -159,14 +159,32 @@ class InfoViewController: UIViewController {
     }
     
     let saveNumberLabel = UILabel().then {
-        $0.text = "0"
         $0.font = Pretendard.regular(13)
         $0.textColor = Gray.dark
         $0.textAlignment = .center
     }
     
     @objc func iconButtonPressed(_ sender: UIButton) {
-        print("icon Pressed")
+        switch sender.tag {
+        case 1:
+            viewModel.likeAction()
+            sender.isSelected.toggle()
+            sender.touchAnimation()
+        case 2:
+            if viewModel.userUid == user.userUid { break }
+            let vc = ReportViewController()
+            vc.authorUid = user.userUid
+            vc.NFTID = NFTResult.NFTID
+            vc.modalPresentationStyle = .automatic
+            vc.modalTransitionStyle = .coverVertical
+            self.present(vc, animated: true)
+        default:
+            let vc = AddMyPlanViewController()
+            vc.NFTID = NFTResult.NFTID
+            vc.modalPresentationStyle = .automatic
+            vc.modalTransitionStyle = .coverVertical
+            self.present(vc, animated: true)
+        }
     }
     
     var myPageButtonStackView = UIStackView().then {
@@ -411,14 +429,14 @@ class InfoViewController: UIViewController {
             make.left.equalToSuperview().offset(20)
             make.height.equalTo(50)
         }
-        let icon = [InteractionInfo.like, InteractionInfo.comment, InteractionInfo.report]
+        let icon = [InteractionInfo.like, InteractionInfo.report]
         for index in 0..<icon.count {
             let subview = UIView().then {
                 $0.backgroundColor = .clear
             }
             
             lazy var iconButton = UIButton().then {
-                $0.tag = index
+                $0.tag = index+1
                 $0.setImage(icon[index].0.withRenderingMode(.alwaysTemplate), for: .normal)
                 $0.setImage(icon[index].1.withRenderingMode(.alwaysTemplate), for: .selected)
                 $0.tintColor = Gray.dark
@@ -426,7 +444,7 @@ class InfoViewController: UIViewController {
             }
             
             let numberLabel = UILabel().then {
-                $0.text = "0"
+                $0.tag = index+4
                 $0.font = Pretendard.regular(13)
                 $0.textColor = Gray.dark
                 $0.textAlignment = .center
@@ -527,8 +545,37 @@ class InfoViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        viewModel.deleteCompleted
-            .observe(on: MainScheduler.instance)
+        viewModel.likeCount
+            .subscribe(onNext: { count in
+                self.interactionStackView.arrangedSubviews
+                    .compactMap { $0.viewWithTag(4) as? UILabel }
+                    .forEach { $0.text = String(count) }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.reportCount
+            .subscribe(onNext: { count in
+                self.interactionStackView.arrangedSubviews
+                    .compactMap { $0.viewWithTag(5) as? UILabel }
+                    .forEach { $0.text = String(count) }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.saveCount
+            .subscribe(onNext: { count in
+                self.saveNumberLabel.text = String(count)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.likedPeople
+            .subscribe(onNext: { likedPeople in
+                self.interactionStackView.arrangedSubviews
+                    .compactMap { $0.viewWithTag(1) as? UIButton }
+                    .forEach { $0.isSelected = likedPeople.contains(self.viewModel.userUid) ? true : false }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.processCompleted
             .subscribe(onNext:{ [weak self] in
                 self?.indicator.stopAnimating()
                 let vc = self?.navigationController!.viewControllers[0] as! RecordViewController

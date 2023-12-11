@@ -24,6 +24,10 @@ class MyPageViewController: UIViewController {
         $0.setImage(UIImage(named: "Setting"), for: .normal)
     }
     
+    var userShadowView = UIView().then {
+        $0.backgroundColor = Gray.white
+    }
+    
     var userThumbnailView = UIImageView().then {
         $0.image = UIImage()
         $0.contentMode = .scaleAspectFit
@@ -44,10 +48,8 @@ class MyPageViewController: UIViewController {
     
     var userCommentLabel = UILabel().then {
         $0.text = "세상의 모든 아름다움을 담아가는 여행자입니다."
-        $0.font = Pretendard.regular(14)
-        $0.textColor = Gray.black
-        $0.numberOfLines = 0
-        $0.lineBreakMode = .byWordWrapping
+        $0.font = Pretendard.regular(15)
+        $0.textColor = Gray.dark
     }
     
     lazy var modalView = UIView().then {
@@ -136,7 +138,7 @@ class MyPageViewController: UIViewController {
     
     lazy var ExpertButton = UIButton().then {
         $0.tag = 2
-        $0.setTitle("전문가", for: .normal)
+        $0.setTitle("LEVEL", for: .normal)
         $0.setTitleColor(Gray.light, for: .normal)
         $0.setTitleColor(Boarding.blue, for: .selected)
         $0.titleLabel?.font = Pretendard.regular(17)
@@ -178,20 +180,27 @@ class MyPageViewController: UIViewController {
         view.addSubview(settingButton)
         settingButton.snp.makeConstraints { make in
             make.top.equalTo(statusBarView.snp.bottom).offset(12)
-            make.right.equalToSuperview().inset(16)
+            make.right.equalToSuperview().inset(20)
         }
         
-        view.addSubview(userThumbnailView)
-        userThumbnailView.snp.makeConstraints { make in
-            make.top.equalTo(statusBarView.snp.bottom).offset(12)
+        view.addSubview(userShadowView)
+        userShadowView.snp.makeConstraints { make in
+            make.top.equalTo(statusBarView.snp.bottom).offset(30)
             make.centerX.equalToSuperview()
-            make.width.height.equalTo(112)
+            make.width.height.equalTo(120)
+        }
+        userShadowView.rounded(axis: .horizontal, mask: false)
+        userShadowView.makeShadow(opacity: 0.1, shadowRadius: 10)
+        
+        userShadowView.addSubview(userThumbnailView)
+        userThumbnailView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
         userThumbnailView.rounded(axis: .horizontal)
         
         view.addSubview(userNameLabel)
         userNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(userThumbnailView.snp.bottom).offset(13)
+            make.top.equalTo(userThumbnailView.snp.bottom).offset(10)
             make.centerX.equalToSuperview()
         }
         
@@ -205,7 +214,7 @@ class MyPageViewController: UIViewController {
         
         view.addSubview(userCommentLabel)
         userCommentLabel.snp.makeConstraints { make in
-            make.top.equalTo(userNameLabel.snp.bottom).offset(20)
+            make.top.equalTo(userNameLabel.snp.bottom).offset(10)
             make.centerX.equalToSuperview()
         }
         

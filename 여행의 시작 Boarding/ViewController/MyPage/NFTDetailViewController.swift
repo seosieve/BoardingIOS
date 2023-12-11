@@ -38,7 +38,7 @@ class NFTDetailViewController: UIViewController {
             self.deleteAlert("CARD") {
                 self.indicator.startAnimating()
                 self.view.isUserInteractionEnabled = false
-                self.viewModel.deleteNFT(NFTID: self.NFTResult.NFTID)
+                self.viewModel.delete(NFTID: self.NFTResult.NFTID, category: self.NFTResult.category)
             }
         }])
         $0.showsMenuAsPrimaryAction = true
@@ -62,12 +62,12 @@ class NFTDetailViewController: UIViewController {
         $0.textColor = Gray.medium
     }
     
-    var MILELabel = UILabel().then {
-        $0.text = "0 MILE"
-        $0.font = Pretendard.regular(16)
+    lazy var MILELabel = UILabel().then {
+        $0.text = "\(NFTResult.likes * 100 + NFTResult.saves * 20 - NFTResult.reports * 7) MILE"
+        $0.font = Pretendard.semiBold(16)
         $0.textColor = Gray.medium
         let attributedString = NSMutableAttributedString(string: $0.text!)
-        attributedString.addAttribute(.font, value: Pretendard.semiBold(16), range: ($0.text! as NSString).range(of: "0"))
+        attributedString.addAttribute(.font, value: Pretendard.regular(16), range: ($0.text! as NSString).range(of: "MILE"))
         $0.attributedText = attributedString
     }
     
@@ -217,7 +217,8 @@ class NFTDetailViewController: UIViewController {
             make.left.equalToSuperview().inset(20)
             make.height.equalTo(60)
         }
-        let icon = [InteractionInfo.like, InteractionInfo.comment, InteractionInfo.report, InteractionInfo.save]
+        let icon = [InteractionInfo.like, InteractionInfo.report, InteractionInfo.save]
+        let count = [NFTResult.likes, NFTResult.reports, NFTResult.saves]
         for index in 0..<icon.count {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear
@@ -226,14 +227,14 @@ class NFTDetailViewController: UIViewController {
                 $0.image = icon[index].0
             }
             let statusLabel = UILabel().then {
-                $0.text = "0"
+                $0.text = String(count[index])
                 $0.font = Pretendard.regular(16)
                 $0.textColor = Gray.medium
             }
             let divider = UIView().then {
                 $0.backgroundColor = Gray.bright
             }
-            if index == 3 {
+            if index == 2 {
                 divider.alpha = 0
             }
             subview.addSubview(statusImageView)
@@ -449,7 +450,7 @@ class NFTDetailViewController: UIViewController {
     }
     
     func setRx() {
-        viewModel.deleteCompleted
+        viewModel.processCompleted
             .subscribe(onNext:{ [weak self] in
                 self?.indicator.stopAnimating()
                 self?.view.isUserInteractionEnabled = true

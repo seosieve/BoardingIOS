@@ -188,10 +188,12 @@ class NFTViewController: UIViewController {
     
     func showMenu() {
         let registrationOrder = UIAction(title: "등록순", state: .on, handler: { _ in
-            print("등록순")
+            self.viewModel.stopListening()
+            self.viewModel.getMyNFTByDate()
         })
         let popularityOrder = UIAction(title: "인기순", handler: { _ in
-            self.NFTCollectionView.reloadData()
+            self.viewModel.stopListening()
+            self.viewModel.getMyNFTByLikes()
         })
         sortButton.menu = UIMenu(options: .displayInline, children: [registrationOrder, popularityOrder])
         sortButton.showsMenuAsPrimaryAction = true

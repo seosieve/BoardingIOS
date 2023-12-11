@@ -299,13 +299,15 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
             .bind(to: homeTableView.rx.items(cellIdentifier: "homeTableViewCell", cellType: HomeTableViewCell.self)) { (row, element, cell) in
                 cell.selectionStyle = .none
                 if element.NFTID != "" {
-                    self.viewModel.getAuthor(author: element.authorUid) { user in
-                        cell.userNameLabel.text = user.name
-                        cell.userImage.sd_setImage(with: URL(string: user.url), placeholderImage: nil, options: .scaleDownLargeImages)
-                        cell.photoTapped = { [weak self] in
-                            self?.goToFullScreen(url: URL(string: element.url), NFT: element, user: user)
-                        }
+                    // 유저 프로필 바인딩
+                    let user = self.viewModel.users.value[row]
+                    cell.userNameLabel.text = user.name
+                    cell.userImage.sd_setImage(with: URL(string: user.url), placeholderImage: nil, options: .scaleDownLargeImages)
+                    cell.photoTapped = { [weak self] in
+                        self?.goToFullScreen(url: URL(string: element.url), NFT: element, user: user)
                     }
+                    // 이미 좋아요 누른 게시물인지 확인
+                    cell.isUserAlreadyLiked(userUid: self.viewModel.userUid, likedPeople: element.likedPeople)
                     cell.makeInteractionCount([element.reports, element.likes, element.saves])
                     cell.iconTapped = { [weak self] sender in
                         self?.iconInteraction(sender, element.NFTID, element.authorUid)
@@ -361,8 +363,7 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
             vc.modalTransitionStyle = .coverVertical
             self.present(vc, animated: true)
         case 1:
-            sender.isSelected.toggle()
-            sender.touchAnimation()
+            viewModel.like(NFTID: NFTID)
         default:
             let vc = AddMyPlanViewController()
             vc.NFTID = NFTID

@@ -13,6 +13,8 @@ class MILEViewController: UIViewController {
 
     let tag = 1
     let modalClosed = BehaviorRelay<Bool>(value: true)
+    
+    let viewModel = MILEViewModel()
     let disposeBag = DisposeBag()
     
     var MILEScrollView = UIScrollView()
@@ -35,11 +37,8 @@ class MILEViewController: UIViewController {
     
     var MILELabel = UILabel().then {
         $0.text = "0 MILE"
-        $0.font = Pretendard.light(21)
+        $0.font = Pretendard.medium(35)
         $0.textColor = Gray.black
-        let attributedString = NSMutableAttributedString(string: $0.text!)
-        attributedString.addAttribute(.font, value: Pretendard.medium(35), range: ($0.text! as NSString).range(of: "0"))
-        $0.attributedText = attributedString
     }
     
     var calculatePlanView = UIView().then {
@@ -48,7 +47,7 @@ class MILEViewController: UIViewController {
     }
     
     var calculatePlanLabel = UILabel().then {
-        $0.text = "이번주 정산 예정"
+        $0.text = "정산 계산 내역"
         $0.font = Pretendard.semiBold(21)
         $0.textColor = Gray.black
     }
@@ -107,7 +106,7 @@ class MILEViewController: UIViewController {
         MILEContentView.addSubview(myAssetView)
         myAssetView.snp.makeConstraints { make in
             make.top.centerX.left.equalToSuperview()
-            make.height.equalTo(230)
+            make.height.equalTo(210)
         }
         
         myAssetView.addSubview(myAssetLabel)
@@ -125,80 +124,80 @@ class MILEViewController: UIViewController {
         myAssetView.addSubview(MILELabel)
         MILELabel.snp.makeConstraints { make in
             make.centerY.equalTo(MILEImageView)
-            make.right.equalToSuperview().offset(-20)
+            make.right.equalToSuperview().offset(-30)
         }
         
-//        MILEContentView.addSubview(calculatePlanView)
-//        calculatePlanView.snp.makeConstraints { make in
-//            make.top.equalTo(myAssetView.snp.bottom).offset(20)
-//            make.left.equalToSuperview().offset(20)
-//            make.centerX.equalToSuperview()
-//            make.height.equalTo(220)
-//        }
-//        
-//        calculatePlanView.addSubview(calculatePlanLabel)
-//        calculatePlanLabel.snp.makeConstraints { make in
-//            make.top.left.equalToSuperview().offset(20)
-//        }
-//        
-//        calculatePlanView.addSubview(calculatePlanStackView)
-//        calculatePlanStackView.snp.makeConstraints { make in
-//            make.top.equalTo(calculatePlanLabel.snp.bottom).offset(20)
-//            make.left.equalToSuperview().offset(20)
-//            make.centerX.equalToSuperview()
-//            make.height.equalTo(150)
-//        }
-//        let info = ["좋아요", "스크랩", "신뢰도", "합계"]
-//        for index in 0..<4 {
-//            let subview = UIView()
-//            
-//            let titleLabel = UILabel().then {
-//                $0.text = info[index]
-//                $0.font = Pretendard.regular(14)
-//                $0.textColor = Gray.medium
-//            }
-//            let valueLabel = UILabel().then {
-//                $0.text = "+ 25"
-//                $0.font = Pretendard.regular(14)
-//                $0.textColor = Gray.black
-//            }
-//            
-//            let calculateResultLabel = UILabel().then {
-//                $0.text = "75 MILE"
-//                $0.font = Pretendard.light(17)
-//                $0.textColor = Gray.black
-//                let attributedString = NSMutableAttributedString(string: $0.text!)
-//                attributedString.addAttribute(.font, value: Pretendard.medium(27), range: ($0.text! as NSString).range(of: "75"))
-//                $0.attributedText = attributedString
-//            }
-//            
-//            subview.addSubview(titleLabel)
-//            titleLabel.snp.makeConstraints { make in
-//                make.left.centerY.equalToSuperview()
-//            }
-//            if index == 3 {
-//                subview.addSubview(calculateResultLabel)
-//                calculateResultLabel.snp.makeConstraints { make in
-//                    make.right.centerY.equalToSuperview()
-//                    make.top.equalToSuperview().offset(5)
-//                }
-//            } else {
-//                subview.addSubview(valueLabel)
-//                valueLabel.snp.makeConstraints { make in
-//                    make.right.top.centerY.equalToSuperview()
-//                }
-//            }
-//            calculatePlanStackView.addArrangedSubview(subview)
-//        }
-//        
-//        let calculateDivider = divider()
-//        calculatePlanView.addSubview(calculateDivider)
-//        calculateDivider.snp.makeConstraints { make in
-//            make.top.equalToSuperview().offset(150)
-//            make.centerX.equalToSuperview()
-//            make.left.equalToSuperview().offset(20)
-//            make.height.equalTo(1)
-//        }
+        MILEContentView.addSubview(calculatePlanView)
+        calculatePlanView.snp.makeConstraints { make in
+            make.top.equalTo(myAssetView.snp.bottom).offset(30)
+            make.left.equalToSuperview().offset(20)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(220)
+        }
+        
+        calculatePlanView.addSubview(calculatePlanLabel)
+        calculatePlanLabel.snp.makeConstraints { make in
+            make.top.left.equalToSuperview().offset(20)
+        }
+        
+        calculatePlanView.addSubview(calculatePlanStackView)
+        calculatePlanStackView.snp.makeConstraints { make in
+            make.top.equalTo(calculatePlanLabel.snp.bottom).offset(20)
+            make.left.equalToSuperview().offset(20)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(150)
+        }
+        let info = ["좋아요", "스크랩", "신뢰도", "합계"]
+        for index in 0..<info.count {
+            let subview = UIView()
+            
+            let titleLabel = UILabel().then {
+                $0.text = info[index]
+                $0.font = Pretendard.regular(14)
+                $0.textColor = Gray.medium
+            }
+            
+            let valueLabel = UILabel().then {
+                $0.tag = index+1
+                $0.text = "+ 0"
+                $0.font = Pretendard.regular(14)
+                $0.textColor = Gray.black
+            }
+            
+            let calculateResultLabel = UILabel().then {
+                $0.tag = 4
+                $0.text = "0 MILE"
+                $0.font = Pretendard.medium(27)
+                $0.textColor = Gray.black
+            }
+            
+            subview.addSubview(titleLabel)
+            titleLabel.snp.makeConstraints { make in
+                make.left.centerY.equalToSuperview()
+            }
+            if index == 3 {
+                subview.addSubview(calculateResultLabel)
+                calculateResultLabel.snp.makeConstraints { make in
+                    make.right.centerY.equalToSuperview()
+                    make.top.equalToSuperview().offset(5)
+                }
+            } else {
+                subview.addSubview(valueLabel)
+                valueLabel.snp.makeConstraints { make in
+                    make.right.top.centerY.equalToSuperview()
+                }
+            }
+            calculatePlanStackView.addArrangedSubview(subview)
+        }
+        
+        let calculateDivider = divider()
+        calculatePlanView.addSubview(calculateDivider)
+        calculateDivider.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(160)
+            make.centerX.equalToSuperview()
+            make.left.equalToSuperview().offset(20)
+            make.height.equalTo(1)
+        }
 //        
 //        MILEContentView.addSubview(calculateHistoryView)
 //        calculateHistoryView.snp.makeConstraints { make in
@@ -277,6 +276,39 @@ class MILEViewController: UIViewController {
             } else {
                 self.MILEScrollView.isScrollEnabled = true
             }
+        })
+        .disposed(by: disposeBag)
+        
+        viewModel.likes.subscribe(onNext: { likes in
+            self.calculatePlanStackView.arrangedSubviews
+                .compactMap { $0.viewWithTag(1) as? UILabel }
+                .forEach { $0.text = "+ \(likes)" }
+        })
+        .disposed(by: disposeBag)
+        
+        viewModel.saves.subscribe(onNext: { saves in
+            self.calculatePlanStackView.arrangedSubviews
+                .compactMap { $0.viewWithTag(2) as? UILabel }
+                .forEach { $0.text = "+ \(saves)" }
+        })
+        .disposed(by: disposeBag)
+        
+        viewModel.reports.subscribe(onNext: { reports in
+            self.calculatePlanStackView.arrangedSubviews
+                .compactMap { $0.viewWithTag(3) as? UILabel }
+                .forEach { $0.text = "- \(reports)" }
+        })
+        .disposed(by: disposeBag)
+        
+        viewModel.result.subscribe(onNext: { result in
+            self.calculatePlanStackView.arrangedSubviews
+                .compactMap { $0.viewWithTag(4) as? UILabel }
+                .forEach { label in
+                    label.text = "\(result) MILE"
+                    label.withMultipleFont(Pretendard.light(17), range: "MILE")
+                }
+            self.MILELabel.text = "\(result) MILE"
+            self.MILELabel.withMultipleFont(Pretendard.light(21), range: "MILE")
         })
         .disposed(by: disposeBag)
     }

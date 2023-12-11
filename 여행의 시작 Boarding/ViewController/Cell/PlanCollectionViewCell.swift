@@ -20,8 +20,20 @@ class PlanCollectionViewCell: UICollectionViewCell {
     }
     
     var travelImageView = UIImageView().then {
-        $0.backgroundColor = Gray.bright
+        $0.backgroundColor = Gray.semiLight.withAlphaComponent(0.6)
         $0.contentMode = .scaleAspectFill
+    }
+    
+    var placeHolderView = UIView()
+    
+    var placeHolderImage = UIImageView().then {
+        $0.image = UIImage(named: "TitleWhite")
+    }
+    
+    var placeHolderLabel = UILabel().then {
+        $0.text = "여행 일정 추가하기"
+        $0.font = Pretendard.semiBold(16)
+        $0.textColor = Gray.white
     }
     
     lazy var planDetailButton = UIButton().then {
@@ -86,6 +98,26 @@ class PlanCollectionViewCell: UICollectionViewCell {
             make.edges.equalToSuperview().inset(10)
         }
         travelImageView.rounded(axis: .vertical)
+        
+        borderView.addSubview(placeHolderView)
+        placeHolderView.snp.makeConstraints { make in
+            make.left.centerX.centerY.equalToSuperview()
+        }
+        
+        placeHolderView.addSubview(placeHolderImage)
+        placeHolderImage.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.left.equalToSuperview().offset(60)
+            make.width.equalTo(210)
+            make.height.equalTo(55)
+        }
+        
+        placeHolderView.addSubview(placeHolderLabel)
+        placeHolderLabel.snp.makeConstraints { make in
+            make.top.equalTo(placeHolderImage.snp.bottom).offset(10)
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
         
         borderView.addSubview(planDetailButton)
         planDetailButton.snp.makeConstraints { make in

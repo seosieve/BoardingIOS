@@ -41,7 +41,7 @@ class NFTInfoViewController: UIViewController {
         NFTInfoView.snp.makeConstraints { make in
             make.top.left.equalToSuperview().offset(20)
             make.centerX.equalToSuperview()
-            make.height.equalTo(300)
+            make.height.equalTo(284)
         }
         
         NFTInfoView.addSubview(titleLabel)
@@ -54,7 +54,7 @@ class NFTInfoViewController: UIViewController {
             make.top.equalTo(titleLabel.snp.bottom).offset(10)
             make.left.equalTo(titleLabel)
             make.centerX.equalToSuperview()
-            make.height.equalTo(220)
+            make.height.equalTo(210)
         }
         let info = [String(NFTResult.writtenDate), NFTResult.NFTID, "Standard", NFTResult.authorUid, "1", "5%"]
         for index in 0..<6 {

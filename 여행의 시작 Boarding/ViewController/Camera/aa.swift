@@ -58,7 +58,7 @@ class aa: UIViewController {
 //        }
         guard let urlString = UserDefaults.standard.string(forKey: "myVideoUrl") else { return }
         videoURL = URL(string: urlString)
-        loadVideoView()
+//        loadVideoView()
     }
     
     var downloadImageView = UIImageView().then {
@@ -132,20 +132,20 @@ class aa: UIViewController {
         }
     }
     
-    func loadVideoView() {
-        guard let path = Bundle.main.path(forResource: "Eiffel", ofType: "mp4") else { return }
-        let url = URL(fileURLWithPath: path)
-        let player = AVPlayer(url: videoURL ?? url)
-        let playerLayer = AVPlayerLayer(player: player)
-        playerLayer.frame = self.videoView.frame
-        playerLayer.videoGravity = .resizeAspectFill
-        self.view.layer.addSublayer(playerLayer)
-        player.play()
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil, queue: nil) { notification in
-            self.player!.seek(to: .zero)
-            self.player!.play()
-          }
-    }
+//    func loadVideoView() {
+//        guard let path = Bundle.main.path(forResource: "Eiffel", ofType: "mp4") else { return }
+//        let url = URL(fileURLWithPath: path)
+//        let player = AVPlayer(url: videoURL ?? url)
+//        let playerLayer = AVPlayerLayer(player: player)
+//        playerLayer.frame = self.videoView.frame
+//        playerLayer.videoGravity = .resizeAspectFill
+//        self.view.layer.addSublayer(playerLayer)
+//        player.play()
+//        NotificationCenter.default.addObserver(forName: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil, queue: nil) { notification in
+//            self.player!.seek(to: .zero)
+//            self.player!.play()
+//          }
+//    }
 }
 
 extension aa: UIImagePickerControllerDelegate, UINavigationControllerDelegate {

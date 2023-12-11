@@ -19,6 +19,7 @@ class HomeViewModel {
     var userUid = ""
     var blockdUser = [String]()
     var blockedUserRemoved = PublishSubject<Void>()
+    let users = BehaviorRelay<[User]>(value: Array(repeating: User.dummyType, count: 10))
     let items = BehaviorRelay<[NFT]>(value: Array(repeating: NFT.dummyType, count: 10))
     let itemCount = PublishRelay<Int>()
     
@@ -59,29 +60,38 @@ class HomeViewModel {
                 print("모든 NFT 불러오기 에러: \(error)")
             } else {
                 var items = [NFT]()
+                var authors = [String]()
                 for document in querySnapshot!.documents {
                     let NFT = document.makeNFT()
+                    //Blocked User 제외
                     if !self.blockdUser.contains(NFT.authorUid) {
                         items.append(NFT)
+                        authors.append(NFT.authorUid)
                     }
                 }
-                self.items.accept(items)
-                self.itemCount.accept(items.count)
+                self.getAuthors(authors: authors) { users in
+                    self.users.accept(users)
+                    self.items.accept(items)
+                    self.itemCount.accept(items.count)
+                }
             }
         }
     }
     
-    func getAuthor(author: String, handler: @escaping (User) -> ()) {
-        db.collection("User").document(author).getDocument { (document, error) in
+    func getAuthors(authors: [String], handler: @escaping ([User]) -> ()) {
+        var users = Array(repeating: User.dummyType, count: authors.count)
+        db.collection("User").getDocuments { (querySnapshot, error) in
             if let error = error {
-                print("글쓴이 불러오기 에러: \(error)")
+                print("User 불러오기 에러: \(error)")
             } else {
-                if let document = document, document.exists {
+                for document in querySnapshot!.documents {
                     let user = document.makeUser()
-                    DispatchQueue.main.async {
-                        handler(user)
+                    let index = authors.enumerated().filter{ $0.element == user.userUid }.map{ $0.offset }
+                    for index in index {
+                        users[index] = user
                     }
                 }
+                handler(users)
             }
         }
     }
@@ -92,14 +102,19 @@ class HomeViewModel {
                 print("Category Sorted NFT 불러오기 에러: \(error)")
             } else {
                 var items = [NFT]()
+                var authors = [String]()
                 for document in querySnapshot!.documents {
                     let NFT = document.makeNFT()
                     if !self.blockdUser.contains(NFT.authorUid) {
                         items.append(NFT)
+                        authors.append(NFT.authorUid)
                     }
                 }
-                self.items.accept(items)
-                self.itemCount.accept(items.count)
+                self.getAuthors(authors: authors) { users in
+                    self.users.accept(users)
+                    self.items.accept(items)
+                    self.itemCount.accept(items.count)
+                }
             }
         }
     }
@@ -110,16 +125,21 @@ class HomeViewModel {
                 print("Word Sorted NFT 불러오기 에러: \(error)")
             } else {
                 var items = [NFT]()
+                var authors = [String]()
                 for document in querySnapshot!.documents {
                     let NFT = document.makeNFT()
                     if NFT.title.contains(word) || NFT.content.contains(word) {
                         if !self.blockdUser.contains(NFT.authorUid) {
                             items.append(NFT)
+                            authors.append(NFT.authorUid)
                         }
                     }
                 }
-                self.items.accept(items)
-                self.itemCount.accept(items.count)
+                self.getAuthors(authors: authors) { users in
+                    self.users.accept(users)
+                    self.items.accept(items)
+                    self.itemCount.accept(items.count)
+                }
             }
         }
     }
@@ -130,15 +150,40 @@ class HomeViewModel {
                 print("NFT 불러오기 에러: \(error)")
             } else {
                 var items = [NFT]()
+                var authors = [String]()
                 for document in querySnapshot!.documents {
                     let NFT = document.makeNFT()
                     if !self.blockdUser.contains(NFT.authorUid) {
                         items.append(NFT)
+                        authors.append(NFT.authorUid)
                     }
                 }
-                self.items.accept(items)
-                self.itemCount.accept(items.count)
+                self.getAuthors(authors: authors) { users in
+                    self.users.accept(users)
+                    self.items.accept(items)
+                    self.itemCount.accept(items.count)
+                }
             }
         }
+    }
+    
+    func like(NFTID: String) {
+        db.collection("NFT").document(NFTID).getDocument { (document, error) in
+            if let error = error {
+                print("User 불러오기 에러: \(error)")
+            } else {
+                if let document = document, document.exists {
+                    let NFT = document.makeNFT()
+                    let likedPeople = NFT.likedPeople
+                    if likedPeople.contains(self.userUid) {
+                        db.collection("NFT").document(NFTID).updateData(["likedPeople": FieldValue.arrayRemove([self.userUid])])
+                        db.collection("NFT").document(NFTID).updateData(["likes": FieldValue.increment(Int64(-1))])
+                    } else {
+                        db.collection("NFT").document(NFTID).updateData(["likedPeople": FieldValue.arrayUnion([self.userUid])])
+                        db.collection("NFT").document(NFTID).updateData(["likes": FieldValue.increment(Int64(1))])
+                    }
+                }
+            }
+        }   
     }
 }

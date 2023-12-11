@@ -72,6 +72,16 @@ class WrittingContentViewController: UIViewController {
         setViews()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        contentTextView.becomeFirstResponder()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        contentTextView.resignFirstResponder()
+    }
+    
     @objc func keyboardWillShow(_ sender: Notification) {
         UIView.animate(withDuration: 0.3) {
             self.nextButton.snp.updateConstraints { make in

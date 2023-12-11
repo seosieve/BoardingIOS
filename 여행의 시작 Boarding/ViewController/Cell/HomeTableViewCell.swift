@@ -298,4 +298,12 @@ class HomeTableViewCell: UITableViewCell {
                 label.text = String(count[index])
             }
     }
+    
+    func isUserAlreadyLiked(userUid: String, likedPeople: [String]) {
+        interactionStackView.arrangedSubviews
+            .compactMap { $0.viewWithTag(1) as? UIButton }
+            .forEach { button in
+                button.isSelected = likedPeople.contains(userUid) ? true : false
+            }
+    }
 }

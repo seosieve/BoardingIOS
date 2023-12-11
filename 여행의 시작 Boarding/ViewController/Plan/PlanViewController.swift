@@ -160,8 +160,10 @@ class PlanViewController: UIViewController {
             .bind(to: planCollectionView.rx.items(cellIdentifier: "planCollectionViewCell", cellType: PlanCollectionViewCell.self)) { (row, element, cell) in
                 if element.planID != "" {
                     if element.thumbnail != "" {
+                        cell.placeHolderView.isHidden = true
                         cell.travelImageView.sd_setImage(with: URL(string: element.thumbnail), placeholderImage: nil, options: .scaleDownLargeImages)
                     } else {
+                        cell.placeHolderView.isHidden = false
                         cell.travelImageView.image = UIImage()
                     }
                     cell.photoTapped = {

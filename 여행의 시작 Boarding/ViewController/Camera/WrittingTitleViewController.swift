@@ -77,6 +77,16 @@ class WrittingTitleViewController: UIViewController {
         setViews()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        titleTextField.becomeFirstResponder()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        titleTextField.resignFirstResponder()
+    }
+    
     @objc func keyboardWillShow(_ sender: Notification) {
         UIView.animate(withDuration: 0.3) {
             self.nextButton.snp.updateConstraints { make in
@@ -139,7 +149,7 @@ class WrittingTitleViewController: UIViewController {
 //MARK: - UITextFieldDelegate
 extension WrittingTitleViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        titleTextField.resignFirstResponder()
+        nextButtonPressed()
         return true
     }
 }

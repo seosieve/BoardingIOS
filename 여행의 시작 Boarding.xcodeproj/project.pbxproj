@@ -46,6 +46,7 @@
 		4E36C99A2B24117D00031B4F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E36C9992B24117D00031B4F /* QuartzCore.framework */; };
 		4E36C99C2B24118300031B4F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E36C99B2B24118300031B4F /* SystemConfiguration.framework */; };
 		4E36C99E2B24118C00031B4F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E36C99D2B24118C00031B4F /* UIKit.framework */; };
+		4E4145C82B26D3BE005BF3EB /* MILEViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4145C72B26D3BE005BF3EB /* MILEViewModel.swift */; };
 		4E44FB952ACAAA320021FAB9 /* ModalPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FB942ACAAA320021FAB9 /* ModalPageViewController.swift */; };
 		4E44FB972ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FB962ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift */; };
 		4E44FB992ACFD9D80021FAB9 /* NFTDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E44FB982ACFD9D80021FAB9 /* NFTDetailViewController.swift */; };
@@ -93,6 +94,7 @@
 		4E92000C2B19DB3A005B061F /* AddPlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E92000B2B19DB3A005B061F /* AddPlanViewController.swift */; };
 		4E92000E2B1A2ADF005B061F /* AddPlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E92000D2B1A2ADF005B061F /* AddPlanViewModel.swift */; };
 		4E92AB742B24F15E00AC8F96 /* ExpertLevelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E92AB732B24F15E00AC8F96 /* ExpertLevelViewModel.swift */; };
+		4E92AB762B261DFF00AC8F96 /* HomeFullScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E92AB752B261DFF00AC8F96 /* HomeFullScreenViewModel.swift */; };
 		4E9B90FC2AFCE1D100F6D347 /* NewPlanDurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9B90FB2AFCE1D100F6D347 /* NewPlanDurationViewController.swift */; };
 		4E9B90FE2AFDB9AE00F6D347 /* NewPlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9B90FD2AFDB9AE00F6D347 /* NewPlanViewModel.swift */; };
 		4E9B91002AFDBC0E00F6D347 /* PlanModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9B90FF2AFDBC0E00F6D347 /* PlanModel.swift */; };
@@ -131,7 +133,6 @@
 		4EECA7F02A2F2968006FB764 /* NFTViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7EF2A2F2968006FB764 /* NFTViewController.swift */; };
 		4EECA7F22A2F3213006FB764 /* MILEViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7F12A2F3213006FB764 /* MILEViewController.swift */; };
 		4EECA7F42A2F3235006FB764 /* ExpertLevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */; };
-		4EECA7F62A2F903E006FB764 /* Eiffel.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 4EECA7F52A2F903E006FB764 /* Eiffel.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -175,6 +176,8 @@
 		4E36C9992B24117D00031B4F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		4E36C99B2B24118300031B4F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		4E36C99D2B24118C00031B4F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		4E4145C72B26D3BE005BF3EB /* MILEViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MILEViewModel.swift; sourceTree = "<group>"; };
+		4E4145C92B274035005BF3EB /* Eiffel.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Eiffel.mp4; sourceTree = "<group>"; };
 		4E44FB942ACAAA320021FAB9 /* ModalPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalPageViewController.swift; sourceTree = "<group>"; };
 		4E44FB962ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCollectionViewCell.swift; sourceTree = "<group>"; };
 		4E44FB982ACFD9D80021FAB9 /* NFTDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTDetailViewController.swift; sourceTree = "<group>"; };
@@ -223,6 +226,7 @@
 		4E92000B2B19DB3A005B061F /* AddPlanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlanViewController.swift; sourceTree = "<group>"; };
 		4E92000D2B1A2ADF005B061F /* AddPlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlanViewModel.swift; sourceTree = "<group>"; };
 		4E92AB732B24F15E00AC8F96 /* ExpertLevelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpertLevelViewModel.swift; sourceTree = "<group>"; };
+		4E92AB752B261DFF00AC8F96 /* HomeFullScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFullScreenViewModel.swift; sourceTree = "<group>"; };
 		4E9B90FB2AFCE1D100F6D347 /* NewPlanDurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlanDurationViewController.swift; sourceTree = "<group>"; };
 		4E9B90FD2AFDB9AE00F6D347 /* NewPlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlanViewModel.swift; sourceTree = "<group>"; };
 		4E9B90FF2AFDBC0E00F6D347 /* PlanModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanModel.swift; sourceTree = "<group>"; };
@@ -263,7 +267,6 @@
 		4EECA7EF2A2F2968006FB764 /* NFTViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTViewController.swift; sourceTree = "<group>"; };
 		4EECA7F12A2F3213006FB764 /* MILEViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MILEViewController.swift; sourceTree = "<group>"; };
 		4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpertLevelViewController.swift; sourceTree = "<group>"; };
-		4EECA7F52A2F903E006FB764 /* Eiffel.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Eiffel.mp4; sourceTree = "<group>"; };
 		F37D7EB4A532226D6D69D036 /* Pods-여행의 시작 Boarding.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-여행의 시작 Boarding.debug.xcconfig"; path = "Target Support Files/Pods-여행의 시작 Boarding/Pods-여행의 시작 Boarding.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -353,6 +356,7 @@
 				4EECA7EF2A2F2968006FB764 /* NFTViewController.swift */,
 				4E4C143C2AE4D9B500E504D4 /* NFTViewModel.swift */,
 				4EECA7F12A2F3213006FB764 /* MILEViewController.swift */,
+				4E4145C72B26D3BE005BF3EB /* MILEViewModel.swift */,
 				4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */,
 				4E92AB732B24F15E00AC8F96 /* ExpertLevelViewModel.swift */,
 			);
@@ -384,7 +388,7 @@
 				4E7D52EB2AC9347B00054800 /* 여행의 시작 Boarding.entitlements */,
 				4EECA6272A29BECF006FB764 /* AppDelegate.swift */,
 				4EECA6292A29BECF006FB764 /* SceneDelegate.swift */,
-				4EECA7F52A2F903E006FB764 /* Eiffel.mp4 */,
+				4E4145C92B274035005BF3EB /* Eiffel.mp4 */,
 				4EECA6302A29BED0006FB764 /* Assets.xcassets */,
 				4EECA6322A29BED0006FB764 /* LaunchScreen.storyboard */,
 				4EECA6352A29BED0006FB764 /* Info.plist */,
@@ -460,6 +464,7 @@
 				4E0648B12B01CCFD009DB83B /* AddMyPlanViewController.swift */,
 				4E0648B32B05BBA4009DB83B /* AddMyPlanViewModel.swift */,
 				4EECA7E02A2DD179006FB764 /* HomeFullScreenViewController.swift */,
+				4E92AB752B261DFF00AC8F96 /* HomeFullScreenViewModel.swift */,
 				4E04A99D2B13B4E000EE6530 /* InfoViewController.swift */,
 				4E6D86322B14CDD8008113A4 /* InfoViewModel.swift */,
 				4E6D86282B148F7E008113A4 /* InfoPageViewController.swift */,
@@ -622,7 +627,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4EECA7F62A2F903E006FB764 /* Eiffel.mp4 in Resources */,
 				4EECA7CA2A29C83C006FB764 /* Pretendard-Medium.otf in Resources */,
 				4EECA7C62A29C83C006FB764 /* Pretendard-SemiBold.otf in Resources */,
 				4EECA7CD2A29C83C006FB764 /* Pretendard-ExtraLight.otf in Resources */,
@@ -761,6 +765,8 @@
 				4EECA7DF2A2DC352006FB764 /* TravelCollectionViewCell.swift in Sources */,
 				4E1EA0872B1053D90081397B /* NFTDetailViewModel.swift in Sources */,
 				4E04A99C2B139C1F00EE6530 /* RecordFullScreenViewController.swift in Sources */,
+				4E4145C82B26D3BE005BF3EB /* MILEViewModel.swift in Sources */,
+				4E92AB762B261DFF00AC8F96 /* HomeFullScreenViewModel.swift in Sources */,
 				4EECA7EE2A2F2148006FB764 /* PreferenceTableViewCell.swift in Sources */,
 				4E7AD5922B1DF87400DC8ACB /* ReportModel.swift in Sources */,
 				4E2DDF542AB8050600C7F4B9 /* PreferenceViewController.swift in Sources */,
@@ -1038,14 +1044,14 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = co.kr.company.Boarding;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1171,14 +1177,14 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = co.kr.company.Boarding;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
