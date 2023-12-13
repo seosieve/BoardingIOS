@@ -9,6 +9,7 @@ import UIKit
 
 class CameraCustomViewController: UIViewController {
 
+    var url: URL?
     var image: UIImage?
     var location: (String, String, String, Double, Double)?
     var time: String?
@@ -46,6 +47,7 @@ class CameraCustomViewController: UIViewController {
         vc.city = location!.2
         vc.latitude = location!.3
         vc.longitude = location!.4
+        vc.url = url
         vc.image = image
         self.navigationController?.pushViewController(vc, animated: true)
     }

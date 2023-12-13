@@ -45,15 +45,25 @@ class WrittingViewModel {
             .map{ $0.0 != "제목을 입력해주세요." && $0.1 != "내용을 입력해주세요." && $0.2 != 0 && $0.3 != ""}
     }
     
-    func writeNFT(image: UIImage?) {
-        uploadImage(image: image) { [weak self] url in
-            self?.saveNFT(url: url!) {
-                self?.addTravelLevel()
+    func writeNFT(url: URL?, image: UIImage?) {
+        if let videoUrl = url {
+            uploadImage(image: image) { [weak self] type, url in
+                self?.uploadVideo(url: url!, videoUrl: videoUrl) { [weak self] type, url, videoUrl in
+                    self?.saveNFT(type: type, url: url!, videoUrl: videoUrl) {
+                        self?.addTravelLevel()
+                    }
+                }
+            }
+        } else {
+            uploadImage(image: image) { [weak self] type, url in
+                self?.saveNFT(type: type, url: url!, videoUrl: nil) {
+                    self?.addTravelLevel()
+                }
             }
         }
     }
     
-    func uploadImage(image: UIImage?, handler: @escaping (URL?) -> Void) {
+    func uploadImage(image: UIImage?, handler: @escaping (String, URL?) -> Void) {
         guard let imageData = image?.jpegData(compressionQuality: 0.6) else { return }
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpeg"
@@ -62,7 +72,7 @@ class WrittingViewModel {
         let imageRef = ref.child("NFTImage/\(imageName)")
         let uploadTask = imageRef.putData(imageData, metadata: metaData) { metaData, error in
             imageRef.downloadURL { url, _ in
-                handler(url)
+                handler("photo", url)
             }
         }
         
@@ -74,12 +84,35 @@ class WrittingViewModel {
         }
     }
     
-    func saveNFT(url: URL, handler: @escaping () -> Void) {
+    func uploadVideo(url: URL, videoUrl: URL, handler: @escaping (String, URL?, URL?) -> Void) {
+        guard let videoData = try? Data(contentsOf: videoUrl) else { return }
+        let metaData = StorageMetadata()
+        metaData.contentType = "video/mp4"
+        
+        let imageName = NFTID
+        let videoRef = ref.child("NFTVideo/\(imageName)")
+        let uploadTask = videoRef.putData(videoData, metadata: metaData) { metaData, error in
+            videoRef.downloadURL { videoUrl, _ in
+                handler("video", url, videoUrl)
+            }
+        }
+        
+        //업로드 진행률 모니터링
+        uploadTask.observe(.progress) { snapshot in
+            let percentComplete = 100.0 * Double(snapshot.progress!.completedUnitCount)
+                / Double(snapshot.progress!.totalUnitCount)
+            self.uploadProgress.accept(Float(percentComplete))
+        }
+    }
+    
+    func saveNFT(type: String, url: URL, videoUrl: URL?, handler: @escaping () -> Void) {
+        let videoUrl = videoUrl?.absoluteString ?? ""
         let NFT = NFT(NFTID: NFTID,
                       authorUid: userUid,
                       writtenDate: NSDate().timeIntervalSince1970,
-                      type: "photo",
+                      type: type,
                       url: url.absoluteString,
+                      videoUrl: videoUrl,
                       location: location.value,
                       country: country.value,
                       city: city.value,

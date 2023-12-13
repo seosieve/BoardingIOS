@@ -13,6 +13,7 @@ struct NFT {
     let writtenDate: Double
     let type: String
     let url: String
+    let videoUrl: String
     let location: String
     let country: String
     let city: String
@@ -37,6 +38,7 @@ struct NFT {
                 "writtenDate": writtenDate,
                 "type": type,
                 "url": url,
+                "videoUrl": videoUrl,
                 "location": location,
                 "country": country,
                 "city": city,
@@ -62,6 +64,7 @@ struct NFT {
                    writtenDate: 0.0,
                    type: "",
                    url: "",
+                   videoUrl: "",
                    location: "",
                    country: "",
                    city: "",

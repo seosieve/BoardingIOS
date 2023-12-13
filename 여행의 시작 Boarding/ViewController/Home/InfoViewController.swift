@@ -51,10 +51,10 @@ class InfoViewController: UIViewController {
         $0.setImage(UIImage(named: "ViewMore")?.withRenderingMode(.alwaysTemplate), for: .normal)
         $0.tintColor = Gray.white
         
-        let shareAction = UIAction(title: "공유하기", handler: { _ in
+        let shareAction = UIAction(title: "공유하기") { _ in
             self.viewModel.shareNFT(NFT: self.NFTResult)
-        })
-        let deleteAction = UIAction(title: "삭제하기") { aa in
+        }
+        let deleteAction = UIAction(title: "삭제하기") { _ in
             self.deleteAlert("CARD") {
                 self.indicator.startAnimating()
                 self.view.isUserInteractionEnabled = false

@@ -16,15 +16,32 @@ class HomeFullScreenViewModel {
     
     var userUid = ""
     var NFTID = ""
+    let videoUrl = PublishRelay<URL>()
     var likeCount = BehaviorRelay<Int>(value: 0)
     var saveCount = BehaviorRelay<Int>(value: 0)
     var likedPeople = BehaviorRelay<[String]>(value: [])
     
-    init(NFTID: String) {
+    init(NFT: NFT) {
         if let user = Auth.auth().currentUser {
             self.userUid = user.uid
-            self.NFTID = NFTID
+            self.NFTID = NFT.NFTID
+            if NFT.type == "video" {
+                getVideoUrl()
+            }
             interActionCountSnapshot()
+        }
+    }
+    
+    func getVideoUrl() {
+        let videoRef = ref.child("NFTVideo/\(NFTID)")
+        videoRef.downloadURL { (url, error) in
+            if let error = error {
+                print("VideoUrl 불러오기 에러: \(error)")
+            } else {
+                if let url = url {
+                    self.videoUrl.accept(url)
+                }
+            }
         }
     }
     

@@ -33,8 +33,17 @@ class CameraViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
-    var albumButton = UIButton().then {
+    lazy var albumButton = UIButton().then {
         $0.setImage(UIImage(named: "Album"), for: .normal)
+        let videoAction = UIAction(title: "동영상 선택하기") { _ in
+            self.viewModel.pickVideoByAlbum(self)
+        }
+        let imageAction = UIAction(title: "이미지 선택하기") { _ in
+            self.viewModel.pickImageByAlbum(self)
+        }
+        let actionArray = [videoAction, imageAction]
+        $0.menu = UIMenu(options: .displayInline, children: actionArray)
+        $0.showsMenuAsPrimaryAction = true
     }
     
     var cameraButton = UIButton().then {
@@ -54,16 +63,18 @@ class CameraViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        Observable.combineLatest(viewModel.selectImage, viewModel.selectLocation, viewModel.selectTime)
-            .take(3)
-            .subscribe(onNext: { [weak self] image, location, time in
+        Observable.combineLatest(viewModel.selectedVideoUrl, viewModel.selectImage, viewModel.selectLocation, viewModel.selectTime)
+            .take(4)
+            .subscribe(onNext: { [weak self] url, image, location, time in
                 guard let image = image, let location = location, let time = time else { return }
                 let cameraCustomVC = CameraCustomViewController()
+                cameraCustomVC.url = url
                 cameraCustomVC.image = image
                 cameraCustomVC.location = location
                 cameraCustomVC.time = time
                 let vc = ChangableNavigationController(rootViewController: cameraCustomVC)
                 vc.modalPresentationStyle = .fullScreen
+                vc.modalTransitionStyle = .crossDissolve
                 self?.present(vc, animated: true)
             })
             .disposed(by: disposeBag)
@@ -117,12 +128,6 @@ class CameraViewController: UIViewController {
             .throttle(.seconds(2), latest: false, scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
                 self?.viewModel.takeImageByCamera()
-            })
-            .disposed(by: disposeBag)
-        
-        albumButton.rx.tap
-            .subscribe(onNext: { [weak self] in
-                self?.viewModel.pickImageByAlbum(self!)
             })
             .disposed(by: disposeBag)
     }

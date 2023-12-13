@@ -306,4 +306,21 @@ class HomeTableViewCell: UITableViewCell {
                 button.isSelected = likedPeople.contains(userUid) ? true : false
             }
     }
+    
+    func makeVideoView(url: URL) {
+        lazy var videoView = VideoView(frame: photoView.bounds).then {
+            $0.layer.cornerRadius = 12
+            $0.layer.masksToBounds = true
+        }
+        
+        contentView.insertSubview(videoView, aboveSubview: photoContainerButton)
+        videoView.snp.makeConstraints { make in
+            make.top.equalTo(contentLabel.snp.bottom).offset(16)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().inset(77)
+            make.height.equalTo(450)
+        }
+        
+        videoView.playVideoLoop(videoURL: url)
+    }
 }

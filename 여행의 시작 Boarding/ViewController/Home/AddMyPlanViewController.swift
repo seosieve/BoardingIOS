@@ -230,11 +230,19 @@ class AddMyPlanViewController: UIViewController {
                 $0.layer.borderColor = Gray.semiLight.cgColor
             }
             
+            let placeHolderView = UIView().then {
+                $0.backgroundColor = Gray.bright
+            }
+            
+            let placeHolderImage = UIImageView().then {
+                $0.image = UIImage(named: "TitleWhite")
+            }
+            
             let travelImageView = UIImageView().then {
+                $0.backgroundColor = .clear
                 let url = planArr[index].thumbnail == "" ? URL(string: "") : URL(string: planArr[index].thumbnail)
                 $0.sd_setImage(with: url, placeholderImage: nil, options: .scaleDownLargeImages)
                 $0.contentMode = .scaleAspectFill
-                $0.backgroundColor = Gray.bright
             }
             
             let mainLabel = UILabel().then {
@@ -260,6 +268,20 @@ class AddMyPlanViewController: UIViewController {
                 make.height.equalTo(210)
             }
             borderView.rounded(axis: .vertical)
+            
+            borderView.addSubview(placeHolderView)
+            placeHolderView.snp.makeConstraints { make in
+                make.edges.equalToSuperview().inset(5)
+            }
+            placeHolderView.rounded(axis: .vertical)
+            
+            placeHolderView.addSubview(placeHolderImage)
+            placeHolderImage.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.left.equalToSuperview().offset(20)
+                make.width.equalTo(120)
+                make.height.equalTo(30)
+            }
             
             borderView.addSubview(travelImageView)
             travelImageView.snp.makeConstraints { make in

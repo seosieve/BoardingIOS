@@ -16,6 +16,7 @@ class RecordFullScreenViewController: UIViewController {
     var url = URL(string: "")
     var NFTResult = NFT.dummyType
     
+    lazy var viewModel = RecordFullScreenViewModel(NFT: NFTResult)
     let disposeBag = DisposeBag()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -28,6 +29,8 @@ class RecordFullScreenViewController: UIViewController {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
     }
+    
+    lazy var fullScreenVideoView = VideoView(frame: self.view.bounds)
     
     lazy var backButton = UIButton().then {
         $0.setImage(UIImage(named: "Back"), for: .normal)
@@ -72,9 +75,24 @@ class RecordFullScreenViewController: UIViewController {
         setRx()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        fullScreenVideoView.startVideo()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        fullScreenVideoView.stopVideo()
+    }
+    
     func setViews() {
         view.addSubview(fullScreenImageView)
         fullScreenImageView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        view.addSubview(fullScreenVideoView)
+        fullScreenVideoView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
@@ -115,6 +133,12 @@ class RecordFullScreenViewController: UIViewController {
     }
     
     func setRx() {
+        viewModel.videoUrl
+            .subscribe(onNext: { [weak self] url in
+                self?.fullScreenVideoView.playVideoLoop(videoURL: url)
+            })
+            .disposed(by: disposeBag)
+        
         textContainerButton.rx.tap
             .subscribe(onNext: {
                 if !self.byScrapVC {

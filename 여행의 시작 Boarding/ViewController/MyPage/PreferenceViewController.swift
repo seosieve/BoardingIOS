@@ -98,6 +98,9 @@ class PreferenceViewController: UIViewController {
             .map{$0.row}
             .subscribe(onNext:{ [weak self] index in
                 switch index {
+//                case 0:
+//                    let vc = EditProfileViewController()
+//                    self?.navigationController?.pushViewController(vc, animated: true)
                 case 0:
                     let vc = BlockedUserViewController()
                     self?.navigationController?.pushViewController(vc, animated: true)

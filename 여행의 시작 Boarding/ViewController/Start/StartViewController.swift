@@ -31,7 +31,7 @@ class StartViewController: UIViewController {
         $0.setTitleColor(Gray.black, for: .normal)
         $0.titleLabel?.font = Pretendard.medium(18)
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = Gray.medium.cgColor
+        $0.layer.borderColor = Gray.light.cgColor
     }
     
     var appleImageView = UIImageView().then {
@@ -44,7 +44,7 @@ class StartViewController: UIViewController {
         $0.setTitleColor(Gray.black, for: .normal)
         $0.titleLabel?.font = Pretendard.medium(18)
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = Gray.medium.cgColor
+        $0.layer.borderColor = Gray.light.cgColor
     }
     
     var kakaoImageView = UIImageView().then {

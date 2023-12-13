@@ -13,6 +13,7 @@ class WrittingViewController: UIViewController {
     
     var feedbackGenerator: UIImpactFeedbackGenerator?
     
+    var url: URL?
     var image: UIImage?
     var infoArr = ["", "", "맑음, 25°C"]
     var country = ""
@@ -491,7 +492,7 @@ class WrittingViewController: UIViewController {
                 self?.view.isUserInteractionEnabled = false
                 self?.uploadProgressView.isHidden = false
                 self?.indicator.startAnimating()
-                self?.viewModel.writeNFT(image: self?.image)
+                self?.viewModel.writeNFT(url: self?.url, image: self?.image)
             })
             .disposed(by: disposeBag)
         

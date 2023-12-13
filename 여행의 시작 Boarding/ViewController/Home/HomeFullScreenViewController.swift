@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import AVKit
 import RxSwift
 import RxCocoa
 
@@ -16,7 +15,7 @@ class HomeFullScreenViewController: UIViewController {
     var url = URL(string: "")
     var NFTResult = NFT.dummyType
     
-    lazy var viewModel = HomeFullScreenViewModel(NFTID: NFTResult.NFTID)
+    lazy var viewModel = HomeFullScreenViewModel(NFT: NFTResult)
     let disposeBag = DisposeBag()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -29,6 +28,8 @@ class HomeFullScreenViewController: UIViewController {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
     }
+    
+    lazy var fullScreenVideoView = VideoView(frame: self.view.bounds)
     
     lazy var backButton = UIButton().then {
         $0.setImage(UIImage(named: "Back"), for: .normal)
@@ -114,12 +115,26 @@ class HomeFullScreenViewController: UIViewController {
         super.viewDidLoad()
         setViews()
         setRx()
-        loadVideoView()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        fullScreenVideoView.startVideo()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        fullScreenVideoView.stopVideo()
     }
     
     func setViews() {
         view.addSubview(fullScreenImageView)
         fullScreenImageView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        view.addSubview(fullScreenVideoView)
+        fullScreenVideoView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
@@ -220,6 +235,12 @@ class HomeFullScreenViewController: UIViewController {
     }
     
     func setRx() {
+        viewModel.videoUrl
+            .subscribe(onNext: { [weak self] url in
+                self?.fullScreenVideoView.playVideoLoop(videoURL: url)
+            })
+            .disposed(by: disposeBag)
+        
         textContainerButton.rx.tap
             .subscribe(onNext: {
                 let vc = InfoViewController()
@@ -254,16 +275,5 @@ class HomeFullScreenViewController: UIViewController {
                     .forEach { $0.isSelected = likedPeople.contains(self.viewModel.userUid) ? true : false }
             })
             .disposed(by: disposeBag)
-    }
-    
-    func loadVideoView() {
-        guard let path = Bundle.main.path(forResource: "Eiffel", ofType: "mp4") else { return }
-        let url = URL(fileURLWithPath: path)
-        let player = AVPlayer(url: url)
-        let playerLayer = AVPlayerLayer(player: player)
-        playerLayer.frame = self.view.bounds
-        playerLayer.videoGravity = .resizeAspectFill
-        self.view.layer.addSublayer(playerLayer)
-        player.play()
     }
 }

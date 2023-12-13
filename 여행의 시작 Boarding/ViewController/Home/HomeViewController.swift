@@ -303,6 +303,11 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
                     let user = self.viewModel.users.value[row]
                     cell.userNameLabel.text = user.name
                     cell.userImage.sd_setImage(with: URL(string: user.url), placeholderImage: nil, options: .scaleDownLargeImages)
+                    
+//                    self.viewModel.getVideoUrl(NFTID: element.NFTID) { url in
+//                        cell.makeVideoView(url: url)
+//                    }
+                    
                     cell.photoTapped = { [weak self] in
                         self?.goToFullScreen(url: URL(string: element.url), NFT: element, user: user)
                     }

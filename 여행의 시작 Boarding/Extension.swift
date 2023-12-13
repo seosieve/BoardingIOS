@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import AVFoundation
+import AVKit
 
 //MARK: - SafeArea Detect
 var window: UIWindow {
@@ -13,6 +15,39 @@ var window: UIWindow {
     let windowScene = scenes.first as? UIWindowScene
     let window = windowScene?.windows.first ?? UIWindow()
     return window
+}
+
+//MARK: - VideoView
+class VideoView: UIView {
+    private var player: AVPlayer?
+    private var playerLayer: AVPlayerLayer?
+    
+    func playVideoLoop(videoURL: URL) {
+        let playerItem = AVPlayerItem(url: videoURL)
+        player = AVPlayer(playerItem: playerItem)
+        
+        playerLayer = AVPlayerLayer(player: player)
+        playerLayer?.frame = bounds
+        playerLayer?.videoGravity = .resizeAspectFill
+        
+        layer.addSublayer(playerLayer!)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(playerItemDidReachEnd), name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
+        player?.play()
+    }
+    
+    func stopVideo() {
+        player?.pause()
+    }
+    
+    func startVideo() {
+        player?.play()
+    }
+
+    @objc private func playerItemDidReachEnd() {
+        player?.seek(to: CMTime.zero)
+        player?.play()
+    }
 }
 
 //MARK: - Round View

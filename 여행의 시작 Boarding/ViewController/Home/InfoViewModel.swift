@@ -28,6 +28,7 @@ class InfoViewModel {
     var saveCount = BehaviorRelay<Int>(value: 0)
     
     let deleteImageSubject = PublishSubject<Void>()
+    let deleteVideoSubject = PublishSubject<Void>()
     let deleteNFTSubject = PublishSubject<Void>()
     let reduceTravelLevelSubject = PublishSubject<Void>()
     let processCompleted = PublishSubject<Void>()
@@ -46,7 +47,7 @@ class InfoViewModel {
             print("현재 로그인한 유저가 없습니다.")
         }
         
-        Observable.zip(deleteImageSubject, deleteNFTSubject, reduceTravelLevelSubject)
+        Observable.zip(deleteImageSubject, deleteVideoSubject, deleteNFTSubject, reduceTravelLevelSubject)
             .map{ _ in return }
             .subscribe(onNext: { [weak self] in
                 self?.processCompleted.onNext(())
@@ -92,6 +93,7 @@ class InfoViewModel {
     
     func delete(NFTID: String, category: String) {
         deleteImage(NFTID: NFTID)
+        deleteVideo(NFTID: NFTID)
         deleteNFT(NFTID: NFTID)
         reduceTravelLevel(category: category)
     }
@@ -103,6 +105,22 @@ class InfoViewModel {
                 print("이미지 삭제 에러: \(error)")
             } else {
                 self.deleteImageSubject.onNext(())
+            }
+        }
+    }
+    
+    func deleteVideo(NFTID: String) {
+        let videoRef = ref.child("NFTVideo/\(NFTID)")
+        videoRef.delete { error in
+            if let error = error as NSError?, let code = StorageErrorCode(rawValue: error.code) {
+                switch code {
+                case .objectNotFound:
+                    self.deleteVideoSubject.onNext(())
+                default:
+                    print("비디오 삭제 에러: \(error)")
+                }
+            } else {
+                self.deleteVideoSubject.onNext(())
             }
         }
     }

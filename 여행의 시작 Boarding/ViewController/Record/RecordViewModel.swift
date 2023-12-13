@@ -40,4 +40,17 @@ class RecordViewModel {
             }
         }
     }
+    
+    func downloadVideo(urlString: String, _ handler: @escaping (UIImage) -> Void) {
+        let storageReference = Storage.storage().reference(forURL: urlString)
+        storageReference.downloadURL { url, error in
+            if let error = error {
+                print("동영상 url 다운로드 에러: \(error)")
+            } else {
+                if let url = url {
+                    url.makeThumbnail(handler)
+                }
+            }
+        }
+    }
 }

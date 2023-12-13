@@ -55,7 +55,7 @@ class HomeViewModel {
     }
     
     func getAllNFT() {
-        listener = db.collection("NFT").order(by: "writtenDate", descending: true).addSnapshotListener { (querySnapshot, error) in
+        db.collection("NFT").order(by: "writtenDate", descending: true).addSnapshotListener { (querySnapshot, error) in
             if let error = error {
                 print("모든 NFT 불러오기 에러: \(error)")
             } else {
@@ -92,6 +92,19 @@ class HomeViewModel {
                     }
                 }
                 handler(users)
+            }
+        }
+    }
+    
+    func getVideoUrl(NFTID: String, _ handler: @escaping (URL) -> Void) {
+        let videoRef = ref.child("NFTVideo/\(NFTID)")
+        videoRef.downloadURL { (url, error) in
+            if let error = error {
+                print("VideoUrl 불러오기 에러: \(error)")
+            } else {
+                if let url = url {
+                    handler(url)
+                }
             }
         }
     }

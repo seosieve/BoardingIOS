@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Photos
 import CryptoKit
 import FirebaseAuth
 import FirebaseFirestore
@@ -48,6 +49,21 @@ extension NSObject {
     }
 }
 
+extension URL {
+    func makeThumbnail(_ handler: @escaping (UIImage) -> Void) {
+        let imageGenerator = AVAssetImageGenerator(asset: AVAsset(url: self))
+        imageGenerator.appliesPreferredTrackTransform = true
+
+        do {
+            let cgImage = try imageGenerator.copyCGImage(at: CMTimeMake(value: 1, timescale: 60), actualTime: nil)
+            let thumbnailImage = UIImage(cgImage: cgImage)
+            handler(thumbnailImage)
+        } catch {
+            print("Error generating thumbnail: \(error.localizedDescription)")
+        }
+    }
+}
+
 //MARK: - make NFT from Document
 extension DocumentSnapshot {
     func makeNFT() -> NFT {
@@ -56,6 +72,7 @@ extension DocumentSnapshot {
         let writtenDate = self.get("writtenDate") as! Double
         let type = self.get("type") as! String
         let url = self.get("url") as! String
+        let videoUrl = self.get("videoUrl") as! String
         let location = self.get("location") as! String
         let country = self.get("country") as! String
         let city = self.get("city") as! String
@@ -78,6 +95,7 @@ extension DocumentSnapshot {
                       writtenDate: writtenDate,
                       type: type,
                       url: url,
+                      videoUrl: videoUrl,
                       location: location,
                       country: country,
                       city: city,
