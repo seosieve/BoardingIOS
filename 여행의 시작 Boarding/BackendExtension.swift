@@ -151,7 +151,19 @@ extension DocumentSnapshot {
         let bookMark = self.get("bookMark") as! [String]
         let travelLevel = self.get("travelLevel") as! [Int]
         
-        let User = User(userUid: userUid, url: url, name: name, introduce: introduce, blockedUser: blockedUser, bookMark: bookMark, travelLevel: travelLevel)
-        return User
+        let user = User(userUid: userUid, url: url, name: name, introduce: introduce, blockedUser: blockedUser, bookMark: bookMark, travelLevel: travelLevel)
+        return user
+    }
+    
+    func makeComment() -> Comment {
+        let commentID = self.get("commentID") as! String
+        let authorUid = self.get("authorUid") as! String
+        let writtenDate = self.get("writtenDate") as! Double
+        let content = self.get("content") as! String
+        let likes = self.get("likes") as! Int
+        let likedPeople = self.get("likedPeople") as! [String]
+        
+        let comment = Comment(commentID: commentID, authorUid: authorUid, writtenDate: writtenDate, content: content, likes: likes, likedPeople: likedPeople)
+        return comment
     }
 }

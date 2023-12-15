@@ -18,6 +18,7 @@ class HomeFullScreenViewModel {
     var NFTID = ""
     let videoUrl = PublishRelay<URL>()
     var likeCount = BehaviorRelay<Int>(value: 0)
+    var commentCount = BehaviorRelay<Int>(value: 0)
     var saveCount = BehaviorRelay<Int>(value: 0)
     var likedPeople = BehaviorRelay<[String]>(value: [])
     
@@ -73,6 +74,7 @@ class HomeFullScreenViewModel {
                 if let document = documentSnapshot, document.exists {
                     let NFT = document.makeNFT()
                     self.likeCount.accept(NFT.likes)
+                    self.commentCount.accept(NFT.comments)
                     self.saveCount.accept(NFT.saves)
                     self.likedPeople.accept(NFT.likedPeople)
                 }

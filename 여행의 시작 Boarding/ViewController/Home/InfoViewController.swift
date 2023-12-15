@@ -27,7 +27,7 @@ class InfoViewController: UIViewController {
     }
     
     var headerView = UIView().then {
-        $0.backgroundColor = Gray.bright
+        $0.backgroundColor = Gray.medium
         $0.alpha = 0
     }
     
@@ -55,7 +55,7 @@ class InfoViewController: UIViewController {
             self.viewModel.shareNFT(NFT: self.NFTResult)
         }
         let deleteAction = UIAction(title: "삭제하기") { _ in
-            self.deleteAlert("CARD") {
+            self.deleteAlert("NFT") {
                 self.indicator.startAnimating()
                 self.view.isUserInteractionEnabled = false
                 self.viewModel.delete(NFTID: self.NFTResult.NFTID, category: self.NFTResult.category)
@@ -151,7 +151,7 @@ class InfoViewController: UIViewController {
     }
     
     lazy var saveButton = UIButton().then {
-        $0.tag = 3
+        $0.tag = 4
         $0.setImage(InteractionInfo.save.0.withRenderingMode(.alwaysTemplate), for: .normal)
         $0.setImage(InteractionInfo.save.1.withRenderingMode(.alwaysTemplate), for: .selected)
         $0.tintColor = Gray.dark
@@ -171,6 +171,8 @@ class InfoViewController: UIViewController {
             sender.isSelected.toggle()
             sender.touchAnimation()
         case 2:
+            break
+        case 3:
             if viewModel.userUid == user.userUid { break }
             let vc = ReportViewController()
             vc.authorUid = user.userUid
@@ -217,7 +219,7 @@ class InfoViewController: UIViewController {
     
     lazy var NFTInfoButton = UIButton().then {
         $0.tag = 2
-        $0.setTitle("CARD", for: .normal)
+        $0.setTitle("NFT", for: .normal)
         $0.setTitleColor(Gray.light, for: .normal)
         $0.setTitleColor(Boarding.blue, for: .selected)
         $0.titleLabel?.font = Pretendard.regular(17)
@@ -429,7 +431,7 @@ class InfoViewController: UIViewController {
             make.left.equalToSuperview().offset(20)
             make.height.equalTo(50)
         }
-        let icon = [InteractionInfo.like, InteractionInfo.report]
+        let icon = [InteractionInfo.like, InteractionInfo.comment, InteractionInfo.report]
         for index in 0..<icon.count {
             let subview = UIView().then {
                 $0.backgroundColor = .clear
@@ -444,7 +446,7 @@ class InfoViewController: UIViewController {
             }
             
             let numberLabel = UILabel().then {
-                $0.tag = index+4
+                $0.tag = index+5
                 $0.font = Pretendard.regular(13)
                 $0.textColor = Gray.dark
                 $0.textAlignment = .center
@@ -548,7 +550,15 @@ class InfoViewController: UIViewController {
         viewModel.likeCount
             .subscribe(onNext: { count in
                 self.interactionStackView.arrangedSubviews
-                    .compactMap { $0.viewWithTag(4) as? UILabel }
+                    .compactMap { $0.viewWithTag(5) as? UILabel }
+                    .forEach { $0.text = String(count) }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.commentCount
+            .subscribe(onNext: { count in
+                self.interactionStackView.arrangedSubviews
+                    .compactMap { $0.viewWithTag(6) as? UILabel }
                     .forEach { $0.text = String(count) }
             })
             .disposed(by: disposeBag)
@@ -556,7 +566,7 @@ class InfoViewController: UIViewController {
         viewModel.reportCount
             .subscribe(onNext: { count in
                 self.interactionStackView.arrangedSubviews
-                    .compactMap { $0.viewWithTag(5) as? UILabel }
+                    .compactMap { $0.viewWithTag(7) as? UILabel }
                     .forEach { $0.text = String(count) }
             })
             .disposed(by: disposeBag)
@@ -633,7 +643,7 @@ extension InfoViewController: UIScrollViewDelegate {
         var level = scrollView.frame.origin.y + scrollView.contentOffset.y
         level = max(0, level)
         level = min(100, level)
-        headerView.alpha = CGFloat(level/250)
+        headerView.alpha = CGFloat(level/150)
         headerDivider.alpha = CGFloat(level/100)
     }
 }

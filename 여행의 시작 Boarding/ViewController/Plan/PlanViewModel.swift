@@ -14,7 +14,7 @@ import FirebaseStorage
 
 class PlanViewModel {
     
-    let items = BehaviorRelay<[Plan]>(value: Array(repeating: Plan.dummyType, count: 1))
+    let items = BehaviorRelay<[Plan]>(value: [Plan.dummyType])
     let itemCount = BehaviorRelay<Int>(value: 1)
     
     init() {

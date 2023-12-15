@@ -312,6 +312,14 @@ extension UILabel {
     }
 }
 
+//MARK: - UIImageCrop
+extension UIImage {
+    func crop(to rect: CGRect) -> UIImage {
+        guard let cgImage = cgImage?.cropping(to: rect) else { return self }
+        return UIImage(cgImage: cgImage)
+    }
+}
+
 //MARK: - RemoveAllArrangedSubviews
 extension UIStackView {
     func removeAllArrangedSubviews() {

@@ -35,7 +35,7 @@ class NFTDetailViewController: UIViewController {
         $0.setImage(UIImage(named: "ViewMore")?.withRenderingMode(.alwaysTemplate), for: .normal)
         $0.tintColor = Gray.white
         $0.menu = UIMenu(options: .displayInline, children: [UIAction(title: "삭제하기") { _ in
-            self.deleteAlert("CARD") {
+            self.deleteAlert("NFT") {
                 self.indicator.startAnimating()
                 self.view.isUserInteractionEnabled = false
                 self.viewModel.delete(NFTID: self.NFTResult.NFTID, category: self.NFTResult.category)

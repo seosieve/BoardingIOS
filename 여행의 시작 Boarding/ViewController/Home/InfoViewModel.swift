@@ -23,6 +23,7 @@ class InfoViewModel {
     let thumbnail = BehaviorRelay<URL?>(value: nil)
     let username = BehaviorRelay<String?>(value: nil)
     var likeCount = BehaviorRelay<Int>(value: 0)
+    var commentCount = BehaviorRelay<Int>(value: 0)
     var reportCount = BehaviorRelay<Int>(value: 0)
     var likedPeople = BehaviorRelay<[String]>(value: [])
     var saveCount = BehaviorRelay<Int>(value: 0)
@@ -83,6 +84,7 @@ class InfoViewModel {
                 if let document = documentSnapshot, document.exists {
                     let NFT = document.makeNFT()
                     self.likeCount.accept(NFT.likes)
+                    self.commentCount.accept(NFT.comments)
                     self.reportCount.accept(NFT.reports)
                     self.saveCount.accept(NFT.saves)
                     self.likedPeople.accept(NFT.likedPeople)

@@ -14,7 +14,7 @@ import FirebaseStorage
 
 class RecordViewModel {
     
-    let pastTravelItems = BehaviorRelay<[(UIImage?, String, String)]>(value: [(UIImage(named: "France1"), "2024 뉴욕 여행", "미정"), (UIImage(named: "France1"), "여름방학 프랑스 여행", "23.07.10 ~ 23.07.25"), (UIImage(named: "France1"), "유럽 축구 여행", "파리, 프랑스")])
+    let pastTravelItems = BehaviorRelay<[(UIImage?, String, String)]>(value: [(UIImage(named: "Dummy1"), "이탈리아 일주", "14박 15일"), (UIImage(named: "Dummy2"), "오사카 벚꽃 여행", "3박 4일"), (UIImage(named: "Dummy3"), "영국 축구 여행", "5박 6일")])
     let pastTravelItemCount = PublishRelay<Int>()
     let recordItems = BehaviorRelay<[NFT]>(value: Array(repeating: NFT.dummyType, count: 10))
     let recordItemCount = BehaviorRelay<Int>(value: 10)

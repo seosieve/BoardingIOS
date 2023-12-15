@@ -17,7 +17,7 @@ class NFTInfoViewController: UIViewController {
     }
     
     var titleLabel = UILabel().then {
-        $0.text = "CARD 정보"
+        $0.text = "NFT 정보"
         $0.font = Pretendard.semiBold(21)
         $0.textColor = Gray.black
     }

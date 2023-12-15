@@ -313,7 +313,7 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
                     }
                     // 이미 좋아요 누른 게시물인지 확인
                     cell.isUserAlreadyLiked(userUid: self.viewModel.userUid, likedPeople: element.likedPeople)
-                    cell.makeInteractionCount([element.reports, element.likes, element.saves])
+                    cell.makeInteractionCount([element.reports, element.likes, element.comments, element.saves])
                     cell.iconTapped = { [weak self] sender in
                         self?.iconInteraction(sender, element.NFTID, element.authorUid)
                     }
@@ -369,6 +369,8 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
             self.present(vc, animated: true)
         case 1:
             viewModel.like(NFTID: NFTID)
+        case 2:
+            break
         default:
             let vc = AddMyPlanViewController()
             vc.NFTID = NFTID
@@ -390,7 +392,7 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
     }
 }
 
-//MARK: - UITableView
+//MARK: - UITableViewDelegate
 extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let item = viewModel.items.value[indexPath.row].content

@@ -186,7 +186,7 @@ class HomeTableViewCell: UITableViewCell {
             make.bottom.equalTo(photoView)
             make.width.equalTo(32)
         }
-        let icon = [InteractionInfo.report, InteractionInfo.like, InteractionInfo.save]
+        let icon = [InteractionInfo.report, InteractionInfo.like, InteractionInfo.comment, InteractionInfo.save]
         for index in 0..<icon.count {
             let subview = UIView()
             
@@ -198,7 +198,7 @@ class HomeTableViewCell: UITableViewCell {
             }
             
             let numberLabel = UILabel().then {
-                $0.tag = 4
+                $0.tag = 5
                 $0.text = "0"
                 $0.font = Pretendard.regular(13)
                 $0.textColor = Gray.dark
@@ -292,7 +292,7 @@ class HomeTableViewCell: UITableViewCell {
     
     func makeInteractionCount(_ count: [Int]) {
         interactionStackView.arrangedSubviews
-            .compactMap { $0.viewWithTag(4) as? UILabel }
+            .compactMap { $0.viewWithTag(5) as? UILabel }
             .enumerated()
             .forEach { index, label in
                 label.text = String(count[index])

@@ -13,6 +13,10 @@
 		4E0648B22B01CCFD009DB83B /* AddMyPlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0648B12B01CCFD009DB83B /* AddMyPlanViewController.swift */; };
 		4E0648B42B05BBA4009DB83B /* AddMyPlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0648B32B05BBA4009DB83B /* AddMyPlanViewModel.swift */; };
 		4E0B90972B2A306600960AD2 /* RecordFullScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0B90962B2A306600960AD2 /* RecordFullScreenViewModel.swift */; };
+		4E0E2CF82B2A90BC002D32A8 /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0E2CF72B2A90BC002D32A8 /* CommentViewController.swift */; };
+		4E0E2CFA2B2A97D8002D32A8 /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0E2CF92B2A97D8002D32A8 /* CommentViewModel.swift */; };
+		4E0E2CFC2B2AA090002D32A8 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0E2CFB2B2AA090002D32A8 /* CommentTableViewCell.swift */; };
+		4E0E2CFE2B2AB1F1002D32A8 /* CommentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0E2CFD2B2AB1F1002D32A8 /* CommentModel.swift */; };
 		4E19AA612A80FB3A00213589 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19AA602A80FB3A00213589 /* CameraViewController.swift */; };
 		4E19AA672A83E4F100213589 /* CameraCustomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19AA662A83E4F100213589 /* CameraCustomViewController.swift */; };
 		4E19AA692A9F1A7300213589 /* NFTTicketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19AA682A9F1A7300213589 /* NFTTicketViewController.swift */; };
@@ -145,6 +149,10 @@
 		4E0648B12B01CCFD009DB83B /* AddMyPlanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMyPlanViewController.swift; sourceTree = "<group>"; };
 		4E0648B32B05BBA4009DB83B /* AddMyPlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMyPlanViewModel.swift; sourceTree = "<group>"; };
 		4E0B90962B2A306600960AD2 /* RecordFullScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFullScreenViewModel.swift; sourceTree = "<group>"; };
+		4E0E2CF72B2A90BC002D32A8 /* CommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewController.swift; sourceTree = "<group>"; };
+		4E0E2CF92B2A97D8002D32A8 /* CommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
+		4E0E2CFB2B2AA090002D32A8 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
+		4E0E2CFD2B2AB1F1002D32A8 /* CommentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentModel.swift; sourceTree = "<group>"; };
 		4E19AA602A80FB3A00213589 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		4E19AA662A83E4F100213589 /* CameraCustomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCustomViewController.swift; sourceTree = "<group>"; };
 		4E19AA682A9F1A7300213589 /* NFTTicketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTTicketViewController.swift; sourceTree = "<group>"; };
@@ -180,7 +188,6 @@
 		4E36C99B2B24118300031B4F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		4E36C99D2B24118C00031B4F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		4E4145C72B26D3BE005BF3EB /* MILEViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MILEViewModel.swift; sourceTree = "<group>"; };
-		4E4145C92B274035005BF3EB /* Eiffel.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Eiffel.mp4; sourceTree = "<group>"; };
 		4E4145CA2B27607C005BF3EB /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		4E44FB942ACAAA320021FAB9 /* ModalPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalPageViewController.swift; sourceTree = "<group>"; };
 		4E44FB962ACD5E0A0021FAB9 /* NFTCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -392,7 +399,6 @@
 				4E7D52EB2AC9347B00054800 /* 여행의 시작 Boarding.entitlements */,
 				4EECA6272A29BECF006FB764 /* AppDelegate.swift */,
 				4EECA6292A29BECF006FB764 /* SceneDelegate.swift */,
-				4E4145C92B274035005BF3EB /* Eiffel.mp4 */,
 				4EECA6302A29BED0006FB764 /* Assets.xcassets */,
 				4EECA6322A29BED0006FB764 /* LaunchScreen.storyboard */,
 				4EECA6352A29BED0006FB764 /* Info.plist */,
@@ -447,6 +453,7 @@
 				4E44FB9C2AD0ED430021FAB9 /* NFTModel.swift */,
 				4E9B90FF2AFDBC0E00F6D347 /* PlanModel.swift */,
 				4E7AD5912B1DF87400DC8ACB /* ReportModel.swift */,
+				4E0E2CFD2B2AB1F1002D32A8 /* CommentModel.swift */,
 				4E4C143E2AE62C5800E504D4 /* InfoModel.swift */,
 				4E5B50362B1AFB0700BA9AB2 /* TermsModel.swift */,
 				4E3552512B0E1E360060E391 /* LocationModel.swift */,
@@ -469,6 +476,8 @@
 				4E0648B32B05BBA4009DB83B /* AddMyPlanViewModel.swift */,
 				4EECA7E02A2DD179006FB764 /* HomeFullScreenViewController.swift */,
 				4E92AB752B261DFF00AC8F96 /* HomeFullScreenViewModel.swift */,
+				4E0E2CF72B2A90BC002D32A8 /* CommentViewController.swift */,
+				4E0E2CF92B2A97D8002D32A8 /* CommentViewModel.swift */,
 				4E04A99D2B13B4E000EE6530 /* InfoViewController.swift */,
 				4E6D86322B14CDD8008113A4 /* InfoViewModel.swift */,
 				4E6D86282B148F7E008113A4 /* InfoPageViewController.swift */,
@@ -553,6 +562,7 @@
 			children = (
 				4EA7AFC32AA6D0E40055F4C7 /* HomeTableViewCell.swift */,
 				4E35524B2B0DF72E0060E391 /* LocationTableViewCell.swift */,
+				4E0E2CFB2B2AA090002D32A8 /* CommentTableViewCell.swift */,
 				4E44FBA42ADCF0C10021FAB9 /* PlanCollectionViewCell.swift */,
 				4E63EB5C2B1EE46F00BEC1F1 /* PlanDetailTableViewCell.swift */,
 				4EECA7DE2A2DC352006FB764 /* TravelCollectionViewCell.swift */,
@@ -709,6 +719,8 @@
 				4E7D52EA2AC6FD0000054800 /* MyPageViewModel.swift in Sources */,
 				4E44FBAD2ADD1A4B0021FAB9 /* WrittingContentViewController.swift in Sources */,
 				4EECA6402A29C208006FB764 /* MyPageViewController.swift in Sources */,
+				4E0E2CF82B2A90BC002D32A8 /* CommentViewController.swift in Sources */,
+				4E0E2CFA2B2A97D8002D32A8 /* CommentViewModel.swift in Sources */,
 				4E32D17D2B060B30001BD1B7 /* PlanDetailViewModel.swift in Sources */,
 				4E35524E2B0E0E8C0060E391 /* SetLocationViewModel.swift in Sources */,
 				4EECA7F02A2F2968006FB764 /* NFTViewController.swift in Sources */,
@@ -718,6 +730,7 @@
 				4ECA2CC22B00D8B900695D8F /* PlanDetailViewController.swift in Sources */,
 				4E35524C2B0DF72E0060E391 /* LocationTableViewCell.swift in Sources */,
 				4E44FB9D2AD0ED430021FAB9 /* NFTModel.swift in Sources */,
+				4E0E2CFC2B2AA090002D32A8 /* CommentTableViewCell.swift in Sources */,
 				4E2DDF522AB40ED300C7F4B9 /* StartViewModel.swift in Sources */,
 				4EB72F402AEB912A00F9CC67 /* HomeViewModel.swift in Sources */,
 				4E04A99E2B13B4E000EE6530 /* InfoViewController.swift in Sources */,
@@ -792,6 +805,7 @@
 				4E5CD9882B232A7B0021DA87 /* MemoEditViewModel.swift in Sources */,
 				4EA7AFC22AA6C86D0055F4C7 /* HomeViewController.swift in Sources */,
 				4E3552522B0E1E360060E391 /* LocationModel.swift in Sources */,
+				4E0E2CFE2B2AB1F1002D32A8 /* CommentModel.swift in Sources */,
 				4E6D86372B150171008113A4 /* UserInfoViewModel.swift in Sources */,
 				4EECA7F22A2F3213006FB764 /* MILEViewController.swift in Sources */,
 			);
@@ -1059,7 +1073,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.3;
+				MARKETING_VERSION = 1.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = co.kr.company.Boarding;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1192,7 +1206,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.3;
+				MARKETING_VERSION = 1.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = co.kr.company.Boarding;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
