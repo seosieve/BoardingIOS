@@ -304,10 +304,6 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
                     cell.userNameLabel.text = user.name
                     cell.userImage.sd_setImage(with: URL(string: user.url), placeholderImage: nil, options: .scaleDownLargeImages)
                     
-//                    self.viewModel.getVideoUrl(NFTID: element.NFTID) { url in
-//                        cell.makeVideoView(url: url)
-//                    }
-                    
                     cell.photoTapped = { [weak self] in
                         self?.goToFullScreen(url: URL(string: element.url), NFT: element, user: user)
                     }
@@ -336,14 +332,13 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
             .setDelegate(self)
             .disposed(by: disposeBag)
         
-        //blockedUser 해제되었을때 homeVC 초기화
-        viewModel.blockedUserRemoved
+        //blockedUser 해제 혹은 유저 프로필 변경되었을때 homeVC 초기화
+        viewModel.userProfileChanged
             .subscribe(onNext: {
                 self.locationLabel.text = "전세계"
                 self.resetCategory()
                 self.viewModel.stopListening()
                 self.viewModel.getAllNFT()
-                
             })
             .disposed(by: disposeBag)
     }
@@ -370,7 +365,11 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
         case 1:
             viewModel.like(NFTID: NFTID)
         case 2:
-            break
+            let vc = CommentViewController()
+            vc.NFTID = NFTID
+            vc.modalPresentationStyle = .automatic
+            vc.modalTransitionStyle = .coverVertical
+            self.present(vc, animated: true)
         default:
             let vc = AddMyPlanViewController()
             vc.NFTID = NFTID

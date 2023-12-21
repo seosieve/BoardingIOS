@@ -13,6 +13,7 @@ class HomeTableViewCell: UITableViewCell {
     var iconTapped: ((UIButton) -> Void)?
     
     var userImage = UIImageView().then {
+        $0.contentMode = .scaleAspectFill
         $0.backgroundColor = Gray.bright
         $0.layer.cornerRadius = 16
         $0.layer.masksToBounds = true

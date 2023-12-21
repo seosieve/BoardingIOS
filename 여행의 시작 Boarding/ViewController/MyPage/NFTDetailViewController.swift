@@ -35,7 +35,7 @@ class NFTDetailViewController: UIViewController {
         $0.setImage(UIImage(named: "ViewMore")?.withRenderingMode(.alwaysTemplate), for: .normal)
         $0.tintColor = Gray.white
         $0.menu = UIMenu(options: .displayInline, children: [UIAction(title: "삭제하기") { _ in
-            self.deleteAlert("NFT") {
+            self.deleteAlert("CARD") {
                 self.indicator.startAnimating()
                 self.view.isUserInteractionEnabled = false
                 self.viewModel.delete(NFTID: self.NFTResult.NFTID, category: self.NFTResult.category)
@@ -217,8 +217,8 @@ class NFTDetailViewController: UIViewController {
             make.left.equalToSuperview().inset(20)
             make.height.equalTo(60)
         }
-        let icon = [InteractionInfo.like, InteractionInfo.report, InteractionInfo.save]
-        let count = [NFTResult.likes, NFTResult.reports, NFTResult.saves]
+        let icon = [InteractionInfo.like, InteractionInfo.comment, InteractionInfo.report, InteractionInfo.save]
+        let count = [NFTResult.likes, NFTResult.comments, NFTResult.reports, NFTResult.saves]
         for index in 0..<icon.count {
             let subview = UIView().then {
                 $0.backgroundColor = UIColor.clear
@@ -234,7 +234,7 @@ class NFTDetailViewController: UIViewController {
             let divider = UIView().then {
                 $0.backgroundColor = Gray.bright
             }
-            if index == 2 {
+            if index == 3 {
                 divider.alpha = 0
             }
             subview.addSubview(statusImageView)

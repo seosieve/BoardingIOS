@@ -19,7 +19,7 @@ import AuthenticationServices
 
 class StartViewModel: NSObject {
     var currentNonce: String?
-    let userNotExist = PublishSubject<Void>()
+    var userNotExist = false
     
     let errorCatch = PublishRelay<Bool>()
     let startResult = PublishRelay<Bool>()
@@ -79,7 +79,7 @@ extension StartViewModel: ASAuthorizationControllerDelegate, ASAuthorizationCont
                         self?.startResult.accept(true)
                     } else {
                         //처음 애플로그인 할 때
-                        self?.userNotExist.onNext(())
+                        self?.userNotExist = true
                         //firestore, Storage 저장
                         DispatchQueue.global().async {
                             self?.saveUserImage(url: User.defaultUrl) { [weak self] url in
@@ -133,7 +133,6 @@ extension StartViewModel {
                    let password = user.id,
                    let nickname = user.kakaoAccount?.profile?.nickname,
                    let thumbnail = user.kakaoAccount?.profile?.profileImageUrl {
-                    print(thumbnail)
                     self?.signInUser(email: email, password: String(password), nickname: nickname, thumbnail: thumbnail)
                 } else {
                     self?.errorCatch.accept(true)
@@ -153,7 +152,7 @@ extension StartViewModel {
                 switch code {
                 case 17011:
                     //유저가 존재하지 않을때
-                    self?.userNotExist.onNext(())
+                    self?.userNotExist = true
                     //유저 생성
                     self?.createUser(email: email, password: password, nickname: nickname, thumbnail: thumbnail)
                 default:
@@ -222,7 +221,7 @@ extension StartViewModel {
     
     func saveProfile(url: URL, name: String) {
         guard let user = Auth.auth().currentUser else { return }
-        let User = User(userUid: user.uid, url: url.absoluteString, name: name, introduce: "", blockedUser: [], bookMark: [], travelLevel: [0, 0, 0, 0, 0, 0, 0, 0, 0])
+        let User = User(userUid: user.uid, url: url.absoluteString, name: name, introduce: "전세계를 여행하고 싶은 여행자입니다.", blockedUser: [], bookMark: [], travelLevel: [0, 0, 0, 0, 0, 0, 0, 0, 0])
         db.collection("User").document(user.uid).setData(User.dicType) { [weak self] error in
             if let error = error {
                 print("유저 저장 에러: \(error)")

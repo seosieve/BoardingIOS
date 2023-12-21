@@ -47,7 +47,7 @@ class CameraViewController: UIViewController {
     }
     
     var cameraButton = UIButton().then {
-        $0.setImage(UIImage(named: "Camera"), for: .normal)
+        $0.setImage(UIImage(named: "Shoot"), for: .normal)
     }
     
     var switchButton = UIButton().then {

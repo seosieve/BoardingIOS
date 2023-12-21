@@ -82,9 +82,9 @@ class PreferenceViewController: UIViewController {
             .bind(to: preferenceTableView.rx.items(cellIdentifier: "preferenceTableViewCell", cellType: PreferenceTableViewCell.self)) { (row, element, cell) in
                 cell.mainLabel.text = element
                 switch row {
-                case 0, 1, 2:
+                case 0, 1, 2, 3:
                     cell.detailButton.isHidden = false
-                case 3:
+                case 4:
                     cell.versionLabel.isHidden = false
                 default:
                     break
@@ -98,23 +98,23 @@ class PreferenceViewController: UIViewController {
             .map{$0.row}
             .subscribe(onNext:{ [weak self] index in
                 switch index {
-//                case 0:
-//                    let vc = EditProfileViewController()
-//                    self?.navigationController?.pushViewController(vc, animated: true)
                 case 0:
-                    let vc = BlockedUserViewController()
+                    let vc = EditProfileViewController()
                     self?.navigationController?.pushViewController(vc, animated: true)
                 case 1:
-                    let vc = TermsViewController()
-                    vc.terms = "이용약관"
+                    let vc = BlockedUserViewController()
                     self?.navigationController?.pushViewController(vc, animated: true)
                 case 2:
                     let vc = TermsViewController()
+                    vc.terms = "이용약관"
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                case 3:
+                    let vc = TermsViewController()
                     vc.terms = "개인정보 보호 정책"
                     self?.navigationController?.pushViewController(vc, animated: true)
-                case 4:
-                    self?.preferenceAlert(message[0], index)
                 case 5:
+                    self?.preferenceAlert(message[0], index)
+                case 6:
                     self?.preferenceAlert(message[1], index)
                 default:
                     break

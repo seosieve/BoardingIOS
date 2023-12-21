@@ -55,7 +55,7 @@ class InfoViewController: UIViewController {
             self.viewModel.shareNFT(NFT: self.NFTResult)
         }
         let deleteAction = UIAction(title: "삭제하기") { _ in
-            self.deleteAlert("NFT") {
+            self.deleteAlert("CARD") {
                 self.indicator.startAnimating()
                 self.view.isUserInteractionEnabled = false
                 self.viewModel.delete(NFTID: self.NFTResult.NFTID, category: self.NFTResult.category)
@@ -171,7 +171,11 @@ class InfoViewController: UIViewController {
             sender.isSelected.toggle()
             sender.touchAnimation()
         case 2:
-            break
+            let vc = CommentViewController()
+            vc.NFTID = NFTResult.NFTID
+            vc.modalPresentationStyle = .automatic
+            vc.modalTransitionStyle = .coverVertical
+            self.present(vc, animated: true)
         case 3:
             if viewModel.userUid == user.userUid { break }
             let vc = ReportViewController()
@@ -219,7 +223,7 @@ class InfoViewController: UIViewController {
     
     lazy var NFTInfoButton = UIButton().then {
         $0.tag = 2
-        $0.setTitle("NFT", for: .normal)
+        $0.setTitle("CARD", for: .normal)
         $0.setTitleColor(Gray.light, for: .normal)
         $0.setTitleColor(Boarding.blue, for: .selected)
         $0.titleLabel?.font = Pretendard.regular(17)

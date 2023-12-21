@@ -263,10 +263,10 @@ extension UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    func toastAlert() {
+    func toastAlert(_ message: String) {
         let alert = UIAlertController(title: "", message: "", preferredStyle: .alert)
         let attributes = [NSAttributedString.Key.foregroundColor : Gray.semiDark, NSAttributedString.Key.font : Pretendard.semiBold(19)]
-        alert.setValue(NSAttributedString(string: "이미 플랜에 추가되었어요.", attributes: attributes), forKey: "attributedTitle")
+        alert.setValue(NSAttributedString(string: message, attributes: attributes), forKey: "attributedTitle")
         alert.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = Gray.white
         
         present(alert, animated: true)
@@ -279,6 +279,16 @@ extension UIViewController {
         return UIView().then {
             $0.backgroundColor = Gray.light.withAlphaComponent(0.4)
         }
+    }
+    
+    func imageWithColor(color: UIColor) -> UIImage {
+        let rect = CGRect(origin: .zero, size: CGSize(width: 100, height: 100))
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: 100, height: 100), false, 0.0)
+        color.setFill()
+        UIRectFill(rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image ?? UIImage()
     }
 }
 

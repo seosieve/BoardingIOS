@@ -33,8 +33,14 @@ class TermsViewController: UIViewController {
     var termsContentView = UIView()
     
     lazy var termsLabel = UILabel().then {
-        let termsContent = terms == "이용약관" ? Terms.ConditionsOfUse : Terms.privacyPolicy
-        $0.text = termsContent
+        switch terms {
+        case "이용약관":
+            $0.text = Terms.ConditionsOfUse
+        case "개인정보 보호 정책":
+            $0.text = Terms.privacyPolicy
+        default:
+            $0.text = Terms.communityRule
+        }
         $0.font = Pretendard.regular(15)
         $0.textColor = Gray.medium
         $0.withLineSpacing(12)

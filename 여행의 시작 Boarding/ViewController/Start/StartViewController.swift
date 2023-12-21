@@ -60,7 +60,7 @@ class StartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Gray.white
-        self.navigationController?.navigationBar.setNavigationBar()
+        self.navigationController?.navigationBar.isHidden = true
         setViews()
         setRx()
     }
@@ -154,22 +154,20 @@ class StartViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.startResult
-            .subscribe(onNext:{ [weak self] result in
-                self?.appleStartButton.isEnabled = true
-                self?.kakaoStartButton.isEnabled = true
+            .subscribe(onNext:{ result in
+                self.appleStartButton.isEnabled = true
+                self.kakaoStartButton.isEnabled = true
                 if result {
-                    self?.indicator.stopAnimating()
-                    self?.presentVC(TabBarViewController(), transition: .crossDissolve)
+                    self.indicator.stopAnimating()
+                    if self.viewModel.userNotExist {
+                        let vc = AgreementViewController()
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    } else {
+                        self.presentVC(TabBarViewController(), transition: .crossDissolve)
+                    }
                 } else {
-                    self?.indicator.stopAnimating()
+                    self.indicator.stopAnimating()
                 }
-            })
-            .disposed(by: disposeBag)
-        
-        viewModel.userNotExist
-            .subscribe(onNext:{ [weak self] in
-                //Onboarding으로 넘어가기
-                print("User not Exist")
             })
             .disposed(by: disposeBag)
     }

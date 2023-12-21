@@ -87,6 +87,7 @@
 		4E6D86372B150171008113A4 /* UserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6D86362B150171008113A4 /* UserInfoViewModel.swift */; };
 		4E778DDF2B17C4EE00A6A857 /* MyScrapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E778DDE2B17C4EE00A6A857 /* MyScrapViewController.swift */; };
 		4E778DE12B17C79600A6A857 /* MyScrapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E778DE02B17C79600A6A857 /* MyScrapViewModel.swift */; };
+		4E7A62C32B2E9E4C00EC5320 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7A62C22B2E9E4C00EC5320 /* EditProfileViewModel.swift */; };
 		4E7AD5902B1DF5DA00DC8ACB /* ReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7AD58F2B1DF5DA00DC8ACB /* ReportViewModel.swift */; };
 		4E7AD5922B1DF87400DC8ACB /* ReportModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7AD5912B1DF87400DC8ACB /* ReportModel.swift */; };
 		4E7AD5942B1E685000DC8ACB /* BlockedUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7AD5932B1E685000DC8ACB /* BlockedUserViewController.swift */; };
@@ -95,8 +96,6 @@
 		4E7D52E62AC41AF200054800 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E52AC41AF200054800 /* SplashViewController.swift */; };
 		4E7D52E82AC41B0100054800 /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E72AC41B0100054800 /* SplashViewModel.swift */; };
 		4E7D52EA2AC6FD0000054800 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E92AC6FD0000054800 /* MyPageViewModel.swift */; };
-		4E8B35A72A70DA1100AD2C72 /* aa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8B35A62A70DA1100AD2C72 /* aa.swift */; };
-		4E8B35A92A70DFCE00AD2C72 /* aaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8B35A82A70DFCE00AD2C72 /* aaModel.swift */; };
 		4E92000C2B19DB3A005B061F /* AddPlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E92000B2B19DB3A005B061F /* AddPlanViewController.swift */; };
 		4E92000E2B1A2ADF005B061F /* AddPlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E92000D2B1A2ADF005B061F /* AddPlanViewModel.swift */; };
 		4E92AB742B24F15E00AC8F96 /* ExpertLevelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E92AB732B24F15E00AC8F96 /* ExpertLevelViewModel.swift */; };
@@ -108,7 +107,7 @@
 		4EA7AFC22AA6C86D0055F4C7 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA7AFC12AA6C86D0055F4C7 /* HomeViewController.swift */; };
 		4EA7AFC42AA6D0E40055F4C7 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA7AFC32AA6D0E40055F4C7 /* HomeTableViewCell.swift */; };
 		4EB72F402AEB912A00F9CC67 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB72F3F2AEB912A00F9CC67 /* HomeViewModel.swift */; };
-		4EB72F422AEE480100F9CC67 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB72F412AEE480100F9CC67 /* OnboardingViewController.swift */; };
+		4EB72F422AEE480100F9CC67 /* AgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB72F412AEE480100F9CC67 /* AgreementViewController.swift */; };
 		4EB72F442AEF2D6B00F9CC67 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB72F432AEF2D6B00F9CC67 /* UserModel.swift */; };
 		4ECA2CC22B00D8B900695D8F /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECA2CC12B00D8B900695D8F /* PlanDetailViewController.swift */; };
 		4ED635DE2B2315C600ECEA7B /* MemoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED635DD2B2315C600ECEA7B /* MemoEditViewController.swift */; };
@@ -223,6 +222,7 @@
 		4E6D86362B150171008113A4 /* UserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModel.swift; sourceTree = "<group>"; };
 		4E778DDE2B17C4EE00A6A857 /* MyScrapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyScrapViewController.swift; sourceTree = "<group>"; };
 		4E778DE02B17C79600A6A857 /* MyScrapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyScrapViewModel.swift; sourceTree = "<group>"; };
+		4E7A62C22B2E9E4C00EC5320 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		4E7AD58F2B1DF5DA00DC8ACB /* ReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewModel.swift; sourceTree = "<group>"; };
 		4E7AD5912B1DF87400DC8ACB /* ReportModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportModel.swift; sourceTree = "<group>"; };
 		4E7AD5932B1E685000DC8ACB /* BlockedUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUserViewController.swift; sourceTree = "<group>"; };
@@ -232,8 +232,6 @@
 		4E7D52E72AC41B0100054800 /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 		4E7D52E92AC6FD0000054800 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		4E7D52EB2AC9347B00054800 /* 여행의 시작 Boarding.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "여행의 시작 Boarding.entitlements"; sourceTree = "<group>"; };
-		4E8B35A62A70DA1100AD2C72 /* aa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aa.swift; sourceTree = "<group>"; };
-		4E8B35A82A70DFCE00AD2C72 /* aaModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aaModel.swift; sourceTree = "<group>"; };
 		4E92000B2B19DB3A005B061F /* AddPlanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlanViewController.swift; sourceTree = "<group>"; };
 		4E92000D2B1A2ADF005B061F /* AddPlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlanViewModel.swift; sourceTree = "<group>"; };
 		4E92AB732B24F15E00AC8F96 /* ExpertLevelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpertLevelViewModel.swift; sourceTree = "<group>"; };
@@ -245,7 +243,7 @@
 		4EA7AFC12AA6C86D0055F4C7 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		4EA7AFC32AA6D0E40055F4C7 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		4EB72F3F2AEB912A00F9CC67 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
-		4EB72F412AEE480100F9CC67 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		4EB72F412AEE480100F9CC67 /* AgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementViewController.swift; sourceTree = "<group>"; };
 		4EB72F432AEF2D6B00F9CC67 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		4ECA2CC12B00D8B900695D8F /* PlanDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDetailViewController.swift; sourceTree = "<group>"; };
 		4ED635DD2B2315C600ECEA7B /* MemoEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEditViewController.swift; sourceTree = "<group>"; };
@@ -344,7 +342,7 @@
 				4E7D52E72AC41B0100054800 /* SplashViewModel.swift */,
 				4E2DDF4F2AB330E800C7F4B9 /* StartViewController.swift */,
 				4E2DDF512AB40ED300C7F4B9 /* StartViewModel.swift */,
-				4EB72F412AEE480100F9CC67 /* OnboardingViewController.swift */,
+				4EB72F412AEE480100F9CC67 /* AgreementViewController.swift */,
 			);
 			path = Start;
 			sourceTree = "<group>";
@@ -533,6 +531,7 @@
 				4E2DDF532AB8050600C7F4B9 /* PreferenceViewController.swift */,
 				4E2DDF552AB80A5200C7F4B9 /* PreferenceViewModel.swift */,
 				4E4145CA2B27607C005BF3EB /* EditProfileViewController.swift */,
+				4E7A62C22B2E9E4C00EC5320 /* EditProfileViewModel.swift */,
 				4E7AD5932B1E685000DC8ACB /* BlockedUserViewController.swift */,
 				4E7AD5972B1E6C6B00DC8ACB /* BlockedUserViewModel.swift */,
 				4E5B50342B1AEE7F00BA9AB2 /* TermsViewController.swift */,
@@ -543,8 +542,6 @@
 		4EECA7E52A2DD1A6006FB764 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
-				4E8B35A62A70DA1100AD2C72 /* aa.swift */,
-				4E8B35A82A70DFCE00AD2C72 /* aaModel.swift */,
 				4E19AA602A80FB3A00213589 /* CameraViewController.swift */,
 				4E44FB9E2AD50DC20021FAB9 /* CameraViewModel.swift */,
 				4E19AA662A83E4F100213589 /* CameraCustomViewController.swift */,
@@ -713,7 +710,6 @@
 				4E7D52E82AC41B0100054800 /* SplashViewModel.swift in Sources */,
 				4E9B90FC2AFCE1D100F6D347 /* NewPlanDurationViewController.swift in Sources */,
 				4E6D862D2B148FAF008113A4 /* UserInfoViewController.swift in Sources */,
-				4E8B35A72A70DA1100AD2C72 /* aa.swift in Sources */,
 				4E19AA612A80FB3A00213589 /* CameraViewController.swift in Sources */,
 				4E92000C2B19DB3A005B061F /* AddPlanViewController.swift in Sources */,
 				4E7D52EA2AC6FD0000054800 /* MyPageViewModel.swift in Sources */,
@@ -769,19 +765,19 @@
 				4E44FB9F2AD50DC20021FAB9 /* CameraViewModel.swift in Sources */,
 				4E0B90972B2A306600960AD2 /* RecordFullScreenViewModel.swift in Sources */,
 				4E04A99A2B137C3200EE6530 /* RecordViewModel.swift in Sources */,
+				4E7A62C32B2E9E4C00EC5320 /* EditProfileViewModel.swift in Sources */,
 				4E19AA672A83E4F100213589 /* CameraCustomViewController.swift in Sources */,
 				4E55AB822AFA2612008066E5 /* BackendExtension.swift in Sources */,
 				4EA7AFC42AA6D0E40055F4C7 /* HomeTableViewCell.swift in Sources */,
 				4E0648B22B01CCFD009DB83B /* AddMyPlanViewController.swift in Sources */,
 				4E4DB84C2AFCDB6E000491A6 /* NewPlanLocationViewController.swift in Sources */,
 				4E44FB9B2AD050F60021FAB9 /* WrittingViewModel.swift in Sources */,
-				4E8B35A92A70DFCE00AD2C72 /* aaModel.swift in Sources */,
 				4E44FBA92ADCFC4E0021FAB9 /* NewPlanTitleViewController.swift in Sources */,
 				4E9B91022AFDDAAA00F6D347 /* PlanViewModel.swift in Sources */,
 				4E5B50372B1AFB0700BA9AB2 /* TermsModel.swift in Sources */,
 				4E6D86352B14D03E008113A4 /* LocationInfoViewModel.swift in Sources */,
 				4E92000E2B1A2ADF005B061F /* AddPlanViewModel.swift in Sources */,
-				4EB72F422AEE480100F9CC67 /* OnboardingViewController.swift in Sources */,
+				4EB72F422AEE480100F9CC67 /* AgreementViewController.swift in Sources */,
 				4EECA7DF2A2DC352006FB764 /* TravelCollectionViewCell.swift in Sources */,
 				4E1EA0872B1053D90081397B /* NFTDetailViewModel.swift in Sources */,
 				4E04A99C2B139C1F00EE6530 /* RecordFullScreenViewController.swift in Sources */,
@@ -1058,10 +1054,10 @@
 				INFOPLIST_FILE = "여행의 시작 Boarding/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Boarding;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
-				INFOPLIST_KEY_NSCameraUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 카메라 권한이 필요합니다.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 사용자 위치 권한이 필요합니다.";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 사용자 사진 저장 권한이 필요합니다.";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 사용자 앨범 권한이 필요합니다.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "여행의 시작 Boarding앱의 게시글 사진 첨부 기능을 사용하기 위해서 카메라 권한이 필요합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "여행의 시작 Boarding앱의 게시물 위치 저장, 상세보기 기능을 사용하기 위해서 사용자 위치 권한이 필요합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "여행의 시작 Boarding앱의 게시글의 사진 위치를 받아오고, 상세 정보를 구성하기 위해서 사용자 사진 저장 권한이 필요합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "여행의 시작 Boarding앱의 게시글 사진 첨부 기능을 사용하기 위해서 사용자 앨범 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
@@ -1073,7 +1069,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.3;
+				MARKETING_VERSION = 1.2.6;
 				PRODUCT_BUNDLE_IDENTIFIER = co.kr.company.Boarding;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1191,10 +1187,10 @@
 				INFOPLIST_FILE = "여행의 시작 Boarding/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Boarding;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
-				INFOPLIST_KEY_NSCameraUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 카메라 권한이 필요합니다.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 사용자 위치 권한이 필요합니다.";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 사용자 사진 저장 권한이 필요합니다.";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "여행의 시작 Boarding앱을 사용하기 위해서 사용자 앨범 권한이 필요합니다.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "여행의 시작 Boarding앱의 게시글 사진 첨부 기능을 사용하기 위해서 카메라 권한이 필요합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "여행의 시작 Boarding앱의 게시물 위치 저장, 상세보기 기능을 사용하기 위해서 사용자 위치 권한이 필요합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "여행의 시작 Boarding앱의 게시글의 사진 위치를 받아오고, 상세 정보를 구성하기 위해서 사용자 사진 저장 권한이 필요합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "여행의 시작 Boarding앱의 게시글 사진 첨부 기능을 사용하기 위해서 사용자 앨범 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
@@ -1206,7 +1202,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.3;
+				MARKETING_VERSION = 1.2.6;
 				PRODUCT_BUNDLE_IDENTIFIER = co.kr.company.Boarding;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

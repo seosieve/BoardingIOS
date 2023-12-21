@@ -18,7 +18,7 @@ class HomeViewModel {
     
     var userUid = ""
     var blockdUser = [String]()
-    var blockedUserRemoved = PublishSubject<Void>()
+    var userProfileChanged = PublishSubject<Void>()
     let users = BehaviorRelay<[User]>(value: Array(repeating: User.dummyType, count: 10))
     let items = BehaviorRelay<[NFT]>(value: Array(repeating: NFT.dummyType, count: 10))
     let itemCount = PublishRelay<Int>()
@@ -44,10 +44,8 @@ class HomeViewModel {
             } else {
                 if let document = documentSnapshot, document.exists {
                     let user = document.makeUser()
-                    // blockedUser 해제되었을때
-                    if self.blockdUser.count > user.blockedUser.count {
-                        self.blockedUserRemoved.onNext(())
-                    }
+                    // 유저 프로필 변경되었을 때
+                    self.userProfileChanged.onNext(())
                     self.blockdUser = user.blockedUser
                 }
             }

@@ -338,8 +338,13 @@ extension CommentViewController: UITableViewDelegate, UITableViewDataSource {
         let comment = dataArray[indexPath.row]
         if dataArray[indexPath.row].commentID != "" {
             let user = viewModel.users.value[indexPath.row]
-            cell.photoView.sd_setImage(with: URL(string: user.url), placeholderImage: nil, options: .scaleDownLargeImages)
-            cell.userNameLabel.text = user.name
+            if user.userUid == "" {
+                cell.photoView.image = imageWithColor(color: Gray.bright)
+                cell.userNameLabel.text = "삭제된 유저"
+            } else {
+                cell.photoView.sd_setImage(with: URL(string: user.url), placeholderImage: nil, options: .scaleDownLargeImages)
+                cell.userNameLabel.text = user.name
+            }
             cell.commentTimeLabel.text = viewModel.getTime(comment.writtenDate)
             cell.commentLabel.text = comment.content
             cell.commentLabel.withLineSpacing(4)

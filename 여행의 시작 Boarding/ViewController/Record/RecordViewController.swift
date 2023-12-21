@@ -64,7 +64,7 @@ class RecordViewController: UIViewController {
     }
     
     var placeHolderLabel = UILabel().then {
-        $0.text = "등록된 NFT가 없습니다.\n아래 버튼을 눌러 여행을 기록해보세요."
+        $0.text = "등록된 CARD가 없습니다.\n아래 버튼을 눌러 여행을 기록해보세요."
         $0.font = Pretendard.regular(20)
         $0.textColor = Gray.medium
         $0.withLineSpacing(12)
@@ -104,37 +104,37 @@ class RecordViewController: UIViewController {
             make.width.equalToSuperview()
         }
 //        
-        recordContentView.addSubview(pastTravelLabel)
-        pastTravelLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(15)
-            make.left.equalToSuperview().inset(20)
-        }
-        
-        recordContentView.addSubview(addPastTravelButton)
-        addPastTravelButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(15)
-            make.right.equalToSuperview().inset(20)
-            make.width.height.equalTo(20)
-        }
-        
-        recordContentView.addSubview(pastTravelCollectionView)
-        pastTravelCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(pastTravelLabel.snp.bottom).offset(20)
-            make.centerX.left.equalToSuperview()
-            make.height.equalTo(280)
-        }
-        
-        let recordDivider = divider()
-        recordContentView.addSubview(recordDivider)
-        recordDivider.snp.makeConstraints { make in
-            make.top.equalTo(pastTravelCollectionView.snp.bottom).offset(16)
-            make.centerX.left.equalToSuperview()
-            make.height.equalTo(1)
-        }
+//        recordContentView.addSubview(pastTravelLabel)
+//        pastTravelLabel.snp.makeConstraints { make in
+//            make.top.equalToSuperview().inset(15)
+//            make.left.equalToSuperview().inset(20)
+//        }
+//        
+//        recordContentView.addSubview(addPastTravelButton)
+//        addPastTravelButton.snp.makeConstraints { make in
+//            make.top.equalToSuperview().inset(15)
+//            make.right.equalToSuperview().inset(20)
+//            make.width.height.equalTo(20)
+//        }
+//        
+//        recordContentView.addSubview(pastTravelCollectionView)
+//        pastTravelCollectionView.snp.makeConstraints { make in
+//            make.top.equalTo(pastTravelLabel.snp.bottom).offset(20)
+//            make.centerX.left.equalToSuperview()
+//            make.height.equalTo(280)
+//        }
+//        
+//        let recordDivider = divider()
+//        recordContentView.addSubview(recordDivider)
+//        recordDivider.snp.makeConstraints { make in
+//            make.top.equalTo(pastTravelCollectionView.snp.bottom).offset(16)
+//            make.centerX.left.equalToSuperview()
+//            make.height.equalTo(1)
+//        }
 //
         recordContentView.addSubview(recordLabel)
         recordLabel.snp.makeConstraints { make in
-            make.top.equalTo(recordDivider.snp.bottom).offset(24)
+            make.top.equalToSuperview().offset(24)
             make.left.equalToSuperview().inset(20)
         }
         

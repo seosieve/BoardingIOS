@@ -38,7 +38,11 @@ class PlanViewController: UIViewController {
     }
     
     lazy var planFlowLayout = UICollectionViewFlowLayout().then {
-        $0.itemSize = CGSize(width: view.bounds.width - 60, height: 550)
+        if UIScreen.main.bounds.size.height <= 736 {
+            $0.itemSize = CGSize(width: view.bounds.width - 60, height: 450)
+        } else {
+            $0.itemSize = CGSize(width: view.bounds.width - 60, height: 550)
+        }
         $0.sectionInset = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
         $0.minimumLineSpacing = 0
         $0.scrollDirection = .horizontal
@@ -96,23 +100,41 @@ class PlanViewController: UIViewController {
             make.width.height.equalTo(20)
         }
         
-        view.addSubview(planCollectionView)
-        planCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(planView.snp.bottom).offset(50)
-            make.centerX.left.equalToSuperview()
-            make.height.equalTo(550)
+        if UIScreen.main.bounds.size.height <= 736 {
+            view.addSubview(planCollectionView)
+            planCollectionView.snp.makeConstraints { make in
+                make.top.equalTo(planView.snp.bottom).offset(-10)
+                make.centerX.left.equalToSuperview()
+                make.height.equalTo(500)
+            }
+        } else {
+            view.addSubview(planCollectionView)
+            planCollectionView.snp.makeConstraints { make in
+                make.top.equalTo(planView.snp.bottom).offset(50)
+                make.centerX.left.equalToSuperview()
+                make.height.equalTo(550)
+            }
         }
-        
         makeAddPlanView()
     }
     
     func makeAddPlanView() {
-        view.addSubview(addPlanView)
-        addPlanView.snp.makeConstraints { make in
-            make.top.equalTo(planView.snp.bottom).offset(50)
-            make.centerX.equalToSuperview()
-            make.left.equalToSuperview().offset(30)
-            make.height.equalTo(550)
+        if UIScreen.main.bounds.size.height <= 736 {
+            view.addSubview(addPlanView)
+            addPlanView.snp.makeConstraints { make in
+                make.top.equalTo(planView.snp.bottom).offset(-10)
+                make.centerX.equalToSuperview()
+                make.left.equalToSuperview().offset(30)
+                make.height.equalTo(550)
+            }
+        } else {
+            view.addSubview(addPlanView)
+            addPlanView.snp.makeConstraints { make in
+                make.top.equalTo(planView.snp.bottom).offset(50)
+                make.centerX.equalToSuperview()
+                make.left.equalToSuperview().offset(30)
+                make.height.equalTo(550)
+            }
         }
         
         let borderView = UIView().then {

@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import FirebaseStorageUI
 
 class MyPageViewController: UIViewController {
     
@@ -28,14 +29,13 @@ class MyPageViewController: UIViewController {
         $0.backgroundColor = Gray.white
     }
     
-    var userThumbnailView = UIImageView().then {
-        $0.image = UIImage()
+    var thumbnailView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.backgroundColor = Gray.light
     }
     
-    var userNameLabel = UILabel().then {
-        $0.text = "User Name"
+    var nicknameLabel = UILabel().then {
+        $0.text = ""
         $0.font = Pretendard.semiBold(25)
         $0.textColor = Gray.black
     }
@@ -46,8 +46,8 @@ class MyPageViewController: UIViewController {
         $0.spacing = 7
     }
     
-    var userCommentLabel = UILabel().then {
-        $0.text = "세상의 모든 아름다움을 담아가는 여행자입니다."
+    var introduceLabel = UILabel().then {
+        $0.text = ""
         $0.font = Pretendard.regular(15)
         $0.textColor = Gray.dark
     }
@@ -117,7 +117,7 @@ class MyPageViewController: UIViewController {
     
     lazy var NFTButton = UIButton().then {
         $0.tag = 0
-        $0.setTitle("NFT", for: .normal)
+        $0.setTitle("CARD", for: .normal)
         $0.setTitleColor(Gray.light, for: .normal)
         $0.setTitleColor(Boarding.blue, for: .selected)
         $0.titleLabel?.font = Pretendard.semiBold(17)
@@ -192,15 +192,15 @@ class MyPageViewController: UIViewController {
         userShadowView.rounded(axis: .horizontal, mask: false)
         userShadowView.makeShadow(opacity: 0.1, shadowRadius: 10)
         
-        userShadowView.addSubview(userThumbnailView)
-        userThumbnailView.snp.makeConstraints { make in
+        userShadowView.addSubview(thumbnailView)
+        thumbnailView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        userThumbnailView.rounded(axis: .horizontal)
+        thumbnailView.rounded(axis: .horizontal)
         
-        view.addSubview(userNameLabel)
-        userNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(userThumbnailView.snp.bottom).offset(10)
+        view.addSubview(nicknameLabel)
+        nicknameLabel.snp.makeConstraints { make in
+            make.top.equalTo(thumbnailView.snp.bottom).offset(10)
             make.centerX.equalToSuperview()
         }
         
@@ -212,9 +212,9 @@ class MyPageViewController: UIViewController {
 //            make.height.equalTo(24)
 //        }
         
-        view.addSubview(userCommentLabel)
-        userCommentLabel.snp.makeConstraints { make in
-            make.top.equalTo(userNameLabel.snp.bottom).offset(10)
+        view.addSubview(introduceLabel)
+        introduceLabel.snp.makeConstraints { make in
+            make.top.equalTo(nicknameLabel.snp.bottom).offset(10)
             make.centerX.equalToSuperview()
         }
         
@@ -258,6 +258,30 @@ class MyPageViewController: UIViewController {
             make.bottom.equalToSuperview().offset(150)
         }
         modalPageViewController.didMove(toParent: self)
+    }
+    
+    func setRx() {
+        viewModel.photoURL
+            .subscribe(onNext: { url in
+                self.thumbnailView.sd_setImage(with: url, placeholderImage: nil, options: .scaleDownLargeImages)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.username
+            .bind(to: nicknameLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.introduce
+            .bind(to: introduceLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        settingButton.rx.tap
+            .subscribe(onNext: {
+                let vc = PreferenceViewController()
+                vc.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(vc, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     func putUserAchievement() {
@@ -347,29 +371,5 @@ class MyPageViewController: UIViewController {
             }
             self.view.layoutIfNeeded()
         }
-    }
-    
-    func setRx() {
-        viewModel.thumbnail
-            .compactMap {$0}
-            .flatMapLatest { URL in
-                URLSession.shared.rx.data(request: URLRequest(url: URL))
-                    .compactMap {UIImage(data: $0)}
-                    .catchAndReturn(nil)
-            }
-            .bind(to: userThumbnailView.rx.image)
-            .disposed(by: disposeBag)
-        
-        viewModel.username
-            .bind(to: userNameLabel.rx.text)
-            .disposed(by: disposeBag)
-        
-        settingButton.rx.tap
-            .subscribe(onNext: {
-                let vc = PreferenceViewController()
-                vc.hidesBottomBarWhenPushed = true
-                self.navigationController?.pushViewController(vc, animated: true)
-            })
-            .disposed(by: disposeBag)
     }
 }

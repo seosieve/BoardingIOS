@@ -34,13 +34,13 @@ class UserInfoViewController: UIViewController {
         $0.textColor = Gray.black
     }
     
-    var userCommentLabel = UILabel().then {
-        $0.text = "세상의 모든 아름다움을 담아가는 여행자입니다."
+    lazy var userCommentLabel = UILabel().then {
+        $0.text = user.introduce
         $0.font = Pretendard.regular(15)
         $0.textColor = Gray.medium
         $0.numberOfLines = 0
         $0.lineBreakMode = .byTruncatingTail
-        $0.withLineSpacing(6)
+//        $0.withLineSpacing(6)
     }
     
     var levelView = UIView().then {
@@ -183,6 +183,14 @@ class UserInfoViewController: UIViewController {
             .subscribe(onNext: { username in
                 if !self.byHomeVC {
                     self.userNameLabel.text = username
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.introduce
+            .subscribe(onNext: { introduce in
+                if !self.byHomeVC {
+                    self.userCommentLabel.text = introduce
                 }
             })
             .disposed(by: disposeBag)

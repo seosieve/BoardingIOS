@@ -26,7 +26,7 @@ class PreferenceViewModel: NSObject {
     let deleteNFTImageSubject = PublishSubject<Void>()
     let deleteNFTVideoSubject = PublishSubject<Void>()
     
-    let items = BehaviorRelay<[String]>(value: ["차단 유저 목록", "이용약관", "개인정보 보호 정책", "버전정보", "로그아웃", "회원탈퇴"])
+    let items = BehaviorRelay<[String]>(value: ["프로필 편집", "차단 유저 목록", "이용약관", "개인정보 보호 정책", "버전정보", "로그아웃", "회원탈퇴"])
     let messageArr = BehaviorRelay<[(String, String, String)]>(value: [("정말 로그아웃 하시겠어요?", "로그아웃 후 Boarding를 이용하시려면 다시 로그인을 해 주세요!", "로그아웃"), ("정말 회원탈퇴 하시겠어요?", "아쉽지만 다음에 기회가 된다면 다시 Boarding을 찾아주세요!", "회원탈퇴")])
     
     var currentNonce: String?

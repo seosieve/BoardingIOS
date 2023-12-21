@@ -79,7 +79,7 @@ class AddMyPlanViewController: UIViewController {
         view.isUserInteractionEnabled = false
         viewModel.findScrap(planID: view.storedString, NFTID: NFTID) { alreadyExist in
             if alreadyExist {
-                self.toastAlert()
+                self.toastAlert("이미 플랜에 추가되었어요.")
                 view.isUserInteractionEnabled = true
             } else {
                 self.indicator.startAnimating()
