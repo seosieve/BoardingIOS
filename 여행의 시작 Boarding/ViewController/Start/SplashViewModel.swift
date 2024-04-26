@@ -19,6 +19,7 @@ import FirebaseAuth
 class SplashViewModel {
     
     let isUserLoggedIn = PublishRelay<Bool>()
+//    let isUserLoggedIn2 = PublishSubject<Bool>()
     
     let disposeBag = DisposeBag()
     
@@ -28,6 +29,7 @@ class SplashViewModel {
             print("현재 로그인된 유저는 \(user.displayName ?? "")")
         } else {
             isUserLoggedIn.accept(false)
+            print("daaaaa")
         }
     }
 }

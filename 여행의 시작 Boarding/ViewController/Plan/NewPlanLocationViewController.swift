@@ -151,7 +151,11 @@ class NewPlanLocationViewController: UIViewController {
 //MARK: - UITextFieldDelegate
 extension NewPlanLocationViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        nextButtonPressed()
+        if let text = textField.text, !text.isEmpty {
+            nextButtonPressed()
+        } else {
+            textField.resignFirstResponder()
+        }
         return true
     }
 }

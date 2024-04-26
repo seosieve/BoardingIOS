@@ -138,7 +138,7 @@ class HomeTableViewCell: UITableViewCell {
         contentView.addSubview(userNameLabel)
         userNameLabel.snp.makeConstraints { make in
             make.centerY.equalTo(userImage)
-            make.left.equalTo(userImage.snp.right).offset(4)
+            make.left.equalTo(userImage.snp.right).offset(6)
         }
         
         contentView.addSubview(userAchievementStackView)

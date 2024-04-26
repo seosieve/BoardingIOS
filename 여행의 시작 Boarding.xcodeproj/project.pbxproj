@@ -96,6 +96,8 @@
 		4E7D52E62AC41AF200054800 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E52AC41AF200054800 /* SplashViewController.swift */; };
 		4E7D52E82AC41B0100054800 /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E72AC41B0100054800 /* SplashViewModel.swift */; };
 		4E7D52EA2AC6FD0000054800 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D52E92AC6FD0000054800 /* MyPageViewModel.swift */; };
+		4E82B1612B348CF100E22CA7 /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E82B1602B348CF100E22CA7 /* AlarmViewController.swift */; };
+		4E82B1632B36B7BB00E22CA7 /* PastTravelLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E82B1622B36B7BB00E22CA7 /* PastTravelLocationViewController.swift */; };
 		4E92000C2B19DB3A005B061F /* AddPlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E92000B2B19DB3A005B061F /* AddPlanViewController.swift */; };
 		4E92000E2B1A2ADF005B061F /* AddPlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E92000D2B1A2ADF005B061F /* AddPlanViewModel.swift */; };
 		4E92AB742B24F15E00AC8F96 /* ExpertLevelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E92AB732B24F15E00AC8F96 /* ExpertLevelViewModel.swift */; };
@@ -106,6 +108,8 @@
 		4E9B91022AFDDAAA00F6D347 /* PlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9B91012AFDDAAA00F6D347 /* PlanViewModel.swift */; };
 		4EA7AFC22AA6C86D0055F4C7 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA7AFC12AA6C86D0055F4C7 /* HomeViewController.swift */; };
 		4EA7AFC42AA6D0E40055F4C7 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA7AFC32AA6D0E40055F4C7 /* HomeTableViewCell.swift */; };
+		4EB0A4C22B36C6D10047A9D5 /* PastTravelDurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB0A4C12B36C6D10047A9D5 /* PastTravelDurationViewController.swift */; };
+		4EB0A4C42B36CA8D0047A9D5 /* PastTravelPickViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB0A4C32B36CA8D0047A9D5 /* PastTravelPickViewController.swift */; };
 		4EB72F402AEB912A00F9CC67 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB72F3F2AEB912A00F9CC67 /* HomeViewModel.swift */; };
 		4EB72F422AEE480100F9CC67 /* AgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB72F412AEE480100F9CC67 /* AgreementViewController.swift */; };
 		4EB72F442AEF2D6B00F9CC67 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB72F432AEF2D6B00F9CC67 /* UserModel.swift */; };
@@ -232,6 +236,8 @@
 		4E7D52E72AC41B0100054800 /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 		4E7D52E92AC6FD0000054800 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		4E7D52EB2AC9347B00054800 /* 여행의 시작 Boarding.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "여행의 시작 Boarding.entitlements"; sourceTree = "<group>"; };
+		4E82B1602B348CF100E22CA7 /* AlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
+		4E82B1622B36B7BB00E22CA7 /* PastTravelLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastTravelLocationViewController.swift; sourceTree = "<group>"; };
 		4E92000B2B19DB3A005B061F /* AddPlanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlanViewController.swift; sourceTree = "<group>"; };
 		4E92000D2B1A2ADF005B061F /* AddPlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlanViewModel.swift; sourceTree = "<group>"; };
 		4E92AB732B24F15E00AC8F96 /* ExpertLevelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpertLevelViewModel.swift; sourceTree = "<group>"; };
@@ -242,6 +248,8 @@
 		4E9B91012AFDDAAA00F6D347 /* PlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanViewModel.swift; sourceTree = "<group>"; };
 		4EA7AFC12AA6C86D0055F4C7 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		4EA7AFC32AA6D0E40055F4C7 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
+		4EB0A4C12B36C6D10047A9D5 /* PastTravelDurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastTravelDurationViewController.swift; sourceTree = "<group>"; };
+		4EB0A4C32B36CA8D0047A9D5 /* PastTravelPickViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastTravelPickViewController.swift; sourceTree = "<group>"; };
 		4EB72F3F2AEB912A00F9CC67 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		4EB72F412AEE480100F9CC67 /* AgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementViewController.swift; sourceTree = "<group>"; };
 		4EB72F432AEF2D6B00F9CC67 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
@@ -468,6 +476,7 @@
 				4E4C14402AE650C900E504D4 /* SetLocationViewController.swift */,
 				4E35524D2B0E0E8C0060E391 /* SetLocationViewModel.swift */,
 				4E3552492B0DA0660060E391 /* SearchViewController.swift */,
+				4E82B1602B348CF100E22CA7 /* AlarmViewController.swift */,
 				4E5B50382B1D9DC800BA9AB2 /* ReportViewController.swift */,
 				4E7AD58F2B1DF5DA00DC8ACB /* ReportViewModel.swift */,
 				4E0648B12B01CCFD009DB83B /* AddMyPlanViewController.swift */,
@@ -515,6 +524,9 @@
 				4E0B90962B2A306600960AD2 /* RecordFullScreenViewModel.swift */,
 				4E44FBA02AD978520021FAB9 /* PastTravelViewController.swift */,
 				4E44FBA22ADA323A0021FAB9 /* PastTravelTitleViewController.swift */,
+				4E82B1622B36B7BB00E22CA7 /* PastTravelLocationViewController.swift */,
+				4EB0A4C12B36C6D10047A9D5 /* PastTravelDurationViewController.swift */,
+				4EB0A4C32B36CA8D0047A9D5 /* PastTravelPickViewController.swift */,
 			);
 			path = Record;
 			sourceTree = "<group>";
@@ -745,9 +757,11 @@
 				4E44FBA72ADCF9160021FAB9 /* NewPlanViewController.swift in Sources */,
 				4E0648B42B05BBA4009DB83B /* AddMyPlanViewModel.swift in Sources */,
 				4E44FB992ACFD9D80021FAB9 /* NFTDetailViewController.swift in Sources */,
+				4E82B1612B348CF100E22CA7 /* AlarmViewController.swift in Sources */,
 				4E778DDF2B17C4EE00A6A857 /* MyScrapViewController.swift in Sources */,
 				4E44FBA32ADA323A0021FAB9 /* PastTravelTitleViewController.swift in Sources */,
 				4E1EB4212AA47F8000620D57 /* WrittingViewController.swift in Sources */,
+				4EB0A4C42B36CA8D0047A9D5 /* PastTravelPickViewController.swift in Sources */,
 				4E44FBAB2ADD14A20021FAB9 /* WrittingTitleViewController.swift in Sources */,
 				4E778DE12B17C79600A6A857 /* MyScrapViewModel.swift in Sources */,
 				4E4C143D2AE4D9B500E504D4 /* NFTViewModel.swift in Sources */,
@@ -770,6 +784,7 @@
 				4E55AB822AFA2612008066E5 /* BackendExtension.swift in Sources */,
 				4EA7AFC42AA6D0E40055F4C7 /* HomeTableViewCell.swift in Sources */,
 				4E0648B22B01CCFD009DB83B /* AddMyPlanViewController.swift in Sources */,
+				4E82B1632B36B7BB00E22CA7 /* PastTravelLocationViewController.swift in Sources */,
 				4E4DB84C2AFCDB6E000491A6 /* NewPlanLocationViewController.swift in Sources */,
 				4E44FB9B2AD050F60021FAB9 /* WrittingViewModel.swift in Sources */,
 				4E44FBA92ADCFC4E0021FAB9 /* NewPlanTitleViewController.swift in Sources */,
@@ -789,6 +804,7 @@
 				4E9B91002AFDBC0E00F6D347 /* PlanModel.swift in Sources */,
 				4E7AD5962B1E6BB300DC8ACB /* BlockedUserTableViewCell.swift in Sources */,
 				4E5B50392B1D9DC800BA9AB2 /* ReportViewController.swift in Sources */,
+				4EB0A4C22B36C6D10047A9D5 /* PastTravelDurationViewController.swift in Sources */,
 				4EECA7F42A2F3235006FB764 /* ExpertLevelViewController.swift in Sources */,
 				4EECA6432A29C2A9006FB764 /* TabBarViewController.swift in Sources */,
 				4E4145CB2B27607C005BF3EB /* EditProfileViewController.swift in Sources */,

@@ -18,7 +18,7 @@ class ReportViewModel {
     
     let writeReportSubject = PublishSubject<Void>()
     let addReportCountSubject = PublishSubject<Void>()
-    let processCompleted = PublishSubject<Void>()
+    @MainActor let processCompleted = PublishSubject<Void>()
     let disposeBag = DisposeBag()
     
     init() {
@@ -26,12 +26,21 @@ class ReportViewModel {
             userUid = user.uid
         }
         
-        Observable.zip(writeReportSubject, addReportCountSubject)
+//        Observable.zip(writeReportSubject, addReportCountSubject)
+//            .map{ _ in return }
+//            .subscribe(onNext: { [weak self] in
+//                self?.processCompleted.onNext(())
+//            })
+//            .disposed(by: disposeBag)
+        
+        let observable = Observable.zip(writeReportSubject, addReportCountSubject)
             .map{ _ in return }
-            .subscribe(onNext: { [weak self] in
-                self?.processCompleted.onNext(())
-            })
-            .disposed(by: disposeBag)
+        
+        Task {
+            for try await aa in observable.values {
+                processCompleted.onNext(())
+            }
+        }
     }
     
     func writeReport(NFTID: String, authorUid: String, reason: String, detail: String) {
@@ -49,6 +58,20 @@ class ReportViewModel {
         }
     }
     
+    func writeReportAsync(NFTID: String, authorUid: String, reason: String, detail: String) async -> Void {
+        let unixTimestamp = NSDate().timeIntervalSince1970
+        let date = Date(timeIntervalSince1970: unixTimestamp)
+        let report = Report(reportID: reportID, userUid: userUid, NFTID: NFTID, authorUid: authorUid, writtenDate: dateToString(date), reason: reason, detail: detail)
+        
+        do {
+            try await db.collection("Report").document(reportID).setData(report.dicType)
+            print("report 저장 성공: \(self.reportID)")
+            return
+        } catch {
+            print("report 저장 에러: \(error)")
+        }
+    }
+    
     func addReportCount(NFTID: String) {
         db.collection("NFT").document(NFTID).updateData(["reports": FieldValue.increment(Int64(1))]) { error in
             if let error = error {
@@ -57,6 +80,16 @@ class ReportViewModel {
                 print("reports count 증가 성공")
                 self.addReportCountSubject.onNext(())
             }
+        }
+    }
+    
+    func addReportCountAsync(NFTID: String) async -> Void {
+        do {
+            try await db.collection("NFT").document(NFTID).updateData(["reports": FieldValue.increment(Int64(1))])
+            print("reports count 증가 성공")
+            return
+        } catch {
+            print("reports count 증가 에러: \(error)")
         }
     }
     

@@ -110,6 +110,7 @@ class InfoViewController: UIViewController {
     lazy var userImage = UIImageView().then {
         $0.sd_setImage(with: URL(string: user.url), placeholderImage: UIImage())
         $0.tintColor = Boarding.blue
+        $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 16
         $0.layer.masksToBounds = true
     }

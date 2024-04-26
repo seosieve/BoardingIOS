@@ -373,7 +373,9 @@ class ReportViewController: UIViewController {
     
     func setRx() {
         viewModel.processCompleted
+//            .observe(on: MainScheduler.instance)
             .subscribe(onNext: {
+                print("aaaaaaaaa")
                 self.indicator.stopAnimating()
                 self.dismiss(animated: true)
             })

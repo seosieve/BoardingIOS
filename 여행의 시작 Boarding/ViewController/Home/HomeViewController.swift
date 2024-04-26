@@ -72,7 +72,9 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @objc func alarmButtonPressed() {
-        print("alarmButton Pressed")
+        let vc = AlarmViewController()
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     var alarmPointView = UIView().then {
@@ -148,14 +150,14 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
         
         iconView.addSubview(locationImageView)
         locationImageView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(25)
+            make.left.equalToSuperview().offset(20)
             make.centerY.equalToSuperview()
             make.height.equalTo(26)
         }
         
         iconView.addSubview(locationButton)
         locationButton.snp.makeConstraints { make in
-            make.left.equalTo(locationImageView.snp.right).offset(12)
+            make.left.equalTo(locationImageView.snp.right).offset(10)
             make.centerY.equalToSuperview()
         }
         
@@ -167,7 +169,7 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
         
         locationButton.addSubview(locationTriangle)
         locationTriangle.snp.makeConstraints { make in
-            make.left.equalTo(locationLabel.snp.right).offset(8)
+            make.left.equalTo(locationLabel.snp.right)
             make.right.equalToSuperview()
             make.centerY.equalToSuperview()
             make.width.height.equalTo(28)
@@ -178,21 +180,20 @@ class HomeViewController: UIViewController, UIGestureRecognizerDelegate {
         iconView.addSubview(alarmPointView)
         searchButton.snp.makeConstraints { make in
             make.width.height.equalTo(24)
-            make.right.equalToSuperview().offset(-24)
-//            make.right.equalTo(alarmButton.snp.left).offset(-12)
+            make.right.equalTo(alarmButton.snp.left).offset(-12)
             make.centerY.equalToSuperview()
         }
-//        alarmButton.snp.makeConstraints { make in
-//            make.width.height.equalTo(24)
-//            make.right.equalToSuperview().offset(-24)
-//            make.centerY.equalToSuperview()
-//        }
-//        alarmPointView.snp.makeConstraints { make in
-//            make.width.height.equalTo(7)
-//            make.right.equalToSuperview().offset(-27.5)
-//            make.top.equalToSuperview().offset(12)
-//        }
-//        alarmPointView.rounded(axis: .horizontal)
+        alarmButton.snp.makeConstraints { make in
+            make.width.height.equalTo(24)
+            make.right.equalToSuperview().offset(-20)
+            make.centerY.equalToSuperview()
+        }
+        alarmPointView.snp.makeConstraints { make in
+            make.width.height.equalTo(7)
+            make.right.equalToSuperview().offset(-23.5)
+            make.top.equalToSuperview().offset(12)
+        }
+        alarmPointView.rounded(axis: .horizontal)
         
         view.insertSubview(homeTableView, belowSubview: iconView)
         homeTableView.snp.makeConstraints { make in

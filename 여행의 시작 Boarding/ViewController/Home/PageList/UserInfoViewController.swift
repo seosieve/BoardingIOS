@@ -26,6 +26,7 @@ class UserInfoViewController: UIViewController {
     lazy var userImage = UIImageView().then {
         $0.sd_setImage(with: URL(string: user.url), placeholderImage: UIImage())
         $0.backgroundColor = Gray.light
+        $0.contentMode = .scaleAspectFill
     }
     
     lazy var userNameLabel = UILabel().then {
@@ -39,8 +40,8 @@ class UserInfoViewController: UIViewController {
         $0.font = Pretendard.regular(15)
         $0.textColor = Gray.medium
         $0.numberOfLines = 0
-        $0.lineBreakMode = .byTruncatingTail
-//        $0.withLineSpacing(6)
+        $0.lineBreakMode = .byCharWrapping
+        $0.withLineSpacing(6)
     }
     
     var levelView = UIView().then {

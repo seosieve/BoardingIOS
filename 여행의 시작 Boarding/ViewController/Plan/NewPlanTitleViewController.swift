@@ -8,6 +8,7 @@
 import UIKit
 
 class NewPlanTitleViewController: UIViewController {
+    
     lazy var backButton = UIButton().then {
         let image = UIImage(named: "Back")?.withRenderingMode(.alwaysTemplate)
         $0.setImage(image, for: .normal)
@@ -147,7 +148,11 @@ class NewPlanTitleViewController: UIViewController {
 //MARK: - UITextFieldDelegate
 extension NewPlanTitleViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        nextButtonPressed()
+        if let text = textField.text, !text.isEmpty {
+            nextButtonPressed()
+        } else {
+            textField.resignFirstResponder()
+        }
         return true
     }
 }

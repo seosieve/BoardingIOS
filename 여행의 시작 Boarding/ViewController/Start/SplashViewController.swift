@@ -15,7 +15,7 @@ import KakaoSDKUser
 import RxKakaoSDKUser
 
 class SplashViewController: UIViewController {
-    
+    //강하게 결합 - viewModel(하위모듈)
     let viewModel = SplashViewModel()
     let disposeBag = DisposeBag()
     
@@ -33,11 +33,12 @@ class SplashViewController: UIViewController {
         super.viewDidLoad()
         view.gradient([Boarding.skyBlue, Boarding.blue], axis: .horizontal)
         setViews()
+        setRx()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        setRx()
+        viewModel.checkCurrentUser()
     }
     
     func setViews() {
@@ -56,14 +57,36 @@ class SplashViewController: UIViewController {
     
     func setRx() {
         viewModel.isUserLoggedIn
+            .debug("🩷")
             .subscribe(onNext:{ [weak self] loggedIn in
-                let homeVC = TabBarViewController()
-                let startVC = ChangableNavigationController(rootViewController: StartViewController())
-                let vc = loggedIn ? homeVC : startVC
-                self?.presentVC(vc, transition: .crossDissolve)
+//                let homeVC = TabBarViewController()
+//                let startVC = ChangableNavigationController(rootViewController: StartViewController())
+//                let vc = loggedIn ? homeVC : startVC
+//                self?.presentVC(vc, transition: .crossDissolve)
             })
             .disposed(by: disposeBag)
         
-        viewModel.checkCurrentUser()
+//        viewModel.isUserLoggedIn
+//            .subscribe { [weak self] loggedIn in
+//                print("😃", loggedIn)
+//            }
+//            .disposed(by: disposeBag)
+        
+        print("aa")
+        Task {
+            do {
+                print("bb")
+                for try await loggedIn in viewModel.isUserLoggedIn.asObservable().values {
+                    print("cc")
+                    let homeVC = TabBarViewController()
+                    let startVC = ChangableNavigationController(rootViewController: StartViewController())
+                    let vc = loggedIn ? homeVC : startVC
+                    presentVC(vc, transition: .crossDissolve)
+                }
+            } catch {
+                print("dd")
+            }
+            
+        }
     }
 }

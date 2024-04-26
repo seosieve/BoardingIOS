@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '16.0'
+platform :ios, '15.0'
 
 target '여행의 시작 Boarding' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -12,6 +12,7 @@ target '여행의 시작 Boarding' do
   pod 'FirebaseFirestore'
   pod 'FirebaseStorage'
   pod 'FirebaseStorageUI'
+  pod 'Firebase/Messaging' 
   pod 'KakaoSDKCommon'
   pod 'RxKakaoSDKCommon'
   pod 'KakaoSDKAuth'

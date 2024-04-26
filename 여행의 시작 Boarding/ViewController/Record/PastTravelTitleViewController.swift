@@ -9,6 +9,17 @@ import UIKit
 
 class PastTravelTitleViewController: UIViewController {
 
+    lazy var backButton = UIButton().then {
+        let image = UIImage(named: "Back")?.withRenderingMode(.alwaysTemplate)
+        $0.setImage(image, for: .normal)
+        $0.tintColor = Gray.medium
+        $0.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+    }
+    
+    @objc func backButtonPressed() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     var titleLabel = UILabel().then {
         $0.text = "여행 제목은 무엇인가요?"
         $0.font = Pretendard.semiBold(25)
@@ -49,19 +60,30 @@ class PastTravelTitleViewController: UIViewController {
     }
     
     @objc func nextButtonPressed() {
-        print("aa")
+        titleTextField.resignFirstResponder()
+        let vc = PastTravelLocationViewController()
+        vc.titleResult = titleTextField.text!
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.setNavigationBar()
-        self.navigationController?.navigationBar.tintColor = Gray.medium
         view.backgroundColor = Gray.white
         titleTextField.delegate = self
         dismissKeyboardWhenTapped()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         setViews()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        titleTextField.becomeFirstResponder()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        titleTextField.resignFirstResponder()
     }
     
     @objc func keyboardWillShow(_ sender: Notification) {
@@ -83,9 +105,17 @@ class PastTravelTitleViewController: UIViewController {
     }
     
     func setViews() {
+        view.addSubview(backButton)
+        backButton.snp.makeConstraints { make in
+            make.top.equalTo(window.safeAreaInsets.top)
+            make.left.equalToSuperview()
+            make.width.equalTo(60)
+            make.height.equalTo(48)
+        }
+        
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.navigationController!.navigationBar.bottom()+20)
+            make.top.equalTo(backButton.snp.bottom).offset(20)
             make.left.equalToSuperview().offset(20)
         }
         
@@ -118,7 +148,11 @@ class PastTravelTitleViewController: UIViewController {
 //MARK: - UITextFieldDelegate
 extension PastTravelTitleViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        titleTextField.resignFirstResponder()
+        if let text = textField.text, !text.isEmpty {
+            nextButtonPressed()
+        } else {
+            textField.resignFirstResponder()
+        }
         return true
     }
 }

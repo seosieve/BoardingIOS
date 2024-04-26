@@ -103,38 +103,38 @@ class RecordViewController: UIViewController {
             make.edges.equalToSuperview()
             make.width.equalToSuperview()
         }
-//        
-//        recordContentView.addSubview(pastTravelLabel)
-//        pastTravelLabel.snp.makeConstraints { make in
-//            make.top.equalToSuperview().inset(15)
-//            make.left.equalToSuperview().inset(20)
-//        }
-//        
-//        recordContentView.addSubview(addPastTravelButton)
-//        addPastTravelButton.snp.makeConstraints { make in
-//            make.top.equalToSuperview().inset(15)
-//            make.right.equalToSuperview().inset(20)
-//            make.width.height.equalTo(20)
-//        }
-//        
-//        recordContentView.addSubview(pastTravelCollectionView)
-//        pastTravelCollectionView.snp.makeConstraints { make in
-//            make.top.equalTo(pastTravelLabel.snp.bottom).offset(20)
-//            make.centerX.left.equalToSuperview()
-//            make.height.equalTo(280)
-//        }
-//        
-//        let recordDivider = divider()
-//        recordContentView.addSubview(recordDivider)
-//        recordDivider.snp.makeConstraints { make in
-//            make.top.equalTo(pastTravelCollectionView.snp.bottom).offset(16)
-//            make.centerX.left.equalToSuperview()
-//            make.height.equalTo(1)
-//        }
-//
+        
+        recordContentView.addSubview(pastTravelLabel)
+        pastTravelLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(15)
+            make.left.equalToSuperview().inset(20)
+        }
+        
+        recordContentView.addSubview(addPastTravelButton)
+        addPastTravelButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(15)
+            make.right.equalToSuperview().inset(20)
+            make.width.height.equalTo(20)
+        }
+        
+        recordContentView.addSubview(pastTravelCollectionView)
+        pastTravelCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(pastTravelLabel.snp.bottom).offset(20)
+            make.centerX.left.equalToSuperview()
+            make.height.equalTo(280)
+        }
+        
+        let recordDivider = divider()
+        recordContentView.addSubview(recordDivider)
+        recordDivider.snp.makeConstraints { make in
+            make.top.equalTo(pastTravelCollectionView.snp.bottom).offset(16)
+            make.centerX.left.equalToSuperview()
+            make.height.equalTo(1)
+        }
+
         recordContentView.addSubview(recordLabel)
         recordLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(24)
+            make.top.equalTo(recordDivider.snp.bottom).offset(24)
             make.left.equalToSuperview().inset(20)
         }
         

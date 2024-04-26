@@ -6,10 +6,26 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class PastTravelViewController: UIViewController {
 
     var dismiss = true
+    
+    let viewModel = NewPlanViewModel()
+    let disposeBag = DisposeBag()
+    
+    lazy var backButton = UIButton().then {
+        let image = UIImage(named: "Back")?.withRenderingMode(.alwaysTemplate)
+        $0.setImage(image, for: .normal)
+        $0.tintColor = Gray.medium
+        $0.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+    }
+    
+    @objc func backButtonPressed() {
+        self.navigationController?.popViewController(animated: true)
+    }
     
     var pastTravelLabel = UILabel().then {
         $0.text = "지난 여행 만들기"
@@ -42,44 +58,44 @@ class PastTravelViewController: UIViewController {
     }
     
     @objc func tapRecognized() {
-        dismiss = false
         let vc = PastTravelTitleViewController()
-        vc.navigationController?.navigationBar.isHidden = false
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     lazy var completeButton = UIButton().then {
-        $0.setBackgroundColor(Gray.light.withAlphaComponent(0.7), for: .normal)
+        $0.setBackgroundColor(Boarding.blue, for: .normal)
+        $0.setBackgroundColor(Gray.light.withAlphaComponent(0.7), for: .disabled)
         $0.setTitle("완료", for: .normal)
-        $0.setTitleColor(Gray.dark, for: .normal)
+        $0.setTitleColor(Gray.white, for: .normal)
+        $0.setTitleColor(Gray.dark, for: .disabled)
         $0.titleLabel?.font = Pretendard.medium(19)
-        $0.addTarget(self, action: #selector(completeButtonPressed), for: .touchUpInside)
+        $0.isEnabled = false
     }
     
-    @objc func completeButtonPressed() {
-        print("aa")
+    var indicator = UIActivityIndicatorView().then {
+        $0.style = .medium
+        $0.color = Gray.light
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.setNavigationBar()
-        self.navigationController?.navigationBar.tintColor = Gray.medium
         view.backgroundColor = Gray.white
         setViews()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        if dismiss {
-            self.navigationController?.navigationBar.isHidden = true
-        }
-        dismiss.toggle()
+        setRx()
     }
     
     func setViews() {
+        view.addSubview(backButton)
+        backButton.snp.makeConstraints { make in
+            make.top.equalTo(window.safeAreaInsets.top)
+            make.left.equalToSuperview()
+            make.width.equalTo(60)
+            make.height.equalTo(48)
+        }
+        
         view.addSubview(pastTravelLabel)
         pastTravelLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.navigationController!.navigationBar.bottom()+20)
+            make.top.equalTo(backButton.snp.bottom).offset(20)
             make.left.equalToSuperview().offset(20)
         }
         
@@ -143,5 +159,19 @@ class PastTravelViewController: UIViewController {
             make.bottom.equalToSuperview().inset(30)
         }
         completeButton.rounded(axis: .horizontal)
+        
+        view.addSubview(indicator)
+        indicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+    }
+    
+    func setRx() {
+        completeButton.rx.tap
+            .throttle(.seconds(2), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                print("aa")
+            })
+            .disposed(by: disposeBag)
     }
 }
