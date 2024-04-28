@@ -14,16 +14,23 @@ import RxKakaoSDKAuth
 import KakaoSDKUser
 import RxKakaoSDKUser
 
+//Protocol을 통해서 ViewController 구성 통일화
+protocol BaseAttribute {
+    func setAttribute()
+    func setViews()
+    func setRx()
+}
+
 class SplashViewController: UIViewController {
-    //강하게 결합 - viewModel(하위모듈)
-    let viewModel = SplashViewModel()
-    let disposeBag = DisposeBag()
     
-    var titleImageView = UIImageView().then {
+    private let viewModel = SplashViewModel()
+    private let disposeBag = DisposeBag()
+    
+    private var titleImageView = UIImageView().then {
         $0.image = UIImage(named: "TitleWhite")
     }
     
-    var subLabel = UILabel().then {
+    private var subLabel = UILabel().then {
         $0.text = "새로운 여행의 시작"
         $0.textColor = Gray.white.withAlphaComponent(0.8)
         $0.font = Pretendard.medium(14)
@@ -31,16 +38,19 @@ class SplashViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.gradient([Boarding.skyBlue, Boarding.blue], axis: .horizontal)
+        setAttribute()
         setViews()
         setRx()
     }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         viewModel.checkCurrentUser()
     }
-    
+}
+
+extension SplashViewController: BaseAttribute {
     func setViews() {
         view.addSubview(titleImageView)
         titleImageView.snp.makeConstraints { make in
@@ -55,38 +65,25 @@ class SplashViewController: UIViewController {
         }
     }
     
+    func setAttribute() {
+        view.gradient([Boarding.skyBlue, Boarding.blue], axis: .horizontal)
+    }
+    
     func setRx() {
         viewModel.isUserLoggedIn
-            .debug("🩷")
-            .subscribe(onNext:{ [weak self] loggedIn in
-//                let homeVC = TabBarViewController()
-//                let startVC = ChangableNavigationController(rootViewController: StartViewController())
-//                let vc = loggedIn ? homeVC : startVC
-//                self?.presentVC(vc, transition: .crossDissolve)
+            .asDriver(onErrorJustReturn: true)
+            .drive(onNext: { loggedIn in
+                print(loggedIn)
+                let homeVC = TabBarViewController()
+                let startVC = ChangableNavigationController(rootViewController: StartViewController())
+                let vc = loggedIn ? homeVC : startVC
+                self.presentVC(vc, transition: .crossDissolve)
             })
             .disposed(by: disposeBag)
         
-//        viewModel.isUserLoggedIn
-//            .subscribe { [weak self] loggedIn in
-//                print("😃", loggedIn)
-//            }
-//            .disposed(by: disposeBag)
-        
-        print("aa")
-        Task {
-            do {
-                print("bb")
-                for try await loggedIn in viewModel.isUserLoggedIn.asObservable().values {
-                    print("cc")
-                    let homeVC = TabBarViewController()
-                    let startVC = ChangableNavigationController(rootViewController: StartViewController())
-                    let vc = loggedIn ? homeVC : startVC
-                    presentVC(vc, transition: .crossDissolve)
-                }
-            } catch {
-                print("dd")
-            }
-            
-        }
+        viewModel.checkCurrentUser()
     }
 }
+
+
+
