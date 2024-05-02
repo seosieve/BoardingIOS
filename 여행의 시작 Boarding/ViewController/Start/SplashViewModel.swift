@@ -29,4 +29,9 @@ class SplashViewModel {
             print("로그인되어있지 않습니다.")
         }
     }
+    
+    func test(input: [Int]) -> Int {
+        let result = input.reduce(0,+)
+        return result
+    }
 }

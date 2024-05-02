@@ -28,6 +28,17 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4EF270D02BE3759100E9DE88"
+               BuildableName = "defaultBoardingTests.xctest"
+               BlueprintName = "defaultBoardingTests"
+               ReferencedContainer = "container:&#x110b;&#x1167;&#x1112;&#x1162;&#x11bc;&#x110b;&#x1174; &#x1109;&#x1175;&#x110c;&#x1161;&#x11a8; Boarding.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
