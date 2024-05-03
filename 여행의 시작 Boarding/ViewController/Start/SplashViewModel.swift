@@ -30,8 +30,29 @@ class SplashViewModel {
         }
     }
     
-    func test(input: [Int]) -> Int {
-        let result = input.reduce(0,+)
-        return result
+    enum HitResult {
+        case Win
+        case Lose
+        case Down
+        case Up
+    }
+    
+    var randomValue = 3
+    var tryCount = 0
+    
+    func compareValue(with hitNumber: Int) -> HitResult {
+        if randomValue == hitNumber {
+            return .Win
+        } else if tryCount >= 5 {
+            return .Lose
+        } else if hitNumber > randomValue {
+            return .Down
+        } else {
+            return .Up
+        }
+    }
+    
+    struct RandomRespose: Decodable {
+        let random: Int
     }
 }

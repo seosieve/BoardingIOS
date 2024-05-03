@@ -22,15 +22,28 @@ class defaultBoardingTests: XCTestCase {
     }
     
     //test키워드를 붙혀야 동작
-    func test_splashViewModelTest() {
+    func test_splashViewModelTest1() {
         //given
-        let input = [3,3,1]
+        let hitNumber = 10
+        sut.randomValue = 4
         
         //when
-        let result = sut.test(input: input)
+        let result = sut.compareValue(with: hitNumber)
         
         //then
-        XCTAssertEqual(result, 7)
+        XCTAssertEqual(result, .Down)
+    }
+    
+    func test_splashViewModelTest2() {
+        //given
+        let hitNumber = 10
+        sut.randomValue = 9
+        
+        //when
+        let result = sut.compareValue(with: hitNumber)
+        
+        //then
+        XCTAssertEqual(result, .Down)
     }
 }
 
