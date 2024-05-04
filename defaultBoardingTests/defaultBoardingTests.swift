@@ -45,6 +45,22 @@ class defaultBoardingTests: XCTestCase {
         //then
         XCTAssertEqual(result, .Down)
     }
+    
+    func test_splashViewModelTest3() {
+        //given
+        let promise = expectation(description: "It makes random value")
+        sut.randomValue = 50
+        
+        //when
+        sut.makeRandomValue {
+            //then
+            XCTAssertGreaterThanOrEqual(self.sut.randomValue, 0)
+            XCTAssertLessThanOrEqual(self.sut.randomValue, 30)
+            promise.fulfill()
+        }
+        
+        wait(for: [promise], timeout: 10)//wait
+    }
 }
 
 

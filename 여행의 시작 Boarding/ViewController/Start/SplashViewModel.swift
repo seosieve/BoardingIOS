@@ -55,4 +55,22 @@ class SplashViewModel {
     struct RandomRespose: Decodable {
         let random: Int
     }
+    
+    func makeRandomValue(completionHandler: @escaping () -> Void) {
+        let urlString = "https://csrng.net/csrng/csrng.php?min=0&max=30"
+        guard let url = URL(string: urlString) else { return }
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let response = response as? HTTPURLResponse,
+                  (200...399).contains(response.statusCode) else { return }
+            guard let data = data, error == nil else { return }
+            do {
+                guard let newValue = try JSONDecoder().decode([RandomRespose].self, from: data).first?.random else { return }
+                self.randomValue = newValue
+                completionHandler()
+            } catch {
+                return
+            }
+        }
+        task.resume()
+    }
 }
