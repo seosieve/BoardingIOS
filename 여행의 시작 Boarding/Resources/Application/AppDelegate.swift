@@ -19,6 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         RxKakaoSDK.initSDK(appKey: APIKey.kakao)
         GMSServices.provideAPIKey(APIKey.googleMap)
+        if let sandboxPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            print("Documents Directory: \(sandboxPath.path)")
+        }
         return true
     }
 

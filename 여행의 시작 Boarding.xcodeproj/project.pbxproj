@@ -365,6 +365,64 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4E1ACFCA2C58E7640053B1F4 /* StoryBoard */ = {
+			isa = PBXGroup;
+			children = (
+				4EECA6322A29BED0006FB764 /* LaunchScreen.storyboard */,
+			);
+			path = StoryBoard;
+			sourceTree = "<group>";
+		};
+		4E1ACFCB2C58E77B0053B1F4 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				4EECA6272A29BECF006FB764 /* AppDelegate.swift */,
+				4EECA6292A29BECF006FB764 /* SceneDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		4E1ACFCC2C58E7A70053B1F4 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				4EECA7D82A2B3005006FB764 /* Extension.swift */,
+				4E55AB812AFA2612008066E5 /* BackendExtension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		4E1ACFCD2C58E7BE0053B1F4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4EECA7BC2A29C80C006FB764 /* Font */,
+				4E1ACFCE2C58E80B0053B1F4 /* GoogleMap */,
+				4E1ACFCC2C58E7A70053B1F4 /* Extension */,
+				4E1ACFCA2C58E7640053B1F4 /* StoryBoard */,
+				4E1ACFCB2C58E77B0053B1F4 /* Application */,
+				4E7D52EB2AC9347B00054800 /* 여행의 시작 Boarding.entitlements */,
+				4EECA6302A29BED0006FB764 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		4E1ACFCE2C58E80B0053B1F4 /* GoogleMap */ = {
+			isa = PBXGroup;
+			children = (
+				4E4C45042B202B8700018BD6 /* GoogleService-Info.plist */,
+				4E36C97D2B24109A00031B4F /* GoogleMaps.bundle */,
+			);
+			path = GoogleMap;
+			sourceTree = "<group>";
+		};
+		4E1ACFCF2C58E9240053B1F4 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				4EECA7D32A2B028D006FB764 /* Model */,
+				4EECA6412A29C21D006FB764 /* ViewController */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
 		4E4FF3CA2AB324AB0042126A /* Start */ = {
 			isa = PBXGroup;
 			children = (
@@ -426,19 +484,9 @@
 		4EECA6262A29BECF006FB764 /* 여행의 시작 Boarding */ = {
 			isa = PBXGroup;
 			children = (
-				4E36C97D2B24109A00031B4F /* GoogleMaps.bundle */,
-				4E7D52EB2AC9347B00054800 /* 여행의 시작 Boarding.entitlements */,
-				4EECA6272A29BECF006FB764 /* AppDelegate.swift */,
-				4EECA6292A29BECF006FB764 /* SceneDelegate.swift */,
-				4EECA6302A29BED0006FB764 /* Assets.xcassets */,
-				4EECA6322A29BED0006FB764 /* LaunchScreen.storyboard */,
+				4E1ACFCD2C58E7BE0053B1F4 /* Resources */,
+				4E1ACFCF2C58E9240053B1F4 /* Sources */,
 				4EECA6352A29BED0006FB764 /* Info.plist */,
-				4E4C45042B202B8700018BD6 /* GoogleService-Info.plist */,
-				4EECA7D82A2B3005006FB764 /* Extension.swift */,
-				4E55AB812AFA2612008066E5 /* BackendExtension.swift */,
-				4EECA7BC2A29C80C006FB764 /* Font */,
-				4EECA7D32A2B028D006FB764 /* Model */,
-				4EECA6412A29C21D006FB764 /* ViewController */,
 			);
 			path = "여행의 시작 Boarding";
 			sourceTree = "<group>";
@@ -446,8 +494,8 @@
 		4EECA6412A29C21D006FB764 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				4EECA6422A29C2A9006FB764 /* TabBarViewController.swift */,
 				4EECA7D12A29E31B006FB764 /* CustomTabBar.swift */,
+				4EECA6422A29C2A9006FB764 /* TabBarViewController.swift */,
 				4EECA7EA2A2EFFB7006FB764 /* Cell */,
 				4E4FF3CA2AB324AB0042126A /* Start */,
 				4EECA7DB2A2C81E4006FB764 /* Home */,
@@ -1054,7 +1102,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "여행의 시작 Boarding/여행의 시작 Boarding.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "여행의 시작 Boarding/Resources/여행의 시작 Boarding.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = LP97CM7XPA;
@@ -1159,7 +1207,7 @@
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1171,6 +1219,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "여행의 시작 Boarding/여행의 시작 Boarding-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1187,7 +1236,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "여행의 시작 Boarding/여행의 시작 Boarding.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "여행의 시작 Boarding/Resources/여행의 시작 Boarding.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = LP97CM7XPA;
@@ -1292,7 +1341,7 @@
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1304,6 +1353,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "여행의 시작 Boarding/여행의 시작 Boarding-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
