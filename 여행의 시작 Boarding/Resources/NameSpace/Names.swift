@@ -18,7 +18,7 @@ enum Names {
         case withdraw
         
         ///TableView Titles
-        var titles: String {
+        var title: String {
             switch self {
             case .editProfile:
                 return "프로필 편집"
@@ -30,6 +30,38 @@ enum Names {
                 return "개인정보 보호 정책"
             case .versionInfo:
                 return "버전정보"
+            case .logOut:
+                return "로그아웃"
+            case .withdraw:
+                return "회원탈퇴"
+            }
+        }
+    }
+    
+    enum PreferenceAlert {
+        case logOut
+        case withdraw
+        
+        var title: String {
+            switch self {
+            case .logOut:
+                return "정말 로그아웃 하시겠어요?"
+            case .withdraw:
+                return "정말 회원탈퇴 하시겠어요?"
+            }
+        }
+        
+        var message: String {
+            switch self {
+            case .logOut:
+                return "로그아웃 후 Boarding를 이용하시려면 다시 로그인을 해 주세요!"
+            case .withdraw:
+                return "아쉽지만 다음에 기회가 된다면 다시 Boarding을 찾아주세요!"
+            }
+        }
+        
+        var actionTitle: String {
+            switch self {
             case .logOut:
                 return "로그아웃"
             case .withdraw:

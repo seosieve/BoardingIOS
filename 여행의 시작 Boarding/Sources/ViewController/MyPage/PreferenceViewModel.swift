@@ -12,12 +12,14 @@ import RxKakaoSDKAuth
 import KakaoSDKAuth
 import RxKakaoSDKUser
 import KakaoSDKUser
+import RxKakaoSDKCommon
+import KakaoSDKCommon
 import FirebaseAuth
 import AuthenticationServices
 
 class PreferenceViewModel: NSObject {
     
-    var loginType = ""
+    var loginType: String!
     
     let deleteUserSubject = PublishSubject<Void>()
     let deleteUserImageSubject = PublishSubject<Void>()
@@ -25,8 +27,6 @@ class PreferenceViewModel: NSObject {
     let deleteNFTSubject = PublishSubject<Void>()
     let deleteNFTImageSubject = PublishSubject<Void>()
     let deleteNFTVideoSubject = PublishSubject<Void>()
-    
-    let messageArr = BehaviorRelay<[(String, String, String)]>(value: [("정말 로그아웃 하시겠어요?", "로그아웃 후 Boarding를 이용하시려면 다시 로그인을 해 주세요!", "로그아웃"), ("정말 회원탈퇴 하시겠어요?", "아쉽지만 다음에 기회가 된다면 다시 Boarding을 찾아주세요!", "회원탈퇴")])
     
     var currentNonce: String?
     
@@ -50,8 +50,9 @@ class PreferenceViewModel: NSObject {
         
         Observable.zip(deleteUserSubject, deleteUserImageSubject, deleteProfileSubject, deleteNFTSubject, deleteNFTImageSubject, deleteNFTVideoSubject)
             .map{ _ in return }
-            .subscribe(onNext: { [weak self] in
-                self?.processCompleted.onNext(())
+            .withUnretained(self)
+            .subscribe(onNext: { _ in
+                self.processCompleted.onNext(())
             })
             .disposed(by: disposeBag)
     }

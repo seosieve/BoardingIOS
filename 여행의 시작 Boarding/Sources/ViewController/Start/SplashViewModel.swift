@@ -20,6 +20,8 @@ class SplashViewModel {
     
     let isUserLoggedIn = BehaviorRelay<Bool>(value: false)
     
+    private let disposeBag = DisposeBag()
+    
     func checkCurrentUser() {
         if let user = Auth.auth().currentUser {
             isUserLoggedIn.accept(true)
@@ -72,5 +74,19 @@ class SplashViewModel {
             }
         }
         task.resume()
+    }
+    
+    func aa() {
+        UserApi.shared.rx.accessTokenInfo()
+            .subscribe(onSuccess:{ (accessTokenInfo) in
+                print("accessTokenInfo() success.")
+
+                //do something
+                
+                
+            }, onFailure: {error in
+                print(error)
+            })
+            .disposed(by: disposeBag)
     }
 }

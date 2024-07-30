@@ -24,6 +24,7 @@ protocol BaseAttribute {
 class SplashViewController: UIViewController {
     
     private let viewModel = SplashViewModel()
+    
     private let disposeBag = DisposeBag()
     
     private var titleImageView = UIImageView().then {
@@ -41,6 +42,7 @@ class SplashViewController: UIViewController {
         setAttribute()
         setViews()
         setRx()
+        viewModel.aa()
     }
     
     
