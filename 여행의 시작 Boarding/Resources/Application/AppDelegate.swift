@@ -16,12 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        ///Configure FireBase
         FirebaseApp.configure()
+        ///Configure Kakao API
         RxKakaoSDK.initSDK(appKey: APIKey.kakao)
+        ///Configure Google Map API
         GMSServices.provideAPIKey(APIKey.googleMap)
-        if let sandboxPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            print("Documents Directory: \(sandboxPath.path)")
-        }
+        
         return true
     }
 

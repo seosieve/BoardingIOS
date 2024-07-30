@@ -16,10 +16,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        let splashVC = SplashViewController()
-        window?.rootViewController = splashVC
+        
+        window?.rootViewController = SplashViewController()
         window?.makeKeyAndVisible()
-        // DarkMode 비활성화
+        
+        /// DarkMode 비활성화
         if #available(iOS 13.0, *) {
             window?.overrideUserInterfaceStyle = .light
         }
@@ -60,7 +61,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
 

@@ -119,18 +119,17 @@ class NFTViewController: UIViewController {
     }
     
     func setRx() {
-        modalClosed.subscribe(onNext: { isClosed in
-            if isClosed {
-                self.NFTScrollView.isScrollEnabled = false
-            } else {
-                self.NFTScrollView.isScrollEnabled = true
+        modalClosed
+            .map{ !$0 }
+            .bind(with: self) { owner, isClosed in
+                owner.NFTScrollView.isScrollEnabled = isClosed
             }
-        })
-        .disposed(by: disposeBag)
+            .disposed(by: disposeBag)
         
         sortButton.rx.tap
-            .subscribe(onNext: { [weak self] in
-                self?.showMenu()
+            .withUnretained(self)
+            .subscribe(onNext: { _ in
+                self.showMenu()
             })
             .disposed(by: disposeBag)
         
@@ -146,32 +145,32 @@ class NFTViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.itemCount
-            .subscribe(onNext: { [weak self] count in
+            .bind(with: self) { owner, count in
                 if count == 0 {
-                    self?.NFTnumberLabel.isHidden = true
-                    self?.sortButton.isHidden = true
-                    self?.placeHolderLabel.isHidden = false
-                    self?.placeHolderImage.isHidden = false
+                    owner.NFTnumberLabel.isHidden = true
+                    owner.sortButton.isHidden = true
+                    owner.placeHolderLabel.isHidden = false
+                    owner.placeHolderImage.isHidden = false
                 } else {
-                    self?.NFTnumberLabel.isHidden = false
-                    self?.sortButton.isHidden = false
-                    self?.placeHolderLabel.isHidden = true
-                    self?.placeHolderImage.isHidden = true
-                    self?.NFTnumberLabel.text = "총 \(count)개"
+                    owner.NFTnumberLabel.isHidden = false
+                    owner.sortButton.isHidden = false
+                    owner.placeHolderLabel.isHidden = true
+                    owner.placeHolderImage.isHidden = true
+                    owner.NFTnumberLabel.text = "총 \(count)개"
                 }
-                self?.updateViewHeight(count: count)
-            })
+                owner.updateViewHeight(count: count)
+            }
             .disposed(by: disposeBag)
         
         NFTCollectionView.rx.modelSelected(NFT.self)
-            .subscribe(onNext:{ [weak self] NFT in
-                let presentingVC = self?.parent?.parent as? MyPageViewController
+            .bind(with: self) { owner, NFT in
+                let presentingVC = owner.parent?.parent as? MyPageViewController
                 let vc = NFTDetailViewController()
                 vc.url = URL(string: NFT.url)
                 vc.NFTResult = NFT
                 vc.hidesBottomBarWhenPushed = true
                 presentingVC?.navigationController?.pushViewController(vc, animated: true)
-            })
+            }
             .disposed(by: disposeBag)
     }
     

@@ -16,6 +16,7 @@ import RxKakaoSDKUser
 class PreferenceViewController: UIViewController {
     
     let viewModel = PreferenceViewModel()
+    
     let disposeBag = DisposeBag()
     
     lazy var backButton = UIButton().then {
@@ -33,6 +34,7 @@ class PreferenceViewController: UIViewController {
         $0.isScrollEnabled = false
         $0.rowHeight = 60
         $0.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        $0.register(PreferenceTableViewCell.self, forCellReuseIdentifier: "preferenceTableViewCell")
     }
     
     var indicator = UIActivityIndicatorView().then {
@@ -43,7 +45,6 @@ class PreferenceViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = Gray.white
-        preferenceTableView.register(PreferenceTableViewCell.self, forCellReuseIdentifier: "preferenceTableViewCell")
         setViews()
         setRx()
     }
@@ -78,9 +79,9 @@ class PreferenceViewController: UIViewController {
     }
     
     func setRx() {
-        viewModel.items
-            .bind(to: preferenceTableView.rx.items(cellIdentifier: "preferenceTableViewCell", cellType: PreferenceTableViewCell.self)) { (row, element, cell) in
-                cell.mainLabel.text = element
+        let a = Observable.just(Names.Preference.allCases)
+            .bind(to: preferenceTableView.rx.items(cellIdentifier: "preferenceTableViewCell", cellType: PreferenceTableViewCell.self)) { row, element, cell in
+                cell.mainLabel.text = element.titles
                 switch row {
                 case 0, 1, 2, 3:
                     cell.detailButton.isHidden = false

@@ -20,6 +20,7 @@
 		4E19AA612A80FB3A00213589 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19AA602A80FB3A00213589 /* CameraViewController.swift */; };
 		4E19AA672A83E4F100213589 /* CameraCustomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19AA662A83E4F100213589 /* CameraCustomViewController.swift */; };
 		4E19AA692A9F1A7300213589 /* NFTTicketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E19AA682A9F1A7300213589 /* NFTTicketViewController.swift */; };
+		4E1ACFD62C5935030053B1F4 /* Names.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1ACFD52C5935030053B1F4 /* Names.swift */; };
 		4E1EA0872B1053D90081397B /* NFTDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1EA0862B1053D90081397B /* NFTDetailViewModel.swift */; };
 		4E1EB4212AA47F8000620D57 /* WrittingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1EB4202AA47F8000620D57 /* WrittingViewController.swift */; };
 		4E2DDF502AB330E800C7F4B9 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DDF4F2AB330E800C7F4B9 /* StartViewController.swift */; };
@@ -171,6 +172,7 @@
 		4E19AA602A80FB3A00213589 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		4E19AA662A83E4F100213589 /* CameraCustomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCustomViewController.swift; sourceTree = "<group>"; };
 		4E19AA682A9F1A7300213589 /* NFTTicketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTTicketViewController.swift; sourceTree = "<group>"; };
+		4E1ACFD52C5935030053B1F4 /* Names.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Names.swift; sourceTree = "<group>"; };
 		4E1EA0862B1053D90081397B /* NFTDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTDetailViewModel.swift; sourceTree = "<group>"; };
 		4E1EB4202AA47F8000620D57 /* WrittingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrittingViewController.swift; sourceTree = "<group>"; };
 		4E2DDF4F2AB330E800C7F4B9 /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
@@ -394,9 +396,10 @@
 		4E1ACFCD2C58E7BE0053B1F4 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4EECA7BC2A29C80C006FB764 /* Font */,
 				4E1ACFCE2C58E80B0053B1F4 /* GoogleMap */,
 				4E1ACFCC2C58E7A70053B1F4 /* Extension */,
+				4E1ACFD42C5934E70053B1F4 /* NameSpace */,
+				4EECA7BC2A29C80C006FB764 /* Font */,
 				4E1ACFCA2C58E7640053B1F4 /* StoryBoard */,
 				4E1ACFCB2C58E77B0053B1F4 /* Application */,
 				4E7D52EB2AC9347B00054800 /* 여행의 시작 Boarding.entitlements */,
@@ -421,6 +424,41 @@
 				4EECA6412A29C21D006FB764 /* ViewController */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		4E1ACFD02C58F03E0053B1F4 /* NFT */ = {
+			isa = PBXGroup;
+			children = (
+				4EECA7EF2A2F2968006FB764 /* NFTViewController.swift */,
+				4E4C143C2AE4D9B500E504D4 /* NFTViewModel.swift */,
+			);
+			path = NFT;
+			sourceTree = "<group>";
+		};
+		4E1ACFD22C58F0460053B1F4 /* MILE */ = {
+			isa = PBXGroup;
+			children = (
+				4EECA7F12A2F3213006FB764 /* MILEViewController.swift */,
+				4E4145C72B26D3BE005BF3EB /* MILEViewModel.swift */,
+			);
+			path = MILE;
+			sourceTree = "<group>";
+		};
+		4E1ACFD32C58F04A0053B1F4 /* Expert */ = {
+			isa = PBXGroup;
+			children = (
+				4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */,
+				4E92AB732B24F15E00AC8F96 /* ExpertLevelViewModel.swift */,
+			);
+			path = Expert;
+			sourceTree = "<group>";
+		};
+		4E1ACFD42C5934E70053B1F4 /* NameSpace */ = {
+			isa = PBXGroup;
+			children = (
+				4E1ACFD52C5935030053B1F4 /* Names.swift */,
+			);
+			path = NameSpace;
 			sourceTree = "<group>";
 		};
 		4E4FF3CA2AB324AB0042126A /* Start */ = {
@@ -451,12 +489,9 @@
 		4E6D86312B149693008113A4 /* PageList */ = {
 			isa = PBXGroup;
 			children = (
-				4EECA7EF2A2F2968006FB764 /* NFTViewController.swift */,
-				4E4C143C2AE4D9B500E504D4 /* NFTViewModel.swift */,
-				4EECA7F12A2F3213006FB764 /* MILEViewController.swift */,
-				4E4145C72B26D3BE005BF3EB /* MILEViewModel.swift */,
-				4EECA7F32A2F3235006FB764 /* ExpertLevelViewController.swift */,
-				4E92AB732B24F15E00AC8F96 /* ExpertLevelViewModel.swift */,
+				4E1ACFD02C58F03E0053B1F4 /* NFT */,
+				4E1ACFD22C58F0460053B1F4 /* MILE */,
+				4E1ACFD32C58F04A0053B1F4 /* Expert */,
 			);
 			path = PageList;
 			sourceTree = "<group>";
@@ -858,6 +893,7 @@
 				4E6D862B2B148FA3008113A4 /* LocationInfoViewController.swift in Sources */,
 				4EECA63C2A29C1DF006FB764 /* PlanViewController.swift in Sources */,
 				4EECA63E2A29C1F6006FB764 /* RecordViewController.swift in Sources */,
+				4E1ACFD62C5935030053B1F4 /* Names.swift in Sources */,
 				4EB72F442AEF2D6B00F9CC67 /* UserModel.swift in Sources */,
 				4E92AB742B24F15E00AC8F96 /* ExpertLevelViewModel.swift in Sources */,
 				4E7AD5942B1E685000DC8ACB /* BlockedUserViewController.swift in Sources */,

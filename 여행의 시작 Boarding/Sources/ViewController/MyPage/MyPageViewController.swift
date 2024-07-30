@@ -12,9 +12,8 @@ import FirebaseStorageUI
 
 class MyPageViewController: UIViewController {
     
-    lazy var buttonWidth = (self.view.frame.width - 40) / 3
-    
     let viewModel = MyPageViewModel()
+    
     let disposeBag = DisposeBag()
     
     var statusBarView = UIView().then {
@@ -35,7 +34,6 @@ class MyPageViewController: UIViewController {
     }
     
     var nicknameLabel = UILabel().then {
-        $0.text = ""
         $0.font = Pretendard.semiBold(25)
         $0.textColor = Gray.black
     }
@@ -47,7 +45,6 @@ class MyPageViewController: UIViewController {
     }
     
     var introduceLabel = UILabel().then {
-        $0.text = ""
         $0.font = Pretendard.regular(15)
         $0.textColor = Gray.dark
     }
@@ -56,7 +53,7 @@ class MyPageViewController: UIViewController {
         $0.backgroundColor = Gray.white
         $0.layer.cornerRadius = 24
         $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        $0.layer.shadowOffset = CGSize(width:0, height:-3)
+        $0.layer.shadowOffset = CGSize(width: 0, height: -3)
         $0.layer.shadowRadius = 10
         $0.layer.shadowColor = Gray.black.cgColor
         $0.layer.shadowOpacity = 0.1
@@ -166,7 +163,6 @@ class MyPageViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
         self.view.backgroundColor = Gray.bright
         setViews()
-//        putUserAchievement()
         setRx()
     }
     
@@ -204,14 +200,6 @@ class MyPageViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
         
-//        view.addSubview(userAchievementStackView)
-//        userAchievementStackView.snp.makeConstraints { make in
-//            make.top.equalTo(userNameLabel.snp.bottom).offset(8)
-//            make.centerX.equalToSuperview()
-//            make.width.equalTo(170)
-//            make.height.equalTo(24)
-//        }
-        
         view.addSubview(introduceLabel)
         introduceLabel.snp.makeConstraints { make in
             make.top.equalTo(nicknameLabel.snp.bottom).offset(10)
@@ -246,7 +234,7 @@ class MyPageViewController: UIViewController {
         selectedDivider.snp.makeConstraints { make in
             make.top.equalTo(myPageButtonStackView.snp.bottom)
             make.left.equalToSuperview()
-            make.width.equalTo(buttonWidth + 20)
+            make.width.equalTo((view.frame.width - 40) / 3 + 20)
             make.height.equalTo(2)
         }
         
@@ -284,51 +272,6 @@ class MyPageViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    func putUserAchievement() {
-        let userAchieveItem1 = UILabel().then {
-            $0.backgroundColor = Gray.white
-            $0.frame = CGRect(x: 0, y: 0, width: 54, height: 24)
-            $0.text = "🇰🇷 Lv.1"
-            $0.font = Pretendard.regular(12)
-            $0.textAlignment = .center
-            $0.textColor = Gray.dark
-            $0.layer.borderWidth = 0.5
-            $0.layer.borderColor = Gray.light.cgColor
-            $0.layer.cornerRadius = 4
-            $0.clipsToBounds = true
-        }
-        
-        let userAchieveItem2 = UILabel().then {
-            $0.backgroundColor = Gray.white
-            $0.frame = CGRect(x: 0, y: 0, width: 54, height: 24)
-            $0.text = "📷 Lv.1"
-            $0.font = Pretendard.regular(12)
-            $0.textAlignment = .center
-            $0.textColor = Gray.dark
-            $0.layer.borderWidth = 0.5
-            $0.layer.borderColor = Gray.light.cgColor
-            $0.layer.cornerRadius = 4
-            $0.clipsToBounds = true
-        }
-        
-        let userAchieveItem3 = UILabel().then {
-            $0.backgroundColor = Gray.white
-            $0.frame = CGRect(x: 0, y: 0, width: 54, height: 24)
-            $0.text = "🏄‍♂️ Lv.1"
-            $0.font = Pretendard.regular(12)
-            $0.textAlignment = .center
-            $0.textColor = Gray.dark
-            $0.layer.borderWidth = 0.5
-            $0.layer.borderColor = Gray.light.cgColor
-            $0.layer.cornerRadius = 4
-            $0.clipsToBounds = true
-        }
-        
-        userAchievementStackView.addArrangedSubview(userAchieveItem1)
-        userAchievementStackView.addArrangedSubview(userAchieveItem2)
-        userAchievementStackView.addArrangedSubview(userAchieveItem3)
-    }
-    
     func pageViewMotion(tag: Int) {
         var forward: Bool
         switch tag {
@@ -344,7 +287,9 @@ class MyPageViewController: UIViewController {
 
     
     func buttonMotion(tag: Int) {
+        let buttonWidth = (view.frame.width - 40) / 3
         var constraint: (CGFloat, CGFloat)
+        
         switch tag {
         case 0:
             constraint = (0, buttonWidth + 20)
