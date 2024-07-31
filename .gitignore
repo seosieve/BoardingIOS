@@ -38,6 +38,9 @@ coverage
 # Bower dependency directory (https://bower.io/)
 bower_components
 
+# APIkeys
+APIKey.swift
+
 # node-waf configuration
 .lock-wscript
 

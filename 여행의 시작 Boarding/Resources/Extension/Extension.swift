@@ -263,6 +263,19 @@ extension UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    func preferenceAlert(_ preferenceAlert: Names.PreferenceAlert, _ alertHandler: @escaping () -> Void) {
+        let alert = UIAlertController(title: preferenceAlert.title, message: preferenceAlert.message, preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        let action = UIAlertAction(title: preferenceAlert.actionTitle, style: .default) { action in
+            alertHandler()
+        }
+        alert.addAction(cancel)
+        alert.addAction(action)
+        action.setValue(Boarding.blue, forKey: "titleTextColor")
+        alert.view.tintColor = Gray.dark
+        present(alert, animated: true, completion: nil)
+    }
+    
     func toastAlert(_ message: String) {
         let alert = UIAlertController(title: "", message: "", preferredStyle: .alert)
         let attributes = [NSAttributedString.Key.foregroundColor : Gray.semiDark, NSAttributedString.Key.font : Pretendard.semiBold(19)]

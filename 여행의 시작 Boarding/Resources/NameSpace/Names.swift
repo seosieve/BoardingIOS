@@ -8,6 +8,11 @@
 import Foundation
 
 enum Names {
+    enum LoginType {
+        case apple
+        case kakao
+    }
+    
     enum Preference: CaseIterable {
         case editProfile
         case blockedUsers

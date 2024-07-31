@@ -7,21 +7,8 @@
 
 import UIKit
 import RxSwift
-import KakaoSDKCommon
-import RxKakaoSDKCommon
-import KakaoSDKAuth
-import RxKakaoSDKAuth
-import KakaoSDKUser
-import RxKakaoSDKUser
 
-//Protocol을 통해서 ViewController 구성 통일화
-protocol BaseAttribute {
-    func setAttribute()
-    func setViews()
-    func setRx()
-}
-
-class SplashViewController: UIViewController {
+final class SplashViewController: UIViewController {
     
     private let viewModel = SplashViewModel()
     
@@ -39,21 +26,19 @@ class SplashViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setAttribute()
         setViews()
         setRx()
-        viewModel.aa()
     }
     
-    
+    // View가 생성된 이후에 화면전환이 가능하므로 viewDidAppear에서 함수 호출
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        viewModel.checkCurrentUser()
+        viewModel.checkUserLoggedIn()
     }
-}
-
-extension SplashViewController: BaseAttribute {
+    
     func setViews() {
+        view.gradient([Boarding.skyBlue, Boarding.blue], axis: .horizontal)
+        
         view.addSubview(titleImageView)
         titleImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview().offset(18)
@@ -67,23 +52,21 @@ extension SplashViewController: BaseAttribute {
         }
     }
     
-    func setAttribute() {
-        view.gradient([Boarding.skyBlue, Boarding.blue], axis: .horizontal)
-    }
-    
     func setRx() {
         viewModel.isUserLoggedIn
-            .asDriver(onErrorJustReturn: true)
-            .drive(onNext: { loggedIn in
-                print(loggedIn)
-                let homeVC = TabBarViewController()
-                let startVC = ChangableNavigationController(rootViewController: StartViewController())
-                let vc = loggedIn ? homeVC : startVC
-                self.presentVC(vc, transition: .crossDissolve)
-            })
+            .bind(with: self) { owner, loggedIn in
+                owner.setInitialViewController(loggedIn)
+            }
             .disposed(by: disposeBag)
-        
-        viewModel.checkCurrentUser()
+    }
+    
+    func setInitialViewController(_ loggedIn: Bool) {
+        ///User Exists
+        let homeVC = TabBarViewController()
+        ///User Not Exists
+        let startVC = ChangableNavigationController(rootViewController: StartViewController())
+        let vc = loggedIn ? homeVC : startVC
+        self.presentVC(vc, transition: .crossDissolve)
     }
 }
 

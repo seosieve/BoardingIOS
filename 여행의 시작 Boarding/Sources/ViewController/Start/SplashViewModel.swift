@@ -7,85 +7,53 @@
 
 import Foundation
 import RxSwift
-import RxCocoa
-import KakaoSDKCommon
-import RxKakaoSDKCommon
-import KakaoSDKAuth
-import RxKakaoSDKAuth
-import KakaoSDKUser
-import RxKakaoSDKUser
 import FirebaseAuth
+import KakaoSDKAuth
+import KakaoSDKUser
 
-class SplashViewModel {
+final class SplashViewModel: BaseViewModel {
     
-    let isUserLoggedIn = BehaviorRelay<Bool>(value: false)
+    typealias FirebaseUser = FirebaseAuth.User
+    
+    let isUserLoggedIn = PublishSubject<Bool>()
+    let loginType = PublishSubject<Names.LoginType>()
     
     private let disposeBag = DisposeBag()
     
-    func checkCurrentUser() {
+    ///FireBase에서 현재 LogIn 상태인지를 확인
+    func checkUserLoggedIn() {
         if let user = Auth.auth().currentUser {
-            isUserLoggedIn.accept(true)
-            print("현재 로그인된 유저는 \(user.displayName ?? "").")
+            isUserLoggedIn.onNext(true)
+            ///로그인 타입 확인
+            checkLoginType(user: user)
         } else {
-            isUserLoggedIn.accept(false)
+            isUserLoggedIn.onNext(false)
             print("로그인되어있지 않습니다.")
         }
     }
     
-    enum HitResult {
-        case Win
-        case Lose
-        case Down
-        case Up
-    }
-    
-    var randomValue = 3
-    var tryCount = 0
-    
-    func compareValue(with hitNumber: Int) -> HitResult {
-        if randomValue == hitNumber {
-            return .Win
-        } else if tryCount >= 5 {
-            return .Lose
-        } else if hitNumber > randomValue {
-            return .Down
-        } else {
-            return .Up
-        }
-    }
-    
-    struct RandomRespose: Decodable {
-        let random: Int
-    }
-    
-    func makeRandomValue(completionHandler: @escaping () -> Void) {
-        let urlString = "https://csrng.net/csrng/csrng.php?min=0&max=30"
-        guard let url = URL(string: urlString) else { return }
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let response = response as? HTTPURLResponse,
-                  (200...399).contains(response.statusCode) else { return }
-            guard let data = data, error == nil else { return }
-            do {
-                guard let newValue = try JSONDecoder().decode([RandomRespose].self, from: data).first?.random else { return }
-                self.randomValue = newValue
-                completionHandler()
-            } catch {
-                return
+    ///User의 간편 로그인 타입 확인
+    private func checkLoginType(user: FirebaseUser) {
+        for userInfo in user.providerData {
+            if userInfo.providerID == "apple.com" {
+                loginType.onNext(.apple)
+            } else {
+                loginType.onNext(.kakao)
+                checkAccessToken()
             }
         }
-        task.resume()
     }
     
-    func aa() {
+    ///Kakao Access Token 확인 & 갱신
+    func checkAccessToken() {
+        guard AuthApi.hasToken() else { return }
+        
         UserApi.shared.rx.accessTokenInfo()
-            .subscribe(onSuccess:{ (accessTokenInfo) in
-                print("accessTokenInfo() success.")
-
-                //do something
-                
-                
-            }, onFailure: {error in
-                print(error)
+            .subscribe(onSuccess: { value in
+                ///Access Token 갱신, 남은 만료일 확인
+                print("Access Token 만료기한: \(value.expiresIn) Millis")
+            }, onFailure: { error in
+                print("Access Token 에러: \(error.localizedDescription)")
             })
             .disposed(by: disposeBag)
     }

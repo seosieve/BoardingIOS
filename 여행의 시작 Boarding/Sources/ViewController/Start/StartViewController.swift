@@ -28,7 +28,7 @@ class StartViewController: UIViewController {
     
     var appleStartButton = UIButton().then {
         $0.setTitle("Apple로 계속하기", for: .normal)
-        $0.setTitleColor(Gray.black, for: .normal)
+        $0.setTitleColor(Gray.semiDark, for: .normal)
         $0.titleLabel?.font = Pretendard.medium(18)
         $0.layer.borderWidth = 1
         $0.layer.borderColor = Gray.light.cgColor
@@ -41,7 +41,7 @@ class StartViewController: UIViewController {
     
     lazy var kakaoStartButton = UIButton().then {
         $0.setTitle("Kakao로 계속하기", for: .normal)
-        $0.setTitleColor(Gray.black, for: .normal)
+        $0.setTitleColor(Gray.semiDark, for: .normal)
         $0.titleLabel?.font = Pretendard.medium(18)
         $0.layer.borderWidth = 1
         $0.layer.borderColor = Gray.light.cgColor
@@ -120,23 +120,27 @@ class StartViewController: UIViewController {
         //Apple
         appleStartButton.rx.tap
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
-            .subscribe(onNext:{ [weak self] in
-                self?.indicator.startAnimating()
-                self?.viewModel.appleLogIn()
-                self?.appleStartButton.isEnabled = false
-                self?.kakaoStartButton.isEnabled = false
-            })
+            .bind(with: self) { owner, _ in
+                owner.viewModel.appleLogIn()
+            }
             .disposed(by: disposeBag)
         
         //Kakao
         kakaoStartButton.rx.tap
             .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
-            .subscribe(onNext:{ [weak self] in
-                self?.indicator.startAnimating()
-                self?.viewModel.kakaoLogIn()
-                self?.appleStartButton.isEnabled = false
-                self?.kakaoStartButton.isEnabled = false
-            })
+            .bind(with: self) { owner, _ in
+                owner.viewModel.kakaoLogIn()
+            }
+            .disposed(by: disposeBag)
+        
+        //UI Actions
+        Observable.merge(appleStartButton.rx.tap.map{()}, kakaoStartButton.rx.tap.map{()})
+            .bind(with: self) { owner, value in
+                owner.indicator.startAnimating()
+                owner.appleStartButton.isEnabled = false
+                owner.kakaoStartButton.isEnabled = false
+                print(value)
+            }
             .disposed(by: disposeBag)
         
         //공통

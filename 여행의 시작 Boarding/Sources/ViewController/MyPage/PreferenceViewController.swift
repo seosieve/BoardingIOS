@@ -97,16 +97,28 @@ final class PreferenceViewController: UIViewController {
                     owner.navigationController?.pushViewController(vc, animated: true)
                 case 2:
                     let vc = TermsViewController()
-                    vc.terms = "이용약관"
+                    vc.terms = Names.Preference.termsOfUse.title
                     owner.navigationController?.pushViewController(vc, animated: true)
                 case 3:
                     let vc = TermsViewController()
                     vc.terms = "개인정보 보호 정책"
                     owner.navigationController?.pushViewController(vc, animated: true)
                 case 5:
-                    owner.preferenceAlert(.logOut)
+                    owner.preferenceAlert(.logOut) {
+                        ///User Interaction
+                        self.indicator.startAnimating()
+                        self.view.isUserInteractionEnabled = false
+                        ///LogOut
+                        self.viewModel.logOut()
+                    }
                 case 6:
-                    owner.preferenceAlert(.withdraw)
+                    owner.preferenceAlert(.withdraw) {
+                        ///User Interaction
+                        self.indicator.startAnimating()
+                        self.view.isUserInteractionEnabled = false
+                        ///UnLink
+                        self.viewModel.unLink()
+                    }
                 default:
                     break
                 }
@@ -134,26 +146,6 @@ final class PreferenceViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func preferenceAlert(_ preferenceAlert: Names.PreferenceAlert) {
-        let alert = UIAlertController(title: preferenceAlert.title, message: preferenceAlert.message, preferredStyle: .alert)
-        let cancel = UIAlertAction(title: "취소", style: .cancel)
-        let action = UIAlertAction(title: preferenceAlert.actionTitle, style: .default) { [weak self] action in
-            ///User Interaction
-            self?.indicator.startAnimating()
-            self?.view.isUserInteractionEnabled = false
-            ///User Action
-            switch preferenceAlert {
-            case .logOut:
-                self?.viewModel.logOut()
-            case .withdraw:
-                self?.viewModel.unLink()
-            }
-        }
-        alert.addAction(cancel)
-        alert.addAction(action)
-        action.setValue(Boarding.blue, forKey: "titleTextColor")
-        alert.view.tintColor = Gray.dark
-        present(alert, animated: true, completion: nil)
-    }
+
 }
 
