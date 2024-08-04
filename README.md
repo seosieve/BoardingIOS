@@ -46,27 +46,28 @@
 
 ## 프로젝트 기술 스택
 - **활용기술 및 키워드**
-  - **iOS** : swift 5.9.2, xcode 15.1, UIKit
-  - **Network** : URLSession, Firebase
-  - **UI** : StoryBoard
+  - **iOS** : swift 5.9.2, xcode 15.1, UIKit, Photos, Apple Authorization
+  - **Network** : RxSwift, Firebase, Kakao API
+  - **UI** : CodeBaseUI, Snapkit, Then
 
 - **라이브러리**
 
 라이브러리 | 사용 목적 | Version
 :---------:|:----------:|:---------:
-SwiftySound | 배경음악 처리 | -
+GoogleMap | 장소 세부 정보 | 8.3.1
+FSCalendar | 플랜, 일정 날짜 선택  | 2.8.4
 Kingfisher | 이미지 처리 | 7.0
-lottie-ios | 스플래시, 로딩 인디케이터 | -
+FirebaseStorageUI | 저장소 이미지 처리 | -
 <br>
 
 ## 프로젝트 아키텍처
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/a9c0ae36-70e4-4fbf-a753-4b2bce2170dc">
+  <img src="https://github.com/user-attachments/assets/04299542-2528-4c34-8b31-68f164f112d4">
 </div>
 <br>
 
-> StoryBoard + MVVM Architecture
-- 3D Base UI등 Custom UI가 많아 커뮤니케이션과 전체적인 UI Flow관찰을 위해 StoryBoard 활용
-- Manager객체에서 API Fetching 및 FireBase CRUD 구현 로직을 담당, ViewModel에서 호출
-- Auth Token 저장 및 UserID 등 불필요한 API Call을 줄이기 위해 UserDefaults 저장소 병용
+> MVVM Architecture
+- SnapKit과 Then을 활용한 CodeBase UI로 생산성을 높이고, 반복되는 UI요소들에 대한 View의 재사용성을 높임
+- Photos를 통해 가져온 유저 사진 데이터의 부족한 정보들을 Google Map 장소데이터와 연동하여 Storage에 저장
+- Kakao Auth와 Apple Auth를 담당하는 모델들을 만들어 Firebase Auth 데이터와 연동하여 통합 Token으로 유저 로그인 상태를 관리
 <br>
