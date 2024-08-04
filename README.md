@@ -62,7 +62,7 @@ FirebaseStorageUI | 저장소 이미지 처리 | -
 
 ## 프로젝트 아키텍처
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/04299542-2528-4c34-8b31-68f164f112d4">
+  <img src="https://github.com/user-attachments/assets/3e697e84-2395-4c91-a4b0-5a31cb54a5b5">
 </div>
 <br>
 
