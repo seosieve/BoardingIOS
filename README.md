@@ -71,3 +71,57 @@ FirebaseStorageUI | 저장소 이미지 처리 | -
 - Photos를 통해 가져온 유저 사진 데이터의 부족한 정보들을 Google Map 장소데이터와 연동하여 Storage에 저장
 - Kakao Auth와 Apple Auth를 담당하는 모델들이 Firebase Auth 데이터와 연동되어 통합 Token으로 유저 로그인 상태 관리
 <br>
+
+## 트러블 슈팅
+### 1. Firebase 기반 애플로그인의 '회원탈퇴'를 구현할 수 없는 문제
+> Firebase내에 구현된 revokeToken 메소드는 Firebase내에서의 token만 다룰 뿐이지, 애플로그인 토큰 자체의 연결 해제까지는 할 수 없었다.
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/91c8f3da-3662-426e-aeed-3010382240bd" width="75%"> <img src="https://github.com/user-attachments/assets/aaf1deb0-4a40-4c57-a47e-6a5369855a68" width="11.8%"> <img src="https://github.com/user-attachments/assets/2fc5269a-5b76-4824-a878-66ee90272871" width="11.8%"> 
+</div>
+<br>
+
+- apple에게 Rest API Call을 보내서 revoke에 필요한 refresh Token을 가져온다. 이 과정에서 **JWT(JsonWebToken)생성**이 필요
+- JWT를 클라이언트단에서 호출하는 것은 보안 문제가 발생할 수 있으므로, **Firebase Cloud Function**을 사용해서 서버리스 백엔드 기능을 사용
+- SignIn을 하는 과정에서 받아온 Refresh Token을 **UserDefaults**에 저장한 다음, 회원 탈퇴 revoke Token시점에서 이를 사용하는 형태로 문제 해결
+> Sign In
+```swift
+let credential = OAuthProvider.appleCredential(withIDToken: tokenString, rawNonce: nonce, fullName: appleIDCredential.fullName)
+
+if let code = appleIDCredential.authorizationCode, let codeString = String(data: code, encoding: .utf8) {
+    //Use FireBase Cloud Function
+    let url = URL(string: "https://us-central1-boarding-ef2f1.cloudfunctions.net/getRefreshToken?code=\(codeString)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "https://apple.com")!
+    let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+        if let data = data {
+            //Get Refresh Token
+            let refreshToken = String(data: data, encoding: .utf8) ?? ""
+            //Save in UserDefaults
+            UserDefaults.standard.set(refreshToken, forKey: "refreshToken")
+        }
+    }
+    task.resume()
+}
+
+//Sign In with Credential
+Auth.auth().signIn(with: credential) { ... }
+```
+> Withdraw
+```swift
+let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: tokenString, rawNonce: nonce)
+
+//Use Refresh Token Saved in UserDefaults
+let token = UserDefaults.standard.string(forKey: "refreshToken")
+if let token = token {
+    //Revoke Token
+    let url = URL(string: "https://us-central1-boarding-ef2f1.cloudfunctions.net/revokeToken?refresh_token=\(token)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "https://apple.com")!
+    let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+        guard data != nil else { return }
+    }
+    task.resume()
+}
+
+//Sign Out in FireBase
+Auth.auth().signOut() { ... }
+```
+<br>
+
+### 2. 사용자가 지정한 배경음악을 FireBase 저장소에 저장
