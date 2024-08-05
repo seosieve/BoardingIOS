@@ -124,4 +124,81 @@ Auth.auth().signOut() { ... }
 ```
 <br>
 
-### 2. 사용자가 지정한 배경음악을 FireBase 저장소에 저장
+### 2. 세 개의 User Interaction이 겹치는 Sticky Header View
+> Sticky Header View와 Page View Controller, 그리고 그 안에 Scroll View들이 병용되어야 하는 상황
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/294c340e-e5ea-4637-84bb-3b295910d154" width="75%"> <img src="https://github.com/user-attachments/assets/bf090cc9-5918-4f50-8db5-c829fa26faff" width="11.8%"> <img src="https://github.com/user-attachments/assets/07fe762e-4e2e-470a-b0d6-6554e0096daa" width="11.8%"> 
+</div>
+<br>
+
+- Pan Gesture의 state에 따른 translation과 velocity로 **Sticky Header View**를 우선적으로 구현 (이 때 y값만을 사용하여 Page View Controller의 interaction과 겹치지 않도록 설정) 
+- Page List마다 RxSwift의 **BehaviorRelay**를 정의하여 Sticky Header View의 UI 상태를 Observe 할 수 있도록 설정
+- BehaviorRelay를 View.isScrollEnabled의 값과 **bind**하여 Pan Gesture의 우선순위를 명시하여 인터렉션을 구현
+> Sticky Header View
+```swift
+@objc func addModalMotion(_ recognizer: UIPanGestureRecognizer) {
+    let minY = window.safeAreaInsets.top
+    let maxY = self.maxY
+    
+    switch recognizer.state {
+        
+    case .began, .changed:
+        //Set Translation
+        let translation = recognizer.translation(in: modalView)
+        //Set max, min Bound
+        let y = min(maxY, max(minY, modalView.frame.minY + translation.y))
+        //Change Top Constraints
+        modalView.snp.updateConstraints { make in
+            make.top.equalToSuperview().offset(y)
+        }
+        recognizer.setTranslation(CGPoint.zero, in: self.view)
+        
+    case .ended:
+        //Direction of Pin Gesture
+        let velocity = recognizer.velocity(in: modalView).y
+        let shouldClose = velocity > 0
+        //Auto Animation
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+            self.modalView.snp.updateConstraints { make in
+                make.top.equalToSuperview().offset(shouldClose ? maxY : minY)
+            }
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+        
+        //Set BehaviorRelay to Each PageList
+        modalPageViewController.pageList.forEach { vc in
+            switch vc {
+            case is NFTViewController:
+                if let vc = vc as? NFTViewController {
+                    vc.modalClosed.accept(shouldClose)
+                }
+            case is MILEViewController:
+                if let vc = vc as? MILEViewController {
+                    vc.modalClosed.accept(shouldClose)
+                }
+            default:
+                if let vc = vc as? ExpertLevelViewController {
+                    vc.modalClosed.accept(shouldClose)
+                }
+            }
+        }
+    default:
+        break
+    }
+}
+```
+> Scroll View
+```swift
+//Set Default Value True
+let modalClosed = BehaviorRelay<Bool>(value: true)
+
+func setRx() {
+    //Bind to ScrollView
+    modalClosed
+        .bind(with: self) { owner, isClosed in
+            owner.ScrollView.isScrollEnabled = isClosed
+        }
+        .disposed(by: disposeBag)
+}
+```
+<br>
