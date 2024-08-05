@@ -202,3 +202,27 @@ func setRx() {
 }
 ```
 <br>
+
+### 3. FireStore Plan 문서 저장에서 순서 바꾸기, 삭제된 게시글 기능이 정상적으로 동작하지 않는 문제
+> Plan 문서에 게시글 정보를 복사해서 모두 저장하다보니, 빠르게 수행되어야 하는 플랜 순서 바꾸기와 유저의 게시글 삭제 유무 탐색의 속도 문제가 있었다.
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/fa1ee40a-a255-415c-90f2-bb95449cf9d3" width="75%"> <img src="https://github.com/user-attachments/assets/2256ca9e-4579-4121-b400-8fcec2f01c58" width="11.8%"> <img src="https://github.com/user-attachments/assets/77e2538c-854a-4ec5-8698-151643588a05" width="11.8%"> 
+</div>
+<br>
+
+- 필요한 객체의 복사 기반 저장에서 Card 문서의 ID값을 저장하는 방식으로 변경
+- ID값이 맞는 Card를 찾기 위해 모든 Card문서를 순회해야 하는 문제가 있으므로, 이는 **Firestore Custom 색인**을 생성하여 최적화
+> Scroll View
+```swift
+//Set Default Value True
+let modalClosed = BehaviorRelay<Bool>(value: true)
+
+func setRx() {
+    //Bind to ScrollView
+    modalClosed
+        .bind(with: self) { owner, isClosed in
+            owner.ScrollView.isScrollEnabled = isClosed
+        }
+        .disposed(by: disposeBag)
+}
+```
