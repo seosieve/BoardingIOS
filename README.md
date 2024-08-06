@@ -212,17 +212,25 @@ func setRx() {
 
 - 필요한 객체의 복사 기반 저장에서 Card 문서의 ID값을 저장하는 방식으로 변경
 - ID값이 맞는 Card를 찾기 위해 모든 Card문서를 순회해야 하는 문제가 있으므로, 이는 **Firestore Custom 색인**을 생성하여 최적화
-> Scroll View
+> Scrap 추가
 ```swift
-//Set Default Value True
-let modalClosed = BehaviorRelay<Bool>(value: true)
-
-func setRx() {
-    //Bind to ScrollView
-    modalClosed
-        .bind(with: self) { owner, isClosed in
-            owner.ScrollView.isScrollEnabled = isClosed
+func addScrap(planID: String, CardID: String) {
+    db.collection("User").document(userUid).collection("Plan").document(planID).updateData(["scrap": FieldValue.arrayUnion([CardID])]) { error in
+        if let error = error {
+            print("scrap 추가 에러: \(error)")
+        } else {
+            print("scrap 추가 성공")
+            self.addScrapSubject.onNext(())
         }
-        .disposed(by: disposeBag)
+    }
 }
+```
+> Plan에 삭제된 Card 포함시 Index 정리
+```swift
+//삭제된 Card 포함되어있을 때 dayPlan에서 삭제
+for (index, item) in items.enumerated() where item.CardID == "" {
+    let memoArray = dayMemoArray.enumerated().filter { $0.offset != index }.map { $0.element }
+    self.removeDayPlan(day: day, CardID: dayArray[index], memoArray: memoArray)
+}
+items.removeAll { $0.CardID == "" }
 ```
